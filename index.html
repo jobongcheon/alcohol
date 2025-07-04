@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알코올 중독 자가진단 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e3f2fd;
+        }
+
+        .question-number {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .answer-btn {
+            padding: 20px 25px;
+            border: 2px solid;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answer-yes {
+            background: #ffebee;
+            border-color: #ffcdd2;
+            color: #c62828;
+        }
+
+        .answer-yes:hover {
+            background: #ffcdd2;
+            border-color: #ef5350;
+        }
+
+        .answer-no {
+            background: #e8f5e8;
+            border-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .answer-no:hover {
+            background: #c8e6c9;
+            border-color: #66bb6a;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-title {
+            font-weight: 600;
+            color: #f57c00;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-list {
+            font-size: 0.9rem;
+            color: #ef6c00;
+            line-height: 1.5;
+        }
+
+        .warning-list li {
+            margin-bottom: 5px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .result-normal { background: #4caf50; }
+        .result-warning { background: #ff9800; }
+        .result-danger { background: #f44336; }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .result-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .result-stats {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-stats-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .result-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .result-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .advice-box {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .advice-title {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .advice-text {
+            font-size: 0.9rem;
+            color: #1565c0;
+            line-height: 1.5;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .answer-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>알코올 중독 자가진단</h1>
+            <p>Alcohol Use Disorder Assessment</p>
+            <p class="subtitle">Clinical Version - DSM-5 기준</p>
+        </div>
+
+        <div id="test-content" class="content">
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span class="progress-text">진행률: <span id="current-progress">1</span> / 20</span>
+                    <span class="progress-text" id="category-text">신체적 의존</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-number">질문 <span id="question-number">1</span></div>
+                <div class="question-text" id="question-text">
+                    술을 마시지 않으면 손이 떨리거나 불안해집니까?
+                </div>
+            </div>
+
+            <div class="answers">
+                <button class="answer-btn answer-yes" onclick="answerQuestion('yes')">
+                    <span>예, 그렇습니다</span>
+                    <span>→</span>
+                </button>
+                <button class="answer-btn answer-no" onclick="answerQuestion('no')">
+                    <span>아니요, 그렇지 않습니다</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" onclick="previousQuestion()" style="display: none;">
+                    ← 이전 질문
+                </button>
+            </div>
+
+            <div class="warning-box">
+                <div class="warning-title">
+                    <span>⚠️</span>
+                    <span>검사 시작 전 중요 안내</span>
+                </div>
+                <ul class="warning-list">
+                    <li>• 최근 6개월간의 음주습관 바탕으로 응답해주세요</li>
+                    <li>• 정확한 진단을 위해 전문의 상담을 받으시기 바랍니다</li>
+                    <li>• 본 도구는 전문적 진단을 대체하지 않습니다</li>
+                    <li>• 심각한 위험이 확인될 경우 즉시 전문가의 상담을 받으세요</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="result-content" class="result-container hidden">
+            <div class="result-icon" id="result-icon">✓</div>
+            <h2 class="result-title" id="result-title">정상</h2>
+            <p class="result-description" id="result-description">
+                현재 알코올 관련 문제는 낮은 수준입니다.
+            </p>
+            
+            <div class="result-stats">
+                <div class="result-stats-text" id="result-stats-text">
+                    총 20개 문항 중 0개 해당
+                </div>
+                <div class="result-bar">
+                    <div class="result-bar-fill" id="result-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="advice-box">
+                <div class="advice-title">전문가 권고사항</div>
+                <div class="advice-text" id="advice-text">
+                    건강한 음주 습관을 유지하세요. 과도한 음주는 피하고 적정 음주량을 지키는 것이 중요합니다.
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div class="warning-title">
+                    <span>⚠️</span>
+                    <span>검사 결과 전 중요 안내</span>
+                </div>
+                <ul class="warning-list">
+                    <li>• 이 검사는 6개월간의 음주습관 바탕으로 응답해주세요</li>
+                    <li>• 정확한 진단을 위해 전문의 상담을 받으시기 바랍니다</li>
+                    <li>• 본 도구는 전문적 진단을 대체하지 않습니다</li>
+                    <li>• 심각한 위험이 확인될 경우 즉시 전문가의 상담을 받으세요</li>
+                </ul>
+            </div>
+
+            <button class="restart-btn" onclick="restartTest()">
+                다시 시작하기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                text: "술을 마시지 않으면 손이 떨리거나 불안해집니까?",
+                category: "신체적 의존"
+            },
+            {
+                id: 2,
+                text: "술을 마시지 않으면 잠들기 어렵습니까?",
+                category: "신체적 의존"
+            },
+            {
+                id: 3,
+                text: "술을 마시지 않으면 땀이 나거나 메스꺼움을 느낍니까?",
+                category: "신체적 의존"
+            },
+            {
+                id: 4,
+                text: "술을 마신 다음 날 해장술을 마신 적이 있습니까?",
+                category: "신체적 의존"
+            },
+            {
+                id: 5,
+                text: "술을 마시는 양이 점점 늘어나고 있습니까?",
+                category: "내성"
+            },
+            {
+                id: 6,
+                text: "예전과 같은 양을 마셔도 취하지 않습니까?",
+                category: "내성"
+            },
+            {
+                id: 7,
+                text: "술을 끊거나 줄이려고 시도했지만 실패한 적이 있습니까?",
+                category: "조절 능력 상실"
+            },
+            {
+                id: 8,
+                text: "술을 마시면 원래 계획했던 것보다 더 많이 마십니까?",
+                category: "조절 능력 상실"
+            },
+            {
+                id: 9,
+                text: "술을 마시는 것 때문에 중요한 활동을 포기한 적이 있습니까?",
+                category: "사회적 기능 손상"
+            },
+            {
+                id: 10,
+                text: "술 때문에 가족이나 친구들과 갈등이 생긴 적이 있습니까?",
+                category: "사회적 기능 손상"
+            },
+            {
+                id: 11,
+                text: "술 때문에 직장이나 학교에서 문제가 생긴 적이 있습니까?",
+                category: "사회적 기능 손상"
+            },
+            {
+                id: 12,
+                text: "술을 마시고 기억이 나지 않는 일(블랙아웃)이 있었습니까?",
+                category: "신체적 피해"
+            },
+            {
+                id: 13,
+                text: "술을 마시고 다치거나 사고가 난 적이 있습니까?",
+                category: "신체적 피해"
+            },
+            {
+                id: 14,
+                text: "혼자서 술을 마시는 경우가 많습니까?",
+                category: "음주 패턴"
+            },
+            {
+                id: 15,
+                text: "아침에 일어나자마자 술을 마시고 싶다는 생각이 듭니까?",
+                category: "음주 패턴"
+            },
+            {
+                id: 16,
+                text: "술을 마시지 않으면 하루 종일 술 생각만 납니까?",
+                category: "심리적 의존"
+            },
+            {
+                id: 17,
+                text: "스트레스나 우울할 때 술로 해결하려고 합니까?",
+                category: "심리적 의존"
+            },
+            {
+                id: 18,
+                text: "술을 마시는 것을 숨기거나 거짓말을 한 적이 있습니까?",
+                category: "은폐 행동"
+            },
+            {
+                id: 19,
+                text: "술을 마시지 않으면 일상생활이 어렵다고 느낍니까?",
+                category: "기능 장애"
+            },
+            {
+                id: 20,
+                text: "술 때문에 건강에 문제가 생겼음에도 계속 마십니까?",
+                category: "지속적 사용"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('current-progress').textContent = currentQuestion + 1;
+            document.getElementById('category-text').textContent = questions[currentQuestion].category;
+        }
+
+        function updateQuestion() {
+            document.getElementById('question-number').textContent = currentQuestion + 1;
+            document.getElementById('question-text').textContent = questions[currentQuestion].text;
+            
+            // 이전 버튼 표시/숨김
+            const prevBtn = document.getElementById('prev-btn');
+            if (currentQuestion > 0) {
+                prevBtn.style.display = 'block';
+            } else {
+                prevBtn.style.display = 'none';
+            }
+            
+            updateProgress();
+        }
+
+        function answerQuestion(answer) {
+            answers[currentQuestion] = answer;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                updateQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                updateQuestion();
+            }
+        }
+
+        function calculateResult() {
+            const yesCount = Object.values(answers).filter(answer => answer === 'yes').length;
+            
+            if (yesCount <= 5) {
+                return {
+                    level: '정상',
+                    icon: '✓',
+                    className: 'result-normal',
+                    barColor: '#4caf50',
+                    description: '현재 알코올 관련 문제는 낮은 수준입니다.',
+                    advice: '건강한 음주 습관을 유지하세요. 과도한 음주는 피하고 적정 음주량을 지키는 것이 중요합니다.'
+                };
+            } else if (yesCount <= 10) {
+                return {
+                    level: '주의',
+                    icon: '⚠️',
+                    className: 'result-warning',
+                    barColor: '#ff9800',
+                    description: '알코올 사용에 주의가 필요한 상태입니다.',
+                    advice: '음주 습관을 점검하고 조절하는 것이 필요합니다. 전문가와 상담을 고려해보세요.'
+                };
+            } else if (yesCount <= 15) {
+                return {
+                    level: '위험',
+                    icon: '⚠️',
+                    className: 'result-warning',
+                    barColor: '#ff5722',
+                    description: '알코올 의존의 위험성이 높은 상태입니다.',
+                    advice: '즉시 전문의와 상담하여 적절한 치료를 받으시기 바랍니다. 금주 또는 치료 프로그램 참여를 고려하세요.'
+                };
+            } else {
+                return {
+                    level: '심각',
+                    icon: '⚠️',
+                    className: 'result-danger',
+                    barColor: '#f44336',
+                    description: '알코올 의존 가능성이 매우 높습니다.',
+                    advice: '즉시 전문 치료가 필요합니다. 알코올 중독 전문 병원이나 상담센터에서 도움을 받으시기 바랍니다.'
+                };
+            }
+        }
+
+        function showResult() {
+            const result = calculateResult();
+            const yesCount = Object.values(answers).filter(answer => answer === 'yes').length;
+            
+            // 결과 화면 업데이트
+            document.getElementById('result-icon').textContent = result.icon;
+            document.getElementById('result-icon').className = 'result-icon ' + result.className;
+            document.getElementById('result-title').textContent = result.level;
+            document.getElementById('result-description').textContent = result.description;
+            document.getElementById('result-stats-text').textContent = `총 20개 문항 중 ${yesCount}개 해당`;
+            document.getElementById('advice-text').textContent = result.advice;
+            
+            // 결과 바 업데이트
+            const resultBarFill = document.getElementById('result-bar-fill');
+            resultBarFill.style.width = (yesCount / 20) * 100 + '%';
+            resultBarFill.style.backgroundColor = result.barColor;
+            
+            // 화면 전환
+            document.getElementById('test-content').classList.add('hidden');
+            document.getElementById('result-content').classList.remove('hidden');
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            answers = {};
+            
+            // 화면 전환
+            document.getElementById('result-content').classList.add('hidden');
+            document.getElementById('test-content').classList.remove('hidden');
+            
+            // 첫 질문으로 초기화
+            updateQuestion();
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            updateQuestion();
+        };
+    </script>
+</body>
+</html>
