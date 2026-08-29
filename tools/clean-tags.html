@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML 중복 블록 삭제 도구</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Segoe UI', sans-serif;
+         background: #f5f6f8; color: #1c1e21; margin: 0; padding: 24px; }
+  .wrap { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 14px;
+          box-shadow: 0 6px 24px rgba(0,0,0,.08); padding: 28px; }
+  h1 { font-size: 1.35rem; margin: 0 0 6px; }
+  .sub { color: #666; font-size: .9rem; margin-bottom: 20px; }
+  .step { border-top: 1px solid #eee; padding-top: 18px; margin-top: 18px; }
+  .step h2 { font-size: 1rem; margin: 0 0 10px; }
+  #drop { border: 2px dashed #b9c0cc; border-radius: 12px; padding: 30px; text-align: center;
+          color: #667; cursor: pointer; background: #fafbfc; }
+  #drop.over { border-color: #667eea; background: #eef0ff; color: #445; }
+  input[type=text] { width: 100%; padding: 9px 11px; border: 1px solid #ccd; border-radius: 8px;
+                     font-size: .95rem; }
+  button { background: #667eea; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px;
+           font-size: .95rem; cursor: pointer; }
+  button:disabled { background: #c3c7d1; cursor: not-allowed; }
+  button.ghost { background: #eef0f4; color: #333; }
+  .hit { border: 1px solid #e3e5ea; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .hit label { display: block; cursor: pointer; }
+  .hit .tag { font-family: ui-monospace, Consolas, monospace; font-size: .82rem; color: #7a3; }
+  .hit .snip { font-size: .82rem; color: #555; margin-top: 6px; white-space: pre-wrap;
+               max-height: 90px; overflow: hidden; }
+  .hidden { display: none; }
+  .ok { color: #1a7f37; font-weight: 600; }
+  .warn { color: #b33; }
+  ul.help { font-size: .88rem; color: #555; line-height: 1.6; padding-left: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>HTML 중복 블록 삭제 도구</h1>
+  <div class="sub">파일을 올리면 지정한 문구가 들어 있는 블록을 찾아서 지우고, 정리된 파일을 저장해 줍니다. 원본 파일은 변경되지 않습니다.</div>
+
+  <div class="step">
+    <h2>1. HTML 파일 선택</h2>
+    <div id="drop">여기로 HTML 파일을 끌어다 놓거나 클릭해서 선택하세요</div>
+    <input type="file" id="file" accept=".html,.htm" class="hidden">
+    <div id="fileinfo" class="sub" style="margin-top:10px"></div>
+  </div>
+
+  <div class="step">
+    <h2>2. 삭제할 블록의 문구</h2>
+    <input type="text" id="needle" value="새 태그 (태그칸)">
+    <div class="sub" style="margin-top:6px">이 문구가 들어 있는 영역을 찾습니다. (예: <code>새 태그 (태그칸)</code>)</div>
+    <button id="find" disabled style="margin-top:10px">찾기</button>
+  </div>
+
+  <div class="step hidden" id="step3">
+    <h2>3. 삭제할 범위 선택</h2>
+    <div class="sub">문구를 담고 있는 바깥 영역들입니다. 지우려는 범위를 고르세요. 보통 제목과 목록을 모두 포함하는 카드 전체를 고르면 됩니다.</div>
+    <div id="hits"></div>
+    <button id="remove" disabled>선택한 블록 삭제하고 저장</button>
+    <button id="reset" class="ghost">다시 선택</button>
+    <div id="result" class="sub" style="margin-top:12px"></div>
+  </div>
+
+  <div class="step">
+    <h2>도움말</h2>
+    <ul class="help">
+      <li>저장된 파일 이름은 <b>원본이름_정리본.html</b> 이며, 브라우저 다운로드 폴더에 저장됩니다.</li>
+      <li>같은 문구가 여러 번 나오면 아래 목록에 모두 표시됩니다. 필요한 만큼 반복해서 지우면 됩니다.</li>
+      <li>결과가 마음에 들지 않으면 원본 파일을 다시 올려서 다른 범위를 선택하세요.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+var doc = null, srcName = '', matches = [], chosen = null;
+
+var drop = document.getElementById('drop');
+var fileInput = document.getElementById('file');
+var findBtn = document.getElementById('find');
+var removeBtn = document.getElementById('remove');
+var resetBtn = document.getElementById('reset');
+var hitsBox = document.getElementById('hits');
+var step3 = document.getElementById('step3');
+var result = document.getElementById('result');
+
+drop.addEventListener('click', function () { fileInput.click(); });
+drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', function () { drop.classList.remove('over'); });
+drop.addEventListener('drop', function (e) {
+  e.preventDefault(); drop.classList.remove('over');
+  if (e.dataTransfer.files.length) load(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', function () {
+  if (fileInput.files.length) load(fileInput.files[0]);
+});
+
+function load(file) {
+  srcName = file.name;
+  var reader = new FileReader();
+  reader.onload = function () {
+    doc = new DOMParser().parseFromString(reader.result, 'text/html');
+    document.getElementById('fileinfo').innerHTML =
+      '선택된 파일: <b>' + esc(file.name) + '</b> (' + Math.round(file.size / 1024) + ' KB)';
+    findBtn.disabled = false;
+    step3.classList.add('hidden');
+    result.textContent = '';
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+findBtn.addEventListener('click', function () {
+  var needle = document.getElementById('needle').value.trim();
+  if (!doc || !needle) return;
+  var deepest = [];
+  var all = doc.body.querySelectorAll('*');
+  for (var i = 0; i < all.length; i++) {
+    var el = all[i];
+    if (norm(el.textContent).indexOf(norm(needle)) === -1) continue;
+    var hasChildHit = false;
+    for (var j = 0; j < el.children.length; j++) {
+      if (norm(el.children[j].textContent).indexOf(norm(needle)) !== -1) { hasChildHit = true; break; }
+    }
+    if (!hasChildHit) deepest.push(el);
+  }
+  if (!deepest.length) {
+    step3.classList.remove('hidden');
+    hitsBox.innerHTML = '<div class="warn">해당 문구를 찾지 못했습니다. 문구를 조금 줄여서 다시 시도해 보세요.</div>';
+    removeBtn.disabled = true;
+    return;
+  }
+  matches = [];
+  for (var k = 0; k < deepest.length; k++) {
+    var node = deepest[k], depth = 0;
+    while (node && node !== doc.body && depth < 6) {
+      if (matches.indexOf(node) === -1) matches.push(node);
+      node = node.parentElement; depth++;
+    }
+  }
+  render();
+});
+
+function render() {
+  chosen = null;
+  removeBtn.disabled = true;
+  step3.classList.remove('hidden');
+  var html = '';
+  for (var i = 0; i < matches.length; i++) {
+    var el = matches[i];
+    html += '<div class="hit"><label>' +
+      '<input type="radio" name="pick" value="' + i + '"> ' +
+      '<span class="tag">&lt;' + el.tagName.toLowerCase() +
+      (el.id ? ' id="' + esc(el.id) + '"' : '') +
+      (el.className && typeof el.className === 'string' ? ' class="' + esc(el.className) + '"' : '') +
+      '&gt;</span> — 글자 수 ' + norm(el.textContent).length +
+      '<div class="snip">' + esc(norm(el.textContent).slice(0, 260)) + '</div>' +
+      '</label></div>';
+  }
+  hitsBox.innerHTML = html;
+  var radios = hitsBox.querySelectorAll('input[name=pick]');
+  for (var r = 0; r < radios.length; r++) {
+    radios[r].addEventListener('change', function (e) {
+      chosen = matches[parseInt(e.target.value, 10)];
+      removeBtn.disabled = false;
+    });
+  }
+}
+
+removeBtn.addEventListener('click', function () {
+  if (!chosen) return;
+  chosen.parentNode.removeChild(chosen);
+  var out = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+  var base = srcName.replace(/\.html?$/i, '');
+  var blob = new Blob([out], { type: 'text/html;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = base + '_정리본.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  result.innerHTML = '<span class="ok">삭제 완료 — ' + esc(base) + '_정리본.html 파일이 저장되었습니다.</span>';
+  matches = []; hitsBox.innerHTML = ''; removeBtn.disabled = true;
+});
+
+resetBtn.addEventListener('click', function () { findBtn.click(); result.textContent = ''; });
+
+function norm(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
