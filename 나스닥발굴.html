@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나스닥발굴 — 글로벌 성장주 발굴 앱</title>
+<style>
+:root{
+  --bg:#0d1320; --panel:#151e2e; --panel2:#1b2637; --line:#26344a;
+  --txt:#e7edf7; --mut:#93a4bd; --dim:#6c7d96;
+  --acc:#4dd4ac; --acc2:#3aa9ff; --warn:#f5a623; --bad:#ff5f56; --hot:#ff3b30; --gold:#ffd166;
+  --shadow:0 8px 28px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic','Apple SD Gothic Neo',Roboto,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+a{color:var(--acc2)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+
+/* ── header ── */
+header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0d1320 70%,rgba(13,19,32,.92));border-bottom:1px solid var(--line)}
+.hdr{max-width:1240px;margin:0 auto;padding:12px 16px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.logo{font-size:19px;font-weight:800;letter-spacing:-.5px}
+.logo span{color:var(--acc)}
+.tagline{color:var(--dim);font-size:12px}
+.mkts{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.mkt{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
+.mkt.on{background:var(--acc);border-color:var(--acc);color:#06231b}
+nav{max-width:1240px;margin:0 auto;padding:10px 16px 0;display:flex;gap:2px;overflow-x:auto}
+nav button{background:none;border:0;border-bottom:2px solid transparent;padding:9px 13px;color:var(--mut);cursor:pointer;white-space:nowrap;font-weight:600;font-size:13px}
+nav button.on{color:var(--txt);border-bottom-color:var(--acc)}
+nav button:hover{color:var(--txt)}
+
+/* ── layout ── */
+h2{font-size:17px;margin:22px 0 10px;font-weight:700}
+h3{font-size:14px;margin:16px 0 8px;color:var(--mut);font-weight:700;letter-spacing:.3px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.muted{color:var(--mut)}.dim{color:var(--dim)}.small{font-size:12px}.tiny{font-size:11px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* ── kpi ── */
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi .lab{color:var(--mut);font-size:12px;margin-bottom:6px}
+.kpi .val{font-size:25px;font-weight:800;letter-spacing:-.5px}
+.kpi .sub{font-size:11px;color:var(--dim);margin-top:3px}
+
+/* ── controls ── */
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;background:#0f1725;border:1px solid var(--line);border-radius:8px;padding:8px 10px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc2)}
+textarea{resize:vertical;min-height:64px;line-height:1.6}
+label.f{display:block;margin-bottom:10px}
+label.f>span{display:block;font-size:12px;color:var(--mut);margin-bottom:4px}
+.btn{background:var(--acc);color:#06231b;border:0;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.sec{background:var(--panel2);color:var(--txt);border:1px solid var(--line)}
+.btn.dan{background:var(--bad);color:#2c0603}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:7px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:7px 0;cursor:pointer}
+.chk input{margin-top:3px;width:16px;height:16px;accent-color:var(--acc);flex:none}
+
+/* ── table ── */
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+tr:hover td{background:rgba(255,255,255,.02)}
+.tw{overflow-x:auto}
+
+/* ── badges ── */
+.b{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.b.re{background:rgba(255,209,102,.16);color:var(--gold);border:1px solid rgba(255,209,102,.4)}
+.b.co{background:rgba(77,212,172,.14);color:var(--acc);border:1px solid rgba(77,212,172,.35)}
+.b.nw{background:rgba(58,169,255,.14);color:var(--acc2);border:1px solid rgba(58,169,255,.35)}
+.b.fa{background:rgba(147,164,189,.12);color:var(--mut);border:1px solid var(--line)}
+.b.ok{background:rgba(77,212,172,.14);color:var(--acc)}
+.b.no{background:rgba(255,95,86,.15);color:var(--bad)}
+.b.wa{background:rgba(245,166,35,.15);color:var(--warn)}
+.b.gr{background:var(--panel2);color:var(--mut);border:1px solid var(--line)}
+.score{font-weight:800;font-size:16px}
+.s-hi{color:var(--gold)} .s-md{color:var(--acc)} .s-lo{color:var(--mut)}
+
+/* ── alerts ── */
+.al{display:flex;gap:10px;padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);margin-bottom:8px;align-items:flex-start}
+.al .ic{font-size:17px;line-height:1.2}
+.al.p1{border-color:rgba(255,59,48,.5);background:rgba(255,59,48,.08)}
+.al.p2{border-color:rgba(245,166,35,.45);background:rgba(245,166,35,.07)}
+.al.p3{border-color:rgba(255,209,102,.35)}
+.al.p5{border-color:rgba(58,169,255,.4);background:rgba(58,169,255,.06)}
+
+/* ── timeline ── */
+.tl{display:flex;gap:1px;align-items:flex-end;height:26px;overflow:hidden;padding:2px 0}
+.tl i{flex:1 1 0;min-width:2px;border-radius:1px;background:#222f44}
+.tl i.on{background:var(--acc)}
+.tl i.re{background:var(--gold)}
+.tl i.hl{background:var(--acc2)}
+.tlwrap{border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:#0f1725}
+
+/* ── misc ── */
+.pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-size:11px;margin:2px 3px 2px 0}
+.hr{height:1px;background:var(--line);margin:14px 0}
+.note{border-left:3px solid var(--acc2);background:rgba(58,169,255,.06);padding:10px 12px;border-radius:0 8px 8px 0;font-size:12.5px;color:var(--mut)}
+.note.w{border-color:var(--warn);background:rgba(245,166,35,.07)}
+.note.d{border-color:var(--bad);background:rgba(255,95,86,.07)}
+.blk{border:1px solid rgba(255,95,86,.45);background:rgba(255,95,86,.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.pass{border:1px solid rgba(77,212,172,.45);background:rgba(77,212,172,.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.bar{height:7px;background:#222f44;border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--acc)}
+.sec-hd{display:flex;align-items:center;gap:10px;margin:22px 0 8px}
+.sec-hd h2{margin:0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--acc);color:#06231b;padding:11px 20px;border-radius:10px;font-weight:700;box-shadow:var(--shadow);z-index:200;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+.mask{position:fixed;inset:0;background:rgba(5,9,16,.72);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:720px;width:100%;padding:20px;box-shadow:var(--shadow)}
+footer{color:var(--dim);font-size:11.5px;line-height:1.7;border-top:1px solid var(--line);padding:16px;margin-top:30px}
+@media(max-width:640px){.hdr{padding-top:10px}.logo{font-size:17px}.kpi .val{font-size:21px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr">
+    <div>
+      <div class="logo">나스닥<span>발굴</span></div>
+      <div class="tagline">등장 → 소멸 → 재등장 패턴 기반 장기 성장주 추적기</div>
+    </div>
+    <div class="mkts" id="mkts"></div>
+  </div>
+  <nav id="nav"></nav>
+</header>
+<div class="wrap"><main id="main"></main>
+<footer>
+본 앱의 기준값은 공개된 투자 방법론을 종합한 것으로 미래 수익을 보장하지 않습니다. 소형주는 상장폐지·회계부정·유동성 고갈 위험이 대형주보다 훨씬 큽니다.
+모든 데이터는 사용자가 직접 입력하며 브라우저(localStorage)에만 저장됩니다. 반드시 백테스트로 검증하고, 잃어도 생활에 지장이 없는 금액 안에서만 운용하십시오.
+모든 투자 판단과 결과의 책임은 사용자 본인에게 있습니다.
+</footer></div>
+<div class="toast" id="toast"></div>
+<div id="modal"></div>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   나스닥발굴 — 글로벌 성장주 발굴 앱  (단일 파일 / 오프라인 / localStorage)
+   시장: 미국(US) · 중국(CN) · 일본(JP) · 한국(KR)
+   핵심: 추천 리스트 "등장 → 소멸 → 재등장" 패턴 추적 엔진
+   ═══════════════════════════════════════════════════════════════════ */
+'use strict';
+
+/* ── 시장 메타 ───────────────────────────────────────────────────── */
+const MKTS = ['US','CN','JP','KR'];
+const M = {
+  US:{ flag:'🇺🇸', name:'미국', full:'미국 (NASDAQ / NYSE)', cur:'$', pos:'pre', dec:2,
+       note:'Investing.com 스크리너를 1차 소스로 사용. SEC EDGAR(13F·Form 4)와 ARK 공개 CSV는 무료라 수급 검증이 가장 정교한 시장.' },
+  CN:{ flag:'🇨🇳', name:'중국', full:'중국 (A주 창업판·과창판 / 홍콩)', cur:'¥', pos:'pre', dec:2,
+       note:'정책·규제가 실적보다 주가를 크게 흔든다. VIE 구조, 대주주 지분담보(股权质押), ST 지정, 장기 거래정지(停牌)를 반드시 사전 차단.' },
+  JP:{ flag:'🇯🇵', name:'일본', full:'일본 (도쿄증권거래소 그로스 / 스탠다드)', cur:'¥', pos:'pre', dec:0,
+       note:'전체 성장률 수준이 낮아 매출 기준을 완화하되, 유동성·부동주(浮動株)와 MSCB(행사가액 수정형) 희석 위험을 더 엄격히 본다.' },
+  KR:{ flag:'🇰🇷', name:'한국', full:'한국 (코스닥 / 코스피 중소형)', cur:'₩', pos:'pre', dec:0,
+       note:'CB·BW 오버행과 최대주주 변경·횡령배임 공시가 최대 위험. DART 공시가 사실상 유일하게 신뢰할 수 있는 1차 소스.' }
+};
+
+/* ── 데이터 소스 (A: 정량 / B: 수급·기관 / C: 참고) ──────────────── */
+const SRC = {
+US:{ A:['Investing.com 스크리너 (매출성장 30%+ 소형주)','Investing.com 52주 신고가 / 거래량 급증',
+        'IBD 50 · Sector Leaders · IPO Leaders','Zacks Rank #1 (Strong Buy)',
+        'Seeking Alpha Quant Strong Buy (Growth A)','자체 RS Rating 상위 5%','자체 Sales/EPS Rating 상위 10%'],
+     B:['SEC 13F 성장주 펀드 신규편입','SEC Form 4 내부자 매수','ARK Invest 신규편입','기관 보유비중 상승 (10%→25% 구간)'],
+     C:['Motley Fool','투자 뉴스레터','유튜브 / 커뮤니티'] },
+CN:{ A:['Investing.com 중국 스크리너 (A주·홍콩 성장주)','东方财富 成长性选股 (창업판·과창판)',
+        '同花顺 i问财 매출성장 상위','北向资金(후강퉁·선강퉁) 신규 순매수 상위',
+        '자체 RS Rating 상위 5%','자체 Sales/EPS Rating 상위 10%'],
+     B:['公募·私募 펀드 분기 신규편입 (基金重仓)','대주주·임원 자사주 매수 (增持)','北向资金 지분율 상승','기관 탐방 급증 (机构调研)'],
+     C:['증권사 리서치 추천','雪球 / 微博 인기','재테크 유튜브'] },
+JP:{ A:['Investing.com 일본 스크리너 (그로스 성장주)','会社四季報 증액수정 · 성장주 스크리닝',
+        '日経会社情報 · 東証グロース 증수율 상위','SBI·マネックス 스크리너 (증수율 30%+)',
+        '자체 RS Rating 상위 5%','자체 Sales/EPS Rating 상위 10%'],
+     B:['大量保有報告書 (5% 룰) 신규 보고','임원 자사주 매수 (役員持株 증가)','투신·외국인 지분율 상승','자사주 매입 (自社株買い) 발표'],
+     C:['증권사 추천','四季報オンライン 특집','유튜브 / 블로그'] },
+KR:{ A:['Investing.com 한국 스크리너 (코스닥 성장주)','코스닥 라이징스타 · 히든챔피언',
+        '증권사 스몰캡 커버리지 개시 리포트','DART 매출 30%+ 성장 기업 스크리닝',
+        '자체 RS Rating 상위 5%','자체 Sales/EPS Rating 상위 10%'],
+     B:['기관 4주 연속 순매수','외국인 지분율 상승','최대주주·임원 장내 매수 (DART)','5% 이상 대량보유 신규 보고'],
+     C:['증권 유튜브','종목 카페 / 텔레그램','언론 테마 기사'] }
+};
+
+/* ── 시장별 기준값 (설정에서 전부 수정 가능) ─────────────────────── */
+const CFG0 = {
+US:{ rev:30, revYears:3, gpmSW:70, gpmHW:40, tamX:20, founderStake:5, shareGrowth:5, runwayM:24,
+     minPrice:5, minVol:5000000, fadeRev:15, rsMin:80, epsMin:70, salesMin:80, pass:80,
+     maxDebt:150, maxShort:20, maxCust:30, maxWarrant:15, lockup:90,
+     acctLong:100000, maxHold:15, initPct:5, maxPct:10, rebalPct:35, liqPct:1, earnDays:5, gainCap:100 },
+CN:{ rev:25, revYears:3, gpmSW:60, gpmHW:30, tamX:15, founderStake:10, shareGrowth:8, runwayM:18,
+     minPrice:3, minVol:30000000, fadeRev:12, rsMin:80, epsMin:70, salesMin:80, pass:80,
+     maxDebt:120, maxShort:15, maxCust:30, maxWarrant:15, lockup:90,
+     acctLong:700000, maxHold:12, initPct:5, maxPct:10, rebalPct:35, liqPct:1, earnDays:5, gainCap:100 },
+JP:{ rev:20, revYears:3, gpmSW:60, gpmHW:30, tamX:15, founderStake:10, shareGrowth:5, runwayM:24,
+     minPrice:300, minVol:300000000, fadeRev:10, rsMin:80, epsMin:70, salesMin:75, pass:80,
+     maxDebt:120, maxShort:15, maxCust:30, maxWarrant:15, lockup:90,
+     acctLong:15000000, maxHold:12, initPct:5, maxPct:10, rebalPct:35, liqPct:1, earnDays:5, gainCap:100 },
+KR:{ rev:25, revYears:3, gpmSW:60, gpmHW:30, tamX:15, founderStake:15, shareGrowth:7, runwayM:18,
+     minPrice:1000, minVol:3000000000, fadeRev:12, rsMin:80, epsMin:70, salesMin:80, pass:80,
+     maxDebt:150, maxShort:10, maxCust:30, maxWarrant:15, lockup:90,
+     acctLong:100000000, maxHold:12, initPct:5, maxPct:10, rebalPct:35, liqPct:1, earnDays:5, gainCap:100 }
+};
+const CFG_LAB = {
+  rev:'필수① 매출 성장률 최저 기준 (%)', revYears:'필수① 고성장 유지 최소 연수',
+  gpmSW:'필수② 매출총이익률 — SW·플랫폼 (%)', gpmHW:'필수② 매출총이익률 — HW·반도체·기타 (%)',
+  tamX:'필수③ TAM / 현재 매출 배수', founderStake:'필수④ 창업자 최소 지분 (%)',
+  shareGrowth:'필수⑤ 주식수 연 증가율 상한 (%)', runwayM:'필수⑥ 현금 여력 최소 개월',
+  minPrice:'하드블록 — 최저 주가', minVol:'하드블록 — 20일 평균 거래대금 최저',
+  fadeRev:'소멸구간 매출 성장 유지 기준 (%)', rsMin:'RS Rating 최저', epsMin:'EPS Rating 최저', salesMin:'Sales Rating 최저',
+  pass:'정밀검증 승격 점수', maxDebt:'경고 — 부채비율 상한 (%)', maxShort:'경고 — 공매도 비중 상한 (%)',
+  maxCust:'경고 — 단일 고객 비중 상한 (%)', maxWarrant:'경고 — 잠재주식(워런트·CB) 상한 (%)', lockup:'경고 — 락업 해제 임박 (일)',
+  acctLong:'장기 계좌 총액 (해당 시장 통화)', maxHold:'최대 보유 종목 수', initPct:'최초 진입 비중 (%)',
+  maxPct:'1종목 매수 한도 (%)', rebalPct:'리밸런싱 발동 비중 (%)', liqPct:'포지션 / 일평균거래대금 상한 (%)',
+  earnDays:'매수 차단 — 실적발표 임박 (일)', gainCap:'매수 차단 — 등장 후 상승률 (%)'
+};
+
+/* ── 위험 필터 (6-1 하드블록 / 6-2 경고) ─────────────────────────── */
+/* auto: (f,c)=>bool 자동판정 · null이면 종목 데이터 화면의 체크박스(플래그) */
+const AUTO = {
+  price:(f,c)=> num(f.price)>0 && num(f.price) < c.minPrice,
+  vol:  (f,c)=> num(f.advol)>0 && num(f.advol) < c.minVol,
+  debt: (f,c)=> num(f.debtRatio) > c.maxDebt,
+  short:(f,c)=> num(f.shortInt) > c.maxShort,
+  cust: (f,c)=> num(f.custConc) > c.maxCust,
+  warr: (f,c)=> num(f.warrantPct) >= c.maxWarrant,
+  lock: (f,c)=> num(f.lockupDays) > 0 && num(f.lockupDays) <= c.lockup,
+  cov0: (f)=> f.analysts !== '' && f.analysts !== undefined && num(f.analysts) === 0
+};
+const COMMON_HARD = [
+  {id:'price', t:'주가가 최저 기준 미만 (기관 매수 불가 / 관리·상폐 위험 구간)', auto:AUTO.price},
+  {id:'vol',   t:'20일 평균 거래대금 기준 미달 — 팔고 싶을 때 팔 수 없다', auto:AUTO.vol},
+  {id:'auditRestate', t:'최근 2년 내 감사인 교체 + 실적 재작성 (회계 신뢰성)', auto:null},
+  {id:'cfo2',  t:'최근 3년 내 CFO 2회 이상 교체', auto:null},
+  {id:'patent5', t:'핵심 특허 만료 5년 이내 (바이오·제약)', auto:null}
+];
+const COMMON_WARN = [
+  {id:'debt', t:'부채비율 기준 초과', p:10, auto:AUTO.debt},
+  {id:'short',t:'공매도 비중 기준 초과', p:10, auto:AUTO.short},
+  {id:'cust', t:'단일 고객 매출 비중 30% 이상 — 집중 위험', p:10, auto:AUTO.cust},
+  {id:'warr', t:'미행사 워런트·전환사채가 발행주식의 15% 이상 — 오버행', p:15, auto:AUTO.warr},
+  {id:'lock', t:'락업(보호예수) 해제 90일 이내 — 물량 출회', p:10, auto:AUTO.lock},
+  {id:'cov0', t:'애널리스트 커버리지 0곳 — 외부 검증 부재', p:5, auto:AUTO.cov0}
+];
+const FILT = {
+US:{ hard:[{id:'goingConcern',t:'계속기업 불확실성(Going Concern) 감사의견',auto:null},
+           {id:'reverseSplit',t:'최근 3년 내 리버스 스플릿(주식 병합) 이력',auto:null},
+           {id:'spac2y',t:'SPAC 합병 상장 후 2년 미만',auto:null}, ...COMMON_HARD],
+     warn:[{id:'atm',t:'ATM 유상증자 프로그램 진행 중 — 지속적 희석',p:15,auto:null},
+           {id:'tierLow',t:'상장 티어가 Nasdaq Capital Market (최하위)',p:5,auto:null}, ...COMMON_WARN] },
+CN:{ hard:[{id:'nonStdAudit',t:'비적정 감사의견 (非标准审计意见) / 계속기업 불확실성',auto:null},
+           {id:'stFlag',t:'ST · *ST 지정 (상장폐지 위험 종목)',auto:null},
+           {id:'pledge',t:'대주주 지분담보(股权质押) 70% 초과',auto:null},
+           {id:'probe',t:'감독당국 입건조사(立案调查) 진행 중',auto:null},
+           {id:'halt',t:'최근 3년 내 장기 거래정지(停牌) 이력',auto:null},
+           {id:'vie',t:'VIE 구조 · 해외상장 규제 리스크 미해소',auto:null}, ...COMMON_HARD],
+     warn:[{id:'fixed',t:'정향증발(定增) 유상증자 진행 중',p:15,auto:null},
+           {id:'unlock',t:'限售股(보호예수) 해제 90일 이내',p:10,auto:null},
+           {id:'goodwill',t:'영업권(商誉)이 총자산 20% 초과 — 손상 위험',p:10,auto:null},
+           {id:'policy',t:'정부 규제·정책 리스크가 사업 핵심에 걸림',p:15,auto:null}, ...COMMON_WARN] },
+JP:{ hard:[{id:'gcNote',t:'継続企業の前提に関する注記 (계속기업 주석)',auto:null},
+           {id:'listCrit',t:'上場維持基準 미달 — 적합계획 제출 상태',auto:null},
+           {id:'mscb',t:'MSCB · 행사가액 수정형 신주예약권 발행 중 (무한 희석)',auto:null},
+           {id:'ipo2y',t:'그로스 상장 2년 미만 + 실적 하향수정 이력',auto:null}, ...COMMON_HARD],
+     warn:[{id:'float',t:'부동주(浮動株) 비율 10% 미만 — 유동성 함정',p:10,auto:null},
+           {id:'parent',t:'모회사 지분 50% 초과 — 소수주주 이익 훼손 가능',p:10,auto:null},
+           {id:'growthTier',t:'東証グロース 시장 (최하위 티어)',p:5,auto:null},
+           {id:'yutai',t:'주주우대 의존으로 주가 유지 — 실체 대비 고평가',p:5,auto:null}, ...COMMON_WARN] },
+KR:{ hard:[{id:'adverse',t:'감사의견 비적정(한정·부적정·거절)',auto:null},
+           {id:'watch',t:'관리종목 · 투자주의환기종목 지정',auto:null},
+           {id:'embezzle',t:'횡령·배임 혐의 발생 공시',auto:null},
+           {id:'halt',t:'최근 3년 내 거래정지 이력',auto:null},
+           {id:'ownerChg',t:'최근 3년 내 최대주주 2회 이상 변경',auto:null},
+           {id:'impair',t:'자본잠식 또는 4년 연속 영업손실',auto:null}, ...COMMON_HARD],
+     warn:[{id:'cbbw',t:'CB·BW 미상환 잔액 (잠재주식 15% 이상) — 최대 오버행 위험',p:15,auto:null},
+           {id:'rights',t:'최근 3년 내 유상증자 2회 이상',p:10,auto:null},
+           {id:'theme',t:'테마성 급등 이력 — 사업 실체와 무관한 상승',p:10,auto:null},
+           {id:'freeShare',t:'무상증자 남발 (주가 착시)',p:5,auto:null}, ...COMMON_WARN] }
+};
+
+/* ── 종목 데이터 입력 필드 ───────────────────────────────────────── */
+const FIELDS = [
+ {g:'기본 정보', f:[
+   ['name','종목명','text'], ['biz','사업 유형','sel',{SW:'소프트웨어 · 플랫폼',HW:'하드웨어 · 반도체',BIO:'바이오 · 제약',CONS:'소비재 · 기타'}],
+   ['price','현재 주가','num'], ['prevHigh','직전 고점 주가','num'],
+   ['mcap','시가총액 (백만, 현지통화)','num'], ['advol','20일 평균 거래대금','num'] ]},
+ {g:'주가 이력 — RS Rating 자동 계산', f:[
+   ['p63','3개월 전 주가','num'], ['p126','6개월 전 주가','num'], ['p189','9개월 전 주가','num'], ['p252','12개월 전 주가','num'] ]},
+ {g:'성장 지표 — EPS / Sales Rating', f:[
+   ['revQ','최근 2개 분기 매출 YoY 평균 (%)','num'], ['revY','3년 매출 CAGR (%)','num'],
+   ['revAccel','매출 성장 가속도 (%p, 최근분기−직전분기)','num'],
+   ['epsQ','최근 2개 분기 EPS YoY 평균 (%)','num'], ['epsY','3년 EPS CAGR (%)','num'],
+   ['revYears','고성장 유지 연수','num'], ['revDuringFade','소멸 구간 중 매출 성장률 (%)','num'] ]},
+ {g:'수익성 · 재무 (필수 6조건)', f:[
+   ['gpm','매출총이익률 (%)','num'], ['gpmTrend','마진 추세','sel',{up:'상승',flat:'유지',down:'하락'}],
+   ['tamX','TAM ÷ 현재 매출 (배)','num'], ['shareGrowth','주식수 연 증가율 (%)','num'],
+   ['runway','현금 여력 (개월)','num'], ['debtRatio','부채비율 (%)','num'] ]},
+ {g:'지배구조 · 수급', f:[
+   ['founderCEO','창업자가 CEO','bool'], ['founderStake','창업자 지분 (%)','num'],
+   ['instOwn','기관 보유비중 (%)','num'], ['instDelta','기관 보유비중 변화 (%p, 1년)','num'],
+   ['analysts','애널리스트 커버리지 (곳)','num'], ['shortInt','공매도 비중 (%)','num'],
+   ['nrr','NRR 순매출유지율 (%)','num'], ['custConc','최대 고객 매출비중 (%)','num'],
+   ['warrantPct','잠재주식 비율 — 워런트·CB (%)','num'], ['lockupDays','락업 해제까지 (일)','num'],
+   ['earnDays','다음 실적발표까지 (일)','num'] ]}
+];
+
+/* ═══════════════ 저장소 ═══════════════ */
+const KEY = 'nasdaq-gulbal-v1';
+let DB, S = { mkt:'US', tab:'dash', sel:null };
+
+function blankMkt(){ return { cfg:{}, appear:[], fund:{}, hold:[], jrnl:[], input:{} }; }
+function load(){
+  try{ DB = JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ DB = null; }
+  if(!DB || !DB.v) DB = { v:1, m:{} };
+  MKTS.forEach(k=>{
+    DB.m[k] = Object.assign(blankMkt(), DB.m[k]||{});
+    DB.m[k].cfg = Object.assign({}, CFG0[k], DB.m[k].cfg||{});
+  });
+  return DB;
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); }catch(e){ toast('저장 실패 — 저장공간 초과'); } }
+const D  = ()=> DB.m[S.mkt];          // 현재 시장 데이터
+const C  = ()=> DB.m[S.mkt].cfg;      // 현재 시장 기준값
+const MM = ()=> M[S.mkt];
+
+/* ═══════════════ 유틸 ═══════════════ */
+const $  = s=>document.querySelector(s);
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+const has = v => v !== '' && v !== null && v !== undefined && !isNaN(parseFloat(v));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function money(v, mkt){
+  const m = M[mkt||S.mkt]; if(!has(v)) return '—';
+  const n = num(v);
+  const s = m.dec ? n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:m.dec}) : Math.round(n).toLocaleString();
+  return m.cur + s;
+}
+function bigMoney(v, mkt){
+  const m = M[mkt||S.mkt]; const n = num(v); if(!n) return '—';
+  if(S.mkt==='KR'||mkt==='KR'){ if(n>=1e8) return m.cur+(n/1e8).toFixed(1)+'억'; if(n>=1e4) return m.cur+(n/1e4).toFixed(0)+'만'; }
+  else if(n>=1e9) return m.cur+(n/1e9).toFixed(2)+'B';
+  else if(n>=1e6) return m.cur+(n/1e6).toFixed(1)+'M';
+  else if(n>=1e3) return m.cur+(n/1e3).toFixed(0)+'K';
+  return m.cur+Math.round(n).toLocaleString();
+}
+const pct = v => (has(v)? (num(v)>0?'+':'')+num(v).toFixed(1)+'%' : '—');
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2200); }
+
+/* ── ISO 주차 계산 ── */
+function isoLabel(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dn = (t.getUTCDay()+6)%7;                 // 월=0
+  t.setUTCDate(t.getUTCDate()-dn+3);              // 그 주 목요일
+  const y = t.getUTCFullYear();
+  const jan4 = new Date(Date.UTC(y,0,4));
+  const w = 1 + Math.round(((t-jan4)/86400000 - 3 + ((jan4.getUTCDay()+6)%7))/7);
+  return y+'-W'+String(w).padStart(2,'0');
+}
+function weekStart(y,w){
+  const jan4 = new Date(Date.UTC(y,0,4));
+  const dn = (jan4.getUTCDay()+6)%7;
+  const mon = new Date(jan4); mon.setUTCDate(jan4.getUTCDate()-dn+(w-1)*7);
+  return mon;
+}
+const WK = 604800000;
+function wIdx(label){ const p = String(label||'').split('-W'); if(p.length<2) return 0; return Math.round(weekStart(+p[0], +p[1]).getTime()/WK); }
+function wLabel(idx){ return isoLabel(new Date(idx*WK + 86400000)); }
+const thisWeek = ()=> isoLabel(new Date());
+
+/* ═══════════════ 자체 지표 엔진 (RS / EPS / Sales) ═══════════════ */
+function rsScore(f){
+  if(!has(f.price)||!has(f.p63)||!has(f.p126)||!has(f.p189)||!has(f.p252)) return null;
+  const p=num(f.price);
+  const r3=p/num(f.p63)-1, r6=p/num(f.p126)-1, r9=p/num(f.p189)-1, r12=p/num(f.p252)-1;
+  if(![r3,r6,r9,r12].every(isFinite)) return null;
+  return 0.4*r3 + 0.2*r6 + 0.2*r9 + 0.2*r12;          // IBD 방식: 최근 3개월 2배 가중
+}
+function epsScore(f){ if(!has(f.epsQ)&&!has(f.epsY)) return null; return 0.5*num(f.epsQ) + 0.5*num(f.epsY); }
+function salesScore(f){ if(!has(f.revQ)&&!has(f.revY)) return null; return 0.4*num(f.revQ) + 0.4*num(f.revY) + 0.2*num(f.revAccel); }
+
+/* 전 종목 대비 백분위 → 1~99 레이팅 */
+function ratings(){
+  const fund = D().fund, keys = Object.keys(fund);
+  const mk = fn => {
+    const arr = keys.map(k=>({k, v:fn(fund[k])})).filter(o=>o.v!==null && isFinite(o.v));
+    arr.sort((a,b)=>a.v-b.v);
+    const out={};
+    arr.forEach((o,i)=>{ out[o.k] = arr.length<2 ? 50 : Math.round(1 + (i/(arr.length-1))*98); });
+    return out;
+  };
+  return { rs:mk(rsScore), eps:mk(epsScore), sales:mk(salesScore), n:keys.length };
+}
+function composite(t, R){
+  const f = D().fund[t]||{};
+  const rs = R.rs[t], gr = (R.sales[t]!=null? R.sales[t] : R.eps[t]);
+  if(rs==null && gr==null) return null;
+  const flow = clamp(50 + num(f.instDelta)*4, 1, 99);
+  const marg = f.gpmTrend==='up'?90 : f.gpmTrend==='down'?20 : 60;
+  return Math.round(0.3*(rs??50) + 0.3*(gr??50) + 0.2*flow + 0.2*marg);
+}
+
+/* ═══════════════ 등장 패턴 추적 엔진 (핵심) ═══════════════ */
+/* 상태: NEW(4주 미만) / CONTINUOUS(4주+ 연속) / FADED(4주+ 체류 후 8주+ 미등장) / REAPPEARED */
+function tickers(){
+  const set = {};
+  D().appear.forEach(a=>set[a.ticker]=1);
+  Object.keys(D().fund).forEach(t=>set[t]=1);
+  D().hold.forEach(h=>set[h.ticker]=1);
+  return Object.keys(set).sort();
+}
+function logsOf(t){ return D().appear.filter(a=>a.ticker===t).sort((a,b)=>wIdx(a.week)-wIdx(b.week)); }
+
+function pattern(t){
+  const logs = logsOf(t);
+  const res = { ticker:t, type:'NONE', logs, runs:[], absences:[], streak:0, total:logs.length,
+                first:null, last:null, reappear:null, reCount:0, valid:false, validWhy:[], reStreak:0 };
+  if(!logs.length) return res;
+  const idx = [...new Set(logs.map(a=>wIdx(a.week)))].sort((a,b)=>a-b);
+  const byIdx = {}; logs.forEach(a=>byIdx[wIdx(a.week)] = a);
+  // 연속 구간(run) 묶기
+  let run = [idx[0]];
+  for(let i=1;i<idx.length;i++){ if(idx[i]-idx[i-1]===1) run.push(idx[i]); else { res.runs.push(run); run=[idx[i]]; } }
+  res.runs.push(run);
+  res.first = wLabel(idx[0]); res.last = wLabel(idx[idx.length-1]);
+  const cur = wIdx(thisWeek());
+
+  // 소멸 구간: 직전 4주+ 체류 & 8주+ 미등장
+  for(let i=1;i<res.runs.length;i++){
+    const prev = res.runs[i-1], next = res.runs[i];
+    const gap = next[0] - prev[prev.length-1] - 1;
+    if(prev.length>=4 && gap>=8){
+      const ps = num((byIdx[prev[prev.length-1]]||{}).price), pe = num((byIdx[next[0]]||{}).price);
+      const hi = Math.max(...prev.map(w=>num((byIdx[w]||{}).price)||0));
+      res.absences.push({ start:wLabel(prev[prev.length-1]+1), end:wLabel(next[0]-1), weeks:gap,
+        priceStart:ps, priceEnd:pe, hi, dd: (ps&&pe)? ((pe/ps-1)*100) : null,
+        vsHi: (hi&&pe)? (pe/hi*100) : null, reIdx:next[0], runLen:next.length });
+    }
+  }
+  const lastRun = res.runs[res.runs.length-1];
+  const lastIdx = lastRun[lastRun.length-1];
+  const active = (cur - lastIdx) <= 1;                       // 이번 주 또는 지난 주 등장 = 활성
+  res.streak = active ? lastRun.length : 0;
+
+  // 마지막 소멸 이후 재등장인가
+  const lastAbs = res.absences.filter(a=>a.reIdx===lastRun[0]).pop();
+  res.reCount = res.absences.length;
+  if(lastAbs){
+    const reLog = byIdx[lastRun[0]];
+    const aOK = reLog && num(reLog.aCount)>0;                // C그룹 단독 재등장은 인정 안 함
+    if(aOK){
+      res.reappear = { week:wLabel(lastRun[0]), abs:lastAbs, streak:lastRun.length };
+      res.reStreak = lastRun.length;
+    }
+  }
+  // 상태 판정
+  if(!active && lastRun.length>=4 && (cur-lastIdx)>=8) res.type='FADED';
+  else if(res.reappear) res.type='REAPPEARED';
+  else if(lastRun.length>=4) res.type = active ? 'CONTINUOUS' : 'FADING';
+  else res.type = active ? 'NEW' : 'FADING';
+
+  // 유효 재등장 판정
+  if(res.reappear){
+    const f = D().fund[t]||{}, c = C(), a = res.reappear.abs, w=[];
+    const c1 = res.reappear.streak >= 4;
+    const c2 = a.dd !== null && a.dd <= -30;
+    const c3 = a.vsHi !== null ? a.vsHi <= 60 : (has(f.prevHigh)&&has(f.price) ? (num(f.price)/num(f.prevHigh)*100)<=60 : false);
+    const c4 = has(f.revDuringFade) && num(f.revDuringFade) >= c.fadeRev;
+    w.push({ok:c1, t:'재등장 후 4주 이상 연속 체류 ('+res.reappear.streak+'주)'});
+    w.push({ok:c2, t:'소멸 구간 주가 하락 -30% 이상 ('+(a.dd!==null?a.dd.toFixed(1)+'%':'주가 미기록')+')'});
+    w.push({ok:c3, t:'재등장 주가가 직전 고점의 60% 이하 ('+(a.vsHi!==null?a.vsHi.toFixed(0)+'%':'미기록')+')'});
+    w.push({ok:c4, t:'소멸 기간에도 매출 성장률 '+c.fadeRev+'% 이상 유지 ★결정적 ('+(has(f.revDuringFade)?num(f.revDuringFade)+'%':'미입력')+')'});
+    res.validWhy = w; res.valid = w.every(x=>x.ok);
+  }
+  return res;
+}
+
+/* ═══════════════ 등장 점수 시스템 ═══════════════ */
+function scoreOf(t, p){
+  p = p || pattern(t);
+  const f = D().fund[t]||{}, c = C(), items = [];
+  const add = (label, v) => { if(v) items.push({label, v}); };
+  const recent = p.logs.slice(-1)[0] || {};
+  const aC = num(recent.aCount), bC = (recent.b||[]).length, cC = num(recent.cCount);
+
+  if(p.valid) add('유효 재등장 (Valid Reappearance)', 40);
+  if(p.reStreak>0) add('재등장 후 연속 체류 '+p.reStreak+'주 (주당 +3)', Math.min(p.reStreak*3, 30));
+  else if(p.streak>0) add('연속 체류 '+p.streak+'주 (주당 +2)', Math.min(p.streak*2, 25));
+  if(aC) add('A그룹 소스 '+aC+'곳 (개당 +8)', Math.min(aC*8, 24));
+  if(bC) add('B그룹 수급 신호 '+bC+'건 (개당 +10)', Math.min(bC*10, 20));
+  if(has(f.revDuringFade) && num(f.revDuringFade) >= c.fadeRev) add('소멸 구간 중 매출 성장 유지', 15);
+  if(num(f.revAccel) > 0) add('매출 성장 가속 (accel +'+num(f.revAccel)+'%p)', 10);
+  if(cC) add('C그룹 언급 '+cC+'건', Math.min(cC, 3));
+  if(aC===0 && bC===0 && cC>0) add('감점 — C그룹 단독 등장', -15);
+  const gain = gainSinceFirst(t, p);
+  if(gain !== null && gain >= c.gainCap) add('감점 — 등장 후 이미 '+gain.toFixed(0)+'% 상승 (진입 늦음)', -20);
+  if(f.gpmTrend === 'down') add('감점 — 매출총이익률 하락 추세', -15);
+  if(num(f.shareGrowth) >= 8) add('감점 — 주식수 연 '+num(f.shareGrowth)+'% 증가 (희석)', -20);
+
+  const total = items.reduce((s,i)=>s+i.v, 0);
+  return { total:Math.max(0, Math.round(total)), items, gain };
+}
+function gainSinceFirst(t, p){
+  p = p || pattern(t);
+  const f = D().fund[t]||{};
+  const base = p.reappear ? num((p.logs.find(l=>l.week===p.reappear.week)||{}).price)
+                          : num((p.logs[0]||{}).price);
+  if(!base || !has(f.price)) return null;
+  return (num(f.price)/base - 1)*100;
+}
+
+/* ═══════════════ 재무 6대 필수 조건 ═══════════════ */
+function conds(t){
+  const f = D().fund[t]||{}, c = C();
+  const gpmMin = f.biz==='SW' ? c.gpmSW : c.gpmHW;
+  const r = [
+    {n:'① 매출 성장률', need:'연 '+c.rev+'%+ · '+c.revYears+'년 이상 지속',
+     got: has(f.revY)? num(f.revY).toFixed(0)+'% / '+num(f.revYears)+'년' : '미입력',
+     ok: has(f.revY) && num(f.revY)>=c.rev && num(f.revYears)>=c.revYears},
+    {n:'② 매출총이익률', need:gpmMin+'%+ · 하락 추세 아님',
+     got: has(f.gpm)? num(f.gpm).toFixed(0)+'% / '+({up:'상승',flat:'유지',down:'하락'}[f.gpmTrend]||'—') : '미입력',
+     ok: has(f.gpm) && num(f.gpm)>=gpmMin && f.gpmTrend!=='down'},
+    {n:'③ TAM', need:'현재 매출의 '+c.tamX+'배 이상',
+     got: has(f.tamX)? num(f.tamX)+'배' : '미입력', ok: has(f.tamX) && num(f.tamX)>=c.tamX},
+    {n:'④ 창업자 경영', need:'창업자 CEO · 지분 '+c.founderStake+'%+',
+     got: (f.founderCEO?'창업자 CEO ':'전문경영인 ') + (has(f.founderStake)? num(f.founderStake)+'%':'—'),
+     ok: !!f.founderCEO && num(f.founderStake)>=c.founderStake},
+    {n:'⑤ 주식수 증가율', need:'연 '+c.shareGrowth+'% 이내',
+     got: has(f.shareGrowth)? num(f.shareGrowth)+'%' : '미입력',
+     ok: has(f.shareGrowth) && num(f.shareGrowth)<=c.shareGrowth},
+    {n:'⑥ 현금 여력', need:c.runwayM+'개월 이상',
+     got: has(f.runway)? num(f.runway)+'개월' : '미입력', ok: has(f.runway) && num(f.runway)>=c.runwayM}
+  ];
+  return { list:r, pass:r.every(x=>x.ok), passN:r.filter(x=>x.ok).length };
+}
+function bonuses(t){
+  const f = D().fund[t]||{}, out=[];
+  if(num(f.nrr)>=120) out.push('NRR '+num(f.nrr)+'%');
+  if(num(f.instOwn)>=10 && num(f.instOwn)<=30) out.push('기관비중 '+num(f.instOwn)+'% (초기)');
+  if(has(f.analysts) && num(f.analysts)>0 && num(f.analysts)<=3) out.push('커버리지 '+num(f.analysts)+'곳 (미발견)');
+  if(num(f.revAccel)>0) out.push('성장 가속 +'+num(f.revAccel)+'%p');
+  return out;
+}
+
+/* ═══════════════ 위험 필터 ═══════════════ */
+function risks(t){
+  const f = D().fund[t]||{}, c = C(), fl = f.flags||{}, F = FILT[S.mkt];
+  const hard = F.hard.filter(x => x.auto ? x.auto(f,c) : !!fl[x.id]);
+  const warn = F.warn.filter(x => x.auto ? x.auto(f,c) : !!fl[x.id]);
+  const penalty = warn.reduce((s,x)=>s+(x.p||0),0);
+  return { hard, warn, penalty, blocked:hard.length>0 };
+}
+/* 유동성 실사 — 내 포지션이 일평균 거래대금의 liqPct% 이하인가 */
+function liquidity(t, amount){
+  const f = D().fund[t]||{}, c = C(), v = num(f.advol);
+  if(!v) return { ok:null, cap:0, msg:'거래대금 미입력' };
+  const cap = v * c.liqPct/100;
+  return { ok: amount<=cap, cap, adv:v,
+    msg:'일평균 거래대금 '+bigMoney(v)+' · 최대 허용 포지션 '+bigMoney(cap)+' ('+c.liqPct+'%)' };
+}
+
+/* ═══════════════ 화면 공통 ═══════════════ */
+const TABS = [['dash','대시보드'],['pat','패턴 추적'],['week','주간 입력'],['data','종목 데이터'],
+              ['cand','후보 리스트'],['buy','매수 체크리스트'],['hold','보유 종목'],['perf','일지 · 성과'],['set','설정']];
+const TYPE_B = { REAPPEARED:['re','⭐ 재등장'], CONTINUOUS:['co','연속 체류'], NEW:['nw','최초 등장'],
+                 FADED:['fa','소멸(FADED)'], FADING:['fa','체류 종료'], NONE:['gr','기록 없음'] };
+const typeBadge = p => '<span class="b '+TYPE_B[p.type][0]+'">'+TYPE_B[p.type][1]+(p.valid?' ✓유효':'')+'</span>';
+const sCls = v => v>=80?'s-hi':v>=50?'s-md':'s-lo';
+
+function renderShell(){
+  $('#mkts').innerHTML = MKTS.map(k=>'<div class="mkt'+(k===S.mkt?' on':'')+'" onclick="setMkt(\''+k+'\')">'+M[k].flag+' '+M[k].name+'</div>').join('');
+  $('#nav').innerHTML  = TABS.map(t=>'<button class="'+(t[0]===S.tab?'on':'')+'" onclick="go(\''+t[0]+'\')">'+t[1]+'</button>').join('');
+}
+function setMkt(k){ S.mkt=k; S.sel=null; render(); window.scrollTo(0,0); }
+function go(t){ S.tab=t; render(); window.scrollTo(0,0); }
+function render(){
+  renderShell();
+  const fn = { dash:vDash, pat:vPat, week:vWeek, data:vData, cand:vCand, buy:vBuy, hold:vHold, perf:vPerf, set:vSet }[S.tab];
+  $('#main').innerHTML = fn();
+  if(S.tab==='data') afterData();
+}
+
+/* 전 종목 요약 (여러 화면 공용) */
+function summary(){
+  const R = ratings();
+  return tickers().map(t=>{
+    const p = pattern(t), sc = scoreOf(t,p), cd = conds(t), rk = risks(t), f = D().fund[t]||{};
+    return { t, p, sc, cd, rk, f, rs:R.rs[t], eps:R.eps[t], sales:R.sales[t], comp:composite(t,R),
+             net: Math.max(0, sc.total - rk.penalty) };
+  });
+}
+
+/* ═══════════════ 1. 대시보드 ═══════════════ */
+function alerts(rows){
+  const out=[], c=C();
+  rows.forEach(r=>{
+    const held = D().hold.some(h=>h.ticker===r.t && !h.sold);
+    if(r.rk.blocked && !held) return;          // 하드블록 종목은 후보 알림에서 제외
+    if(r.p.valid && r.p.reStreak>=4 && !held)
+      out.push({p:1,ic:'🔴',t:r.t+' — 유효 재등장 '+r.p.reStreak+'주 차 진입',
+        d:'최우선 검토 대상. 소멸 구간 '+(r.p.reappear.abs.dd!==null?r.p.reappear.abs.dd.toFixed(0)+'%':'—')+' 조정 후 재등장, 소멸 중에도 매출 성장 유지. 점수 '+r.net+'점.'});
+    else if(r.p.reappear && r.p.reStreak<4 && !held)
+      out.push({p:2,ic:'🟠',t:r.t+' — 재등장 감지 ('+r.p.reStreak+'주 차)',
+        d:'관찰 리스트 등록. 4주 연속 체류하면 유효 재등장으로 승격됩니다.'});
+    else if(r.p.type==='CONTINUOUS' && r.p.streak>=12 && !held)
+      out.push({p:3,ic:'🟡',t:r.t+' — '+r.p.streak+'주 연속 체류',
+        d:'장기 체류 종목. 진입 시점이 늦지 않은지(등장 후 상승률 '+(r.sc.gain!==null?r.sc.gain.toFixed(0)+'%':'—')+') 확인.'});
+    if(held && r.p.type==='FADED')
+      out.push({p:5,ic:'🔵',t:r.t+' — 보유 종목이 FADED 전환',
+        d:'검토 알림입니다. ⚠︎ 리스트에서 사라진 것은 매도 사유가 아닙니다. 분기 점검으로 사업 논리만 확인하십시오.'});
+  });
+  const held = D().hold.filter(h=>!h.sold);
+  held.forEach(h=>{ const f=D().fund[h.ticker]||{}; if(has(f.earnDays)&&num(f.earnDays)<=7&&num(f.earnDays)>=0)
+    out.push({p:3,ic:'🟡',t:h.ticker+' — 실적 발표 '+num(f.earnDays)+'일 뒤',d:'발표 후 분기 점검 체크리스트를 실행하십시오.'}); });
+  return out.sort((a,b)=>a.p-b.p);
+}
+function vDash(){
+  const rows = summary(), c = C(), m = MM();
+  const held = D().hold.filter(h=>!h.sold);
+  const invested = held.reduce((s,h)=>s+num(h.amount),0);
+  const val = held.reduce((s,h)=>{ const f=D().fund[h.ticker]||{}; const p=has(f.price)?num(f.price):num(h.price); return s+p*num(h.shares); },0);
+  const cands = rows.filter(r=>r.net>=c.pass && !r.rk.blocked);
+  const reap  = rows.filter(r=>r.p.type==='REAPPEARED');
+  const al = alerts(rows);
+  return `
+  <div class="sec-hd"><h2>${m.flag} ${m.full} — 대시보드</h2><span class="dim small">기준 주차 ${thisWeek()}</span></div>
+  <div class="note">${m.note}</div>
+  <div class="grid g4" style="margin-top:12px">
+    <div class="kpi"><div class="lab">⭐ 재등장 감지</div><div class="val" style="color:var(--gold)">${reap.length}</div>
+      <div class="sub">유효 재등장 ${reap.filter(r=>r.p.valid).length}종목</div></div>
+    <div class="kpi"><div class="lab">정밀검증 후보 (${c.pass}점+)</div><div class="val">${cands.length}</div>
+      <div class="sub">6대 조건 통과 ${cands.filter(r=>r.cd.pass).length}종목</div></div>
+    <div class="kpi"><div class="lab">보유 종목</div><div class="val">${held.length} <span class="dim" style="font-size:14px">/ ${c.maxHold}</span></div>
+      <div class="sub">추적 종목 ${rows.length}개</div></div>
+    <div class="kpi"><div class="lab">장기 계좌 평가액</div><div class="val">${bigMoney(val)}</div>
+      <div class="sub">투입 ${bigMoney(invested)} · ${invested? ((val/invested-1)*100).toFixed(1)+'%':'—'} · 계좌 소진율 ${c.acctLong?Math.round(invested/c.acctLong*100):0}%</div></div>
+  </div>
+  <h3>알림 (우선순위순)</h3>
+  ${al.length? al.map(a=>`<div class="al p${a.p}"><div class="ic">${a.ic}</div><div><b>${esc(a.t)}</b><div class="small muted">${esc(a.d)}</div></div></div>`).join('')
+    : '<div class="card muted small">알림이 없습니다. <b>주간 입력</b> 탭에서 이번 주 추천 리스트를 입력하면 패턴 엔진이 자동으로 판정합니다.</div>'}
+
+  <h3>이번 주 상위 종목</h3>
+  <div class="card tw">${rows.length? tbl(rows.slice().sort((a,b)=>b.net-a.net).slice(0,10)) : '<div class="muted small">데이터가 없습니다. 설정 탭에서 <b>샘플 데이터</b>를 불러와 구조를 먼저 확인해 보세요.</div>'}</div>
+
+  <h3>포지션 사이징 규칙</h3>
+  <div class="card small muted">
+    장기 계좌 총액 <b class="mono" style="color:var(--txt)">${money(c.acctLong)}</b> (전체 자산의 20~30%) ·
+    목표 ${Math.round(c.maxHold*0.7)}~${c.maxHold}종목 균등 ·
+    최초 진입 ${c.initPct}% = <b class="mono" style="color:var(--txt)">${money(c.acctLong*c.initPct/100)}</b> ·
+    1종목 매수 한도 ${c.maxPct}% · 주가 상승 결과로 ${c.rebalPct}% 초과 시에만 리밸런싱<br>
+    분할 진입: 최초 ${c.initPct}% → 다음 분기 실적 확인 후 +3% → 재확인 후 +2%. <b style="color:var(--warn)">빠진 종목 물타기 금지.</b><br>
+    전제: ${c.maxHold}개 중 6~10개는 실패한다. 1~2개가 10배 이상 올라 전체를 끌어올리는 구조다.
+  </div>`;
+}
+function tbl(rows){
+  return `<table><thead><tr><th>티커</th><th>패턴</th><th>연속</th><th>점수</th><th>RS</th><th>Sales</th><th>6조건</th><th>위험</th><th>주가</th><th></th></tr></thead><tbody>
+  ${rows.map(r=>`<tr>
+    <td><b>${esc(r.t)}</b><div class="tiny dim">${esc((r.f.name||'').slice(0,16))}</div></td>
+    <td>${typeBadge(r.p)}</td>
+    <td class="mono">${r.p.streak||'—'}주</td>
+    <td><span class="score ${sCls(r.net)}">${r.net}</span>${r.rk.penalty?'<span class="tiny dim"> −'+r.rk.penalty+'</span>':''}</td>
+    <td class="mono">${r.rs??'—'}</td><td class="mono">${r.sales??'—'}</td>
+    <td>${r.cd.pass?'<span class="b ok">6/6</span>':'<span class="b '+(r.cd.passN>=4?'wa':'no')+'">'+r.cd.passN+'/6</span>'}</td>
+    <td>${r.rk.blocked?'<span class="b no">차단 '+r.rk.hard.length+'</span>':(r.rk.warn.length?'<span class="b wa">경고 '+r.rk.warn.length+'</span>':'<span class="b ok">양호</span>')}</td>
+    <td class="mono">${money(r.f.price)}</td>
+    <td><button class="btn sec sm" onclick="detail('${esc(r.t)}')">상세</button></td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+/* ═══════════════ 2. 패턴 추적 ═══════════════ */
+function tlStart(p){
+  const cur = wIdx(thisWeek());
+  const first = p.logs.length ? wIdx(p.logs[0].week) : cur-51;
+  return Math.min(first-3, cur-51);                 // 최초 등장부터 전부 보이도록 자동 확장
+}
+function timeline(p){
+  const cur = wIdx(thisWeek()), start = tlStart(p), n = cur-start+1;
+  const on = {}; p.logs.forEach(l=>on[wIdx(l.week)] = l);
+  const reIdx = p.reappear ? wIdx(p.reappear.week) : null;
+  let html = '<div class="tl">';
+  for(let i=start;i<=cur;i++){
+    const l = on[i];
+    const cls = l ? (reIdx!==null && i>=reIdx ? 'on re' : 'on') : '';
+    const h = l ? 8 + Math.min(18, num(l.aCount)*5 + (l.b||[]).length*3) : 5;
+    html += '<i class="'+cls+'" style="height:'+h+'px" title="'+wLabel(i)+(l?' · A'+num(l.aCount)+' · '+money(l.price):'')+'"></i>';
+  }
+  return html+'</div>';
+}
+function tlBlock(p){
+  return '<div class="tlwrap">'+timeline(p)
+    +'<div class="row tiny dim" style="margin-top:5px"><span>'+wLabel(tlStart(p))+'</span><span class="sp"></span>'
+    +(p.reappear? '<span style="color:var(--gold)">↑ 재등장 '+p.reappear.week+'</span><span class="sp"></span>':'')
+    +'<span>'+thisWeek()+'</span></div></div>';
+}
+function vPat(){
+  const rows = summary().filter(r=>r.p.logs.length);
+  rows.sort((a,b)=>{ const o={REAPPEARED:0,CONTINUOUS:1,NEW:2,FADING:3,FADED:4,NONE:5}; return (o[a.p.type]-o[b.p.type]) || (b.net-a.net); });
+  if(!rows.length) return `<h2>패턴 추적</h2><div class="card muted">등장 기록이 없습니다. <b>주간 입력</b> 탭에서 추천 리스트를 입력하십시오.</div>`;
+  return `<div class="sec-hd"><h2>패턴 추적 — 등장 · 소멸 · 재등장 타임라인</h2></div>
+  <div class="note">막대 = 해당 주차 등장 (높이 = 소스 개수). <b style="color:var(--gold)">노란 막대</b> = 재등장 이후 구간. 빈 구간 = 소멸(리스트에서 사라진 기간).<br>
+  판정 규칙: 소멸 = 직전 4주+ 체류 후 8주+ 미등장 · 재등장 = FADED 상태에서 <b>A그룹 소스</b>에 재등장 (C그룹 단독은 불인정).</div>
+  ${rows.map(r=>{
+    const a = r.p.reappear ? r.p.reappear.abs : null;
+    return `<div class="card">
+      <div class="row"><b style="font-size:15px">${esc(r.t)}</b> <span class="dim small">${esc(r.f.name||'')}</span>
+        ${typeBadge(r.p)} <span class="sp"></span>
+        <span class="small muted">최초 ${r.p.first} · 최근 ${r.p.last} · 누적 ${r.p.total}주 · 연속 ${r.p.streak}주</span>
+        <button class="btn sec sm" onclick="detail('${esc(r.t)}')">상세</button></div>
+      <div style="margin-top:9px">${tlBlock(r.p)}</div>
+      ${a? `<div class="row small" style="margin-top:9px;gap:14px">
+        <span>소멸 <b class="mono">${a.weeks}주</b> (${a.start} ~ ${a.end})</span>
+        <span>소멸 중 주가 <b class="mono">${money(a.priceStart)} → ${money(a.priceEnd)}</b>
+          <b class="mono" style="color:${a.dd<0?'var(--bad)':'var(--acc)'}">${a.dd!==null?a.dd.toFixed(1)+'%':'—'}</b></span>
+        <span>직전 고점 대비 <b class="mono">${a.vsHi!==null?a.vsHi.toFixed(0)+'%':'—'}</b></span>
+        <span>재등장 <b class="mono" style="color:var(--gold)">${r.p.reappear.week}</b></span></div>
+        <div class="grid g2" style="margin-top:8px">${r.p.validWhy.map(w=>`<div class="small">${w.ok?'<span style="color:var(--acc)">✔</span>':'<span style="color:var(--bad)">✘</span>'} ${esc(w.t)}</div>`).join('')}</div>
+        <div style="margin-top:8px">${r.p.valid?'<span class="b re">⭐ 유효 재등장 — 최우선 검토 대상</span>':'<span class="b gr">재등장 관찰 중 (유효 조건 미충족)</span>'}</div>`
+      : `<div class="small dim" style="margin-top:8px">소멸 이력 없음 — ${r.p.type==='CONTINUOUS'?'연속 체류 중':'추적 초기'}</div>`}
+    </div>`;
+  }).join('')}`;
+}
+
+/* 종목 상세 모달 */
+function detail(t){
+  const R = ratings(), p = pattern(t), sc = scoreOf(t,p), cd = conds(t), rk = risks(t), f = D().fund[t]||{}, c = C();
+  const bn = bonuses(t);
+  $('#modal').innerHTML = `<div class="mask" onclick="if(event.target===this)closeM()"><div class="modal">
+    <div class="row"><h2 style="margin:0">${esc(t)} <span class="dim" style="font-size:13px">${esc(f.name||'')}</span></h2>
+      ${typeBadge(p)}<span class="sp"></span><button class="btn sec sm" onclick="closeM()">닫기</button></div>
+    <div class="grid g4" style="margin-top:12px">
+      <div class="kpi"><div class="lab">등장 점수</div><div class="val ${sCls(Math.max(0,sc.total-rk.penalty))}">${Math.max(0,sc.total-rk.penalty)}</div><div class="sub">원점수 ${sc.total} − 위험감점 ${rk.penalty}</div></div>
+      <div class="kpi"><div class="lab">RS / Sales / EPS</div><div class="val" style="font-size:19px">${R.rs[t]??'—'} / ${R.sales[t]??'—'} / ${R.eps[t]??'—'}</div><div class="sub">Composite ${composite(t,R)??'—'} · 모집단 ${R.n}종목</div></div>
+      <div class="kpi"><div class="lab">6대 필수 조건</div><div class="val ${cd.pass?'s-md':'s-lo'}">${cd.passN}/6</div><div class="sub">${cd.pass?'전부 통과':'미충족 있음'}</div></div>
+      <div class="kpi"><div class="lab">등장 후 상승률</div><div class="val" style="font-size:19px">${sc.gain!==null?sc.gain.toFixed(0)+'%':'—'}</div><div class="sub">현재가 ${money(f.price)}</div></div>
+    </div>
+    <h3>점수 구성</h3><div class="card" style="padding:10px 14px">
+      ${sc.items.length? sc.items.map(i=>`<div class="row small" style="padding:3px 0"><span>${esc(i.label)}</span><span class="sp"></span><b class="mono" style="color:${i.v>0?'var(--acc)':'var(--bad)'}">${i.v>0?'+':''}${i.v}</b></div>`).join('') : '<span class="muted small">등장 기록 없음</span>'}
+      ${rk.warn.length? rk.warn.map(w=>`<div class="row small" style="padding:3px 0"><span class="muted">위험 감점 — ${esc(w.t)}</span><span class="sp"></span><b class="mono" style="color:var(--bad)">−${w.p}</b></div>`).join(''):''}
+    </div>
+    <h3>재무 6대 필수 조건</h3><div class="card tw" style="padding:6px 10px"><table>
+      ${cd.list.map(x=>`<tr><td style="width:120px">${x.n}</td><td class="small muted">${esc(x.need)}</td><td class="mono small">${esc(x.got)}</td><td>${x.ok?'<span class="b ok">통과</span>':'<span class="b no">실패</span>'}</td></tr>`).join('')}
+    </table></div>
+    ${bn.length?`<div class="small" style="margin-top:8px">가점: ${bn.map(b=>'<span class="pill">'+esc(b)+'</span>').join('')}</div>`:''}
+    <h3>위험 필터</h3>
+    ${rk.hard.length? `<div class="blk"><b style="color:var(--bad)">즉시 제외 (Hard Block) — 매수 불가</b>${rk.hard.map(h=>'<div class="small">• '+esc(h.t)+'</div>').join('')}</div>`:''}
+    ${rk.warn.length? `<div class="note w"><b>경고 (감점 ${rk.penalty}점 · 소명 필요)</b>${rk.warn.map(h=>'<div>• '+esc(h.t)+' <span class="dim">−'+h.p+'</span></div>').join('')}</div>`:''}
+    ${!rk.hard.length&&!rk.warn.length?'<div class="pass small">위험 필터 통과 — 입력된 항목 기준으로 걸리는 조건이 없습니다.</div>':''}
+    <h3>유동성 실사</h3><div class="card small">${(()=>{const amt=c.acctLong*c.initPct/100;const L=liquidity(t,amt);
+      return L.ok===null? '<span class="muted">'+L.msg+'</span>'
+      : (L.ok? '<span class="b ok">통과</span> ':'<span class="b no">유동성 부족 — 청산 시 주가에 영향</span> ')
+        +'최초 진입 예정액 '+money(amt)+' · '+L.msg; })()}</div>
+    <h3>등장 타임라인</h3>${tlBlock(p)}
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="closeM();S.sel='${esc(t)}';go('buy')">매수 체크리스트로</button>
+      <button class="btn sec" onclick="closeM();S.sel='${esc(t)}';go('data')">종목 데이터 수정</button></div>
+  </div></div>`;
+}
+function closeM(){ $('#modal').innerHTML=''; }
+
+/* ═══════════════ 3. 주간 입력 ═══════════════ */
+function parseTk(s){
+  const out = {};
+  String(s||'').split(/[\s,;\n\r]+/).filter(Boolean).forEach(tok=>{
+    const m = tok.split(/[:@\/]/);           // "PLTR:24.5" 형식이면 등장 시점 주가 동시 입력
+    const t = m[0].toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
+    if(t) out[t] = m[1] ? num(m[1]) : (out[t]||0);
+  });
+  return out;
+}
+function vWeek(){
+  const w = S.week || thisWeek(), src = SRC[S.mkt], d = D();
+  const pre = {};                                    // 기존 입력 복원
+  d.appear.filter(a=>a.week===w).forEach(a=>{
+    (a.sources||[]).forEach(s=>{ pre[s] = (pre[s]||'') + a.ticker + (a.price? ':'+a.price : '') + ' '; });
+    (a.b||[]).forEach(s=>{ pre[s] = (pre[s]||'') + a.ticker + ' '; });
+    (a.c||[]).forEach(s=>{ pre[s] = (pre[s]||'') + a.ticker + ' '; });
+  });
+  const box = (grade, name, i) => `<label class="f"><span>${grade} ${esc(name)}</span>
+    <textarea id="src_${grade}_${i}" placeholder="티커를 공백/줄바꿈으로 구분 — 예: PLTR:24.50  IONQ  RKLB">${esc((pre[name]||'').trim())}</textarea></label>`;
+  const weeks = [...new Set(d.appear.map(a=>a.week))].sort().reverse().slice(0,14);
+  return `<div class="sec-hd"><h2>주간 입력 — ${MM().flag} ${MM().name} 추천 리스트</h2></div>
+  <div class="note">유료 사이트 자동 크롤링은 이용약관 위반입니다. <b>매주 토요일</b> 각 소스에서 티커 20~30개를 복사해 붙여넣으십시오 (10분).
+  <b>티커 뒤에 <span class="mono">:주가</span></b>를 붙이면 등장 시점 주가가 함께 기록되어 소멸 구간 하락률 계산에 쓰입니다 (예: <span class="mono">PLTR:24.50</span>). 생략하면 종목 데이터의 현재가가 자동 사용됩니다.</div>
+  <div class="card"><div class="row" style="margin-bottom:10px">
+    <label class="f" style="margin:0;width:190px"><span>기록 주차 (ISO)</span>
+      <input type="text" id="wk" value="${w}" onchange="S.week=this.value.trim();render()"></label>
+    <button class="btn sec sm" onclick="S.week=wLabel(wIdx(S.week||thisWeek())-1);render()">← 이전 주</button>
+    <button class="btn sec sm" onclick="S.week=wLabel(wIdx(S.week||thisWeek())+1);render()">다음 주 →</button>
+    <button class="btn sec sm" onclick="S.week=thisWeek();render()">이번 주</button>
+  </div>
+  <h3 style="color:var(--acc)">A그룹 — 정량 기반 (가중치 大 · 개당 +8점)</h3>
+  ${src.A.map((n,i)=>box('A',n,i)).join('')}
+  <h3 style="color:var(--acc2)">B그룹 — 수급 · 기관 (가장 가치 높음 · 항목당 +10점)</h3>
+  ${src.B.map((n,i)=>box('B',n,i)).join('')}
+  <h3 style="color:var(--mut)">C그룹 — 참고용 (개당 +1점 · <b style="color:var(--bad)">단독 등장 시 −15점</b>)</h3>
+  ${src.C.map((n,i)=>box('C',n,i)).join('')}
+  <div class="row" style="margin-top:12px"><button class="btn" onclick="saveWeek()">${w} 주차 저장 · 패턴 재판정</button>
+    <button class="btn sec" onclick="delWeek('${w}')">이 주차 기록 삭제</button></div></div>
+  <h3>최근 입력 주차</h3><div class="card tw">${weeks.length? `<table><thead><tr><th>주차</th><th>등장 종목</th><th>A그룹 최다</th><th></th></tr></thead><tbody>
+    ${weeks.map(wk=>{ const rs=d.appear.filter(a=>a.week===wk);
+      return `<tr><td class="mono">${wk}</td><td class="small">${rs.map(r=>'<span class="pill">'+esc(r.ticker)+(r.aCount?' A'+r.aCount:'')+'</span>').join('')}</td>
+      <td class="mono">${Math.max(0,...rs.map(r=>num(r.aCount)))}</td>
+      <td><button class="btn sec sm" onclick="S.week='${wk}';render()">불러오기</button></td></tr>`;}).join('')}</tbody></table>`
+    : '<span class="muted small">입력된 주차가 없습니다.</span>'}</div>`;
+}
+function saveWeek(){
+  const w = ($('#wk').value||'').trim();
+  if(!/^\d{4}-W\d{2}$/.test(w)) return toast('주차 형식은 2026-W36 입니다');
+  const src = SRC[S.mkt], d = D(), agg = {};
+  const grab = (grade, list) => list.forEach((name,i)=>{
+    const tks = parseTk(($('#src_'+grade+'_'+i)||{}).value);
+    Object.keys(tks).forEach(t=>{
+      agg[t] = agg[t] || {ticker:t, week:w, sources:[], b:[], c:[], price:0};
+      if(grade==='A') agg[t].sources.push(name);
+      if(grade==='B') agg[t].b.push(name);
+      if(grade==='C') agg[t].c.push(name);
+      if(tks[t]) agg[t].price = tks[t];
+    });
+  });
+  grab('A',src.A); grab('B',src.B); grab('C',src.C);
+  d.appear = d.appear.filter(a=>a.week!==w);
+  Object.values(agg).forEach(a=>{
+    a.aCount = a.sources.length; a.cCount = a.c.length;
+    if(!a.price){ const f=d.fund[a.ticker]||{}; a.price = has(f.price)? num(f.price) : 0; }
+    const f = d.fund[a.ticker]||{}; a.mcap = num(f.mcap);
+    d.appear.push(a);
+  });
+  save(); toast(w+' 저장 — '+Object.keys(agg).length+'종목 기록'); render();
+}
+function delWeek(w){ if(!confirm(w+' 주차 기록을 삭제할까요?')) return; D().appear = D().appear.filter(a=>a.week!==w); save(); render(); }
+
+/* ═══════════════ 4. 종목 데이터 ═══════════════ */
+function vData(){
+  const list = tickers(), t = S.sel && list.includes(S.sel) ? S.sel : (list[0]||'');
+  S.sel = t;
+  const f = (D().fund[t]||{}), F = FILT[S.mkt];
+  const inp = (k,lab,type,opt)=>{
+    const v = f[k]===undefined?'':f[k];
+    if(type==='sel') return `<label class="f"><span>${esc(lab)}</span><select id="fd_${k}">${Object.keys(opt).map(o=>`<option value="${o}" ${v===o?'selected':''}>${esc(opt[o])}</option>`).join('')}</select></label>`;
+    if(type==='bool') return `<label class="chk" style="margin-bottom:10px"><input type="checkbox" id="fd_${k}" ${v?'checked':''}><span>${esc(lab)}</span></label>`;
+    return `<label class="f"><span>${esc(lab)}</span><input type="${type==='num'?'number':'text'}" step="any" id="fd_${k}" value="${esc(v)}"></label>`;
+  };
+  const flagBox = (arr,kind)=>arr.filter(x=>!x.auto).map(x=>
+    `<label class="chk"><input type="checkbox" id="fl_${x.id}" ${(f.flags||{})[x.id]?'checked':''}>
+      <span>${esc(x.t)} ${kind==='h'?'<span class="b no">즉시 제외</span>':'<span class="b wa">−'+x.p+'</span>'}</span></label>`).join('');
+  return `<div class="sec-hd"><h2>종목 데이터 입력</h2><span class="dim small">모든 판정(RS·Sales·6대 조건·위험 필터)의 원천 데이터</span></div>
+  <div class="note">데이터 출처 — 주가/거래량: Investing.com · yfinance · 각국 거래소 |
+   재무: ${S.mkt==='US'?'SEC EDGAR (XBRL)':S.mkt==='KR'?'DART 전자공시':S.mkt==='JP'?'EDINET · 適時開示':'巨潮资讯网 (CNINFO) · 港交所 披露易'} |
+   수급: ${S.mkt==='US'?'13F · Form 4 · ARK CSV':S.mkt==='KR'?'DART 지분공시 · 투자자별 매매동향':S.mkt==='JP'?'大量保有報告書':'北向资金 · 基金季报'}</div>
+  <div class="card"><div class="row">
+    <label class="f" style="margin:0;width:200px"><span>종목 선택</span>
+      <select onchange="S.sel=this.value;render()">${list.map(x=>`<option ${x===t?'selected':''}>${esc(x)}</option>`).join('')||'<option value="">—</option>'}</select></label>
+    <label class="f" style="margin:0;width:200px"><span>새 종목 추가 (티커)</span><input type="text" id="newT" placeholder="예: PLTR"></label>
+    <button class="btn sec" onclick="addT()">추가</button>
+    ${t?`<span class="sp"></span><button class="btn sec sm" onclick="detail('${esc(t)}')">판정 결과 보기</button>
+    <button class="btn sec sm" onclick="delT('${esc(t)}')">종목 삭제</button>`:''}
+  </div></div>
+  ${!t? '<div class="card muted">종목을 추가하십시오.</div>' : `
+  ${FIELDS.map(g=>`<div class="card"><h3 style="margin-top:0">${esc(g.g)}</h3><div class="grid g3">${g.f.map(x=>inp(x[0],x[1],x[2],x[3])).join('')}</div></div>`).join('')}
+  <div class="card"><h3 style="margin-top:0;color:var(--bad)">6-1. 즉시 제외 (Hard Block) — 수동 확인 항목</h3>
+    <div class="small muted" style="margin-bottom:6px">주가·거래대금은 위 입력값으로 자동 판정됩니다. 아래는 공시를 직접 확인해 체크하십시오.</div>
+    ${flagBox(F.hard,'h')}</div>
+  <div class="card"><h3 style="margin-top:0;color:var(--warn)">6-2. 경고 (감점 · 소명 필요)</h3>${flagBox(F.warn,'w')}</div>
+  <div class="row"><button class="btn" onclick="saveFund('${esc(t)}')">저장</button><span class="dim small">저장 즉시 점수·레이팅·위험 판정이 재계산됩니다.</span></div>`}`;
+}
+function afterData(){}
+function addT(){
+  const v = ($('#newT').value||'').trim().toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
+  if(!v) return toast('티커를 입력하십시오');
+  D().fund[v] = D().fund[v] || {biz:'SW', gpmTrend:'flat', flags:{}};
+  save(); S.sel = v; toast(v+' 추가'); render();
+}
+function delT(t){ if(!confirm(t+' 의 종목 데이터를 삭제할까요? (등장 기록은 유지)')) return; delete D().fund[t]; S.sel=null; save(); render(); }
+function saveFund(t){
+  const f = D().fund[t] || {}; f.flags = f.flags||{};
+  FIELDS.forEach(g=>g.f.forEach(x=>{
+    const el = $('#fd_'+x[0]); if(!el) return;
+    f[x[0]] = x[2]==='bool' ? el.checked : (x[2]==='num' ? (el.value===''?'':num(el.value)) : el.value);
+  }));
+  FILT[S.mkt].hard.concat(FILT[S.mkt].warn).filter(x=>!x.auto).forEach(x=>{ const el=$('#fl_'+x.id); if(el) f.flags[x.id]=el.checked; });
+  f.updated = new Date().toISOString().slice(0,10);
+  D().fund[t] = f; save(); toast(t+' 저장 완료'); render();
+}
+
+/* ═══════════════ 5. 후보 리스트 ═══════════════ */
+function vCand(){
+  const c = C(); const mode = S.cmode||'all';
+  let rows = summary();
+  if(mode==='pass') rows = rows.filter(r=>r.net>=c.pass && !r.rk.blocked);
+  if(mode==='re')   rows = rows.filter(r=>r.p.type==='REAPPEARED');
+  if(mode==='ok')   rows = rows.filter(r=>r.cd.pass && !r.rk.blocked && r.net>=c.pass);
+  rows.sort((a,b)=>b.net-a.net);
+  const btn=(k,l)=>`<button class="btn ${mode===k?'':'sec'} sm" onclick="S.cmode='${k}';render()">${l}</button>`;
+  return `<div class="sec-hd"><h2>후보 리스트</h2><span class="dim small">등장 점수 − 위험 감점 순</span></div>
+  <div class="row" style="margin-bottom:10px">${btn('all','전체')}${btn('pass',c.pass+'점 이상')}${btn('re','⭐ 재등장만')}${btn('ok','매수 가능 (전 조건 통과)')}</div>
+  <div class="card tw">${rows.length? `<table><thead><tr><th>티커</th><th>패턴</th><th>점수</th><th>RS</th><th>Sales</th><th>EPS</th><th>Comp</th><th>6대 조건</th><th>위험 필터</th><th>등장후</th><th></th></tr></thead><tbody>
+    ${rows.map(r=>`<tr>
+      <td><b>${esc(r.t)}</b><div class="tiny dim">${esc((r.f.name||'').slice(0,18))}</div></td>
+      <td>${typeBadge(r.p)}<div class="tiny dim">연속 ${r.p.streak}주 · 누적 ${r.p.total}주</div></td>
+      <td><span class="score ${sCls(r.net)}">${r.net}</span>${r.rk.penalty?'<div class="tiny" style="color:var(--bad)">−'+r.rk.penalty+'</div>':''}</td>
+      <td class="mono ${num(r.rs)>=c.rsMin?'':'dim'}">${r.rs??'—'}</td>
+      <td class="mono ${num(r.sales)>=c.salesMin?'':'dim'}">${r.sales??'—'}</td>
+      <td class="mono dim">${r.eps??'—'}</td><td class="mono">${r.comp??'—'}</td>
+      <td>${r.cd.list.map(x=>x.ok?'<span style="color:var(--acc)">●</span>':'<span style="color:var(--bad)">○</span>').join(' ')}
+        <div class="tiny dim">${r.cd.passN}/6</div></td>
+      <td>${r.rk.blocked?'<span class="b no">차단</span><div class="tiny dim">'+esc(r.rk.hard[0].t.slice(0,22))+'…</div>'
+        :(r.rk.warn.length?'<span class="b wa">경고 '+r.rk.warn.length+'</span><div class="tiny dim">−'+r.rk.penalty+'점</div>':'<span class="b ok">양호</span>')}</td>
+      <td class="mono ${r.sc.gain>=c.gainCap?'':'dim'}">${r.sc.gain!==null?r.sc.gain.toFixed(0)+'%':'—'}</td>
+      <td><button class="btn sec sm" onclick="detail('${esc(r.t)}')">상세</button>
+        ${(!r.rk.blocked&&r.cd.pass&&r.net>=c.pass)?`<button class="btn sm" style="margin-top:4px" onclick="S.sel='${esc(r.t)}';go('buy')">매수</button>`:''}</td></tr>`).join('')}
+    </tbody></table>` : '<span class="muted small">조건에 맞는 종목이 없습니다.</span>'}</div>
+  <div class="note" style="margin-top:12px">● = 통과 / ○ = 미충족 (①매출성장 ②마진 ③TAM ④창업자 ⑤희석 ⑥현금).
+  <b>${c.pass}점 이상 + 6대 조건 전부 통과 + 하드블록 없음</b> 세 가지를 모두 만족해야 매수 체크리스트가 열립니다.</div>`;
+}
+
+/* ═══════════════ 6. 매수 체크리스트 (강제) ═══════════════ */
+function buyBlocks(t, amount){
+  const c=C(), r={p:pattern(t)}, sc=scoreOf(t,r.p), cd=conds(t), rk=risks(t), f=D().fund[t]||{};
+  const held = D().hold.filter(h=>!h.sold);
+  const already = held.filter(h=>h.ticker===t).reduce((s,h)=>s+num(h.amount),0);
+  const weight = c.acctLong? (already+amount)/c.acctLong*100 : 0;
+  const L = liquidity(t, amount);
+  const net = Math.max(0, sc.total - rk.penalty);
+  return { list:[
+    {ok:!rk.blocked, t:'6-1 즉시 제외 항목에 걸리지 않는다', d: rk.blocked? rk.hard.map(h=>h.t).join(' / ') : '하드블록 없음'},
+    {ok:net>=c.pass, t:'등장 점수 '+c.pass+'점 이상', d:'현재 '+net+'점 (원점수 '+sc.total+' − 감점 '+rk.penalty+')'},
+    {ok:cd.pass, t:'재무 6대 필수 조건 전부 통과', d: cd.passN+'/6 통과' + (cd.pass?'':' — '+cd.list.filter(x=>!x.ok).map(x=>x.n).join(', ')+' 실패')},
+    {ok:held.length < c.maxHold, t:'보유 종목이 '+c.maxHold+'개 미만', d:'현재 '+held.length+'개'},
+    {ok:weight <= c.maxPct, t:'장기 계좌의 '+c.maxPct+'%를 초과하지 않는다', d:'매수 후 비중 '+weight.toFixed(1)+'% (기존 '+money(already)+')'},
+    {ok:L.ok!==false, t:'포지션이 일평균 거래대금의 '+c.liqPct+'% 이하', d:L.msg},
+    {ok:!(has(f.earnDays)&&num(f.earnDays)<=c.earnDays), t:'실적 발표가 '+c.earnDays+'일 이내가 아니다', d: has(f.earnDays)? num(f.earnDays)+'일 뒤':'미입력'},
+    {ok:!(sc.gain!==null && sc.gain>=c.gainCap), t:'등장 후 '+c.gainCap+'% 이상 오르지 않았다', d: sc.gain!==null? sc.gain.toFixed(0)+'% 상승':'주가 미기록'}
+  ], sc, cd, rk, net, weight, L };
+}
+function vBuy(){
+  const list = tickers(), c=C();
+  const t = S.sel && list.includes(S.sel) ? S.sel : (list[0]||'');
+  S.sel = t;
+  if(!t) return '<h2>매수 체크리스트</h2><div class="card muted">종목 데이터를 먼저 입력하십시오.</div>';
+  const amount = S.buyAmt!==undefined ? num(S.buyAmt) : Math.round(c.acctLong*c.initPct/100);
+  const B = buyBlocks(t, amount), p = pattern(t), f = D().fund[t]||{}, d = S.draft||{};
+  const okB = [
+    {ok: p.type==='REAPPEARED' || (p.type==='CONTINUOUS'&&p.streak>=12), t:'패턴이 REAPPEARED 또는 12주 이상 CONTINUOUS', d:TYPE_B[p.type][1]+' · 연속 '+p.streak+'주'},
+    {ok: num((p.logs.slice(-1)[0]||{}).aCount)>=2, t:'A그룹 소스 2곳 이상에 등장', d:'최근 주차 A'+num((p.logs.slice(-1)[0]||{}).aCount)},
+    {ok: has(f.revDuringFade)&&num(f.revDuringFade)>=c.fadeRev, t:'소멸 구간에도 매출 성장 유지', d: has(f.revDuringFade)? num(f.revDuringFade)+'%':'미입력'},
+    {ok: num(ratings().rs[t])>=c.rsMin, t:'RS Rating '+c.rsMin+' 이상', d:(ratings().rs[t]??'—')+''},
+    {ok: f.gpmTrend!=='down', t:'매출총이익률 상승 또는 유지 추세', d:({up:'상승',flat:'유지',down:'하락'}[f.gpmTrend]||'—')},
+    {ok: has(f.shareGrowth)&&num(f.shareGrowth)<=c.shareGrowth, t:'주식수 증가율 연 '+c.shareGrowth+'% 이내', d: has(f.shareGrowth)? num(f.shareGrowth)+'%':'미입력'},
+    {ok: !!f.founderCEO && num(f.founderStake)>=c.founderStake, t:'창업자가 경영하고 지분을 보유', d:(f.founderCEO?'창업자 CEO ':'전문경영인 ')+num(f.founderStake)+'%'},
+    {ok: num(f.runway)>=c.runwayM, t:'현금으로 '+Math.round(c.runwayM/12)+'년 이상 버틸 수 있다', d: has(f.runway)? num(f.runway)+'개월':'미입력'}
+  ];
+  const blocked = B.list.some(x=>!x.ok);
+  const line = x => `<div class="chk"><span style="font-size:15px;line-height:1.2">${x.ok?'<span style="color:var(--acc)">✔</span>':'<span style="color:var(--bad)">✘</span>'}</span>
+     <span>${esc(x.t)}<div class="tiny dim">${esc(x.d)}</div></span></div>`;
+  return `<div class="sec-hd"><h2>매수 체크리스트</h2><span class="dim small">통과하지 못하면 기록할 수 없습니다</span></div>
+  <div class="card"><div class="row">
+    <label class="f" style="margin:0;width:180px"><span>종목</span>
+      <select onchange="keepDraft();S.sel=this.value;render()">${list.map(x=>`<option ${x===t?'selected':''}>${esc(x)}</option>`).join('')}</select></label>
+    <label class="f" style="margin:0;width:200px"><span>매수 금액 (${MM().cur})</span>
+      <input type="number" step="any" value="${amount}" onchange="keepDraft();S.buyAmt=this.value;render()"></label>
+    <label class="f" style="margin:0;width:150px"><span>매수 단가</span>
+      <input type="number" step="any" id="buyPx" value="${has(f.price)?num(f.price):''}"></label>
+    <div class="sp"></div><div style="text-align:right"><div class="dim tiny">계좌 대비 비중</div>
+      <div class="score ${B.weight<=C().maxPct?'s-md':'s-lo'}">${B.weight.toFixed(1)}%</div></div>
+  </div></div>
+
+  <div class="${blocked?'blk':'pass'}"><b>A. 매수 금지 조건 — 하나라도 해당하면 차단</b>
+    ${B.list.map(line).join('')}
+    <div style="margin-top:6px">${blocked?'<span class="b no">차단됨 — 위 항목을 해결하기 전에는 매수 기록 불가</span>':'<span class="b ok">A 전부 통과</span>'}</div></div>
+
+  <div class="card"><b>B. 매수 조건 확인</b>${okB.map(line).join('')}
+    <div class="tiny dim" style="margin-top:6px">B는 차단 조건이 아니라 판단 근거입니다. ✘가 3개 이상이면 다시 생각하십시오. (현재 ✘ ${okB.filter(x=>!x.ok).length}개)</div></div>
+
+  <div class="card"><b>C. 심리 · 논리 점검 <span style="color:var(--bad)">(건너뛰기 불가)</span></b>
+    <div class="note" style="margin:8px 0">아래 세 문항을 쓰지 못하면 <b>매수하면 안 되는 종목</b>입니다. 이 답변은 저장되어 분기 점검마다 다시 표시됩니다.</div>
+    <label class="f"><span>① 이 회사가 10년 뒤에도 존재해야 하는 이유를 한 문장으로 쓰시오 (20자 이상)</span>
+      <textarea id="q1">${esc(d.q1||'')}</textarea></label>
+    <label class="f"><span>② 이 회사의 매출이 10배가 되려면 무슨 일이 일어나야 하는가 (20자 이상)</span>
+      <textarea id="q2">${esc(d.q2||'')}</textarea></label>
+    <label class="f"><span>③ 어떤 사실이 확인되면 내 판단이 틀린 것인가 — 매도 조건 (20자 이상)</span>
+      <textarea id="q3">${esc(d.q3||'')}</textarea></label>
+    <label class="chk"><input type="checkbox" id="q4" ${d.q4?'checked':''}><span>이 종목이 <b>-70% 빠져도 팔지 않을 자신</b>이 있다 (Y)</span></label>
+    <label class="chk"><input type="checkbox" id="q5" ${d.q5?'checked':''}><span>남들이 사서 / 놓칠까 봐 / 유튜브에서 봐서 사는 것이 <b>아니다</b> (N)</span></label>
+    <label class="chk"><input type="checkbox" id="q6" ${d.q6?'checked':''}><span><b style="color:var(--warn)">이 돈이 없어도 생활에 지장이 없다</b>고 말할 수 있다 — 이 계좌는 "없는 돈"이다</span></label>
+  </div>
+  <div class="row"><button class="btn" onclick="doBuy('${esc(t)}')" ${blocked?'disabled':''}>매수 기록 · 보유 종목 등록</button>
+    ${blocked?'<span class="small" style="color:var(--bad)">A 조건 미통과 — 버튼 비활성</span>':'<span class="small muted">서술형 3문항과 체크 3개를 모두 채워야 저장됩니다.</span>'}</div>`;
+}
+function keepDraft(){
+  S.draft = { q1:($('#q1')||{}).value||'', q2:($('#q2')||{}).value||'', q3:($('#q3')||{}).value||'',
+              q4:($('#q4')||{}).checked, q5:($('#q5')||{}).checked, q6:($('#q6')||{}).checked };
+}
+function doBuy(t){
+  keepDraft(); const d=S.draft, c=C();
+  if((d.q1||'').trim().length<20 || (d.q2||'').trim().length<20 || (d.q3||'').trim().length<20)
+    return toast('서술형 3문항을 각각 20자 이상 작성하십시오');
+  if(!d.q4) return toast('-70%를 견딜 수 없다면 매수해서는 안 됩니다');
+  if(!d.q5) return toast('FOMO 매수는 이 전략의 실패 요인입니다');
+  if(!d.q6) return toast('생활자금으로는 이 계좌를 운용할 수 없습니다');
+  const amount = S.buyAmt!==undefined? num(S.buyAmt) : Math.round(c.acctLong*c.initPct/100);
+  const px = num(($('#buyPx')||{}).value) || num((D().fund[t]||{}).price);
+  if(!px) return toast('매수 단가를 입력하십시오');
+  const B = buyBlocks(t, amount);
+  const h = { id:Date.now(), ticker:t, date:new Date().toISOString().slice(0,10), price:px,
+    amount, shares:+(amount/px).toFixed(4), score:B.net, pattern:pattern(t).type,
+    thesis:{ why:d.q1.trim(), tenx:d.q2.trim(), sell:d.q3.trim() },
+    snap:{ revY:(D().fund[t]||{}).revY, gpm:(D().fund[t]||{}).gpm, shareGrowth:(D().fund[t]||{}).shareGrowth, runway:(D().fund[t]||{}).runway },
+    reviews:[], sold:false };
+  D().hold.push(h);
+  D().jrnl.push({ id:Date.now()+1, ticker:t, date:h.date, act:'BUY', price:px, amount, shares:h.shares,
+                  note:'점수 '+B.net+' · 패턴 '+h.pattern+' · '+d.q1.trim().slice(0,60) });
+  S.draft={}; S.buyAmt=undefined; save(); toast(t+' 매수 기록 완료'); go('hold');
+}
+
+/* ═══════════════ 7. 보유 종목 · 분기 점검 · 매도 규칙 ═══════════════ */
+function sellSignals(h){
+  const f = D().fund[h.ticker]||{}, rv = h.reviews||[], out=[];
+  const last2 = rv.slice(-2), last3 = rv.slice(-3);
+  if(last2.length===2 && last2.every(r=>has(r.rev)&&num(r.rev)<20)) out.push('매출 성장률이 2개 분기 연속 20% 미만');
+  if(last3.length===3 && num(last3[0].gpm)>num(last3[1].gpm) && num(last3[1].gpm)>num(last3[2].gpm)) out.push('매출총이익률이 3개 분기 연속 하락');
+  if(num(f.shareGrowth)>=10) out.push('발행주식수 연 10% 이상 증가 (심각한 희석)');
+  if(rv.some(r=>r.founderOut)) out.push('창업자 CEO 사임 또는 지분 대량 매도');
+  if(rv.some(r=>r.sellHit)) out.push('매수 시 작성한 "매도 조건"이 실제로 발생');
+  const fl = f.flags||{};
+  if(fl.goingConcern||fl.gcNote||fl.nonStdAudit||fl.adverse) out.push('계속기업 불확실성 / 비적정 감사의견');
+  if(fl.auditRestate||fl.embezzle) out.push('회계 부정 · 실적 재작성 · 횡령배임');
+  return out;
+}
+function vHold(){
+  const c=C(), held = D().hold.filter(h=>!h.sold);
+  const totVal = held.reduce((s,h)=>{const f=D().fund[h.ticker]||{};return s+(has(f.price)?num(f.price):num(h.price))*num(h.shares);},0);
+  if(!held.length) return `<h2>보유 종목</h2><div class="card muted">보유 종목이 없습니다. 후보 리스트 → 매수 체크리스트를 거쳐 등록됩니다.</div>${sellRules()}`;
+  return `<div class="sec-hd"><h2>보유 종목 (${held.length}/${c.maxHold})</h2><span class="dim small">평가액 ${bigMoney(totVal)}</span></div>
+  ${held.map(h=>{
+    const f = D().fund[h.ticker]||{}, px = has(f.price)?num(f.price):num(h.price);
+    const val = px*num(h.shares), ret = (px/num(h.price)-1)*100;
+    const w = totVal? val/totVal*100 : 0, wAcct = c.acctLong? val/c.acctLong*100:0;
+    const sig = sellSignals(h), p = pattern(h.ticker), rv=(h.reviews||[]).slice(-1)[0];
+    return `<div class="card">
+      <div class="row"><b style="font-size:16px">${esc(h.ticker)}</b><span class="dim small">${esc(f.name||'')}</span>${typeBadge(p)}
+        <span class="sp"></span>
+        <span class="small">매수 ${money(h.price)} → 현재 <b class="mono">${money(px)}</b></span>
+        <b class="mono" style="font-size:16px;color:${ret>=0?'var(--acc)':'var(--bad)'}">${ret>=0?'+':''}${ret.toFixed(1)}%</b></div>
+      <div class="row small muted" style="margin-top:6px;gap:14px">
+        <span>매수일 ${h.date}</span><span>투입 ${bigMoney(h.amount)}</span><span>평가 ${bigMoney(val)}</span>
+        <span>보유 비중 <b style="color:var(--txt)">${w.toFixed(1)}%</b></span><span>계좌 비중 ${wAcct.toFixed(1)}%</span>
+        <span>매수 시 점수 ${h.score}</span></div>
+      <div class="bar" style="margin-top:6px"><i style="width:${clamp(w,0,100)}%;background:${w>c.rebalPct?'var(--warn)':'var(--acc)'}"></i></div>
+      ${w>c.rebalPct? `<div class="note w" style="margin-top:8px"><b>부분 익절 검토</b> — 보유 비중 ${w.toFixed(1)}%가 ${c.rebalPct}%를 초과했습니다. 25% 수준으로 리밸런싱하십시오. 그 외에는 팔지 않습니다.</div>`:''}
+      <div class="grid g3" style="margin-top:10px">
+        <div><div class="tiny dim">10년 뒤에도 존재해야 하는 이유</div><div class="small">${esc(h.thesis.why)}</div></div>
+        <div><div class="tiny dim">매출 10배 시나리오</div><div class="small">${esc(h.thesis.tenx)}</div></div>
+        <div><div class="tiny dim" style="color:var(--warn)">내가 정한 매도 조건</div><div class="small">${esc(h.thesis.sell)}</div></div>
+      </div>
+      <div class="row small" style="margin-top:10px;gap:12px">
+        <span class="muted">매수 시 → 현재: 매출성장 <b class="mono">${pct(h.snap.revY)} → ${pct(f.revY)}</b></span>
+        <span class="muted">마진 <b class="mono">${pct(h.snap.gpm)} → ${pct(f.gpm)}</b></span>
+        <span class="muted">주식수증가 <b class="mono">${pct(h.snap.shareGrowth)} → ${pct(f.shareGrowth)}</b></span>
+        <span class="muted">현금 <b class="mono">${num(h.snap.runway)}개월 → ${num(f.runway)}개월</b></span></div>
+      ${sig.length? `<div class="blk" style="margin-top:10px"><b style="color:var(--bad)">매도 신호 감지 — 사업 논리 훼손</b>${sig.map(s=>'<div class="small">• '+esc(s)+'</div>').join('')}</div>`
+        : `<div class="small" style="margin-top:8px;color:var(--acc)">✔ 매도 신호 없음 — 보유 유지</div>`}
+      ${p.type==='FADED'? '<div class="al p5" style="margin-top:8px"><div class="ic">🔵</div><div><b>추천 리스트에서 FADED 전환</b><div class="small muted">검토 알림입니다. 리스트 소멸은 매도 사유가 아닙니다.</div></div></div>':''}
+      <div class="row" style="margin-top:10px">
+        <button class="btn sec sm" onclick="reviewM(${h.id})">분기 점검 실행${(h.reviews||[]).length?' ('+h.reviews.length+'회)':''}</button>
+        <button class="btn sec sm" onclick="addBuy(${h.id})">추가 매수 기록</button>
+        <button class="btn sec sm" onclick="sellM(${h.id})">매도 기록</button>
+        <button class="btn sec sm" onclick="detail('${esc(h.ticker)}')">종목 상세</button>
+        ${rv? `<span class="dim tiny">최근 점검 ${rv.date}</span>`:'<span class="tiny" style="color:var(--warn)">아직 분기 점검 기록 없음</span>'}</div>
+    </div>`;
+  }).join('')}${sellRules()}`;
+}
+function sellRules(){
+  return `<h3>매도 규칙 — 손절 없음. 사업 논리 훼손 시에만 매도</h3>
+  <div class="grid g2"><div class="card"><b style="color:var(--bad)">매도 신호 (자동 감시)</b>
+    <div class="small muted" style="margin-top:6px">• 매출 성장률 2개 분기 연속 20% 미만<br>• 매출총이익률 3개 분기 연속 하락<br>• 발행주식수 연 10% 이상 증가<br>• 창업자 CEO 사임 또는 지분 대량 매도<br>• 매수 시 작성한 매도 조건 실제 발생<br>• 계속기업 불확실성 의견 등장<br>• 회계 부정 · 실적 재작성</div></div>
+  <div class="card"><b style="color:var(--acc)">매도하지 않는 경우</b>
+    <div class="small muted" style="margin-top:6px">✘ 주가가 많이 빠져서 — 매도 사유 아님<br>✘ 시장 전체가 하락해서 — 매도 사유 아님<br>✘ 추천 리스트에서 사라져서 — 검토는 하되 즉시 매도 금지<br>✘ 다른 종목이 더 좋아 보여서 — 매도 사유 아님<br><br>
+    <b style="color:var(--warn)">승자를 파는 것이 이 전략 최대의 실패 요인이다.</b></div></div></div>`;
+}
+function reviewM(id){
+  const h = D().hold.find(x=>x.id===id), f = D().fund[h.ticker]||{};
+  const Q = [['q1','매출 성장률이 여전히 25% 이상인가'],['q2','매출총이익률이 유지 또는 개선됐는가'],
+    ['q3','발행주식수가 예상보다 늘지 않았는가'],['q4','현금 소진 속도가 빨라지지 않았는가'],
+    ['q5','창업자·핵심 경영진이 그대로인가'],['q6','매수 시 "10배" 시나리오가 진행 중인가'],
+    ['q7','매수 시 작성한 "매도 조건"에 해당하는 일이 일어나지 않았는가'],['q8','등장 상태가 FADED로 전환되지 않았는가']];
+  $('#modal').innerHTML = `<div class="mask" onclick="if(event.target===this)closeM()"><div class="modal">
+    <h2 style="margin-top:0">${esc(h.ticker)} 분기 점검 <span class="dim" style="font-size:13px">주가는 보지 않는다</span></h2>
+    <div class="note">매수 시 작성한 논리:<br>① ${esc(h.thesis.why)}<br>② ${esc(h.thesis.tenx)}<br><b style="color:var(--warn)">③ 매도 조건: ${esc(h.thesis.sell)}</b></div>
+    <div class="grid g3" style="margin-top:12px">
+      <label class="f"><span>이번 분기 매출 성장률 (%)</span><input type="number" step="any" id="rv_rev" value="${has(f.revQ)?num(f.revQ):''}"></label>
+      <label class="f"><span>매출총이익률 (%)</span><input type="number" step="any" id="rv_gpm" value="${has(f.gpm)?num(f.gpm):''}"></label>
+      <label class="f"><span>현금 여력 (개월)</span><input type="number" step="any" id="rv_run" value="${has(f.runway)?num(f.runway):''}"></label></div>
+    <div class="card">${Q.map(q=>`<label class="chk"><input type="checkbox" id="rv_${q[0]}" checked><span>${esc(q[1])}</span></label>`).join('')}
+      <div class="hr"></div>
+      <label class="chk"><input type="checkbox" id="rv_founderOut"><span style="color:var(--bad)">창업자 CEO 사임 또는 지분 대량 매도가 발생했다</span></label>
+      <label class="chk"><input type="checkbox" id="rv_sellHit"><span style="color:var(--bad)">내가 정한 매도 조건이 실제로 발생했다</span></label></div>
+    <label class="f"><span>메모</span><textarea id="rv_note" placeholder="이번 분기에 확인한 사실"></textarea></label>
+    <div class="row"><button class="btn" onclick="saveReview(${id})">점검 기록 저장</button><button class="btn sec" onclick="closeM()">취소</button></div>
+  </div></div>`;
+}
+function saveReview(id){
+  const h = D().hold.find(x=>x.id===id);
+  const g = k => ($('#rv_'+k)||{}).checked, v = k => ($('#rv_'+k)||{}).value;
+  h.reviews = h.reviews||[];
+  h.reviews.push({ date:new Date().toISOString().slice(0,10), rev:num(v('rev')), gpm:num(v('gpm')), runway:num(v('run')),
+    checks:['q1','q2','q3','q4','q5','q6','q7','q8'].map(k=>g(k)), founderOut:g('founderOut'), sellHit:g('sellHit'), note:v('note') });
+  D().jrnl.push({ id:Date.now(), ticker:h.ticker, date:new Date().toISOString().slice(0,10), act:'REVIEW',
+    note:'분기 점검 — 매출성장 '+num(v('rev'))+'% · 마진 '+num(v('gpm'))+'% · '+(v('note')||'') });
+  save(); closeM(); toast('분기 점검 기록 완료'); render();
+}
+function addBuy(id){
+  const h = D().hold.find(x=>x.id===id), c=C();
+  const amt = prompt('추가 매수 금액 ('+MM().cur+')\n분할 진입 규칙: 최초 '+c.initPct+'% → 실적 확인 후 +3% → 재확인 후 +2%\n※ 빠진 종목 물타기 금지 — 매출 성장이 지속되는 종목에만.', Math.round(c.acctLong*0.03));
+  if(!amt) return;
+  const px = prompt('매수 단가', num((D().fund[h.ticker]||{}).price)||h.price);
+  if(!px) return;
+  const sh = num(amt)/num(px);
+  h.shares = +(num(h.shares)+sh).toFixed(4);
+  h.price = +(((num(h.amount)+num(amt))/h.shares)).toFixed(4);
+  h.amount = num(h.amount)+num(amt);
+  D().jrnl.push({id:Date.now(),ticker:h.ticker,date:new Date().toISOString().slice(0,10),act:'ADD',price:num(px),amount:num(amt),shares:+sh.toFixed(4),note:'분할 추가 매수'});
+  save(); toast('추가 매수 기록'); render();
+}
+function sellM(id){
+  const h = D().hold.find(x=>x.id===id);
+  const sig = sellSignals(h);
+  const why = prompt('매도 사유를 쓰십시오.\n'+(sig.length?'감지된 매도 신호: '+sig.join(' / '):'⚠️ 자동 감지된 매도 신호가 없습니다. 주가 하락·시장 하락·리스트 소멸·다른 종목이 좋아 보임은 매도 사유가 아닙니다.'),'');
+  if(!why) return;
+  const px = prompt('매도 단가', num((D().fund[h.ticker]||{}).price)||h.price);
+  if(!px) return;
+  h.sold = true; h.soldPrice = num(px); h.soldDate = new Date().toISOString().slice(0,10); h.soldWhy = why;
+  D().jrnl.push({id:Date.now(),ticker:h.ticker,date:h.soldDate,act:'SELL',price:num(px),amount:num(px)*num(h.shares),shares:h.shares,
+    note:why+' | 수익률 '+((num(px)/num(h.price)-1)*100).toFixed(1)+'%'});
+  save(); toast('매도 기록'); render();
+}
+
+/* ═══════════════ 8. 매매일지 · 성과 · 백테스트 ═══════════════ */
+const median = a => { if(!a.length) return 0; const s=[...a].sort((x,y)=>x-y), m=s.length>>1; return s.length%2? s[m] : (s[m-1]+s[m])/2; };
+const mean   = a => a.length? a.reduce((s,v)=>s+v,0)/a.length : 0;
+
+function perfStats(){
+  const rows = D().hold.map(h=>{
+    const f = D().fund[h.ticker]||{};
+    const px = h.sold? num(h.soldPrice) : (has(f.price)? num(f.price) : num(h.price));
+    const ret = (px/num(h.price)-1)*100, pnl = (px-num(h.price))*num(h.shares);
+    return { h, px, ret, pnl, cost:num(h.amount) };
+  });
+  const rets = rows.map(r=>r.ret), pnls = rows.map(r=>r.pnl);
+  const win = rets.filter(r=>r>0).length;
+  const gains = pnls.filter(p=>p>0).sort((a,b)=>b-a);
+  const top20n = Math.max(1, Math.round(rows.length*0.2));
+  const top20 = pnls.slice().sort((a,b)=>b-a).slice(0,top20n).reduce((s,v)=>s+v,0);
+  const totalPnl = pnls.reduce((s,v)=>s+v,0);
+  return { rows, n:rows.length, win, winRate: rows.length? win/rows.length*100:0,
+    avg:mean(rets), med:median(rets), totalPnl, top20, top20Share: totalPnl>0? top20/totalPnl*100 : 0,
+    invested: rows.reduce((s,r)=>s+r.cost,0) };
+}
+/* 백테스트 — 입력된 등장 로그 + 현재가 기반 코호트 비교 (거래비용 0.5% 반영) */
+function backtest(hold){
+  hold = hold||12;
+  const cost = 0.5, out = { cont:[], re:[] };
+  tickers().forEach(t=>{
+    const p = pattern(t), f = D().fund[t]||{};
+    if(!has(f.price)) return;
+    const px = num(f.price);
+    // 코호트1: 12주 이상 연속 체류 → 12주차 등장 시점 매수
+    const long = p.runs.find(r=>r.length>=hold);
+    if(long){
+      const entryLog = p.logs.find(l=>wIdx(l.week)===long[hold-1]);
+      const ep = num((entryLog||{}).price);
+      if(ep) out.cont.push({t, ep, px, ret:(px/ep-1)*100 - cost});
+    }
+    // 코호트2: 재등장 후 4주 차 매수
+    if(p.reappear && p.reStreak>=4){
+      const st = wIdx(p.reappear.week);
+      const entryLog = p.logs.find(l=>wIdx(l.week)===st+3);
+      const ep = num((entryLog||{}).price);
+      if(ep) out.re.push({t, ep, px, ret:(px/ep-1)*100 - cost});
+    }
+  });
+  const stat = arr => {
+    const r = arr.map(x=>x.ret);
+    const top = arr.slice().sort((a,b)=>b.ret-a.ret).slice(0, Math.max(1,Math.round(arr.length*0.2)));
+    const sum = r.reduce((s,v)=>s+v,0);
+    return { n:arr.length, win: r.filter(v=>v>0).length, winRate: r.length? r.filter(v=>v>0).length/r.length*100:0,
+      avg:mean(r), med:median(r), mdd:mddOf(arr), topShare: sum>0? top.reduce((s,x)=>s+x.ret,0)/sum*100:0, list:arr };
+  };
+  return { cont:stat(out.cont), re:stat(out.re), hold };
+}
+/* 등장 기록 주가 시계열로 근사 MDD 산출 */
+function mddOf(arr){
+  let worst = 0;
+  arr.forEach(x=>{
+    const p = pattern(x.t), series = p.logs.map(l=>num(l.price)).filter(v=>v>0);
+    let peak = 0, dd = 0;
+    series.forEach(v=>{ peak = Math.max(peak, v); if(peak) dd = Math.min(dd, (v/peak-1)*100); });
+    worst = Math.min(worst, dd);
+  });
+  return worst;
+}
+function vPerf(){
+  const P = perfStats(), B = backtest(S.btHold||12), j = D().jrnl.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const cell = (s,lab) => `<div class="kpi"><div class="lab">${lab}</div><div class="val" style="font-size:20px">${s}</div></div>`;
+  const cohort = (x,name,color)=>`<div class="card"><b style="color:${color}">${name}</b>
+    <div class="grid g3" style="margin-top:8px">
+      ${cell(x.n+'종목','표본')}${cell(x.winRate.toFixed(0)+'%','승률')}
+      ${cell((x.avg>=0?'+':'')+x.avg.toFixed(1)+'%','평균 수익률')}
+      ${cell((x.med>=0?'+':'')+x.med.toFixed(1)+'%','중앙값')}
+      ${cell(x.mdd.toFixed(1)+'%','근사 MDD')}${cell(x.topShare.toFixed(0)+'%','상위 20% 기여도')}</div>
+    <div class="small dim" style="margin-top:8px">${x.list.slice(0,12).map(i=>'<span class="pill">'+esc(i.t)+' '+(i.ret>=0?'+':'')+i.ret.toFixed(0)+'%</span>').join('')||'표본 없음'}</div></div>`;
+  return `<div class="sec-hd"><h2>성과 분석 · 매매일지</h2></div>
+  <div class="grid g4">
+    ${cell(P.n+'건','기록된 포지션')}${cell(P.winRate.toFixed(0)+'%','승률')}
+    ${cell((P.avg>=0?'+':'')+P.avg.toFixed(1)+'%','평균 수익률')}${cell((P.med>=0?'+':'')+P.med.toFixed(1)+'%','중앙값')}
+    ${cell(bigMoney(P.totalPnl),'평가손익')}${cell(P.top20Share.toFixed(0)+'%','상위 20% 기여도')}
+    ${cell(bigMoney(P.invested),'총 투입액')}${cell((P.invested? (P.totalPnl/P.invested*100).toFixed(1):'0')+'%','투입 대비')}</div>
+  <div class="note" style="margin-top:10px">이 전략은 <b>승률이 낮고 상위 20% 기여도가 높은 것이 정상</b>입니다. 10~15종목 중 1~2개가 전체 수익을 만듭니다. 승률이 높은데 수익이 작다면 승자를 너무 일찍 팔고 있다는 뜻입니다.</div>
+
+  <h3>패턴 백테스트 — 입력된 등장 로그 기반</h3>
+  <div class="row" style="margin-bottom:8px"><span class="small muted">연속 체류 기준</span>
+    ${[8,12,16].map(n=>`<button class="btn ${(S.btHold||12)===n?'':'sec'} sm" onclick="S.btHold=${n};render()">${n}주</button>`).join('')}
+    <span class="dim tiny">거래비용·슬리피지 0.5% 반영 · 진입가 = 등장 시점 기록 주가 · 현재가 = 종목 데이터의 현재가</span></div>
+  <div class="grid g2">${cohort(B.cont, '시나리오 1 — '+B.hold+'주 이상 연속 체류 후 매수', 'var(--acc)')}
+    ${cohort(B.re, '시나리오 2 — 재등장 4주 차 매수 ⭐', 'var(--gold)')}</div>
+  <div class="note w">이 백테스트는 <b>사용자가 입력한 기간의 데이터만</b> 사용하므로 표본이 작고 생존 편향이 남아 있습니다.
+  실전 적용 전 2015~2023년(최소 8년) 데이터로 상장폐지·인수합병 종목을 포함해 재검증하십시오.
+  MDD는 등장 기록 주가만으로 계산한 <b>근사치</b>이며, 실제 최대 낙폭은 더 깊습니다. 이 숫자를 보고 견딜 수 있는지 먼저 판단하십시오.</div>
+
+  <h3>매매일지</h3>
+  <div class="card tw">${j.length? `<table><thead><tr><th>날짜</th><th>종목</th><th>구분</th><th>단가</th><th>금액</th><th>메모</th></tr></thead><tbody>
+    ${j.map(x=>`<tr><td class="mono small">${esc(x.date)}</td><td><b>${esc(x.ticker)}</b></td>
+      <td><span class="b ${x.act==='BUY'?'ok':x.act==='SELL'?'no':x.act==='ADD'?'nw':'gr'}">${x.act}</span></td>
+      <td class="mono small">${x.price?money(x.price):'—'}</td><td class="mono small">${x.amount?bigMoney(x.amount):'—'}</td>
+      <td class="small muted">${esc(x.note||'')}</td></tr>`).join('')}</tbody></table>`:'<span class="muted small">기록이 없습니다.</span>'}</div>`;
+}
+
+/* ═══════════════ 9. 설정 ═══════════════ */
+function vSet(){
+  const c = C(), F = FILT[S.mkt];
+  const grp = (title, keys)=>`<div class="card"><h3 style="margin-top:0">${title}</h3><div class="grid g3">
+    ${keys.map(k=>`<label class="f"><span>${esc(CFG_LAB[k]||k)}</span>
+      <input type="number" step="any" id="cf_${k}" value="${c[k]}"></label>`).join('')}</div></div>`;
+  return `<div class="sec-hd"><h2>설정 — ${MM().flag} ${MM().full}</h2><span class="dim small">모든 기준값은 시장별로 따로 저장됩니다</span></div>
+  ${grp('재무 6대 필수 조건', ['rev','revYears','gpmSW','gpmHW','tamX','founderStake','shareGrowth','runwayM'])}
+  ${grp('패턴 · 점수 · 레이팅', ['pass','fadeRev','rsMin','epsMin','salesMin','gainCap'])}
+  ${grp('위험 필터 임계값', ['minPrice','minVol','maxDebt','maxShort','maxCust','maxWarrant','lockup'])}
+  ${grp('포지션 사이징 · 계좌', ['acctLong','maxHold','initPct','maxPct','rebalPct','liqPct','earnDays'])}
+  <div class="row" style="margin-bottom:14px"><button class="btn" onclick="saveCfg()">기준값 저장</button>
+    <button class="btn sec" onclick="resetCfg()">${MM().name} 기본값으로 되돌리기</button></div>
+
+  <div class="card"><h3 style="margin-top:0">이 시장의 위험 필터 목록</h3>
+    <div class="grid g2"><div><b class="small" style="color:var(--bad)">즉시 제외 (Hard Block)</b>
+      ${F.hard.map(x=>'<div class="small muted">• '+esc(x.t)+(x.auto?' <span class="pill">자동</span>':'')+'</div>').join('')}</div>
+    <div><b class="small" style="color:var(--warn)">경고 (감점)</b>
+      ${F.warn.map(x=>'<div class="small muted">• '+esc(x.t)+' <span class="pill">−'+x.p+'</span>'+(x.auto?' <span class="pill">자동</span>':'')+'</div>').join('')}</div></div></div>
+
+  <div class="card"><h3 style="margin-top:0">데이터 관리</h3>
+    <div class="row"><button class="btn sec" onclick="exportJSON()">전체 데이터 내보내기 (JSON)</button>
+      <button class="btn sec" onclick="$('#imp').click()">불러오기</button>
+      <input type="file" id="imp" style="display:none" accept="application/json" onchange="importJSON(this)">
+      <button class="btn sec" onclick="loadSample()">샘플 데이터 불러오기 (${MM().name})</button>
+      <button class="btn dan" onclick="wipe()">이 시장 데이터 전체 삭제</button></div>
+    <div class="small dim" style="margin-top:8px">데이터는 이 브라우저(localStorage)에만 저장됩니다. 기기를 바꾸거나 캐시를 지우면 사라지므로 <b>주기적으로 JSON을 내보내 백업</b>하십시오.</div></div>
+
+  <div class="card"><h3 style="margin-top:0">이 앱의 원칙 (수정 불가)</h3><div class="small muted">
+    • 이 계좌는 <b>"없는 돈"</b>이다. -70% 구간을 견디는 것이 전략의 핵심이다.<br>
+    • 10~15종목 중 1~2개만 살아남는다는 전제로 균등 배분한다.<br>
+    • 주가는 판단 근거가 아니다. <b>매출 성장률과 마진만 본다.</b><br>
+    • 손절은 없다. <b>사업 논리가 훼손됐을 때만</b> 판다.<br>
+    • 승자를 파는 것이 이 전략 최대의 실패 요인이다.<br>
+    • 보유 기간은 3~10년, 전체 자산의 20~30%만 사용한다.</div></div>`;
+}
+function saveCfg(){ Object.keys(CFG0[S.mkt]).forEach(k=>{ const el=$('#cf_'+k); if(el && el.value!=='') D().cfg[k]=num(el.value); }); save(); toast('기준값 저장'); render(); }
+function resetCfg(){ if(!confirm(MM().name+' 기준값을 기본값으로 되돌릴까요?')) return; D().cfg = Object.assign({}, CFG0[S.mkt]); save(); render(); }
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(DB,null,1)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = '나스닥발굴_백업_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); URL.revokeObjectURL(a.href); toast('내보내기 완료');
+}
+function importJSON(el){
+  const f = el.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => { try{ const o = JSON.parse(e.target.result); if(!o.m) throw 0;
+      localStorage.setItem(KEY, JSON.stringify(o)); load(); toast('불러오기 완료'); render();
+    }catch(err){ toast('파일 형식이 올바르지 않습니다'); } };
+  r.readAsText(f);
+}
+function wipe(){ if(!confirm(MM().name+' 시장의 등장 기록·종목 데이터·보유·일지를 모두 삭제할까요?')) return;
+  DB.m[S.mkt] = Object.assign(blankMkt(), {cfg:D().cfg}); save(); render(); }
+
+/* ═══════════════ 샘플 데이터 (구조 확인용 · 전부 가상값) ═══════════════ */
+const SAMPLE = {
+US:[ {t:'NOVA', n:'노바 데이터 (예시)', runs:[[-238,42,3,30,17],[-9,10,3,9.5,13.5]], f:{biz:'SW',price:13.5,prevHigh:31,mcap:2100,advol:14000000,p63:9.6,p126:8.2,p189:8.8,p252:12.4,revQ:48,revY:44,revAccel:6,epsQ:30,epsY:20,revYears:5,revDuringFade:28,gpm:78,gpmTrend:'up',tamX:38,shareGrowth:3,runway:44,debtRatio:22,founderCEO:true,founderStake:11,instOwn:18,instDelta:6,analysts:3,shortInt:7,nrr:127,custConc:14,warrantPct:2,lockupDays:0,earnDays:34}},
+     {t:'HELIX', n:'헬릭스 로보틱스 (예시)', runs:[[-30,31,2,12,21]], f:{biz:'HW',price:21,prevHigh:23,mcap:900,advol:7000000,p63:17,p126:14,p189:12,p252:11,revQ:39,revY:35,revAccel:3,epsQ:-5,epsY:-2,revYears:3,gpm:46,gpmTrend:'flat',tamX:24,shareGrowth:4,runway:29,debtRatio:40,founderCEO:true,founderStake:8,instOwn:12,instDelta:3,analysts:2,shortInt:11,nrr:112,custConc:22,warrantPct:5,lockupDays:0,earnDays:19}},
+     {t:'ORBIT', n:'오빗 스페이스 (예시)', runs:[[-2,3,2,15,16]], f:{biz:'HW',price:16,prevHigh:17,mcap:600,advol:6000000,p63:13,p126:12,p189:11,p252:9,revQ:52,revY:41,revAccel:9,epsQ:-20,epsY:-15,revYears:2,gpm:38,gpmTrend:'up',tamX:30,shareGrowth:7,runway:21,debtRatio:30,founderCEO:true,founderStake:14,instOwn:8,instDelta:2,analysts:1,shortInt:14,nrr:0,custConc:41,warrantPct:9,lockupDays:60,earnDays:8}},
+     {t:'ZENIT', n:'제닛 테라퓨틱스 (예시 · 위험)', runs:[[-6,7,1,4.2,3.6]], f:{biz:'BIO',price:3.6,prevHigh:12,mcap:180,advol:2200000,p63:5,p126:7,p189:9,p252:11,revQ:12,revY:8,revAccel:-4,epsQ:-40,epsY:-33,revYears:1,gpm:31,gpmTrend:'down',tamX:12,shareGrowth:22,runway:9,debtRatio:180,founderCEO:false,founderStake:1,instOwn:5,instDelta:-3,analysts:0,shortInt:26,nrr:0,custConc:55,warrantPct:24,lockupDays:40,earnDays:3,flags:{spac2y:true,atm:true}}} ],
+CN:[ {t:'300111', n:'창신 스마트제조 (예시)', runs:[[-215,38,3,42,24],[-9,10,3,15,19]], f:{biz:'HW',price:19,prevHigh:46,mcap:9800,advol:180000000,p63:15,p126:13.5,p189:22,p252:26,revQ:41,revY:36,revAccel:5,epsQ:26,epsY:19,revYears:4,revDuringFade:24,gpm:44,gpmTrend:'up',tamX:26,shareGrowth:4,runway:30,debtRatio:58,founderCEO:true,founderStake:24,instOwn:16,instDelta:5,analysts:3,shortInt:0,nrr:0,custConc:26,warrantPct:0,lockupDays:0,earnDays:41}},
+     {t:'688222', n:'과창 반도체소재 (예시)', runs:[[-24,25,2,52,71]], f:{biz:'HW',price:71,prevHigh:74,mcap:14000,advol:220000000,p63:58,p126:49,p189:44,p252:40,revQ:33,revY:31,revAccel:2,epsQ:18,epsY:14,revYears:3,gpm:39,gpmTrend:'flat',tamX:18,shareGrowth:6,runway:26,debtRatio:47,founderCEO:true,founderStake:19,instOwn:21,instDelta:4,analysts:5,shortInt:0,nrr:0,custConc:33,warrantPct:0,lockupDays:120,earnDays:26}},
+     {t:'301333', n:'신에너지 부품 (예시)', runs:[[-2,3,2,28,30]], f:{biz:'HW',price:30,prevHigh:31,mcap:5200,advol:95000000,p63:25,p126:22,p189:21,p252:19,revQ:47,revY:38,revAccel:8,epsQ:10,epsY:7,revYears:2,gpm:33,gpmTrend:'up',tamX:20,shareGrowth:8,runway:19,debtRatio:88,founderCEO:true,founderStake:31,instOwn:9,instDelta:2,analysts:2,shortInt:0,nrr:0,custConc:38,warrantPct:0,lockupDays:75,earnDays:12}},
+     {t:'300444', n:'ST 하이테크 (예시 · 위험)', runs:[[-9,10,1,6.8,4.1]], f:{biz:'CONS',price:4.1,prevHigh:14,mcap:1600,advol:22000000,p63:6,p126:8,p189:10,p252:12,revQ:-8,revY:3,revAccel:-9,epsQ:-52,epsY:-40,revYears:0,gpm:18,gpmTrend:'down',tamX:8,shareGrowth:15,runway:7,debtRatio:165,founderCEO:false,founderStake:6,instOwn:3,instDelta:-4,analysts:0,shortInt:0,nrr:0,custConc:61,warrantPct:0,lockupDays:0,earnDays:15,flags:{stFlag:true,pledge:true,probe:true}}} ],
+JP:[ {t:'4011', n:'サンプル・クラウド (예시)', runs:[[-206,36,3,3200,1450],[-9,10,3,980,1290]], f:{biz:'SW',price:1290,prevHigh:3400,mcap:98000,advol:1400000000,p63:990,p126:880,p189:1150,p252:1400,revQ:34,revY:29,revAccel:4,epsQ:22,epsY:16,revYears:5,revDuringFade:21,gpm:71,gpmTrend:'up',tamX:22,shareGrowth:2,runway:40,debtRatio:35,founderCEO:true,founderStake:26,instOwn:14,instDelta:4,analysts:3,shortInt:5,nrr:121,custConc:17,warrantPct:1,lockupDays:0,earnDays:37}},
+     {t:'7378', n:'サンプル・ロボ (예시)', runs:[[-21,22,2,980,1420]], f:{biz:'HW',price:1420,prevHigh:1500,mcap:42000,advol:520000000,p63:1180,p126:1050,p189:980,p252:900,revQ:26,revY:23,revAccel:1,epsQ:12,epsY:9,revYears:4,gpm:41,gpmTrend:'flat',tamX:17,shareGrowth:3,runway:33,debtRatio:52,founderCEO:true,founderStake:18,instOwn:11,instDelta:3,analysts:2,shortInt:4,nrr:0,custConc:29,warrantPct:3,lockupDays:0,earnDays:23}},
+     {t:'5253', n:'サンプル・メドテック (예시)', runs:[[-1,2,2,760,810]], f:{biz:'BIO',price:810,prevHigh:830,mcap:18000,advol:310000000,p63:690,p126:640,p189:600,p252:560,revQ:31,revY:27,revAccel:5,epsQ:-8,epsY:-3,revYears:2,gpm:63,gpmTrend:'up',tamX:19,shareGrowth:5,runway:25,debtRatio:29,founderCEO:true,founderStake:22,instOwn:7,instDelta:2,analysts:1,shortInt:3,nrr:0,custConc:24,warrantPct:6,lockupDays:80,earnDays:9}},
+     {t:'9299', n:'サンプル・グロース (예시 · 위험)', runs:[[-11,12,1,540,240]], f:{biz:'CONS',price:240,prevHigh:900,mcap:3800,advol:90000000,p63:340,p126:480,p189:600,p252:700,revQ:4,revY:6,revAccel:-7,epsQ:-61,epsY:-44,revYears:0,gpm:24,gpmTrend:'down',tamX:9,shareGrowth:19,runway:8,debtRatio:140,founderCEO:false,founderStake:3,instOwn:4,instDelta:-2,analysts:0,shortInt:9,nrr:0,custConc:47,warrantPct:31,lockupDays:0,earnDays:6,flags:{gcNote:true,mscb:true,ipo2y:true}}} ],
+KR:[ {t:'419120', n:'샘플에이아이 (예시)', runs:[[-198,35,3,42000,17500],[-9,10,3,11500,15800]], f:{biz:'SW',price:15800,prevHigh:46000,mcap:820000,advol:9500000000,p63:11800,p126:10500,p189:13000,p252:16000,revQ:43,revY:37,revAccel:6,epsQ:24,epsY:18,revYears:4,revDuringFade:26,gpm:69,gpmTrend:'up',tamX:21,shareGrowth:3,runway:34,debtRatio:41,founderCEO:true,founderStake:27,instOwn:13,instDelta:5,analysts:3,shortInt:2,nrr:118,custConc:19,warrantPct:4,lockupDays:0,earnDays:29}},
+     {t:'277810', n:'샘플소재 (예시)', runs:[[-19,20,2,12000,19500]], f:{biz:'HW',price:19500,prevHigh:20500,mcap:410000,advol:6200000000,p63:15500,p126:13500,p189:12500,p252:11500,revQ:29,revY:27,revAccel:2,epsQ:15,epsY:11,revYears:3,gpm:34,gpmTrend:'flat',tamX:16,shareGrowth:5,runway:22,debtRatio:96,founderCEO:true,founderStake:21,instOwn:10,instDelta:3,analysts:2,shortInt:3,nrr:0,custConc:35,warrantPct:9,lockupDays:0,earnDays:17}},
+     {t:'460930', n:'샘플바이오 (예시)', runs:[[-2,3,2,9800,11200]], f:{biz:'BIO',price:11200,prevHigh:11800,mcap:230000,advol:4100000000,p63:9200,p126:8600,p189:8100,p252:7600,revQ:38,revY:31,revAccel:7,epsQ:-12,epsY:-6,revYears:2,gpm:62,gpmTrend:'up',tamX:18,shareGrowth:6,runway:20,debtRatio:37,founderCEO:true,founderStake:24,instOwn:6,instDelta:1,analysts:1,shortInt:1,nrr:0,custConc:31,warrantPct:12,lockupDays:70,earnDays:11}},
+     {t:'389020', n:'샘플테크 (예시 · 위험)', runs:[[-13,14,1,4200,980]], f:{biz:'CONS',price:980,prevHigh:5200,mcap:38000,advol:1800000000,p63:1500,p126:2400,p189:3100,p252:3800,revQ:-3,revY:5,revAccel:-11,epsQ:-70,epsY:-51,revYears:0,gpm:21,gpmTrend:'down',tamX:7,shareGrowth:26,runway:6,debtRatio:210,founderCEO:false,founderStake:4,instOwn:2,instDelta:-5,analysts:0,shortInt:5,nrr:0,custConc:52,warrantPct:33,lockupDays:0,earnDays:4,flags:{watch:true,cbbw:true,ownerChg:true}}} ]
+};
+function loadSample(){
+  if(!confirm(MM().name+' 시장에 샘플 데이터를 넣습니다.\n※ 티커·재무·주가 전부 구조 확인용 가상값입니다. 실제 기업과 무관합니다.\n기존 데이터는 유지되며 같은 티커는 덮어씁니다.')) return;
+  const cur = wIdx(thisWeek()), d = D();
+  SAMPLE[S.mkt].forEach(s=>{
+    d.fund[s.t] = Object.assign({name:s.n, flags:{}}, s.f);
+    d.fund[s.t].flags = s.f.flags||{};
+    d.appear = d.appear.filter(a=>a.ticker!==s.t);
+    s.runs.forEach(r=>{
+      const [off, len, aC, p0, p1] = r;
+      for(let i=0;i<len;i++){
+        const w = wLabel(cur + off + i);
+        const price = +(p0 + (p1-p0)*(len<2?1:i/(len-1))).toFixed(2);
+        d.appear.push({ticker:s.t, week:w, sources:SRC[S.mkt].A.slice(0,aC), aCount:aC,
+          b: i%7===0? [SRC[S.mkt].B[0]] : [], c: aC<2? [SRC[S.mkt].C[0]] : [], cCount: aC<2?1:0,
+          price, mcap:num(s.f.mcap)});
+      }
+    });
+  });
+  save(); toast('샘플 데이터 적용'); go('dash');
+}
+
+/* ═══════════════ 시작 ═══════════════ */
+load();
+render();
+window.setMkt=setMkt; window.go=go; window.detail=detail; window.closeM=closeM;
+
+</script>
+</body>
+</html>
