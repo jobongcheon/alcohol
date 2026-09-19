@@ -3,95 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#11131a">
-<title>테트리스</title>
+<meta name="theme-color" content="#160b2e">
+<title>내 동생이 궁금해하는 테트리스 게임</title>
 <style>
+  :root {
+    --ink:#f3f0ff;
+    --muted:#a99ed6;
+    --glass:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.14);
+  }
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html, body {
     height:100%;
-    background:#11131a;
-    color:#e8eaf2;
+    color:var(--ink);
     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
     overflow:hidden;
     touch-action:manipulation;
     user-select:none;
+    background:#160b2e;
   }
+  body::before {
+    content:'';
+    position:fixed; inset:-20%;
+    background:
+      radial-gradient(38% 32% at 18% 16%, rgba(255,86,163,.42), transparent 62%),
+      radial-gradient(42% 34% at 84% 22%, rgba(70,200,255,.38), transparent 64%),
+      radial-gradient(46% 38% at 26% 88%, rgba(126,86,255,.44), transparent 66%),
+      radial-gradient(40% 32% at 88% 84%, rgba(255,196,60,.28), transparent 62%),
+      linear-gradient(160deg, #1b0f39 0%, #12082a 55%, #0d0620 100%);
+    animation:drift 18s ease-in-out infinite alternate;
+    z-index:-1;
+  }
+  @keyframes drift {
+    from { transform:translate3d(-2%, -1%, 0) scale(1); }
+    to   { transform:translate3d(2%, 2%, 0) scale(1.06); }
+  }
+  @media (prefers-reduced-motion:reduce) { body::before { animation:none; } }
+
   #app {
     height:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:10px;
-    padding:8px calc(8px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(8px + env(safe-area-inset-left));
+    padding:10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));
   }
-  #stage { position:relative; display:flex; gap:10px; align-items:flex-start; }
+
+  header { text-align:center; line-height:1.15; }
+  header .eyebrow {
+    font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  header h1 {
+    font-size:clamp(20px, 6vw, 30px);
+    font-weight:900;
+    letter-spacing:-.01em;
+    margin-top:3px;
+    background:linear-gradient(92deg, #ff6ec7 0%, #ffb648 28%, #6ef3a5 54%, #58d3ff 78%, #b78bff 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 2px 14px rgba(255,110,199,.35));
+  }
+
+  #stage { display:flex; gap:12px; align-items:flex-start; }
+  #boardWrap { position:relative; }
   canvas#board {
-    background:#0a0c12;
-    border:2px solid #2a2f40;
-    border-radius:8px;
+    background:rgba(10,4,26,.72);
+    border:1px solid var(--line);
+    border-radius:14px;
     display:block;
     touch-action:none;
+    box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 0 40px rgba(122,74,255,.18);
+    backdrop-filter:blur(3px);
   }
-  #side { display:flex; flex-direction:column; gap:10px; }
+  #side { display:flex; flex-direction:column; gap:9px; }
   .panel {
-    background:#171a24;
-    border:1px solid #2a2f40;
-    border-radius:8px;
-    padding:8px 10px;
-    min-width:90px;
+    position:relative;
+    background:var(--glass);
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:8px 11px;
+    min-width:104px;
+    overflow:hidden;
+    backdrop-filter:blur(8px);
+    box-shadow:0 8px 24px rgba(0,0,0,.28);
   }
-  .panel .label { font-size:11px; letter-spacing:.08em; color:#7d859e; text-transform:uppercase; }
-  .panel .value { font-size:20px; font-weight:700; margin-top:2px; font-variant-numeric:tabular-nums; }
-  canvas#next { display:block; margin-top:4px; }
-  #pad { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:100%; max-width:360px; }
+  .panel::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--accent, #ff6ec7);
+  }
+  .panel.score  { --accent:linear-gradient(#ff6ec7, #ff9f6e); }
+  .panel.lines  { --accent:linear-gradient(#6ef3a5, #58d3ff); }
+  .panel.level  { --accent:linear-gradient(#ffd166, #ff8f5e); }
+  .panel.next   { --accent:linear-gradient(#b78bff, #58d3ff); }
+  .panel .label { font-size:10px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+  .panel .value {
+    font-size:21px; font-weight:800; margin-top:1px;
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 18px rgba(255,255,255,.25);
+  }
+  canvas#next { display:block; margin:5px auto 0; }
+
+  #pad { display:grid; grid-template-columns:repeat(4, 1fr); gap:9px; width:100%; max-width:380px; }
   #pad button {
-    background:#1d2130;
-    border:1px solid #303648;
-    color:#e8eaf2;
-    border-radius:10px;
-    padding:14px 0;
-    font-size:17px;
-    font-weight:600;
+    border:1px solid var(--line);
+    color:#fff;
+    border-radius:15px;
+    padding:15px 0;
+    font-size:19px; font-weight:800;
     cursor:pointer;
+    background:linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.05));
+    box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform .08s ease, filter .08s ease;
   }
-  #pad button:active { background:#2b3247; }
-  #hint { font-size:11px; color:#6d7490; text-align:center; }
+  #pad button[data-act="left"], #pad button[data-act="right"] { background:linear-gradient(160deg, #6a5cff, #3c2fb0); }
+  #pad button[data-act="rotate"] { background:linear-gradient(160deg, #ff6ec7, #b02f86); }
+  #pad button[data-act="drop"]   { background:linear-gradient(160deg, #20c7a8, #0d7d6b); }
+  #pad button:active { transform:translateY(2px) scale(.97); filter:brightness(1.18); }
+
+  #hint { font-size:11px; color:var(--muted); text-align:center; opacity:.9; }
+
   #overlay {
     position:absolute; inset:0;
-    background:rgba(10,12,18,.88);
-    border-radius:8px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
-    text-align:center; padding:16px;
+    background:linear-gradient(180deg, rgba(18,8,42,.9), rgba(10,4,26,.95));
+    border-radius:14px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px;
+    text-align:center; padding:18px;
+    border:1px solid var(--line);
   }
   #overlay.hidden { display:none; }
-  #overlay h1 { font-size:22px; letter-spacing:.04em; }
-  #overlay p { font-size:13px; color:#9aa2bd; line-height:1.6; }
-  #overlay button {
-    background:#4a7dff; border:0; color:#fff;
-    padding:12px 26px; border-radius:999px;
-    font-size:15px; font-weight:700; cursor:pointer;
+  #overlay h1 {
+    font-size:clamp(20px, 6vw, 26px); font-weight:900;
+    background:linear-gradient(92deg, #ffd166, #ff6ec7 55%, #58d3ff);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
   }
+  #overlay p { font-size:13px; color:var(--muted); line-height:1.7; }
+  #overlay p b { color:#ffd166; }
+  #overlay button {
+    border:0; color:#fff;
+    padding:13px 30px; border-radius:999px;
+    font-size:15px; font-weight:800; cursor:pointer;
+    background:linear-gradient(95deg, #ff6ec7, #7c5cff 55%, #35c8ff);
+    box-shadow:0 10px 26px rgba(255,110,199,.35);
+    transition:transform .08s ease, filter .08s ease;
+  }
+  #overlay button:active { transform:translateY(2px) scale(.97); filter:brightness(1.12); }
+
   @media (max-width:520px) {
-    .panel { min-width:74px; padding:6px 8px; }
-    .panel .value { font-size:16px; }
+    .panel { min-width:82px; padding:6px 9px; border-radius:11px; }
+    .panel .value { font-size:17px; }
+    #stage { gap:9px; }
+  }
+  @media (max-height:640px) {
+    header .eyebrow { font-size:10px; }
+    #pad button { padding:11px 0; font-size:17px; }
+    #hint { display:none; }
   }
 </style>
 </head>
 <body>
 <div id="app">
+  <header>
+    <div class="eyebrow">Brick Puzzle</div>
+    <h1>내 동생이 궁금해하는 테트리스 게임</h1>
+  </header>
   <div id="stage">
-    <canvas id="board"></canvas>
-    <div id="side">
-      <div class="panel"><div class="label">Score</div><div class="value" id="score">0</div></div>
-      <div class="panel"><div class="label">Lines</div><div class="value" id="lines">0</div></div>
-      <div class="panel"><div class="label">Level</div><div class="value" id="level">1</div></div>
-      <div class="panel"><div class="label">Next</div><canvas id="next" width="76" height="76"></canvas></div>
+    <div id="boardWrap">
+      <canvas id="board"></canvas>
+      <div id="overlay">
+        <h1 id="ovTitle">테트리스</h1>
+        <p id="ovText">← → 이동 · ↑ 회전 · ↓ 한 칸 내리기<br>Space 한 번에 떨어뜨리기 · P 일시정지<br>휴대폰은 아래 버튼 또는 스와이프</p>
+        <button id="ovBtn">게임 시작</button>
+      </div>
     </div>
-    <div id="overlay">
-      <h1 id="ovTitle">테트리스</h1>
-      <p id="ovText">← → 이동 · ↑ 회전 · ↓ 소프트드롭<br>Space 하드드롭 · P 일시정지<br>모바일은 아래 버튼 또는 스와이프</p>
-      <button id="ovBtn">게임 시작</button>
+    <div id="side">
+      <div class="panel score"><div class="label">Score</div><div class="value" id="score">0</div></div>
+      <div class="panel lines"><div class="label">Lines</div><div class="value" id="lines">0</div></div>
+      <div class="panel level"><div class="label">Level</div><div class="value" id="level">1</div></div>
+      <div class="panel next"><div class="label">Next</div><canvas id="next" width="80" height="80"></canvas></div>
     </div>
   </div>
   <div id="pad">
@@ -100,16 +188,22 @@
     <button data-act="right">▶</button>
     <button data-act="drop">⤓</button>
   </div>
-  <div id="hint">보드를 스와이프해도 조작할 수 있어요 · 탭=회전, 아래로 빠르게=하드드롭</div>
+  <div id="hint">보드를 스와이프해도 조작할 수 있어요 · 탭=회전, 아래로 빠르게=한 번에 떨어뜨리기</div>
 </div>
 <script>
 (function () {
   'use strict';
 
   var COLS = 10, ROWS = 20;
+  // [밝은 면, 어두운 면] — 블록마다 그라데이션으로 칠한다
   var COLORS = {
-    I: '#3ec9e0', J: '#4a7dff', L: '#ef9436',
-    O: '#efd23c', S: '#4fd46a', T: '#b064e6', Z: '#ee5a6a'
+    I: ['#7df3ff', '#12a7cf'],
+    J: ['#7f9cff', '#2f42c9'],
+    L: ['#ffc06b', '#e0761c'],
+    O: ['#ffe27a', '#e8b21c'],
+    S: ['#8cf9a8', '#20b45c'],
+    T: ['#d79cff', '#8b3fe0'],
+    Z: ['#ff94a6', '#e0384f']
   };
   var SHAPES = {
     I: [[0,1],[1,1],[2,1],[3,1]],
@@ -142,12 +236,20 @@
   var rafId = null;
 
   function resize() {
-    // 사이드 패널(약 110px)과 패드/힌트 영역을 뺀 공간에 보드를 맞춘다.
-    var availW = Math.min(window.innerWidth - 16, 640) - 112;
-    var availH = window.innerHeight - 150;
+    // 제목/패드/힌트가 실제로 차지하는 높이를 재서 남는 공간에 보드를 맞춘다.
+    var app = document.getElementById('app');
+    var chrome = 0;
+    ['header', '#pad', '#hint'].forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (el) chrome += el.offsetHeight;
+    });
+    chrome += 52; // gap + padding 여유
+    var sideW = document.getElementById('side').offsetWidth || 110;
+    var availW = Math.min(window.innerWidth - 20, 680) - sideW - 14;
+    var availH = (app.clientHeight || window.innerHeight) - chrome;
     var byW = Math.floor(availW / COLS);
     var byH = Math.floor(availH / ROWS);
-    cell = Math.max(12, Math.min(34, Math.min(byW, byH)));
+    cell = Math.max(11, Math.min(36, Math.min(byW, byH)));
     boardCv.width = COLS * cell;
     boardCv.height = ROWS * cell;
     draw();
@@ -290,21 +392,64 @@
     elLevel.textContent = level;
   }
 
-  function block(c, x, y, size, color) {
-    c.fillStyle = color;
-    c.fillRect(x, y, size, size);
-    c.fillStyle = 'rgba(255,255,255,.22)';
-    c.fillRect(x, y, size, Math.max(2, size * 0.14));
-    c.strokeStyle = 'rgba(0,0,0,.35)';
+  function roundRect(c, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+
+  function block(c, x, y, size, pair, glow) {
+    var pad = Math.max(1, size * 0.06);
+    var s = size - pad * 2;
+    var r = Math.max(2, size * 0.22);
+    var bx = x + pad, by = y + pad;
+
+    var g = c.createLinearGradient(bx, by, bx + s, by + s);
+    g.addColorStop(0, pair[0]);
+    g.addColorStop(1, pair[1]);
+
+    c.save();
+    if (glow) {
+      c.shadowColor = pair[0];
+      c.shadowBlur = size * 0.45;
+    }
+    roundRect(c, bx, by, s, s, r);
+    c.fillStyle = g;
+    c.fill();
+    c.restore();
+
+    // 위쪽 하이라이트
+    c.save();
+    roundRect(c, bx, by, s, s, r);
+    c.clip();
+    var hg = c.createLinearGradient(bx, by, bx, by + s * 0.55);
+    hg.addColorStop(0, 'rgba(255,255,255,.55)');
+    hg.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = hg;
+    c.fillRect(bx, by, s, s * 0.55);
+    c.restore();
+
+    // 테두리
+    roundRect(c, bx + .5, by + .5, s - 1, s - 1, r);
+    c.strokeStyle = 'rgba(255,255,255,.35)';
     c.lineWidth = 1;
-    c.strokeRect(x + 0.5, y + 0.5, size - 1, size - 1);
+    c.stroke();
   }
 
   function draw() {
-    ctx.fillStyle = '#0a0c12';
+    ctx.clearRect(0, 0, boardCv.width, boardCv.height);
+    var bg = ctx.createLinearGradient(0, 0, boardCv.width, boardCv.height);
+    bg.addColorStop(0, 'rgba(38,16,74,.85)');
+    bg.addColorStop(1, 'rgba(12,5,30,.9)');
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, boardCv.width, boardCv.height);
 
-    ctx.strokeStyle = 'rgba(255,255,255,.045)';
+    ctx.strokeStyle = 'rgba(255,255,255,.06)';
     ctx.lineWidth = 1;
     for (var x = 1; x < COLS; x++) {
       ctx.beginPath(); ctx.moveTo(x * cell + .5, 0); ctx.lineTo(x * cell + .5, boardCv.height); ctx.stroke();
@@ -326,17 +471,24 @@
       var d = 0;
       while (!collides(cur, cur.cells, 0, d + 1)) d++;
       if (d > 0) {
-        ctx.fillStyle = 'rgba(255,255,255,.12)';
+        ctx.save();
+        ctx.globalAlpha = 0.28;
+        ctx.strokeStyle = COLORS[cur.type][0];
+        ctx.lineWidth = 2;
         for (var i = 0; i < cur.cells.length; i++) {
           var gx2 = (cur.x + cur.cells[i][0]) * cell;
           var gy2 = (cur.y + cur.cells[i][1] + d) * cell;
-          if (gy2 >= 0) ctx.fillRect(gx2 + 2, gy2 + 2, cell - 4, cell - 4);
+          if (gy2 >= 0) {
+            roundRect(ctx, gx2 + 3, gy2 + 3, cell - 6, cell - 6, Math.max(2, cell * 0.2));
+            ctx.stroke();
+          }
         }
+        ctx.restore();
       }
       for (var k = 0; k < cur.cells.length; k++) {
         var px = (cur.x + cur.cells[k][0]) * cell;
         var py = (cur.y + cur.cells[k][1]) * cell;
-        if (py >= -cell) block(ctx, px, py, cell, COLORS[cur.type]);
+        if (py >= -cell) block(ctx, px, py, cell, COLORS[cur.type], true);
       }
     }
   }
