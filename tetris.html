@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#160b2e">
+<title>내 동생이 궁금해하는 테트리스 게임</title>
+<style>
+  :root {
+    --ink:#f3f0ff;
+    --muted:#a99ed6;
+    --glass:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.14);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body {
+    height:100%;
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+    overflow:hidden;
+    touch-action:manipulation;
+    user-select:none;
+    background:#160b2e;
+  }
+  body::before {
+    content:'';
+    position:fixed; inset:-20%;
+    background:
+      radial-gradient(38% 32% at 18% 16%, rgba(255,86,163,.42), transparent 62%),
+      radial-gradient(42% 34% at 84% 22%, rgba(70,200,255,.38), transparent 64%),
+      radial-gradient(46% 38% at 26% 88%, rgba(126,86,255,.44), transparent 66%),
+      radial-gradient(40% 32% at 88% 84%, rgba(255,196,60,.28), transparent 62%),
+      linear-gradient(160deg, #1b0f39 0%, #12082a 55%, #0d0620 100%);
+    animation:drift 18s ease-in-out infinite alternate;
+    z-index:-1;
+  }
+  @keyframes drift {
+    from { transform:translate3d(-2%, -1%, 0) scale(1); }
+    to   { transform:translate3d(2%, 2%, 0) scale(1.06); }
+  }
+  @media (prefers-reduced-motion:reduce) { body::before { animation:none; } }
+
+  #app {
+    height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px;
+    padding:10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));
+  }
+
+  header { text-align:center; line-height:1.15; }
+  header .eyebrow {
+    font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  header h1 {
+    font-size:clamp(20px, 6vw, 30px);
+    font-weight:900;
+    letter-spacing:-.01em;
+    margin-top:3px;
+    background:linear-gradient(92deg, #ff6ec7 0%, #ffb648 28%, #6ef3a5 54%, #58d3ff 78%, #b78bff 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 2px 14px rgba(255,110,199,.35));
+  }
+
+  #stage { display:flex; gap:12px; align-items:flex-start; }
+  #boardWrap { position:relative; }
+  canvas#board {
+    background:rgba(10,4,26,.72);
+    border:1px solid var(--line);
+    border-radius:14px;
+    display:block;
+    touch-action:none;
+    box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 0 40px rgba(122,74,255,.18);
+    backdrop-filter:blur(3px);
+  }
+  #side { display:flex; flex-direction:column; gap:9px; }
+  .panel {
+    position:relative;
+    background:var(--glass);
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:8px 11px;
+    min-width:104px;
+    overflow:hidden;
+    backdrop-filter:blur(8px);
+    box-shadow:0 8px 24px rgba(0,0,0,.28);
+  }
+  .panel::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--accent, #ff6ec7);
+  }
+  .panel.score  { --accent:linear-gradient(#ff6ec7, #ff9f6e); }
+  .panel.lines  { --accent:linear-gradient(#6ef3a5, #58d3ff); }
+  .panel.level  { --accent:linear-gradient(#ffd166, #ff8f5e); }
+  .panel.next   { --accent:linear-gradient(#b78bff, #58d3ff); }
+  .panel .label { font-size:10px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+  .panel .value {
+    font-size:21px; font-weight:800; margin-top:1px;
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 18px rgba(255,255,255,.25);
+  }
+  canvas#next { display:block; margin:5px auto 0; }
+
+  #pad { display:grid; grid-template-columns:repeat(4, 1fr); gap:9px; width:100%; max-width:380px; }
+  #pad button {
+    border:1px solid var(--line);
+    color:#fff;
+    border-radius:15px;
+    padding:15px 0;
+    font-size:19px; font-weight:800;
+    cursor:pointer;
+    background:linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.05));
+    box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform .08s ease, filter .08s ease;
+  }
+  #pad button[data-act="left"], #pad button[data-act="right"] { background:linear-gradient(160deg, #6a5cff, #3c2fb0); }
+  #pad button[data-act="rotate"] { background:linear-gradient(160deg, #ff6ec7, #b02f86); }
+  #pad button[data-act="drop"]   { background:linear-gradient(160deg, #20c7a8, #0d7d6b); }
+  #pad button:active { transform:translateY(2px) scale(.97); filter:brightness(1.18); }
+
+  #hint { font-size:11px; color:var(--muted); text-align:center; opacity:.9; }
+
+  #overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(18,8,42,.9), rgba(10,4,26,.95));
+    border-radius:14px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px;
+    text-align:center; padding:18px;
+    border:1px solid var(--line);
+  }
+  #overlay.hidden { display:none; }
+  #overlay h1 {
+    font-size:clamp(20px, 6vw, 26px); font-weight:900;
+    background:linear-gradient(92deg, #ffd166, #ff6ec7 55%, #58d3ff);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+  #overlay p { font-size:13px; color:var(--muted); line-height:1.7; }
+  #overlay p b { color:#ffd166; }
+  #overlay button {
+    border:0; color:#fff;
+    padding:13px 30px; border-radius:999px;
+    font-size:15px; font-weight:800; cursor:pointer;
+    background:linear-gradient(95deg, #ff6ec7, #7c5cff 55%, #35c8ff);
+    box-shadow:0 10px 26px rgba(255,110,199,.35);
+    transition:transform .08s ease, filter .08s ease;
+  }
+  #overlay button:active { transform:translateY(2px) scale(.97); filter:brightness(1.12); }
+
+  @media (max-width:520px) {
+    .panel { min-width:82px; padding:6px 9px; border-radius:11px; }
+    .panel .value { font-size:17px; }
+    #stage { gap:9px; }
+  }
+  @media (max-height:640px) {
+    header .eyebrow { font-size:10px; }
+    #pad button { padding:11px 0; font-size:17px; }
+    #hint { display:none; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="eyebrow">Brick Puzzle</div>
+    <h1>내 동생이 궁금해하는 테트리스 게임</h1>
+  </header>
+  <div id="stage">
+    <div id="boardWrap">
+      <canvas id="board"></canvas>
+      <div id="overlay">
+        <h1 id="ovTitle">테트리스</h1>
+        <p id="ovText">← → 이동 · ↑ 회전 · ↓ 한 칸 내리기<br>Space 한 번에 떨어뜨리기 · P 일시정지<br>휴대폰은 아래 버튼 또는 스와이프</p>
+        <button id="ovBtn">게임 시작</button>
+      </div>
+    </div>
+    <div id="side">
+      <div class="panel score"><div class="label">Score</div><div class="value" id="score">0</div></div>
+      <div class="panel lines"><div class="label">Lines</div><div class="value" id="lines">0</div></div>
+      <div class="panel level"><div class="label">Level</div><div class="value" id="level">1</div></div>
+      <div class="panel next"><div class="label">Next</div><canvas id="next" width="80" height="80"></canvas></div>
+    </div>
+  </div>
+  <div id="pad">
+    <button data-act="left">◀</button>
+    <button data-act="rotate">⟳</button>
+    <button data-act="right">▶</button>
+    <button data-act="drop">⤓</button>
+  </div>
+  <div id="hint">보드를 스와이프해도 조작할 수 있어요 · 탭=회전, 아래로 빠르게=한 번에 떨어뜨리기</div>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var COLS = 10, ROWS = 20;
+  // [밝은 면, 어두운 면] — 블록마다 그라데이션으로 칠한다
+  var COLORS = {
+    I: ['#7df3ff', '#12a7cf'],
+    J: ['#7f9cff', '#2f42c9'],
+    L: ['#ffc06b', '#e0761c'],
+    O: ['#ffe27a', '#e8b21c'],
+    S: ['#8cf9a8', '#20b45c'],
+    T: ['#d79cff', '#8b3fe0'],
+    Z: ['#ff94a6', '#e0384f']
+  };
+  var SHAPES = {
+    I: [[0,1],[1,1],[2,1],[3,1]],
+    J: [[0,0],[0,1],[1,1],[2,1]],
+    L: [[2,0],[0,1],[1,1],[2,1]],
+    O: [[1,0],[2,0],[1,1],[2,1]],
+    S: [[1,0],[2,0],[0,1],[1,1]],
+    T: [[1,0],[0,1],[1,1],[2,1]],
+    Z: [[0,0],[1,0],[1,1],[2,1]]
+  };
+  var SIZE = { I: 4, O: 4, J: 3, L: 3, S: 3, T: 3, Z: 3 };
+
+  var boardCv = document.getElementById('board');
+  var ctx = boardCv.getContext('2d');
+  var nextCv = document.getElementById('next');
+  var nctx = nextCv.getContext('2d');
+  var elScore = document.getElementById('score');
+  var elLines = document.getElementById('lines');
+  var elLevel = document.getElementById('level');
+  var overlay = document.getElementById('overlay');
+  var ovTitle = document.getElementById('ovTitle');
+  var ovText = document.getElementById('ovText');
+  var ovBtn = document.getElementById('ovBtn');
+
+  var cell = 24;
+  var grid, cur, nextType, bag = [];
+  var score = 0, lines = 0, level = 1;
+  var dropMs = 800, acc = 0, lastTs = 0;
+  var state = 'ready'; // ready | playing | paused | over
+  var rafId = null;
+
+  function resize() {
+    // 제목/패드/힌트가 실제로 차지하는 높이를 재서 남는 공간에 보드를 맞춘다.
+    var app = document.getElementById('app');
+    var chrome = 0;
+    ['header', '#pad', '#hint'].forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (el) chrome += el.offsetHeight;
+    });
+    chrome += 52; // gap + padding 여유
+    var sideW = document.getElementById('side').offsetWidth || 110;
+    var availW = Math.min(window.innerWidth - 20, 680) - sideW - 14;
+    var availH = (app.clientHeight || window.innerHeight) - chrome;
+    var byW = Math.floor(availW / COLS);
+    var byH = Math.floor(availH / ROWS);
+    cell = Math.max(11, Math.min(36, Math.min(byW, byH)));
+    boardCv.width = COLS * cell;
+    boardCv.height = ROWS * cell;
+    draw();
+  }
+
+  function newGrid() {
+    var g = [];
+    for (var y = 0; y < ROWS; y++) {
+      g.push(new Array(COLS).fill(null));
+    }
+    return g;
+  }
+
+  function refillBag() {
+    bag = ['I','J','L','O','S','T','Z'];
+    for (var i = bag.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+    }
+  }
+
+  function takeType() {
+    if (!bag.length) refillBag();
+    return bag.pop();
+  }
+
+  function makePiece(type) {
+    return {
+      type: type,
+      cells: SHAPES[type].map(function (c) { return [c[0], c[1]]; }),
+      n: SIZE[type],
+      x: Math.floor((COLS - SIZE[type]) / 2),
+      y: -1
+    };
+  }
+
+  function rotated(p) {
+    if (p.type === 'O') return p.cells;
+    return p.cells.map(function (c) { return [p.n - 1 - c[1], c[0]]; });
+  }
+
+  function collides(p, cells, ox, oy) {
+    for (var i = 0; i < cells.length; i++) {
+      var x = p.x + cells[i][0] + ox;
+      var y = p.y + cells[i][1] + oy;
+      if (x < 0 || x >= COLS || y >= ROWS) return true;
+      if (y >= 0 && grid[y][x]) return true;
+    }
+    return false;
+  }
+
+  function spawn() {
+    cur = makePiece(nextType);
+    nextType = takeType();
+    drawNext();
+    if (collides(cur, cur.cells, 0, 0)) gameOver();
+  }
+
+  function move(dx) {
+    if (state !== 'playing') return;
+    if (!collides(cur, cur.cells, dx, 0)) { cur.x += dx; draw(); }
+  }
+
+  function rotate() {
+    if (state !== 'playing') return;
+    var r = rotated(cur);
+    var kicks = [0, -1, 1, -2, 2];
+    for (var i = 0; i < kicks.length; i++) {
+      if (!collides(cur, r, kicks[i], 0)) {
+        cur.cells = r;
+        cur.x += kicks[i];
+        draw();
+        return;
+      }
+    }
+  }
+
+  function softDrop() {
+    if (state !== 'playing') return;
+    if (!collides(cur, cur.cells, 0, 1)) {
+      cur.y += 1;
+      score += 1;
+      updateHud();
+      draw();
+    } else {
+      lock();
+    }
+    acc = 0;
+  }
+
+  function hardDrop() {
+    if (state !== 'playing') return;
+    var d = 0;
+    while (!collides(cur, cur.cells, 0, d + 1)) d++;
+    cur.y += d;
+    score += d * 2;
+    lock();
+  }
+
+  function lock() {
+    for (var i = 0; i < cur.cells.length; i++) {
+      var x = cur.x + cur.cells[i][0];
+      var y = cur.y + cur.cells[i][1];
+      if (y < 0) { gameOver(); return; }
+      grid[y][x] = cur.type;
+    }
+    clearLines();
+    updateHud();
+    spawn();
+    acc = 0;
+    draw();
+  }
+
+  function clearLines() {
+    var cleared = 0;
+    for (var y = ROWS - 1; y >= 0; y--) {
+      var full = true;
+      for (var x = 0; x < COLS; x++) {
+        if (!grid[y][x]) { full = false; break; }
+      }
+      if (full) {
+        grid.splice(y, 1);
+        grid.unshift(new Array(COLS).fill(null));
+        cleared++;
+        y++; // 같은 인덱스를 다시 검사
+      }
+    }
+    if (cleared) {
+      score += [0, 100, 300, 500, 800][cleared] * level;
+      lines += cleared;
+      level = Math.floor(lines / 10) + 1;
+      dropMs = Math.max(90, 800 - (level - 1) * 65);
+      updateHud();
+    }
+  }
+
+  function updateHud() {
+    elScore.textContent = score;
+    elLines.textContent = lines;
+    elLevel.textContent = level;
+  }
+
+  function roundRect(c, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+
+  function block(c, x, y, size, pair, glow) {
+    var pad = Math.max(1, size * 0.06);
+    var s = size - pad * 2;
+    var r = Math.max(2, size * 0.22);
+    var bx = x + pad, by = y + pad;
+
+    var g = c.createLinearGradient(bx, by, bx + s, by + s);
+    g.addColorStop(0, pair[0]);
+    g.addColorStop(1, pair[1]);
+
+    c.save();
+    if (glow) {
+      c.shadowColor = pair[0];
+      c.shadowBlur = size * 0.45;
+    }
+    roundRect(c, bx, by, s, s, r);
+    c.fillStyle = g;
+    c.fill();
+    c.restore();
+
+    // 위쪽 하이라이트
+    c.save();
+    roundRect(c, bx, by, s, s, r);
+    c.clip();
+    var hg = c.createLinearGradient(bx, by, bx, by + s * 0.55);
+    hg.addColorStop(0, 'rgba(255,255,255,.55)');
+    hg.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = hg;
+    c.fillRect(bx, by, s, s * 0.55);
+    c.restore();
+
+    // 테두리
+    roundRect(c, bx + .5, by + .5, s - 1, s - 1, r);
+    c.strokeStyle = 'rgba(255,255,255,.35)';
+    c.lineWidth = 1;
+    c.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, boardCv.width, boardCv.height);
+    var bg = ctx.createLinearGradient(0, 0, boardCv.width, boardCv.height);
+    bg.addColorStop(0, 'rgba(38,16,74,.85)');
+    bg.addColorStop(1, 'rgba(12,5,30,.9)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, boardCv.width, boardCv.height);
+
+    ctx.strokeStyle = 'rgba(255,255,255,.06)';
+    ctx.lineWidth = 1;
+    for (var x = 1; x < COLS; x++) {
+      ctx.beginPath(); ctx.moveTo(x * cell + .5, 0); ctx.lineTo(x * cell + .5, boardCv.height); ctx.stroke();
+    }
+    for (var y = 1; y < ROWS; y++) {
+      ctx.beginPath(); ctx.moveTo(0, y * cell + .5); ctx.lineTo(boardCv.width, y * cell + .5); ctx.stroke();
+    }
+
+    if (grid) {
+      for (var gy = 0; gy < ROWS; gy++) {
+        for (var gx = 0; gx < COLS; gx++) {
+          if (grid[gy][gx]) block(ctx, gx * cell, gy * cell, cell, COLORS[grid[gy][gx]]);
+        }
+      }
+    }
+
+    if (cur && state !== 'ready') {
+      // 고스트
+      var d = 0;
+      while (!collides(cur, cur.cells, 0, d + 1)) d++;
+      if (d > 0) {
+        ctx.save();
+        ctx.globalAlpha = 0.28;
+        ctx.strokeStyle = COLORS[cur.type][0];
+        ctx.lineWidth = 2;
+        for (var i = 0; i < cur.cells.length; i++) {
+          var gx2 = (cur.x + cur.cells[i][0]) * cell;
+          var gy2 = (cur.y + cur.cells[i][1] + d) * cell;
+          if (gy2 >= 0) {
+            roundRect(ctx, gx2 + 3, gy2 + 3, cell - 6, cell - 6, Math.max(2, cell * 0.2));
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+      for (var k = 0; k < cur.cells.length; k++) {
+        var px = (cur.x + cur.cells[k][0]) * cell;
+        var py = (cur.y + cur.cells[k][1]) * cell;
+        if (py >= -cell) block(ctx, px, py, cell, COLORS[cur.type], true);
+      }
+    }
+  }
+
+  function drawNext() {
+    var w = nextCv.width, h = nextCv.height;
+    nctx.clearRect(0, 0, w, h);
+    if (!nextType) return;
+    var cells = SHAPES[nextType];
+    var minX = 9, maxX = -9, minY = 9, maxY = -9;
+    cells.forEach(function (c) {
+      minX = Math.min(minX, c[0]); maxX = Math.max(maxX, c[0]);
+      minY = Math.min(minY, c[1]); maxY = Math.max(maxY, c[1]);
+    });
+    var cw = maxX - minX + 1, ch = maxY - minY + 1;
+    var s = Math.floor(Math.min(w / (cw + 0.5), h / (ch + 0.5)));
+    var ox = (w - cw * s) / 2, oy = (h - ch * s) / 2;
+    cells.forEach(function (c) {
+      block(nctx, ox + (c[0] - minX) * s, oy + (c[1] - minY) * s, s, COLORS[nextType]);
+    });
+  }
+
+  function loop(ts) {
+    rafId = requestAnimationFrame(loop);
+    if (state !== 'playing') { lastTs = ts; return; }
+    if (!lastTs) lastTs = ts;
+    acc += ts - lastTs;
+    lastTs = ts;
+    if (acc >= dropMs) {
+      acc = 0;
+      if (!collides(cur, cur.cells, 0, 1)) { cur.y += 1; }
+      else { lock(); return; }
+      draw();
+    }
+  }
+
+  function start() {
+    grid = newGrid();
+    score = 0; lines = 0; level = 1;
+    dropMs = 800; acc = 0; lastTs = 0;
+    bag = []; refillBag();
+    nextType = takeType();
+    updateHud();
+    state = 'playing';
+    spawn();
+    overlay.classList.add('hidden');
+    draw();
+    if (!rafId) rafId = requestAnimationFrame(loop);
+  }
+
+  function gameOver() {
+    state = 'over';
+    ovTitle.textContent = '게임 오버';
+    ovText.innerHTML = '점수 <b>' + score + '</b> · 줄 <b>' + lines + '</b> · 레벨 <b>' + level + '</b>';
+    ovBtn.textContent = '다시 하기';
+    overlay.classList.remove('hidden');
+  }
+
+  function togglePause() {
+    if (state === 'playing') {
+      state = 'paused';
+      ovTitle.textContent = '일시정지';
+      ovText.textContent = '계속하려면 버튼을 누르거나 P 키를 누르세요.';
+      ovBtn.textContent = '계속하기';
+      overlay.classList.remove('hidden');
+    } else if (state === 'paused') {
+      state = 'playing';
+      lastTs = 0;
+      overlay.classList.add('hidden');
+    }
+  }
+
+  ovBtn.addEventListener('click', function () {
+    ovBtn.blur(); // 포커스가 남으면 Space가 버튼을 다시 누른다
+    if (state === 'paused') togglePause();
+    else start();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var keys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' ','Spacebar'];
+    if (keys.indexOf(e.key) >= 0) e.preventDefault();
+    if (e.key === 'p' || e.key === 'P') { togglePause(); return; }
+    if (state === 'ready' || state === 'over') {
+      if (e.key === 'Enter' || e.key === ' ') start();
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowLeft': move(-1); break;
+      case 'ArrowRight': move(1); break;
+      case 'ArrowUp': rotate(); break;
+      case 'ArrowDown': softDrop(); break;
+      case ' ': case 'Spacebar': hardDrop(); break;
+    }
+  });
+
+  var actions = { left: function(){move(-1);}, right: function(){move(1);}, rotate: rotate, drop: hardDrop };
+  Array.prototype.forEach.call(document.querySelectorAll('#pad button'), function (btn) {
+    var act = actions[btn.dataset.act];
+    var repeat = null, hold = null;
+    function press(e) {
+      e.preventDefault();
+      act();
+      if (btn.dataset.act === 'left' || btn.dataset.act === 'right') {
+        hold = setTimeout(function () { repeat = setInterval(act, 70); }, 250);
+      }
+    }
+    function release() {
+      clearTimeout(hold); clearInterval(repeat);
+      hold = null; repeat = null;
+    }
+    btn.addEventListener('touchstart', press, { passive: false });
+    btn.addEventListener('touchend', release);
+    btn.addEventListener('touchcancel', release);
+    btn.addEventListener('mousedown', press);
+    document.addEventListener('mouseup', release);
+  });
+
+  // 보드 스와이프 조작
+  var sx = 0, sy = 0, st = 0, moved = false, stepX = 0;
+  boardCv.addEventListener('touchstart', function (e) {
+    var t = e.touches[0];
+    sx = t.clientX; sy = t.clientY; st = Date.now();
+    moved = false; stepX = 0;
+    e.preventDefault();
+  }, { passive: false });
+  boardCv.addEventListener('touchmove', function (e) {
+    var t = e.touches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    var unit = Math.max(22, cell);
+    if (Math.abs(dx) > Math.abs(dy)) {
+      var steps = Math.trunc(dx / unit) - stepX;
+      while (steps !== 0) {
+        move(steps > 0 ? 1 : -1);
+        stepX += steps > 0 ? 1 : -1;
+        steps += steps > 0 ? -1 : 1;
+        moved = true;
+      }
+    } else if (dy > unit) {
+      softDrop();
+      sy = t.clientY;
+      moved = true;
+    }
+    e.preventDefault();
+  }, { passive: false });
+  boardCv.addEventListener('touchend', function (e) {
+    var dt = Date.now() - st;
+    var t = e.changedTouches[0];
+    var dy = t.clientY - sy;
+    if (!moved && dt < 250 && Math.abs(dy) < 20) {
+      if (state === 'ready' || state === 'over') start();
+      else rotate();
+    } else if (dy > 90 && dt < 320) {
+      hardDrop();
+    }
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && state === 'playing') togglePause();
+  });
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', function () { setTimeout(resize, 150); });
+
+  grid = newGrid();
+  resize();
+  drawNext();
+  rafId = requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
