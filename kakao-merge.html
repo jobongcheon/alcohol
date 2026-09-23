@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>카톡·사진 자료 합치기</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style id="doc-style">
+:root {
+  --bg: #f4f5f7; --panel: #ffffff; --text: #1d2129; --muted: #6b7280; --line: #e3e5e8;
+  --accent: #2f6fed; --accent-text: #ffffff; --bubble: #ffffff; --bubble-me: #fee500; --bubble-me-text: #191600;
+  --chat-bg: #b2c7d9; --day: rgba(0,0,0,.18); --day-text: #ffffff; --sys: rgba(0,0,0,.10); --danger: #d93025;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171b; --panel: #1f2228; --text: #e8eaed; --muted: #9aa0a6; --line: #33373e;
+    --accent: #6d9bff; --accent-text: #0b1020; --bubble: #2b2f36; --bubble-me: #d9c300; --bubble-me-text: #191600;
+    --chat-bg: #1b2530; --day: rgba(255,255,255,.12); --day-text: #e8eaed; --sys: rgba(255,255,255,.08); --danger: #ff6b5e;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171b; --panel: #1f2228; --text: #e8eaed; --muted: #9aa0a6; --line: #33373e;
+  --accent: #6d9bff; --accent-text: #0b1020; --bubble: #2b2f36; --bubble-me: #d9c300; --bubble-me-text: #191600;
+  --chat-bg: #1b2530; --day: rgba(255,255,255,.12); --day-text: #e8eaed; --sys: rgba(255,255,255,.08); --danger: #ff6b5e;
+}
+.doc { background: var(--chat-bg); color: var(--text); padding: 20px 16px 40px; border-radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif; }
+.doc h1 { font-size: 20px; margin: 0 0 4px; color: var(--text); }
+.doc .doc-info { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+.doc .doc-head { background: var(--panel); border-radius: 10px; padding: 14px 16px; margin-bottom: 18px; }
+.doc .day-h { text-align: center; margin: 22px 0 12px; break-after: avoid; page-break-after: avoid; }
+.doc .day-h span { display: inline-block; background: var(--day); color: var(--day-text); font-size: 12px; padding: 4px 12px; border-radius: 12px; }
+.doc .msg { display: flex; flex-direction: column; align-items: flex-start; margin: 3px 0; position: relative; break-inside: avoid; page-break-inside: avoid; }
+.doc .msg .who { font-size: 12px; color: var(--text); opacity: .85; margin: 6px 0 3px 2px; font-weight: 600; }
+.doc .msg .row { display: flex; align-items: flex-end; gap: 6px; max-width: 85%; }
+.doc .msg .bubble { background: var(--bubble); color: var(--text); padding: 7px 11px; border-radius: 12px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.doc .msg .t { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.doc .msg.me { align-items: flex-end; }
+.doc .msg.me .row { flex-direction: row-reverse; }
+.doc .msg.me .bubble { background: var(--bubble-me); color: var(--bubble-me-text); }
+.doc .msg .bubble.media { font-style: italic; opacity: .8; }
+.doc .src { font-size: 10px; color: var(--muted); margin-left: 4px; }
+.doc .sys { text-align: center; margin: 8px 0; }
+.doc .sys span { display: inline-block; background: var(--sys); font-size: 12px; padding: 3px 10px; border-radius: 10px; color: var(--text); }
+.doc figure.img-item { margin: 12px auto; background: var(--panel); border-radius: 10px; padding: 8px; max-width: 460px; break-inside: avoid; page-break-inside: avoid; position: relative; }
+.doc figure.img-item img { display: block; width: 100%; height: auto; border-radius: 6px; background: var(--line); }
+.doc figure.img-item .noimg { padding: 30px 10px; text-align: center; font-size: 13px; color: var(--muted); background: var(--sys); border-radius: 6px; }
+.doc figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; word-break: break-all; line-height: 1.5; }
+.doc figcaption b { color: var(--text); }
+.doc .file-item, .doc .note-item { background: var(--panel); border-radius: 10px; padding: 10px 12px; margin: 10px auto; max-width: 560px; font-size: 13px; break-inside: avoid; position: relative; }
+.doc .note-item pre { white-space: pre-wrap; word-break: break-word; font-family: inherit; margin: 6px 0 0; font-size: 13px; line-height: 1.55; }
+@media print {
+  .doc { background: #fff !important; color: #000 !important; padding: 0; }
+  .doc .doc-head, .doc figure.img-item, .doc .file-item, .doc .note-item { background: #fff !important; border: 1px solid #ccc; }
+  .doc .msg .bubble { background: #fff !important; color: #000 !important; border: 1px solid #bbb; }
+  .doc .msg.me .bubble { background: #fff6b0 !important; }
+  .doc .day-h span, .doc .sys span { background: #eee !important; color: #000 !important; }
+  .doc figure.img-item { max-width: 70%; }
+}
+</style>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif; font-size: 14px; }
+header.top { padding: 18px 16px 8px; max-width: 1280px; margin: 0 auto; }
+header.top h1 { margin: 0; font-size: 22px; }
+header.top p { margin: 6px 0 0; color: var(--muted); line-height: 1.5; }
+.layout { display: grid; grid-template-columns: 360px 1fr; gap: 16px; max-width: 1280px; margin: 0 auto; padding: 8px 16px 40px; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.card h2 { font-size: 15px; margin: 0 0 10px; }
+.drop { border: 2px dashed var(--line); border-radius: 12px; padding: 22px 12px; text-align: center; cursor: pointer; transition: .15s; }
+.drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.drop .big { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.drop .small { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+button, .btn { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+label.opt { display: flex; align-items: center; gap: 6px; margin: 6px 0; }
+.field { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
+.field span { font-size: 12px; color: var(--muted); }
+input[type=text], input[type=search], input[type=date], select { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); width: 100%; min-width: 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+.stats div { background: var(--bg); border-radius: 8px; padding: 8px 2px; }
+.stats b { display: block; font-size: 18px; }
+.stats small { color: var(--muted); font-size: 11px; }
+.sources { max-height: 220px; overflow: auto; margin-top: 8px; font-size: 12px; }
+.sources .s { display: flex; align-items: center; gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--line); }
+.sources .s .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sources .s .c { color: var(--muted); white-space: nowrap; }
+.x { border: none; background: none; color: var(--danger); padding: 0 4px; cursor: pointer; font-size: 14px; }
+.hint { font-size: 12px; color: var(--muted); line-height: 1.55; margin-top: 8px; }
+.hint.warn { color: var(--danger); }
+.main { min-width: 0; }
+.toolbar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 0 0 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.toolbar input { flex: 1; min-width: 160px; }
+.empty { text-align: center; color: var(--muted); padding: 80px 16px; background: var(--panel); border-radius: 12px; border: 1px solid var(--line); line-height: 1.7; }
+.doc .rm { position: absolute; top: 4px; right: 4px; opacity: 0; border: none; background: var(--panel); color: var(--danger); border-radius: 6px; cursor: pointer; font-size: 12px; padding: 2px 6px; }
+.doc .msg:hover .rm, .doc figure:hover .rm, .doc .file-item:hover .rm, .doc .note-item:hover .rm { opacity: 1; }
+.doc .msg .rm { position: static; }
+.doc figure.img-item img { cursor: zoom-in; }
+#progress { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 20px; font-size: 13px; display: none; z-index: 30; max-width: calc(100% - 32px); }
+#lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 40; cursor: zoom-out; padding: 16px; }
+#lightbox img { max-width: 100%; max-height: 100%; }
+@media print {
+  body { background: #fff; }
+  header.top, .side, .toolbar, #progress, #lightbox, .rm { display: none !important; }
+  .layout { display: block; padding: 0; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>카톡·사진 자료 합치기</h1>
+  <p>카톡 대화 내보내기 파일(.txt/.csv), 사진, 캡처, zip 파일을 한꺼번에 넣으면 <b>시간 순서대로 하나로 엮어</b> 줍니다.
+    파일은 인터넷으로 올라가지 않고 이 브라우저 안에서만 처리됩니다.</p>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <div class="card">
+      <h2>1. 파일 넣기</h2>
+      <div class="drop" id="drop">
+        <div class="big">여기에 파일이나 폴더를 끌어다 놓으세요</div>
+        <div class="small">개수 제한 없음 · 카톡 .txt/.csv · 사진(jpg, png, heic 등) · zip<br>또는 아래 버튼으로 선택</div>
+      </div>
+      <div class="btns">
+        <button id="pickFiles">파일 선택</button>
+        <button id="pickFolder">폴더 통째로 선택</button>
+        <button id="clearAll">모두 지우기</button>
+      </div>
+      <input type="file" id="fileInput" multiple hidden>
+      <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+      <div class="sources" id="sources"></div>
+    </div>
+
+    <div class="card">
+      <h2>2. 정리 옵션</h2>
+      <div class="field"><span>문서 제목</span><input type="text" id="title" value="카톡·사진 통합 자료"></div>
+      <div class="field"><span>'나'로 표시할 사람 (오른쪽 노란 말풍선)</span><select id="me"><option value="">(선택 안 함)</option></select></div>
+      <div class="field"><span>사진 시간 기준</span>
+        <select id="tsMode">
+          <option value="exif">촬영정보(EXIF) → 파일명 → 수정일</option>
+          <option value="name">파일명 날짜 → 촬영정보 → 수정일</option>
+          <option value="mod">파일 수정일만</option>
+        </select>
+      </div>
+      <div class="two">
+        <div class="field"><span>시작일</span><input type="date" id="from"></div>
+        <div class="field"><span>종료일</span><input type="date" id="to"></div>
+      </div>
+      <label class="opt"><input type="checkbox" id="showMsg" checked> 대화</label>
+      <label class="opt"><input type="checkbox" id="showImg" checked> 사진</label>
+      <label class="opt"><input type="checkbox" id="showFile" checked> 기타 파일 / 메모</label>
+      <label class="opt"><input type="checkbox" id="showSrc"> 대화마다 출처 파일명 표시</label>
+      <label class="opt"><input type="checkbox" id="dedupe" checked> 중복 대화·사진 자동 제거</label>
+    </div>
+
+    <div class="card">
+      <h2>3. 합친 결과 저장</h2>
+      <div class="stats" id="stats"></div>
+      <div class="btns">
+        <button class="primary" id="btnPrint">PDF로 저장 (인쇄)</button>
+        <button id="btnHtml">HTML 파일 1개로 저장</button>
+        <button id="btnTxt">텍스트(.txt)로 저장</button>
+      </div>
+      <div class="hint">PDF: 인쇄 창에서 대상을 <b>'PDF로 저장'</b>으로 고르세요. 대화+사진이 한 파일에 들어갑니다.</div>
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+      <h2>AI(Claude) 첨부용 묶음</h2>
+      <div class="field"><span>사진 몇 장씩 한 장으로 합칠까요?</span>
+        <select id="grid">
+          <option value="2x2">4장씩 (2×2, 글씨 잘 보임)</option>
+          <option value="2x3" selected>6장씩 (2×3)</option>
+          <option value="3x3">9장씩 (3×3)</option>
+          <option value="3x4">12장씩 (3×4)</option>
+          <option value="4x5">20장씩 (4×5, 작게)</option>
+        </select>
+      </div>
+      <div class="btns"><button class="primary" id="btnBundle">첨부용 묶음 만들기 (zip)</button></div>
+      <div class="hint" id="bundleHint"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="내용·이름·파일명 검색">
+      <span class="hint" id="shown" style="margin:0"></span>
+    </div>
+    <div id="preview"></div>
+  </main>
+</div>
+
+<div id="progress"></div>
+<div id="lightbox"><img alt=""></div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const state = { items: [], sources: [], seq: 0, keys: new Set() };
+const IMG_EXT = /\.(jpe?g|png|gif|webp|bmp|heic|heif|avif|tiff?)$/i;
+const TXT_EXT = /\.(txt|csv|log|md)$/i;
+const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+
+/* ---------- helpers ---------- */
+const pad = n => String(n).padStart(2, '0');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const mk = (y, mo, d, h = 0, mi = 0, s = 0) => {
+  const dt = new Date(+y, +mo - 1, +d, +h, +mi, +s);
+  return isNaN(dt) ? null : dt;
+};
+const to24 = (ampm, h) => {
+  h = +h;
+  if (ampm === '오후' || ampm === 'PM') { if (h < 12) h += 12; }
+  else if ((ampm === '오전' || ampm === 'AM') && h === 12) h = 0;
+  return h;
+};
+const dayKey = d => d ? `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` : 'none';
+const dayLabel = d => `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${WEEK[d.getDay()]}요일`;
+const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const fullTs = d => d ? `${dayKey(d)} ${hm(d)}` : '시간 미상';
+const fmtSize = b => b > 1048576 ? (b / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(b / 1024)) + 'KB';
+
+function progress(msg) {
+  const p = $('#progress');
+  if (msg) { p.textContent = msg; p.style.display = 'block'; } else p.style.display = 'none';
+}
+const tick = () => new Promise(r => setTimeout(r, 0));
+
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+}
+const safeName = s => (s || '자료').replace(/[\\/:*?"<>|]/g, '_').trim();
+
+/* ---------- text decoding ---------- */
+async function readText(file) {
+  const buf = new Uint8Array(await file.arrayBuffer());
+  if (buf[0] === 0xFF && buf[1] === 0xFE) return new TextDecoder('utf-16le').decode(buf);
+  if (buf[0] === 0xFE && buf[1] === 0xFF) return new TextDecoder('utf-16be').decode(buf);
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(buf).replace(/^﻿/, ''); }
+  catch (e) { return new TextDecoder('euc-kr').decode(buf); }
+}
+
+/* ---------- KakaoTalk parsing ---------- */
+const RE_PC_SEP = /^-{3,}\s*(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일[^-]*-{3,}\s*$/;
+const RE_DAY_HEAD = /^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일\s*[월화수목금토일]요일\s*$/;
+const RE_MOBILE = /^(\d{4})(?:년\s*|\.\s*|-)(\d{1,2})(?:월\s*|\.\s*|-)(\d{1,2})(?:일|\.)?\s*(오전|오후|AM|PM)?\s*(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?\s*,\s*(.*)$/;
+const RE_PC_MSG = /^\[([^\]]+)\]\s*\[(오전|오후|AM|PM)?\s*(\d{1,2}):(\d{2})\s*(AM|PM)?\]\s?(.*)$/;
+const RE_SYS = /(님이 들어왔습니다|님이 나갔습니다|님을 초대했습니다|님을 초대하였습니다|님을 내보냈습니다|채팅방 관리자가|메시지가 삭제되었습니다)/;
+
+function parseCSV(text) {
+  const rows = []; let row = [], cur = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+      else cur += c;
+    } else if (c === '"') q = true;
+    else if (c === ',') { row.push(cur); cur = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(cur); rows.push(row); row = []; cur = '';
+    } else cur += c;
+  }
+  if (cur || row.length) { row.push(cur); rows.push(row); }
+  return rows;
+}
+
+function parseKakao(text, src) {
+  const out = [];
+  // Mac/PC CSV export: Date,User,Message
+  if (/^\s*"?Date"?\s*,\s*"?User"?\s*,\s*"?Message"?/i.test(text)) {
+    const rows = parseCSV(text);
+    for (const r of rows.slice(1)) {
+      if (r.length < 3) continue;
+      const m = r[0].match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+      if (!m) continue;
+      out.push({ type: 'msg', ts: mk(m[1], m[2], m[3], m[4], m[5], m[6] || 0), name: r[1].trim(), text: r.slice(2).join(','), src });
+    }
+    return { msgs: out, room: '' };
+  }
+  const lines = text.replace(/\r\n?/g, '\n').split('\n');
+  let cur = null, last = null, room = '', lastTs = null;
+  lines.forEach((line, i) => {
+    let m;
+    if (i < 4 && !out.length) {
+      if ((m = line.match(/^(.+?)\s*(?:님과)?\s*카카오톡 대화$/))) { room = m[1].trim(); return; }
+      if (/^저장한 날짜/.test(line)) return;
+    }
+    if ((m = line.match(RE_PC_SEP)) || (m = line.match(RE_DAY_HEAD))) {
+      cur = [m[1], m[2], m[3]]; last = null; lastTs = mk(cur[0], cur[1], cur[2]); return;
+    }
+    if ((m = line.match(RE_MOBILE))) {
+      const ts = mk(m[1], m[2], m[3], to24(m[4] || m[7], m[5]), m[6]);
+      cur = [m[1], m[2], m[3]]; lastTs = ts;
+      const rest = m[8], k = rest.indexOf(' : ');
+      last = k > 0
+        ? { type: 'msg', ts, name: rest.slice(0, k).trim(), text: rest.slice(k + 3), src }
+        : { type: 'msg', ts, name: '', text: rest, src, sys: true };
+      out.push(last); return;
+    }
+    if ((m = line.match(RE_PC_MSG))) {
+      const ts = cur ? mk(cur[0], cur[1], cur[2], to24(m[2] || m[5], m[3]), m[4]) : null;
+      lastTs = ts;
+      last = { type: 'msg', ts, name: m[1].trim(), text: m[6], src };
+      out.push(last); return;
+    }
+    if (RE_SYS.test(line) && line.length < 80) {
+      last = null;
+      out.push({ type: 'msg', ts: lastTs, name: '', text: line.trim(), src, sys: true }); return;
+    }
+    if (last) last.text += '\n' + line;
+  });
+  out.forEach(o => { o.text = o.text.replace(/\n+$/, ''); });
+  return { msgs: out, room };
+}
+
+/* ---------- image time ---------- */
+function tsFromName(name) {
+  let m = name.match(/(20\d{2})[-_.]?(\d{2})[-_.]?(\d{2})\D{0,3}(오전|오후)\s*(\d{1,2})[.:_-](\d{2})[.:_-](\d{2})/);
+  if (m) return { ts: mk(m[1], m[2], m[3], to24(m[4], m[5]), m[6], m[7]) };
+  m = name.match(/(20\d{2})[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])[-_ .T]{0,3}([01]\d|2[0-3])[-_.:]?([0-5]\d)[-_.:]?([0-5]\d)/);
+  if (m) return { ts: mk(m[1], m[2], m[3], m[4], m[5], m[6]) };
+  m = name.match(/(?<!\d)(1[4-9]\d{11})(?!\d)/);
+  if (m) return { ts: new Date(+m[1]) };
+  m = name.match(/(20\d{2})[-_.]?(0[1-9]|1[0-2])[-_.]?(0[1-9]|[12]\d|3[01])(?!\d)/);
+  if (m) return { ts: mk(m[1], m[2], m[3], 12), dateOnly: true };
+  return null;
+}
+
+async function readExifDate(file) {
+  try {
+    const buf = await file.slice(0, 256 * 1024).arrayBuffer();
+    const v = new DataView(buf);
+    if (v.byteLength < 4 || v.getUint16(0) !== 0xFFD8) return null;
+    let off = 2;
+    while (off + 4 < v.byteLength) {
+      const marker = v.getUint16(off); off += 2;
+      if ((marker & 0xFF00) !== 0xFF00) return null;
+      const len = v.getUint16(off);
+      if (marker === 0xFFE1 && v.getUint32(off + 2) === 0x45786966) return parseTiffDate(v, off + 8);
+      if (marker === 0xFFDA) return null;
+      off += len;
+    }
+  } catch (e) { /* ignore */ }
+  return null;
+}
+function parseTiffDate(v, t) {
+  const le = v.getUint16(t) === 0x4949;
+  const u16 = o => v.getUint16(o, le), u32 = o => v.getUint32(o, le);
+  const ifd = o => {
+    const map = {}, n = u16(t + o);
+    for (let i = 0; i < n; i++) { const e = t + o + 2 + i * 12; map[u16(e)] = { cnt: u32(e + 4), val: e + 8 }; }
+    return map;
+  };
+  const str = en => {
+    const o = en.cnt > 4 ? t + u32(en.val) : en.val; let s = '';
+    for (let i = 0; i < en.cnt - 1; i++) s += String.fromCharCode(v.getUint8(o + i));
+    return s;
+  };
+  try {
+    const i0 = ifd(u32(t + 4)); let ds = null;
+    if (i0[0x8769]) { const sub = ifd(u32(i0[0x8769].val)); if (sub[0x9003]) ds = str(sub[0x9003]); else if (sub[0x9004]) ds = str(sub[0x9004]); }
+    if (!ds && i0[0x0132]) ds = str(i0[0x0132]);
+    const m = ds && ds.match(/(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+    if (m && m[1] !== '0000') return mk(m[1], m[2], m[3], m[4], m[5], m[6]);
+  } catch (e) { /* ignore */ }
+  return null;
+}
+
+function pickImageTs(it) {
+  const mode = $('#tsMode').value;
+  const cands = {
+    exif: it.exifTs && { ts: it.exifTs, how: '촬영정보' },
+    name: it.nameTs && { ts: it.nameTs.ts, how: it.nameTs.dateOnly ? '파일명(날짜만)' : '파일명' },
+    mod: { ts: it.modTs, how: '파일 수정일' }
+  };
+  const order = mode === 'exif' ? ['exif', 'name', 'mod'] : mode === 'name' ? ['name', 'exif', 'mod'] : ['mod'];
+  for (const k of order) if (cands[k]) { it.ts = cands[k].ts; it.how = cands[k].how; return; }
+}
+
+/* ---------- ingest ---------- */
+function addSource(name, kind) {
+  const s = { id: ++state.seq, name, kind, count: 0 };
+  state.sources.push(s);
+  return s;
+}
+function pushItem(it, srcObj) {
+  it.id = ++state.seq; it.srcId = srcObj.id;
+  if ($('#dedupe').checked) {
+    const key = it.type === 'msg' ? `m|${it.ts ? it.ts.getTime() : ''}|${it.name}|${it.text}`
+      : it.type === 'image' ? `i|${it.src.replace(/^.*\//, '')}|${it.file.size}` : null;
+    if (key) { if (state.keys.has(key)) return; state.keys.add(key); it.key = key; }
+  }
+  srcObj.count++;
+  state.items.push(it);
+}
+
+async function expandZip(file) {
+  if (!window.JSZip) { alert('zip을 풀 수 있는 도구를 불러오지 못했습니다(인터넷 연결 필요). zip을 먼저 풀어서 넣어 주세요.'); return []; }
+  const zip = await JSZip.loadAsync(file);
+  const files = [];
+  for (const e of Object.values(zip.files)) {
+    if (e.dir || /(^|\/)(__MACOSX|\.DS_Store)/.test(e.name)) continue;
+    const blob = await e.async('blob');
+    const f = new File([blob], e.name.split('/').pop(), { lastModified: e.date ? e.date.getTime() : file.lastModified });
+    f._path = file.name + '/' + e.name;
+    files.push(f);
+  }
+  return files;
+}
+
+async function addFiles(fileList) {
+  let files = Array.from(fileList);
+  if (!files.length) return;
+  let done = 0;
+  for (let i = 0; i < files.length; i++) {
+    const f = files[i];
+    const path = f._path || f.webkitRelativePath || f.name;
+    if (/(^|\/)(\.DS_Store|Thumbs\.db|desktop\.ini)$/i.test(path)) continue;
+    progress(`읽는 중… ${++done} / ${files.length}  ${f.name}`);
+    if (done % 20 === 0) await tick();
+    try {
+      if (/\.zip$/i.test(f.name)) { files.push(...await expandZip(f)); continue; }
+      if (TXT_EXT.test(f.name) || f.type.startsWith('text/')) {
+        const text = await readText(f);
+        const { msgs, room } = parseKakao(text, path);
+        if (msgs.length) {
+          const s = addSource(path + (room ? ` (${room})` : ''), '대화');
+          msgs.forEach(m => pushItem(m, s));
+        } else {
+          const s = addSource(path, '메모');
+          pushItem({ type: 'note', ts: new Date(f.lastModified), how: '파일 수정일', src: path, text }, s);
+        }
+      } else if (IMG_EXT.test(f.name) || f.type.startsWith('image/')) {
+        const s = addSource(path, '사진');
+        const it = { type: 'image', src: path, file: f, url: URL.createObjectURL(f), modTs: new Date(f.lastModified), nameTs: tsFromName(f.name), exifTs: await readExifDate(f) };
+        pickImageTs(it);
+        pushItem(it, s);
+      } else {
+        const s = addSource(path, '파일');
+        const nt = tsFromName(f.name);
+        pushItem({ type: 'file', src: path, file: f, size: f.size, ts: nt ? nt.ts : new Date(f.lastModified), how: nt ? '파일명' : '파일 수정일' }, s);
+      }
+    } catch (e) {
+      console.error(e);
+      addSource(path + ' — 읽기 실패', '오류');
+    }
+  }
+  progress('');
+  refreshAll();
+}
+
+/* ---------- sorting / filtering ---------- */
+function sorted() {
+  return state.items.slice().sort((a, b) => {
+    const ta = a.ts ? a.ts.getTime() : Infinity, tb = b.ts ? b.ts.getTime() : Infinity;
+    return ta - tb || a.id - b.id;
+  });
+}
+function visible() {
+  const q = $('#q').value.trim().toLowerCase();
+  const from = $('#from').value, to = $('#to').value;
+  const show = { msg: $('#showMsg').checked, image: $('#showImg').checked, file: $('#showFile').checked, note: $('#showFile').checked };
+  const list = sorted().filter(it => {
+    if (!show[it.type]) return false;
+    const dk = dayKey(it.ts);
+    if (from && (dk === 'none' || dk < from)) return false;
+    if (to && (dk === 'none' || dk > to)) return false;
+    if (q) {
+      const hay = ((it.name || '') + ' ' + (it.text || '') + ' ' + it.src).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  let n = 0;
+  list.forEach(it => { if (it.type === 'image') it.no = ++n; });
+  return list;
+}
+
+/* ---------- render ---------- */
+function renderDoc(list, opt = {}) {
+  const me = $('#me').value, showSrc = $('#showSrc').checked;
+  const edit = !opt.export;
+  const title = $('#title').value || '카톡·사진 통합 자료';
+  const withTs = list.filter(i => i.ts);
+  const range = withTs.length ? `${dayKey(withTs[0].ts)} ~ ${dayKey(withTs[withTs.length - 1].ts)}` : '-';
+  const cnt = t => list.filter(i => i.type === t).length;
+  const srcNames = [...new Set(list.map(i => i.srcId))].length;
+  let h = `<div class="doc-head"><h1>${esc(title)}</h1><div class="doc-info">기간: ${range}<br>대화 ${cnt('msg')}건 · 사진 ${cnt('image')}장 · 기타 ${cnt('file') + cnt('note')}건 · 원본 파일 ${srcNames}개<br>만든 날: ${fullTs(new Date())}</div></div>`;
+  let lastDay = null, lastWho = null;
+  for (const it of list) {
+    const dk = dayKey(it.ts);
+    if (dk !== lastDay) {
+      h += `<div class="day-h"><span>${it.ts ? dayLabel(it.ts) : '날짜 미상'}</span></div>`;
+      lastDay = dk; lastWho = null;
+    }
+    const rm = edit ? `<button class="rm" data-rm="${it.id}" title="이 항목 빼기">✕</button>` : '';
+    const t = it.ts ? hm(it.ts) : '';
+    if (it.type === 'msg') {
+      if (it.sys || !it.name) { h += `<div class="sys"><span>${esc(it.text)}</span></div>`; lastWho = null; continue; }
+      const isMe = me && it.name === me;
+      const media = /^(사진|동영상|이모티콘|파일:|사진 \d+장|음성메시지|샵검색:)/.test(it.text) ? ' media' : '';
+      const who = it.name !== lastWho && !isMe ? `<div class="who">${esc(it.name)}</div>` : '';
+      const src = showSrc ? `<span class="src">${esc(it.src)}</span>` : '';
+      h += `<div class="msg${isMe ? ' me' : ''}">${who}<div class="row"><div class="bubble${media}">${esc(it.text)}</div><span class="t">${t}${src}</span>${rm}</div></div>`;
+      lastWho = it.name;
+    } else if (it.type === 'image') {
+      const srcUrl = opt.imgMap ? opt.imgMap.get(it.id) : it.url;
+      const img = srcUrl ? `<img src="${srcUrl}" alt="${esc(it.src)}" data-id="${it.id}"${edit ? ' loading="lazy"' : ''}>`
+        : `<div class="noimg">이 형식은 미리보기 불가 (${esc(it.src.split('.').pop())})</div>`;
+      h += `<figure class="img-item">${img}<figcaption><b>사진 #${it.no}</b> · ${fullTs(it.ts)} (${it.how}) · ${esc(it.src)}</figcaption>${rm}</figure>`;
+      lastWho = null;
+    } else if (it.type === 'note') {
+      h += `<div class="note-item"><b>📄 ${esc(it.src)}</b> · ${fullTs(it.ts)}<pre>${esc(it.text)}</pre>${rm}</div>`;
+      lastWho = null;
+    } else {
+      h += `<div class="file-item">📎 <b>${esc(it.src)}</b> · ${fmtSize(it.size)} · ${fullTs(it.ts)} (${it.how})${rm}</div>`;
+      lastWho = null;
+    }
+  }
+  return `<div class="doc">${h}</div>`;
+}
+
+function renderSources() {
+  $('#sources').innerHTML = state.sources.map(s =>
+    `<div class="s"><span class="n" title="${esc(s.name)}">${esc(s.name)}</span><span class="c">${s.kind}${s.count ? ' ' + s.count : ''}</span><button class="x" data-src="${s.id}" title="이 파일 빼기">✕</button></div>`
+  ).join('');
+}
+
+function renderMe() {
+  const counts = {};
+  state.items.forEach(i => { if (i.type === 'msg' && i.name) counts[i.name] = (counts[i.name] || 0) + 1; });
+  const sel = $('#me'), cur = sel.value;
+  sel.innerHTML = '<option value="">(선택 안 함)</option>' + Object.entries(counts).sort((a, b) => b[1] - a[1])
+    .map(([n, c]) => `<option value="${esc(n)}">${esc(n)} (${c})</option>`).join('');
+  sel.value = counts[cur] ? cur : '';
+}
+
+function gridSize() { const [c, r] = $('#grid').value.split('x').map(Number); return { c, r, per: c * r }; }
+
+function renderStats(list) {
+  const c = t => list.filter(i => i.type === t).length;
+  $('#stats').innerHTML = [['대화', c('msg')], ['사진', c('image')], ['기타', c('file') + c('note')], ['원본', state.sources.length]]
+    .map(([k, v]) => `<div><b>${v}</b><small>${k}</small></div>`).join('');
+  const imgs = c('image'), { per } = gridSize();
+  const sheets = Math.ceil(imgs / per), total = sheets + 1;
+  const hint = $('#bundleHint');
+  hint.classList.toggle('warn', total > 10);
+  hint.innerHTML = `대화 전체 텍스트 1개 + 사진 묶음 ${sheets}장 = <b>파일 ${total}개</b>` +
+    (total > 10 ? ' — 10개가 넘습니다. 위에서 더 많이 합치거나 날짜 범위를 나눠서 여러 번 만드세요.' : ' — 한 번에 첨부할 수 있습니다.') +
+    '<br>zip을 풀어서 안의 파일들을 그대로 첨부하면 됩니다. 텍스트 속 "사진 #번호"와 묶음 사진의 번호가 서로 맞춰져 있습니다.';
+}
+
+function refreshAll() {
+  renderSources(); renderMe(); renderPreview();
+}
+function renderPreview() {
+  const list = visible();
+  renderStats(list);
+  $('#shown').textContent = state.items.length ? `${list.length} / ${state.items.length}개 표시` : '';
+  $('#preview').innerHTML = state.items.length ? renderDoc(list)
+    : `<div class="empty">아직 넣은 파일이 없습니다.<br>왼쪽 상자에 카톡 대화 파일과 사진 폴더를 통째로 끌어다 놓으세요.<br><br>
+       <b>카톡 대화 내보내기 방법</b><br>PC: 대화방 ≡ 메뉴 → 대화 내용 → 대화 내보내기<br>휴대폰: 대화방 ≡ → 설정(톱니) → 대화 내용 내보내기</div>`;
+  $('#preview').querySelectorAll('img').forEach(img => img.addEventListener('error', () => {
+    img.outerHTML = `<div class="noimg">이 브라우저에서 미리보기 불가 (HEIC 등) — 파일은 포함됨</div>`;
+  }, { once: true }));
+}
+
+/* ---------- image loading for export ---------- */
+async function loadBitmap(file) {
+  try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch (e) {
+    return new Promise(res => {
+      const img = new Image(), u = URL.createObjectURL(file);
+      img.onload = () => res(img); img.onerror = () => res(null); img.src = u;
+    });
+  }
+}
+async function compressed(file, maxW = 1400, q = 0.8) {
+  const bmp = await loadBitmap(file);
+  if (!bmp) return null;
+  const s = Math.min(1, maxW / bmp.width);
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(bmp.width * s); cv.height = Math.round(bmp.height * s);
+  const cx = cv.getContext('2d');
+  cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height);
+  cx.drawImage(bmp, 0, 0, cv.width, cv.height);
+  return cv.toDataURL('image/jpeg', q);
+}
+
+/* ---------- exports ---------- */
+function buildText(list) {
+  const title = $('#title').value || '카톡·사진 통합 자료';
+  const out = [`=== ${title} ===`, `만든 날: ${fullTs(new Date())}`];
+  const withTs = list.filter(i => i.ts);
+  if (withTs.length) out.push(`기간: ${dayKey(withTs[0].ts)} ~ ${dayKey(withTs[withTs.length - 1].ts)}`);
+  out.push(`포함된 원본 파일 (${state.sources.length}개):`);
+  state.sources.forEach(s => out.push(`  - [${s.kind}] ${s.name}`));
+  let lastDay = null;
+  for (const it of list) {
+    const dk = dayKey(it.ts);
+    if (dk !== lastDay) { out.push('', `----- ${it.ts ? dayLabel(it.ts) : '날짜 미상'} -----`); lastDay = dk; }
+    const t = it.ts ? `[${hm(it.ts)}] ` : '';
+    if (it.type === 'msg') out.push(it.name ? `${t}${it.name}: ${it.text}` : `${t}(알림) ${it.text}`);
+    else if (it.type === 'image') out.push(`${t}📷 사진 #${it.no} — ${it.src} (시간 기준: ${it.how})`);
+    else if (it.type === 'note') out.push(`${t}📄 메모 파일 ${it.src}:`, it.text);
+    else out.push(`${t}📎 첨부파일 ${it.src} (${fmtSize(it.size)})`);
+  }
+  return out.join('\n');
+}
+
+async function exportHtml() {
+  const list = visible();
+  if (!list.length) return alert('저장할 내용이 없습니다.');
+  const imgMap = new Map(); const imgs = list.filter(i => i.type === 'image');
+  for (let i = 0; i < imgs.length; i++) {
+    progress(`사진 압축 중… ${i + 1} / ${imgs.length}`);
+    const d = await compressed(imgs[i].file);
+    if (d) imgMap.set(imgs[i].id, d);
+  }
+  const title = $('#title').value || '카톡·사진 통합 자료';
+  const html = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title><style>body{margin:0;background:var(--bg)}.doc{max-width:820px;margin:0 auto;border-radius:0}${$('#doc-style').textContent}</style></head><body>${renderDoc(list, { export: true, imgMap })}</body></html>`;
+  progress('');
+  download(new Blob([html], { type: 'text/html' }), safeName(title) + '.html');
+}
+
+async function doPrint() {
+  if (!state.items.length) return alert('저장할 내용이 없습니다.');
+  const imgs = [...document.querySelectorAll('#preview img')];
+  progress(`사진 불러오는 중… (${imgs.length}장)`);
+  imgs.forEach(i => i.loading = 'eager');
+  await Promise.all(imgs.map(i => i.decode().catch(() => {})));
+  progress('');
+  window.print();
+}
+
+function fitText(cx, text, maxW) {
+  if (cx.measureText(text).width <= maxW) return text;
+  while (text.length > 1 && cx.measureText(text + '…').width > maxW) text = text.slice(0, -1);
+  return text + '…';
+}
+
+async function makeSheets(imgs) {
+  const { c, r, per } = gridSize();
+  const W = 1600, H = 2263, M = 40, HEAD = 90, CAP = 44, GAP = 16;
+  const cw = (W - M * 2 - GAP * (c - 1)) / c, ch = (H - M * 2 - HEAD - GAP * (r - 1)) / r;
+  const title = $('#title').value || '카톡·사진 통합 자료';
+  const total = Math.ceil(imgs.length / per), blobs = [];
+  const font = '"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif';
+  for (let p = 0; p < total; p++) {
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const cx = cv.getContext('2d');
+    cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = '#111'; cx.font = `bold 34px ${font}`; cx.textBaseline = 'top';
+    cx.fillText(fitText(cx, title, W - M * 2 - 260), M, M);
+    cx.font = `26px ${font}`; cx.fillStyle = '#555';
+    const chunk = imgs.slice(p * per, p * per + per);
+    const lbl = `사진 묶음 ${p + 1}/${total} · #${chunk[0].no}~#${chunk[chunk.length - 1].no}`;
+    cx.fillText(lbl, W - M - cx.measureText(lbl).width, M + 6);
+    for (let k = 0; k < chunk.length; k++) {
+      const it = chunk[k];
+      progress(`사진 묶음 만드는 중… ${p + 1}/${total}장 (사진 #${it.no})`);
+      const x = M + (k % c) * (cw + GAP), y = M + HEAD + Math.floor(k / c) * (ch + GAP);
+      cx.fillStyle = '#f1f2f4'; cx.fillRect(x, y, cw, ch - CAP);
+      const bmp = await loadBitmap(it.file);
+      if (bmp) {
+        const s = Math.min(cw / bmp.width, (ch - CAP) / bmp.height);
+        const w = bmp.width * s, h = bmp.height * s;
+        cx.drawImage(bmp, x + (cw - w) / 2, y + (ch - CAP - h) / 2, w, h);
+        if (bmp.close) bmp.close();
+      } else {
+        cx.fillStyle = '#888'; cx.font = `24px ${font}`;
+        cx.fillText('미리보기 불가 형식', x + 20, y + 20);
+      }
+      cx.fillStyle = '#111'; cx.font = `bold ${c >= 4 ? 20 : 24}px ${font}`;
+      const cap = `#${it.no}  ${fullTs(it.ts)}  ${it.src.split('/').pop()}`;
+      cx.fillText(fitText(cx, cap, cw), x, y + ch - CAP + 10);
+    }
+    blobs.push(await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.88)));
+  }
+  return blobs;
+}
+
+async function exportBundle() {
+  const list = visible();
+  if (!list.length) return alert('저장할 내용이 없습니다.');
+  const imgs = list.filter(i => i.type === 'image');
+  const title = safeName($('#title').value);
+  const sheets = await makeSheets(imgs);
+  const text = buildText(list);
+  if (window.JSZip) {
+    progress('zip 파일 만드는 중…');
+    const zip = new JSZip();
+    zip.file('00_대화_전체_통합.txt', '﻿' + text);
+    sheets.forEach((b, i) => zip.file(`사진묶음_${pad(i + 1)}.jpg`, b));
+    download(await zip.generateAsync({ type: 'blob' }), `${title}_첨부용.zip`);
+  } else {
+    download(new Blob(['﻿' + text], { type: 'text/plain' }), '00_대화_전체_통합.txt');
+    for (let i = 0; i < sheets.length; i++) { await new Promise(r => setTimeout(r, 400)); download(sheets[i], `사진묶음_${pad(i + 1)}.jpg`); }
+  }
+  progress('');
+}
+
+/* ---------- events ---------- */
+async function entriesToFiles(entry, base = '') {
+  if (entry.isFile) {
+    return new Promise(res => entry.file(f => { f._path = base + f.name; res([f]); }, () => res([])));
+  }
+  if (entry.isDirectory) {
+    const reader = entry.createReader(), all = [];
+    let batch;
+    do { batch = await new Promise(res => reader.readEntries(res, () => res([]))); all.push(...batch); } while (batch.length);
+    const out = [];
+    for (const e of all) out.push(...await entriesToFiles(e, base + entry.name + '/'));
+    return out;
+  }
+  return [];
+}
+
+const drop = $('#drop');
+['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', async e => {
+  e.preventDefault(); drop.classList.remove('over');
+  const items = [...(e.dataTransfer.items || [])].map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  if (items.length) {
+    progress('파일 목록 읽는 중…');
+    const files = [];
+    for (const en of items) files.push(...await entriesToFiles(en));
+    addFiles(files);
+  } else addFiles(e.dataTransfer.files);
+});
+drop.addEventListener('click', () => $('#fileInput').click());
+$('#pickFiles').onclick = () => $('#fileInput').click();
+$('#pickFolder').onclick = () => $('#folderInput').click();
+$('#fileInput').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+$('#folderInput').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+$('#clearAll').onclick = () => {
+  if (state.items.length && !confirm('넣은 파일을 모두 지울까요?')) return;
+  state.items.forEach(i => i.url && URL.revokeObjectURL(i.url));
+  state.items = []; state.sources = []; state.keys.clear();
+  refreshAll();
+};
+$('#sources').addEventListener('click', e => {
+  const id = +e.target.dataset.src; if (!id) return;
+  state.items = state.items.filter(i => {
+    if (i.srcId !== id) return true;
+    if (i.url) URL.revokeObjectURL(i.url);
+    if (i.key) state.keys.delete(i.key);
+    return false;
+  });
+  state.sources = state.sources.filter(s => s.id !== id);
+  refreshAll();
+});
+$('#preview').addEventListener('click', e => {
+  const rm = e.target.dataset.rm;
+  if (rm) {
+    const it = state.items.find(i => i.id === +rm);
+    if (it && it.key) state.keys.delete(it.key);
+    state.items = state.items.filter(i => i.id !== +rm);
+    const s = it && state.sources.find(s => s.id === it.srcId); if (s) s.count--;
+    renderSources(); renderPreview(); return;
+  }
+  if (e.target.tagName === 'IMG') {
+    const lb = $('#lightbox'); lb.querySelector('img').src = e.target.src; lb.style.display = 'flex';
+  }
+});
+$('#lightbox').onclick = () => { $('#lightbox').style.display = 'none'; };
+$('#tsMode').onchange = () => { state.items.forEach(i => i.type === 'image' && pickImageTs(i)); renderPreview(); };
+let qTimer;
+$('#q').oninput = () => { clearTimeout(qTimer); qTimer = setTimeout(renderPreview, 200); };
+['#me', '#from', '#to', '#showMsg', '#showImg', '#showFile', '#showSrc', '#grid'].forEach(s => $(s).addEventListener('change', renderPreview));
+$('#title').addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(renderPreview, 300); });
+$('#btnPrint').onclick = doPrint;
+$('#btnHtml').onclick = () => exportHtml().catch(err => { progress(''); alert('저장 실패: ' + err.message); });
+$('#btnTxt').onclick = () => {
+  const list = visible(); if (!list.length) return alert('저장할 내용이 없습니다.');
+  download(new Blob(['﻿' + buildText(list)], { type: 'text/plain;charset=utf-8' }), safeName($('#title').value) + '.txt');
+};
+$('#btnBundle').onclick = () => exportBundle().catch(err => { progress(''); alert('만들기 실패: ' + err.message); });
+
+refreshAll();
+</script>
+</body>
+</html>
