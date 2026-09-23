@@ -1,0 +1,10 @@
+Skeleton.hwpx 는 python-hwpx (https://github.com/airmang/python-hwpx) 패키지에
+포함된 빈 문서 템플릿을 그대로 사용한 것입니다.
+
+python-hwpx
+Copyright 2025-2026 airmang
+Licensed under the Apache License, Version 2.0.
+http://www.apache.org/licenses/LICENSE-2.0
+
+"HWPX" 는 한글과컴퓨터(Hancom Inc.)의 문서 형식이자 상표입니다.
+본 스킬은 한글과컴퓨터와 무관한 비공식 구현입니다.
