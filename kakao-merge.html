@@ -230,7 +230,15 @@ function progress(msg) {
 }
 const tick = () => new Promise(r => setTimeout(r, 0));
 
-function download(blob, name) {
+// claude.ai에서 열었을 때는 플랫폼 저장 기능을 사용, 그 외에는 일반 다운로드
+let platformDl = null;
+if (window.claude && window.claude.use) window.claude.use('downloads').then(d => { platformDl = d; }).catch(() => {});
+
+async function download(blob, name) {
+  if (platformDl) {
+    try { await platformDl.save({ filename: name, data: blob }); return; }
+    catch (e) { if (e && e.code === 'declined') return; }
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = name;
@@ -704,8 +712,8 @@ async function exportBundle() {
     sheets.forEach((b, i) => zip.file(`사진묶음_${pad(i + 1)}.jpg`, b));
     download(await zip.generateAsync({ type: 'blob' }), `${title}_첨부용.zip`);
   } else {
-    download(new Blob(['﻿' + text], { type: 'text/plain' }), '00_대화_전체_통합.txt');
-    for (let i = 0; i < sheets.length; i++) { await new Promise(r => setTimeout(r, 400)); download(sheets[i], `사진묶음_${pad(i + 1)}.jpg`); }
+    await download(new Blob(['﻿' + text], { type: 'text/plain' }), '00_대화_전체_통합.txt');
+    for (let i = 0; i < sheets.length; i++) { await new Promise(r => setTimeout(r, 400)); await download(sheets[i], `사진묶음_${pad(i + 1)}.jpg`); }
   }
   progress('');
 }
