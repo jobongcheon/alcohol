@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>카톡·사진 자료 합치기</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style id="doc-style">
 :root {
   --bg: #f4f5f7; --panel: #ffffff; --text: #1d2129; --muted: #6b7280; --line: #e3e5e8;
@@ -48,10 +49,16 @@
 .doc figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; word-break: break-all; line-height: 1.5; }
 .doc figcaption b { color: var(--text); }
 .doc .file-item, .doc .note-item { background: var(--panel); border-radius: 10px; padding: 10px 12px; margin: 10px auto; max-width: 560px; font-size: 13px; break-inside: avoid; position: relative; }
+.doc .row-item, .doc .sheet-item { background: var(--panel); border-radius: 10px; padding: 9px 12px; margin: 8px auto; max-width: 640px; font-size: 13px; line-height: 1.5; break-inside: avoid; position: relative; border-left: 4px solid #1d8a4e; }
+.doc .rh { font-size: 11px; color: var(--muted); margin-bottom: 3px; word-break: break-all; }
+.doc .tbl { overflow-x: auto; margin-top: 6px; }
+.doc .tbl table { border-collapse: collapse; font-size: 12px; width: 100%; }
+.doc .tbl th, .doc .tbl td { border: 1px solid var(--line); padding: 3px 6px; text-align: left; white-space: nowrap; }
+.doc .tbl th { background: var(--sys); }
 .doc .note-item pre { white-space: pre-wrap; word-break: break-word; font-family: inherit; margin: 6px 0 0; font-size: 13px; line-height: 1.55; }
 @media print {
   .doc { background: #fff !important; color: #000 !important; padding: 0; }
-  .doc .doc-head, .doc figure.img-item, .doc .file-item, .doc .note-item { background: #fff !important; border: 1px solid #ccc; }
+  .doc .doc-head, .doc figure.img-item, .doc .file-item, .doc .note-item, .doc .row-item, .doc .sheet-item { background: #fff !important; border: 1px solid #ccc; }
   .doc .msg .bubble { background: #fff !important; color: #000 !important; border: 1px solid #bbb; }
   .doc .msg.me .bubble { background: #fff6b0 !important; }
   .doc .day-h span, .doc .sys span { background: #eee !important; color: #000 !important; }
@@ -77,6 +84,7 @@ header.top p { margin: 6px 0 0; color: var(--muted); line-height: 1.5; }
 .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 button, .btn { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
 button:hover { border-color: var(--accent); }
+button.danger { color: var(--danger); border-color: var(--danger); font-weight: 600; }
 button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .5; cursor: default; }
 label.opt { display: flex; align-items: center; gap: 6px; margin: 6px 0; }
@@ -84,7 +92,7 @@ label.opt { display: flex; align-items: center; gap: 6px; margin: 6px 0; }
 .field span { font-size: 12px; color: var(--muted); }
 input[type=text], input[type=search], input[type=date], select { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); width: 100%; min-width: 0; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center; }
 .stats div { background: var(--bg); border-radius: 8px; padding: 8px 2px; }
 .stats b { display: block; font-size: 18px; }
 .stats small { color: var(--muted); font-size: 11px; }
@@ -103,6 +111,12 @@ input[type=text], input[type=search], input[type=date], select { font: inherit; 
 .doc .msg:hover .rm, .doc figure:hover .rm, .doc .file-item:hover .rm, .doc .note-item:hover .rm { opacity: 1; }
 .doc .msg .rm { position: static; }
 .doc figure.img-item img { cursor: zoom-in; }
+.doc [contenteditable] { outline: none; cursor: text; border-radius: 4px; }
+.doc [contenteditable]:hover { box-shadow: 0 0 0 1px var(--accent); }
+.doc [contenteditable]:focus { box-shadow: 0 0 0 2px var(--accent); }
+.doc .memo:empty::before { content: '+ 메모 쓰기'; color: var(--muted); opacity: .7; }
+.doc [data-time] { cursor: pointer; text-decoration: underline dotted; }
+.edit-tip { font-size: 12px; color: var(--muted); width: 100%; }
 #progress { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 20px; font-size: 13px; display: none; z-index: 30; max-width: calc(100% - 32px); }
 #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 40; cursor: zoom-out; padding: 16px; }
 #lightbox img { max-width: 100%; max-height: 100%; }
@@ -126,12 +140,12 @@ input[type=text], input[type=search], input[type=date], select { font: inherit; 
       <h2>1. 파일 넣기</h2>
       <div class="drop" id="drop">
         <div class="big">여기에 파일이나 폴더를 끌어다 놓으세요</div>
-        <div class="small">개수 제한 없음 · 카톡 .txt/.csv · 사진(jpg, png, heic 등) · zip<br>또는 아래 버튼으로 선택</div>
+        <div class="small">개수 제한 없음 · 카톡 .txt/.csv · 엑셀(.xlsx/.xls) · 사진(jpg, png, heic 등) · zip<br>또는 아래 버튼으로 선택</div>
       </div>
       <div class="btns">
         <button id="pickFiles">파일 선택</button>
         <button id="pickFolder">폴더 통째로 선택</button>
-        <button id="clearAll">모두 지우기</button>
+        <button id="clearAll" class="danger">🗑 모두 지우기</button>
       </div>
       <input type="file" id="fileInput" multiple hidden>
       <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
@@ -155,6 +169,7 @@ input[type=text], input[type=search], input[type=date], select { font: inherit; 
       </div>
       <label class="opt"><input type="checkbox" id="showMsg" checked> 대화</label>
       <label class="opt"><input type="checkbox" id="showImg" checked> 사진</label>
+      <label class="opt"><input type="checkbox" id="showXls" checked> 엑셀 자료</label>
       <label class="opt"><input type="checkbox" id="showFile" checked> 기타 파일 / 메모</label>
       <label class="opt"><input type="checkbox" id="showSrc"> 대화마다 출처 파일명 표시</label>
       <label class="opt"><input type="checkbox" id="dedupe" checked> 중복 대화·사진 자동 제거</label>
@@ -166,6 +181,7 @@ input[type=text], input[type=search], input[type=date], select { font: inherit; 
       <div class="btns">
         <button class="primary" id="btnPrint">PDF로 저장 (인쇄)</button>
         <button id="btnHtml">HTML 파일 1개로 저장</button>
+        <button id="btnXlsx">엑셀(.xlsx)로 저장</button>
         <button id="btnTxt">텍스트(.txt)로 저장</button>
       </div>
       <div class="hint">PDF: 인쇄 창에서 대상을 <b>'PDF로 저장'</b>으로 고르세요. 대화+사진이 한 파일에 들어갑니다.</div>
@@ -189,6 +205,8 @@ input[type=text], input[type=search], input[type=date], select { font: inherit; 
     <div class="toolbar">
       <input type="search" id="q" placeholder="내용·이름·파일명 검색">
       <span class="hint" id="shown" style="margin:0"></span>
+      <button id="resetTop" class="danger">🗑 새로 시작 (모두 지우기)</button>
+      <div class="edit-tip">✏️ 오른쪽 내용을 눌러서 바로 고칠 수 있어요 · 시간을 누르면 시간 변경 · 고친 내용은 PDF/엑셀/텍스트 저장에 그대로 반영돼요</div>
     </div>
     <div id="preview"></div>
   </main>
@@ -203,6 +221,7 @@ const $ = s => document.querySelector(s);
 const state = { items: [], sources: [], seq: 0, keys: new Set() };
 const IMG_EXT = /\.(jpe?g|png|gif|webp|bmp|heic|heif|avif|tiff?)$/i;
 const TXT_EXT = /\.(txt|csv|log|md)$/i;
+const XLS_EXT = /\.(xlsx|xlsm|xls|ods)$/i;
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 
 /* ---------- helpers ---------- */
@@ -385,6 +404,7 @@ function parseTiffDate(v, t) {
 }
 
 function pickImageTs(it) {
+  if (it.how === '직접 수정') return;
   const mode = $('#tsMode').value;
   const cands = {
     exif: it.exifTs && { ts: it.exifTs, how: '촬영정보' },
@@ -393,6 +413,62 @@ function pickImageTs(it) {
   };
   const order = mode === 'exif' ? ['exif', 'name', 'mod'] : mode === 'name' ? ['name', 'exif', 'mod'] : ['mod'];
   for (const k of order) if (cands[k]) { it.ts = cands[k].ts; it.how = cands[k].how; return; }
+}
+
+/* ---------- Excel ---------- */
+const RE_ANY_DATE = /(\d{4})\s*[-./년]\s*(\d{1,2})\s*[-./월]\s*(\d{1,2})\s*일?(?:[^\d]{0,4}?(오전|오후|AM|PM)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?)?/;
+function parseAnyDate(v) {
+  // 엑셀 날짜는 몇 초씩 어긋나서 들어오는 경우가 있어 가장 가까운 분으로 맞춤
+  if (v instanceof Date) return isNaN(v) ? null : new Date(Math.round(v.getTime() / 60000) * 60000);
+  if (typeof v !== 'string') return null;
+  const m = v.match(RE_ANY_DATE);
+  if (!m) return null;
+  return m[6] ? mk(m[1], m[2], m[3], to24(m[4] || m[8], m[5]), m[6], m[7] || 0) : mk(m[1], m[2], m[3]);
+}
+function cellStr(v) {
+  if (v instanceof Date) {
+    if (isNaN(v)) return '';
+    v = parseAnyDate(v);
+    return v.getHours() || v.getMinutes() ? fullTs(v) : dayKey(v);
+  }
+  return v == null ? '' : String(v).trim();
+}
+function findDateCol(head, body) {
+  const sample = body.slice(0, 200);
+  if (!sample.length) return -1;
+  let best = -1, bestScore = 0;
+  head.forEach((h, i) => {
+    const ok = sample.filter(r => parseAnyDate(r[i])).length / sample.length;
+    const score = ok + (/날짜|일자|일시|시간|date|time/i.test(h) ? 0.3 : 0);
+    if (ok >= 0.6 && score > bestScore) { best = i; bestScore = score; }
+  });
+  return best;
+}
+function ingestWorkbook(wb, path, file) {
+  let added = 0;
+  for (const sn of wb.SheetNames) {
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, raw: true, defval: '' })
+      .filter(r => r.some(c => cellStr(c) !== ''));
+    if (!rows.length) continue;
+    const label = wb.SheetNames.length > 1 ? `${path} [${sn}]` : path;
+    const s = addSource(label, '엑셀');
+    const head = rows[0].map((h, i) => cellStr(h) || `열${i + 1}`);
+    const body = rows.slice(1);
+    const dc = findDateCol(head, body);
+    if (dc >= 0) {
+      // 날짜 열이 있으면 행마다 시간순 타임라인에 끼워 넣음
+      body.forEach(r => {
+        const text = head.map((h, i) => (i === dc || cellStr(r[i]) === '') ? null : `${h}: ${cellStr(r[i])}`).filter(Boolean).join(' · ');
+        pushItem({ type: 'row', ts: parseAnyDate(r[dc]), how: head[dc], src: label, text }, s);
+      });
+    } else {
+      // 날짜 열이 없으면 표 전체를 한 덩어리로
+      const table = rows.map(r => r.map(cellStr));
+      pushItem({ type: 'sheet', ts: new Date(file.lastModified), how: '파일 수정일', src: label, sheet: sn, rows: table, text: table.map(r => r.join(' ')).join('\n') }, s);
+    }
+    added++;
+  }
+  return added;
 }
 
 /* ---------- ingest ---------- */
@@ -405,7 +481,8 @@ function pushItem(it, srcObj) {
   it.id = ++state.seq; it.srcId = srcObj.id;
   if ($('#dedupe').checked) {
     const key = it.type === 'msg' ? `m|${it.ts ? it.ts.getTime() : ''}|${it.name}|${it.text}`
-      : it.type === 'image' ? `i|${it.src.replace(/^.*\//, '')}|${it.file.size}` : null;
+      : it.type === 'image' ? `i|${it.src.replace(/^.*\//, '')}|${it.file.size}`
+      : it.type === 'row' ? `r|${it.ts ? it.ts.getTime() : ''}|${it.text}` : null;
     if (key) { if (state.keys.has(key)) return; state.keys.add(key); it.key = key; }
   }
   srcObj.count++;
@@ -438,12 +515,19 @@ async function addFiles(fileList) {
     if (done % 20 === 0) await tick();
     try {
       if (/\.zip$/i.test(f.name)) { files.push(...await expandZip(f)); continue; }
+      if (XLS_EXT.test(f.name)) {
+        if (!window.XLSX) { addSource(path + ' — 엑셀 도구를 불러오지 못함(인터넷 연결 필요)', '오류'); continue; }
+        ingestWorkbook(XLSX.read(await f.arrayBuffer(), { type: 'array', cellDates: true }), path, f);
+        continue;
+      }
       if (TXT_EXT.test(f.name) || f.type.startsWith('text/')) {
         const text = await readText(f);
         const { msgs, room } = parseKakao(text, path);
         if (msgs.length) {
           const s = addSource(path + (room ? ` (${room})` : ''), '대화');
           msgs.forEach(m => pushItem(m, s));
+        } else if (/\.csv$/i.test(f.name) && window.XLSX) {
+          ingestWorkbook(XLSX.read(text, { type: 'string', cellDates: true }), path, f);
         } else {
           const s = addSource(path, '메모');
           pushItem({ type: 'note', ts: new Date(f.lastModified), how: '파일 수정일', src: path, text }, s);
@@ -477,7 +561,7 @@ function sorted() {
 function visible() {
   const q = $('#q').value.trim().toLowerCase();
   const from = $('#from').value, to = $('#to').value;
-  const show = { msg: $('#showMsg').checked, image: $('#showImg').checked, file: $('#showFile').checked, note: $('#showFile').checked };
+  const show = { msg: $('#showMsg').checked, image: $('#showImg').checked, file: $('#showFile').checked, note: $('#showFile').checked, row: $('#showXls').checked, sheet: $('#showXls').checked };
   const list = sorted().filter(it => {
     if (!show[it.type]) return false;
     const dk = dayKey(it.ts);
@@ -498,12 +582,15 @@ function visible() {
 function renderDoc(list, opt = {}) {
   const me = $('#me').value, showSrc = $('#showSrc').checked;
   const edit = !opt.export;
+  const ed = (id, field = 'text') => edit ? ` contenteditable="plaintext-only" spellcheck="false" data-edit="${id}" data-field="${field}"` : '';
+  const tm = (it, txt) => edit ? `<span data-time="${it.id}" title="눌러서 시간 바꾸기">${txt}</span>` : txt;
+  const memo = it => edit ? `<div class="memo"${ed(it.id, 'memo')}>${esc(it.memo || '')}</div>` : (it.memo ? `<div class="memo">📝 ${esc(it.memo)}</div>` : '');
   const title = $('#title').value || '카톡·사진 통합 자료';
   const withTs = list.filter(i => i.ts);
   const range = withTs.length ? `${dayKey(withTs[0].ts)} ~ ${dayKey(withTs[withTs.length - 1].ts)}` : '-';
   const cnt = t => list.filter(i => i.type === t).length;
   const srcNames = [...new Set(list.map(i => i.srcId))].length;
-  let h = `<div class="doc-head"><h1>${esc(title)}</h1><div class="doc-info">기간: ${range}<br>대화 ${cnt('msg')}건 · 사진 ${cnt('image')}장 · 기타 ${cnt('file') + cnt('note')}건 · 원본 파일 ${srcNames}개<br>만든 날: ${fullTs(new Date())}</div></div>`;
+  let h = `<div class="doc-head"><h1${edit ? ' contenteditable="plaintext-only" spellcheck="false" data-edit="title"' : ''}>${esc(title)}</h1><div class="doc-info">기간: ${range}<br>대화 ${cnt('msg')}건 · 사진 ${cnt('image')}장 · 엑셀 ${cnt('row') + cnt('sheet')}건 · 기타 ${cnt('file') + cnt('note')}건 · 원본 파일 ${srcNames}개<br>만든 날: ${fullTs(new Date())}</div></div>`;
   let lastDay = null, lastWho = null;
   for (const it of list) {
     const dk = dayKey(it.ts);
@@ -514,24 +601,33 @@ function renderDoc(list, opt = {}) {
     const rm = edit ? `<button class="rm" data-rm="${it.id}" title="이 항목 빼기">✕</button>` : '';
     const t = it.ts ? hm(it.ts) : '';
     if (it.type === 'msg') {
-      if (it.sys || !it.name) { h += `<div class="sys"><span>${esc(it.text)}</span></div>`; lastWho = null; continue; }
+      if (it.sys || !it.name) { h += `<div class="sys"><span${ed(it.id)}>${esc(it.text)}</span></div>`; lastWho = null; continue; }
       const isMe = me && it.name === me;
       const media = /^(사진|동영상|이모티콘|파일:|사진 \d+장|음성메시지|샵검색:)/.test(it.text) ? ' media' : '';
       const who = it.name !== lastWho && !isMe ? `<div class="who">${esc(it.name)}</div>` : '';
       const src = showSrc ? `<span class="src">${esc(it.src)}</span>` : '';
-      h += `<div class="msg${isMe ? ' me' : ''}">${who}<div class="row"><div class="bubble${media}">${esc(it.text)}</div><span class="t">${t}${src}</span>${rm}</div></div>`;
+      h += `<div class="msg${isMe ? ' me' : ''}">${who}<div class="row"><div class="bubble${media}"${ed(it.id)}>${esc(it.text)}</div><span class="t">${tm(it, t || '시간?')}${src}</span>${rm}</div></div>`;
       lastWho = it.name;
     } else if (it.type === 'image') {
       const srcUrl = opt.imgMap ? opt.imgMap.get(it.id) : it.url;
       const img = srcUrl ? `<img src="${srcUrl}" alt="${esc(it.src)}" data-id="${it.id}"${edit ? ' loading="lazy"' : ''}>`
         : `<div class="noimg">이 형식은 미리보기 불가 (${esc(it.src.split('.').pop())})</div>`;
-      h += `<figure class="img-item">${img}<figcaption><b>사진 #${it.no}</b> · ${fullTs(it.ts)} (${it.how}) · ${esc(it.src)}</figcaption>${rm}</figure>`;
+      h += `<figure class="img-item">${img}<figcaption><b>사진 #${it.no}</b> · ${tm(it, fullTs(it.ts))} (${it.how}) · ${esc(it.src)}${memo(it)}</figcaption>${rm}</figure>`;
+      lastWho = null;
+    } else if (it.type === 'row') {
+      h += `<div class="row-item"><div class="rh">📊 ${esc(it.src)} · ${tm(it, fullTs(it.ts))}</div><div${ed(it.id)}>${esc(it.text)}</div>${rm}</div>`;
+      lastWho = null;
+    } else if (it.type === 'sheet') {
+      const [hd, ...bd] = it.rows;
+      const lim = edit ? 300 : Infinity;
+      const tr = r => r.map(c => `<td>${esc(c)}</td>`).join('');
+      h += `<div class="sheet-item"><div class="rh">📊 ${esc(it.src)} · 표 ${bd.length}행 (날짜 열이 없어 통째로 넣음)</div><div class="tbl"><table><tr>${hd.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${bd.slice(0, lim).map(r => `<tr>${tr(r)}</tr>`).join('')}</table></div>${bd.length > lim ? `<div class="rh">… 미리보기는 ${lim}행까지만 (저장 파일에는 전부 들어감)</div>` : ''}${rm}</div>`;
       lastWho = null;
     } else if (it.type === 'note') {
-      h += `<div class="note-item"><b>📄 ${esc(it.src)}</b> · ${fullTs(it.ts)}<pre>${esc(it.text)}</pre>${rm}</div>`;
+      h += `<div class="note-item"><b>📄 ${esc(it.src)}</b> · ${tm(it, fullTs(it.ts))}<pre${ed(it.id)}>${esc(it.text)}</pre>${rm}</div>`;
       lastWho = null;
     } else {
-      h += `<div class="file-item">📎 <b>${esc(it.src)}</b> · ${fmtSize(it.size)} · ${fullTs(it.ts)} (${it.how})${rm}</div>`;
+      h += `<div class="file-item">📎 <b>${esc(it.src)}</b> · ${fmtSize(it.size)} · ${tm(it, fullTs(it.ts))} (${it.how})${memo(it)}${rm}</div>`;
       lastWho = null;
     }
   }
@@ -557,7 +653,7 @@ function gridSize() { const [c, r] = $('#grid').value.split('x').map(Number); re
 
 function renderStats(list) {
   const c = t => list.filter(i => i.type === t).length;
-  $('#stats').innerHTML = [['대화', c('msg')], ['사진', c('image')], ['기타', c('file') + c('note')], ['원본', state.sources.length]]
+  $('#stats').innerHTML = [['대화', c('msg')], ['사진', c('image')], ['엑셀', c('row') + c('sheet')], ['기타', c('file') + c('note')], ['원본', state.sources.length]]
     .map(([k, v]) => `<div><b>${v}</b><small>${k}</small></div>`).join('');
   const imgs = c('image'), { per } = gridSize();
   const sheets = Math.ceil(imgs / per), total = sheets + 1;
@@ -619,9 +715,11 @@ function buildText(list) {
     if (dk !== lastDay) { out.push('', `----- ${it.ts ? dayLabel(it.ts) : '날짜 미상'} -----`); lastDay = dk; }
     const t = it.ts ? `[${hm(it.ts)}] ` : '';
     if (it.type === 'msg') out.push(it.name ? `${t}${it.name}: ${it.text}` : `${t}(알림) ${it.text}`);
-    else if (it.type === 'image') out.push(`${t}📷 사진 #${it.no} — ${it.src} (시간 기준: ${it.how})`);
+    else if (it.type === 'image') out.push(`${t}📷 사진 #${it.no} — ${it.src} (시간 기준: ${it.how})${it.memo ? ' / 메모: ' + it.memo : ''}`);
     else if (it.type === 'note') out.push(`${t}📄 메모 파일 ${it.src}:`, it.text);
-    else out.push(`${t}📎 첨부파일 ${it.src} (${fmtSize(it.size)})`);
+    else if (it.type === 'row') out.push(`${t}📊 [${it.src}] ${it.text}`);
+    else if (it.type === 'sheet') out.push(`📊 엑셀 표 ${it.src}:`, ...it.rows.map(r => '  ' + r.join(' | ')));
+    else out.push(`${t}📎 첨부파일 ${it.src} (${fmtSize(it.size)})${it.memo ? ' / 메모: ' + it.memo : ''}`);
   }
   return out.join('\n');
 }
@@ -718,6 +816,48 @@ async function exportBundle() {
   progress('');
 }
 
+const KIND = { msg: '대화', image: '사진', file: '첨부파일', note: '메모', row: '엑셀', sheet: '엑셀 표' };
+function exportXlsx() {
+  const list = visible();
+  if (!list.length) return alert('저장할 내용이 없습니다.');
+  const title = safeName($('#title').value);
+  const cut = v => String(v).slice(0, 32000);
+  const aoa = [['번호', '날짜', '시간', '종류', '이름 / 사진번호', '내용', '원본 파일', '시간 기준']];
+  const sheetItems = [];
+  list.forEach((it, i) => {
+    let who = '', body = '';
+    if (it.type === 'msg') { who = it.name; body = it.text; }
+    else if (it.type === 'image') { who = `사진 #${it.no}`; body = it.src.split('/').pop() + (it.memo ? ` / 메모: ${it.memo}` : ''); }
+    else if (it.type === 'sheet') { sheetItems.push(it); body = `표 ${it.rows.length - 1}행 → '표${sheetItems.length}' 시트 참고`; }
+    else body = it.type === 'file' ? `${it.src} (${fmtSize(it.size)})${it.memo ? ` / 메모: ${it.memo}` : ''}` : it.text;
+    aoa.push([i + 1, it.ts ? dayKey(it.ts) : '', it.ts ? hm(it.ts) : '', it.sys ? '알림' : KIND[it.type], who, cut(body), it.src, it.how || '']);
+  });
+  if (!window.XLSX) {
+    const csv = aoa.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    alert('엑셀 도구를 불러오지 못해 CSV(엑셀에서 열림)로 저장합니다.');
+    return download(new Blob(['﻿' + csv], { type: 'text/csv' }), title + '.csv');
+  }
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [6, 11, 7, 8, 16, 70, 36, 12].map(w => ({ wch: w }));
+  ws['!autofilter'] = { ref: `A1:H${aoa.length}` };
+  XLSX.utils.book_append_sheet(wb, ws, '통합 타임라인');
+  const src = XLSX.utils.aoa_to_sheet([['종류', '원본 파일', '들어간 항목 수'], ...state.sources.map(s => [s.kind, s.name, s.count])]);
+  src['!cols'] = [{ wch: 8 }, { wch: 70 }, { wch: 14 }];
+  XLSX.utils.book_append_sheet(wb, src, '원본 파일 목록');
+  sheetItems.forEach((it, k) => XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(it.rows.map(r => r.map(cut))), `표${k + 1}`));
+  const buf = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  download(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), title + '.xlsx');
+}
+
+function clearAll() {
+  if (state.items.length && !confirm('넣은 파일을 모두 지우고 새로 시작할까요?')) return;
+  state.items.forEach(i => i.url && URL.revokeObjectURL(i.url));
+  state.items = []; state.sources = []; state.keys.clear();
+  ['#q', '#from', '#to'].forEach(s => { $(s).value = ''; });
+  refreshAll();
+}
+
 /* ---------- events ---------- */
 async function entriesToFiles(entry, base = '') {
   if (entry.isFile) {
@@ -753,12 +893,8 @@ $('#pickFiles').onclick = () => $('#fileInput').click();
 $('#pickFolder').onclick = () => $('#folderInput').click();
 $('#fileInput').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
 $('#folderInput').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
-$('#clearAll').onclick = () => {
-  if (state.items.length && !confirm('넣은 파일을 모두 지울까요?')) return;
-  state.items.forEach(i => i.url && URL.revokeObjectURL(i.url));
-  state.items = []; state.sources = []; state.keys.clear();
-  refreshAll();
-};
+$('#clearAll').onclick = clearAll;
+$('#resetTop').onclick = clearAll;
 $('#sources').addEventListener('click', e => {
   const id = +e.target.dataset.src; if (!id) return;
   state.items = state.items.filter(i => {
@@ -783,14 +919,32 @@ $('#preview').addEventListener('click', e => {
     const lb = $('#lightbox'); lb.querySelector('img').src = e.target.src; lb.style.display = 'flex';
   }
 });
+$('#preview').addEventListener('input', e => {
+  const el = e.target.closest('[data-edit]'); if (!el) return;
+  const txt = el.innerText.replace(/\n$/, '');
+  if (el.dataset.edit === 'title') { $('#title').value = txt; return; }
+  const it = state.items.find(i => i.id === +el.dataset.edit);
+  if (it) it[el.dataset.field] = txt;
+});
+$('#preview').addEventListener('click', e => {
+  const el = e.target.closest('[data-time]'); if (!el) return;
+  const it = state.items.find(i => i.id === +el.dataset.time); if (!it) return;
+  const v = prompt('새 날짜와 시간을 입력하세요 (예: 2026-06-08 15:45)', it.ts ? fullTs(it.ts) : '');
+  if (v == null) return;
+  const d = parseAnyDate(v);
+  if (!d) return alert('날짜 형식을 알아볼 수 없습니다. 예: 2026-06-08 15:45');
+  it.ts = d; it.how = '직접 수정';
+  renderPreview();
+});
 $('#lightbox').onclick = () => { $('#lightbox').style.display = 'none'; };
 $('#tsMode').onchange = () => { state.items.forEach(i => i.type === 'image' && pickImageTs(i)); renderPreview(); };
 let qTimer;
 $('#q').oninput = () => { clearTimeout(qTimer); qTimer = setTimeout(renderPreview, 200); };
-['#me', '#from', '#to', '#showMsg', '#showImg', '#showFile', '#showSrc', '#grid'].forEach(s => $(s).addEventListener('change', renderPreview));
+['#me', '#from', '#to', '#showMsg', '#showImg', '#showXls', '#showFile', '#showSrc', '#grid'].forEach(s => $(s).addEventListener('change', renderPreview));
 $('#title').addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(renderPreview, 300); });
 $('#btnPrint').onclick = doPrint;
 $('#btnHtml').onclick = () => exportHtml().catch(err => { progress(''); alert('저장 실패: ' + err.message); });
+$('#btnXlsx').onclick = () => { try { exportXlsx(); } catch (err) { alert('엑셀 저장 실패: ' + err.message); } };
 $('#btnTxt').onclick = () => {
   const list = visible(); if (!list.length) return alert('저장할 내용이 없습니다.');
   download(new Blob(['﻿' + buildText(list)], { type: 'text/plain;charset=utf-8' }), safeName($('#title').value) + '.txt');
