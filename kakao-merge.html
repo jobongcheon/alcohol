@@ -247,6 +247,13 @@ function progress(msg) {
   const p = $('#progress');
   if (msg) { p.textContent = msg; p.style.display = 'block'; } else p.style.display = 'none';
 }
+// claude.ai 화면에서는 alert/confirm/prompt 창이 막혀 있어서 화면 아래 안내로 대신함
+let noticeTimer;
+function notice(msg) {
+  progress(msg);
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => progress(''), 4500);
+}
 const tick = () => new Promise(r => setTimeout(r, 0));
 
 // claude.ai에서 열었을 때는 플랫폼 저장 기능을 사용, 그 외에는 일반 다운로드
@@ -490,7 +497,7 @@ function pushItem(it, srcObj) {
 }
 
 async function expandZip(file) {
-  if (!window.JSZip) { alert('zip을 풀 수 있는 도구를 불러오지 못했습니다(인터넷 연결 필요). zip을 먼저 풀어서 넣어 주세요.'); return []; }
+  if (!window.JSZip) { notice('zip을 풀 수 있는 도구를 불러오지 못했습니다(인터넷 연결 필요). zip을 먼저 풀어서 넣어 주세요.'); return []; }
   const zip = await JSZip.loadAsync(file);
   const files = [];
   for (const e of Object.values(zip.files)) {
@@ -726,7 +733,7 @@ function buildText(list) {
 
 async function exportHtml() {
   const list = visible();
-  if (!list.length) return alert('저장할 내용이 없습니다.');
+  if (!list.length) return notice('저장할 내용이 없습니다.');
   const imgMap = new Map(); const imgs = list.filter(i => i.type === 'image');
   for (let i = 0; i < imgs.length; i++) {
     progress(`사진 압축 중… ${i + 1} / ${imgs.length}`);
@@ -740,7 +747,7 @@ async function exportHtml() {
 }
 
 async function doPrint() {
-  if (!state.items.length) return alert('저장할 내용이 없습니다.');
+  if (!state.items.length) return notice('저장할 내용이 없습니다.');
   const imgs = [...document.querySelectorAll('#preview img')];
   progress(`사진 불러오는 중… (${imgs.length}장)`);
   imgs.forEach(i => i.loading = 'eager');
@@ -798,7 +805,7 @@ async function makeSheets(imgs) {
 
 async function exportBundle() {
   const list = visible();
-  if (!list.length) return alert('저장할 내용이 없습니다.');
+  if (!list.length) return notice('저장할 내용이 없습니다.');
   const imgs = list.filter(i => i.type === 'image');
   const title = safeName($('#title').value);
   const sheets = await makeSheets(imgs);
@@ -819,7 +826,7 @@ async function exportBundle() {
 const KIND = { msg: '대화', image: '사진', file: '첨부파일', note: '메모', row: '엑셀', sheet: '엑셀 표' };
 function exportXlsx() {
   const list = visible();
-  if (!list.length) return alert('저장할 내용이 없습니다.');
+  if (!list.length) return notice('저장할 내용이 없습니다.');
   const title = safeName($('#title').value);
   const cut = v => String(v).slice(0, 32000);
   const aoa = [['번호', '날짜', '시간', '종류', '이름 / 사진번호', '내용', '원본 파일', '시간 기준']];
@@ -834,7 +841,7 @@ function exportXlsx() {
   });
   if (!window.XLSX) {
     const csv = aoa.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
-    alert('엑셀 도구를 불러오지 못해 CSV(엑셀에서 열림)로 저장합니다.');
+    notice('엑셀 도구를 불러오지 못해 CSV(엑셀에서 열림)로 저장합니다.');
     return download(new Blob(['﻿' + csv], { type: 'text/csv' }), title + '.csv');
   }
   const wb = XLSX.utils.book_new();
@@ -850,8 +857,16 @@ function exportXlsx() {
   download(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), title + '.xlsx');
 }
 
-function clearAll() {
-  if (state.items.length && !confirm('넣은 파일을 모두 지우고 새로 시작할까요?')) return;
+// 버튼을 두 번 눌러야 지워짐 (확인 창 대신)
+function clearAll(e) {
+  const btn = e.currentTarget;
+  if (state.items.length && !btn._armed) {
+    btn._label = btn._label || btn.textContent;
+    btn.textContent = '⚠️ 한 번 더 누르면 모두 지워집니다';
+    btn._armed = setTimeout(() => { btn._armed = 0; btn.textContent = btn._label; }, 4000);
+    return;
+  }
+  clearTimeout(btn._armed); btn._armed = 0; if (btn._label) btn.textContent = btn._label;
   state.items.forEach(i => i.url && URL.revokeObjectURL(i.url));
   state.items = []; state.sources = []; state.keys.clear();
   ['#q', '#from', '#to'].forEach(s => { $(s).value = ''; });
@@ -929,12 +944,22 @@ $('#preview').addEventListener('input', e => {
 $('#preview').addEventListener('click', e => {
   const el = e.target.closest('[data-time]'); if (!el) return;
   const it = state.items.find(i => i.id === +el.dataset.time); if (!it) return;
-  const v = prompt('새 날짜와 시간을 입력하세요 (예: 2026-06-08 15:45)', it.ts ? fullTs(it.ts) : '');
-  if (v == null) return;
-  const d = parseAnyDate(v);
-  if (!d) return alert('날짜 형식을 알아볼 수 없습니다. 예: 2026-06-08 15:45');
-  it.ts = d; it.how = '직접 수정';
-  renderPreview();
+  // 시간 글자 자리에 입력칸을 띄워서 바로 고침
+  const inp = document.createElement('input');
+  inp.type = 'text'; inp.value = it.ts ? fullTs(it.ts) : ''; inp.placeholder = '2026-06-08 15:45';
+  inp.style.cssText = 'width:150px;font-size:12px;padding:2px 4px';
+  el.replaceWith(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = ok => {
+    if (done) return; done = true;
+    if (ok && inp.value.trim()) {
+      const d = parseAnyDate(inp.value);
+      if (d) { it.ts = d; it.how = '직접 수정'; } else notice('날짜 형식을 알아볼 수 없습니다. 예: 2026-06-08 15:45');
+    }
+    renderPreview();
+  };
+  inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') finish(true); else if (ev.key === 'Escape') finish(false); });
+  inp.addEventListener('blur', () => finish(true));
 });
 $('#lightbox').onclick = () => { $('#lightbox').style.display = 'none'; };
 $('#tsMode').onchange = () => { state.items.forEach(i => i.type === 'image' && pickImageTs(i)); renderPreview(); };
@@ -943,13 +968,13 @@ $('#q').oninput = () => { clearTimeout(qTimer); qTimer = setTimeout(renderPrevie
 ['#me', '#from', '#to', '#showMsg', '#showImg', '#showXls', '#showFile', '#showSrc', '#grid'].forEach(s => $(s).addEventListener('change', renderPreview));
 $('#title').addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(renderPreview, 300); });
 $('#btnPrint').onclick = doPrint;
-$('#btnHtml').onclick = () => exportHtml().catch(err => { progress(''); alert('저장 실패: ' + err.message); });
-$('#btnXlsx').onclick = () => { try { exportXlsx(); } catch (err) { alert('엑셀 저장 실패: ' + err.message); } };
+$('#btnHtml').onclick = () => exportHtml().catch(err => { progress(''); notice('저장 실패: ' + err.message); });
+$('#btnXlsx').onclick = () => { try { exportXlsx(); } catch (err) { notice('엑셀 저장 실패: ' + err.message); } };
 $('#btnTxt').onclick = () => {
-  const list = visible(); if (!list.length) return alert('저장할 내용이 없습니다.');
+  const list = visible(); if (!list.length) return notice('저장할 내용이 없습니다.');
   download(new Blob(['﻿' + buildText(list)], { type: 'text/plain;charset=utf-8' }), safeName($('#title').value) + '.txt');
 };
-$('#btnBundle').onclick = () => exportBundle().catch(err => { progress(''); alert('만들기 실패: ' + err.message); });
+$('#btnBundle').onclick = () => exportBundle().catch(err => { progress(''); notice('만들기 실패: ' + err.message); });
 
 refreshAll();
 </script>
