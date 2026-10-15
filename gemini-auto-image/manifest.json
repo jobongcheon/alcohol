@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Auto Image",
+  "version": "1.0.0",
+  "description": "Google Flow와 Gemini에서 여러 프롬프트를 순서대로 자동 입력해 이미지와 동영상을 생성합니다.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Gemini Auto Image",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["sidePanel", "storage", "unlimitedStorage", "tabs", "scripting", "downloads"],
+  "host_permissions": [
+    "https://labs.google/*",
+    "https://gemini.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://labs.google/*", "https://gemini.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

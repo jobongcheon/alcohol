@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gemini Auto Image</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="top">
+    <img src="icons/icon48.png" alt="" class="logo">
+    <h1>Gemini Auto Image</h1>
+    <span class="site" id="site-badge">사이트 확인 중</span>
+  </header>
+
+  <main>
+    <!-- 제어 -->
+    <section class="view" id="view-control">
+      <div class="card">
+        <div class="row between">
+          <div class="row">
+            <span class="label accent">Prompt</span>
+            <span class="chip">한 줄에 하나씩</span>
+          </div>
+          <label class="ghost-btn">
+            .txt 불러오기
+            <input type="file" id="txt-input" accept=".txt,text/plain" hidden>
+          </label>
+        </div>
+        <div class="prompt-box">
+          <textarea id="prompts" placeholder="만들고 싶은 이미지나 동영상을 설명하세요.&#10;여러 개는 줄을 바꿔 입력하면 순서대로 생성됩니다."></textarea>
+          <div class="prompt-foot">
+            <span id="prompt-count">0 prompts</span>
+            <button class="icon-btn" id="clear-prompts" title="모두 지우기" aria-label="프롬프트 모두 지우기">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12H7L6 9zm4 2v8h2v-8h-2zm4 0v8h2v-8h-2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="sub">Aspect ratio</div>
+        <div class="ratios" id="ratios">
+          <button class="ratio active" data-ratio="1:1"><i style="width:18px;height:18px"></i>1:1</button>
+          <button class="ratio" data-ratio="9:16"><i style="width:12px;height:21px"></i>9:16</button>
+          <button class="ratio" data-ratio="16:9"><i style="width:24px;height:14px"></i>16:9</button>
+          <button class="ratio" data-ratio="3:4"><i style="width:15px;height:20px"></i>3:4</button>
+          <button class="ratio" data-ratio="4:3"><i style="width:22px;height:16px"></i>4:3</button>
+        </div>
+
+        <div class="row between sub">
+          <span>Reference Images</span>
+          <span id="ref-count">(0/8)</span>
+        </div>
+        <div class="refs" id="refs"></div>
+        <input type="file" id="ref-input" accept="image/*" multiple hidden>
+      </div>
+
+      <div class="status" id="status">대기 중</div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+    </section>
+
+    <!-- 라이브러리 -->
+    <section class="view" id="view-library" hidden>
+      <div class="row between">
+        <span class="label">생성 결과 <span id="lib-count">0</span>개</span>
+        <div class="row">
+          <button class="ghost-btn" id="lib-download">모두 저장</button>
+          <button class="ghost-btn" id="lib-clear">비우기</button>
+        </div>
+      </div>
+      <div class="lib" id="lib"></div>
+      <p class="empty" id="lib-empty">아직 생성된 결과가 없습니다. 작업을 시작하면 여기에 모입니다.</p>
+    </section>
+
+    <!-- 설정 -->
+    <section class="view" id="view-settings" hidden>
+      <div class="card">
+        <label class="field">
+          <span>프롬프트 사이 대기 시간 (초)</span>
+          <input type="number" id="set-delay" min="0" max="600" value="5">
+        </label>
+        <label class="field">
+          <span>프롬프트당 최대 대기 시간 (초)</span>
+          <input type="number" id="set-timeout" min="30" max="1800" value="300">
+        </label>
+        <label class="field">
+          <span>프롬프트당 반복 횟수</span>
+          <input type="number" id="set-repeat" min="1" max="20" value="1">
+        </label>
+        <label class="field check">
+          <input type="checkbox" id="set-ratio-text" checked>
+          <span>비율을 프롬프트 끝에 붙이기</span>
+        </label>
+        <label class="field check">
+          <input type="checkbox" id="set-autodl" checked>
+          <span>결과를 자동으로 다운로드</span>
+        </label>
+        <label class="field">
+          <span>저장 폴더 이름</span>
+          <input type="text" id="set-folder" value="GeminiAutoImage">
+        </label>
+      </div>
+    </section>
+
+    <!-- 정보 -->
+    <section class="view" id="view-about" hidden>
+      <div class="card about">
+        <h2>사용 방법</h2>
+        <ol>
+          <li>Google Flow 프로젝트 화면이나 Gemini 대화 화면을 엽니다.</li>
+          <li>프롬프트를 한 줄에 하나씩 입력합니다.</li>
+          <li>비율과 참조 이미지를 고르고 시작을 누릅니다.</li>
+          <li>결과는 라이브러리 탭에 모이고 다운로드 폴더에 저장됩니다.</li>
+        </ol>
+        <h2>지원 사이트</h2>
+        <ul>
+          <li>Google Flow · labs.google/fx/tools/flow</li>
+          <li>Gemini · gemini.google.com</li>
+        </ul>
+        <p class="muted">사이트 화면 구조가 바뀌면 입력창이나 버튼을 찾지 못할 수 있습니다. 이 경우 상태 줄에 이유가 표시됩니다. 각 서비스의 사용 한도와 약관 안에서 사용하세요.</p>
+        <p class="muted">버전 1.0.0</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="run-bar" id="run-bar">
+    <button class="primary" id="start-btn">시작</button>
+    <button class="secondary" id="stop-btn" disabled>중지</button>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="control">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.5 5.6 10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7zm12 9.8L17 14l1.4 2.5L17 19l2.5-1.4L22 19l-1.4-2.5L22 14zM22 2l-2.5 1.4L17 2l1.4 2.5L17 7l2.5-1.4L22 7l-1.4-2.5zm-7.6 5.3a1 1 0 0 0-1.4 0L1.3 18.9a1 1 0 0 0 0 1.4l2.4 2.4a1 1 0 0 0 1.4 0L16.7 11a1 1 0 0 0 0-1.4l-2.3-2.3zm-1 5.5-2.2-2.2 2.5-2.4 2.1 2.1-2.4 2.5z"/></svg>
+      Control
+    </button>
+    <button class="tab" data-view="library">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+      Library
+    </button>
+    <button class="tab" data-view="settings">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5L19.4 13zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+      Settings
+    </button>
+    <button class="tab" data-view="about">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      About
+    </button>
+  </nav>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
