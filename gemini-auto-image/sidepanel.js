@@ -353,17 +353,152 @@ $('stop-btn').addEventListener('click', async () => {
   setStatus('중지하는 중...');
 });
 
-// ---------- 계정 메모 ----------
-// 사용자가 직접 복사해 붙여넣을 수 있도록 이 PC의 chrome.storage.local 에만 저장한다.
+// ---------- 계정 메모 (암호화 보관) ----------
+// 계정 정보는 사용자가 정한 잠금 비밀번호로 AES-GCM 암호화해 chrome.storage.local 에 저장한다.
+// 키는 PBKDF2 로 만들고 메모리에만 두며, 패널을 닫거나 5분 동안 쓰지 않으면 지운다.
 // 자동 로그인이나 외부 전송은 하지 않는다.
-async function getAccounts() {
-  const { accounts } = await chrome.storage.local.get('accounts');
-  return accounts || [];
+const PBKDF2_ITER = 310000;
+const LOCK_AFTER_MS = 5 * 60 * 1000;
+const vault = { key: null, accounts: [], salt: null, timer: null };
+
+const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = (str) => Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+
+async function deriveKey(pin, salt) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: PBKDF2_ITER, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
 }
 
-async function setAccounts(list) {
-  await chrome.storage.local.set({ accounts: list });
+async function encryptJson(key, obj) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj)));
+  return { iv: b64(iv), data: b64(data) };
 }
+
+async function decryptJson(key, blob) {
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(blob.iv) }, key, unb64(blob.data));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+async function saveVault() {
+  const blob = await encryptJson(vault.key, vault.accounts);
+  await chrome.storage.local.set({ vault: { v: 1, salt: b64(vault.salt), iter: PBKDF2_ITER, ...blob } });
+}
+
+function showAccState(state) {
+  $('acc-setup').hidden = state !== 'setup';
+  $('acc-locked').hidden = state !== 'locked';
+  $('acc-open').hidden = state !== 'open';
+}
+
+function lockVault() {
+  vault.key = null;
+  vault.accounts = [];
+  clearTimeout(vault.timer);
+  $('acc-list').innerHTML = '';
+  $('unlock-pin').value = '';
+  $('unlock-msg').textContent = '';
+  chrome.storage.local.get('vault').then(({ vault: v }) => showAccState(v ? 'locked' : 'setup'));
+}
+
+function touchVault() {
+  if (!vault.key) return;
+  clearTimeout(vault.timer);
+  vault.timer = setTimeout(lockVault, LOCK_AFTER_MS);
+}
+
+async function initVault() {
+  const { vault: stored, accounts: legacy } = await chrome.storage.local.get(['vault', 'accounts']);
+  if (stored) {
+    showAccState('locked');
+    return;
+  }
+  showAccState('setup');
+  if (legacy && legacy.length) {
+    $('setup-msg').className = 'status';
+    $('setup-msg').textContent = `예전에 저장한 계정 ${legacy.length}개가 암호화 없이 남아 있습니다. 잠금 비밀번호를 설정하면 암호화되어 옮겨집니다.`;
+  }
+}
+
+$('setup-btn').addEventListener('click', async () => {
+  const pin = $('setup-pin').value;
+  const msg = $('setup-msg');
+  msg.className = 'status err';
+  if (pin.length < 6) { msg.textContent = '잠금 비밀번호는 6자 이상이어야 합니다.'; return; }
+  if (pin !== $('setup-pin2').value) { msg.textContent = '두 입력이 서로 다릅니다.'; return; }
+  const { accounts: legacy } = await chrome.storage.local.get('accounts');
+  vault.salt = crypto.getRandomValues(new Uint8Array(16));
+  vault.key = await deriveKey(pin, vault.salt);
+  vault.accounts = legacy || [];
+  await saveVault();
+  await chrome.storage.local.remove('accounts');
+  $('setup-pin').value = '';
+  $('setup-pin2').value = '';
+  msg.textContent = '';
+  showAccState('open');
+  renderAccounts();
+  touchVault();
+});
+
+async function unlock() {
+  const pin = $('unlock-pin').value;
+  const msg = $('unlock-msg');
+  const { vault: stored } = await chrome.storage.local.get('vault');
+  if (!stored) return lockVault();
+  try {
+    const salt = unb64(stored.salt);
+    const key = await deriveKey(pin, salt);
+    vault.accounts = await decryptJson(key, stored);
+    vault.key = key;
+    vault.salt = salt;
+    $('unlock-pin').value = '';
+    msg.textContent = '';
+    showAccState('open');
+    renderAccounts();
+    touchVault();
+  } catch (e) {
+    msg.textContent = '잠금 비밀번호가 맞지 않습니다.';
+    $('unlock-pin').select();
+  }
+}
+$('unlock-btn').addEventListener('click', unlock);
+$('unlock-pin').addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+$('reset-vault').addEventListener('click', async () => {
+  const b = $('reset-vault');
+  if (b.dataset.confirm !== '1') {
+    b.dataset.confirm = '1';
+    b.textContent = '정말 모두 지우려면 한 번 더 누르세요';
+    setTimeout(() => { b.dataset.confirm = ''; b.textContent = '잊어버렸어요 · 저장된 계정 모두 지우고 새로 설정'; }, 3000);
+    return;
+  }
+  await chrome.storage.local.remove(['vault', 'accounts']);
+  b.dataset.confirm = '';
+  b.textContent = '잊어버렸어요 · 저장된 계정 모두 지우고 새로 설정';
+  lockVault();
+});
+
+$('lock-btn').addEventListener('click', lockVault);
+document.addEventListener('visibilitychange', () => { if (document.hidden) lockVault(); });
+window.addEventListener('pagehide', lockVault);
+['click', 'keydown', 'input'].forEach((ev) => document.addEventListener(ev, touchVault, true));
+
+$('change-btn').addEventListener('click', async () => {
+  const pin = $('change-pin').value;
+  const msg = $('change-msg');
+  if (!vault.key) return lockVault();
+  if (pin.length < 6) { msg.className = 'status err'; msg.textContent = '6자 이상이어야 합니다.'; return; }
+  vault.salt = crypto.getRandomValues(new Uint8Array(16));
+  vault.key = await deriveKey(pin, vault.salt);
+  await saveVault();
+  $('change-pin').value = '';
+  msg.className = 'status ok';
+  msg.textContent = '잠금 비밀번호를 바꿨습니다.';
+  setTimeout(() => { msg.textContent = ''; }, 2500);
+});
 
 async function copyText(text, btn) {
   try {
@@ -390,8 +525,8 @@ function miniBtn(text, cls, onClick) {
   return b;
 }
 
-async function renderAccounts() {
-  const list = await getAccounts();
+function renderAccounts() {
+  const list = vault.accounts;
   const box = $('acc-list');
   box.innerHTML = '';
   list.forEach((acc, i) => {
@@ -410,9 +545,8 @@ async function renderAccounts() {
         setTimeout(() => { del.dataset.confirm = ''; del.textContent = '삭제'; }, 2500);
         return;
       }
-      const cur = await getAccounts();
-      cur.splice(i, 1);
-      await setAccounts(cur);
+      vault.accounts.splice(i, 1);
+      await saveVault();
       renderAccounts();
     });
     head.append(name, del);
@@ -423,9 +557,7 @@ async function renderAccounts() {
     idVal.className = 'acc-val';
     idVal.textContent = acc.email;
     idVal.title = acc.email;
-    const idSpacer = document.createElement('span');
-    idLine.append(idVal, idSpacer, miniBtn('아이디 복사', 'copy', (e) => copyText(acc.email, e.currentTarget)));
-
+    idLine.append(idVal, document.createElement('span'), miniBtn('아이디 복사', 'copy', (e) => copyText(acc.email, e.currentTarget)));
     card.append(head, idLine);
 
     if (acc.pass) {
@@ -448,14 +580,11 @@ async function renderAccounts() {
 }
 
 $('acc-add').addEventListener('click', async () => {
+  if (!vault.key) return lockVault();
   const email = $('acc-email').value.trim();
-  if (!email) {
-    $('acc-email').focus();
-    return;
-  }
-  const list = await getAccounts();
-  list.push({ name: $('acc-name').value.trim(), email, pass: $('acc-pass').value });
-  await setAccounts(list);
+  if (!email) { $('acc-email').focus(); return; }
+  vault.accounts.push({ name: $('acc-name').value.trim(), email, pass: $('acc-pass').value });
+  await saveVault();
   $('acc-name').value = '';
   $('acc-email').value = '';
   $('acc-pass').value = '';
@@ -468,6 +597,6 @@ $('acc-open-chooser').addEventListener('click', () => {
   });
 });
 
-renderAccounts();
+initVault();
 
 load();

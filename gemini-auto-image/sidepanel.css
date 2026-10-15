@@ -156,3 +156,7 @@ textarea::placeholder { color: var(--muted); }
 .mini.done { color: var(--ok); border-color: var(--ok); }
 .mini.del { color: var(--danger); }
 .tab { font-size: 10.5px; }
+#acc-open { display: flex; flex-direction: column; gap: 12px; }
+#acc-open[hidden] { display: none; }
+.status:empty { display: none; }
+[hidden] { display: none !important; }

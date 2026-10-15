@@ -73,32 +73,55 @@
 
     <!-- 계정 -->
     <section class="view" id="view-accounts" hidden>
-      <div class="card">
-        <div class="row between">
-          <span class="label accent">계정 메모</span>
-          <button class="ghost-btn" id="acc-open-chooser">계정 선택 화면 열기</button>
-        </div>
-        <p class="muted">복사 버튼을 누른 뒤 Google 로그인 화면에 붙여넣으세요. 정보는 이 컴퓨터의 Chrome에만 저장되고 다른 곳으로 보내지 않습니다.</p>
-        <div class="acc-list" id="acc-list"></div>
-        <p class="empty" id="acc-empty">저장된 계정이 없습니다. 아래에서 추가하세요.</p>
+      <!-- 처음 설정 -->
+      <div class="card" id="acc-setup" hidden>
+        <span class="label accent">잠금 비밀번호 설정</span>
+        <p class="muted">계정 정보는 이 잠금 비밀번호로 암호화되어 저장됩니다. 잠금 비밀번호를 모르면 아무도 볼 수 없고, 잊어버리면 되찾을 수 없습니다.</p>
+        <label class="field"><span>잠금 비밀번호 (6자 이상)</span><input type="password" id="setup-pin" autocomplete="new-password"></label>
+        <label class="field"><span>한 번 더 입력</span><input type="password" id="setup-pin2" autocomplete="new-password"></label>
+        <button class="primary" id="setup-btn">설정하고 시작</button>
+        <p class="status err" id="setup-msg"></p>
       </div>
 
-      <div class="card">
-        <span class="label">계정 추가</span>
-        <label class="field">
-          <span>이름 (선택)</span>
-          <input type="text" id="acc-name" placeholder="예: 3번 계정">
-        </label>
-        <label class="field">
-          <span>아이디 (이메일)</span>
-          <input type="text" id="acc-email" autocomplete="off" spellcheck="false">
-        </label>
-        <label class="field">
-          <span>비밀번호</span>
-          <input type="password" id="acc-pass" autocomplete="new-password">
-        </label>
-        <button class="primary" id="acc-add">추가</button>
-        <p class="muted">이 PC를 다른 사람과 함께 쓴다면 비밀번호는 저장하지 마세요. Chrome 프로필에 접근할 수 있는 사람은 볼 수 있습니다.</p>
+      <!-- 잠김 -->
+      <div class="card" id="acc-locked" hidden>
+        <span class="label accent">잠겨 있음</span>
+        <p class="muted">계정 정보를 보려면 잠금 비밀번호를 입력하세요.</p>
+        <label class="field"><span>잠금 비밀번호</span><input type="password" id="unlock-pin" autocomplete="current-password"></label>
+        <button class="primary" id="unlock-btn">잠금 해제</button>
+        <p class="status err" id="unlock-msg"></p>
+        <button class="ghost-btn" id="reset-vault">잊어버렸어요 · 저장된 계정 모두 지우고 새로 설정</button>
+      </div>
+
+      <!-- 열림 -->
+      <div id="acc-open" hidden>
+        <div class="card">
+          <div class="row between">
+            <span class="label accent">계정 메모</span>
+            <div class="row">
+              <button class="ghost-btn" id="acc-open-chooser">계정 선택 화면</button>
+              <button class="ghost-btn" id="lock-btn">잠그기</button>
+            </div>
+          </div>
+          <p class="muted">복사 버튼을 누른 뒤 Google 로그인 화면에 붙여넣으세요. 패널을 닫거나 5분 동안 쓰지 않으면 자동으로 잠깁니다.</p>
+          <div class="acc-list" id="acc-list"></div>
+          <p class="empty" id="acc-empty">저장된 계정이 없습니다. 아래에서 추가하세요.</p>
+        </div>
+
+        <div class="card">
+          <span class="label">계정 추가</span>
+          <label class="field"><span>이름 (선택)</span><input type="text" id="acc-name" placeholder="예: 3번 계정"></label>
+          <label class="field"><span>아이디 (이메일)</span><input type="text" id="acc-email" autocomplete="off" spellcheck="false"></label>
+          <label class="field"><span>비밀번호</span><input type="password" id="acc-pass" autocomplete="new-password"></label>
+          <button class="primary" id="acc-add">추가</button>
+        </div>
+
+        <div class="card">
+          <span class="label">잠금 비밀번호 변경</span>
+          <label class="field"><span>새 잠금 비밀번호 (6자 이상)</span><input type="password" id="change-pin" autocomplete="new-password"></label>
+          <button class="ghost-btn" id="change-btn">변경</button>
+          <p class="status" id="change-msg"></p>
+        </div>
       </div>
     </section>
 
@@ -148,7 +171,7 @@
           <li>Gemini · gemini.google.com</li>
         </ul>
         <p class="muted">사이트 화면 구조가 바뀌면 입력창이나 버튼을 찾지 못할 수 있습니다. 이 경우 상태 줄에 이유가 표시됩니다. 각 서비스의 사용 한도와 약관 안에서 사용하세요.</p>
-        <p class="muted">버전 1.1.0</p>
+        <p class="muted">버전 1.2.0</p>
       </div>
     </section>
   </main>
