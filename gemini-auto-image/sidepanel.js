@@ -2,9 +2,12 @@
 const $ = (id) => document.getElementById(id);
 const MAX_REFS = 8;
 const MAX_LIBRARY = 300;
-const SITE_RE = /^https:\/\/(labs\.google|gemini\.google\.com)\//;
+const SITE_RE = /^https:\/\/(flow\.google\.com|labs\.google|gemini\.google\.com)\//;
 
+const SLOT_COUNT = 5;
 const state = {
+  slots: Array(SLOT_COUNT).fill(''),
+  slotStatus: Array(SLOT_COUNT).fill(''),
   ratio: '1:1',
   refs: [], // { name, dataUrl }
   running: false,
@@ -16,7 +19,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // ---------- 저장 ----------
 async function saveDraft() {
   await chrome.storage.local.set({
-    draft: { prompts: $('prompts').value, ratio: state.ratio, refs: state.refs }
+    draft: { slots: state.slots, ratio: state.ratio, refs: state.refs }
   });
 }
 
@@ -38,7 +41,11 @@ async function saveSettings() {
 async function load() {
   const { draft, settings } = await chrome.storage.local.get(['draft', 'settings']);
   if (draft) {
-    $('prompts').value = draft.prompts || '';
+    if (Array.isArray(draft.slots)) {
+      state.slots = draft.slots.concat(Array(SLOT_COUNT).fill('')).slice(0, SLOT_COUNT);
+    } else if (draft.prompts) {
+      state.slots[0] = draft.prompts; // 예전 버전의 입력을 1번 상자로 옮긴다
+    }
     state.ratio = draft.ratio || '1:1';
     state.refs = draft.refs || [];
   }
@@ -50,6 +57,7 @@ async function load() {
     $('set-autodl').checked = settings.autoDownload;
     $('set-folder').value = settings.folder;
   }
+  renderSlots();
   renderRatios();
   renderRefs();
   updateCount();
@@ -57,27 +65,100 @@ async function load() {
   checkSite();
 }
 
-// ---------- 프롬프트 ----------
+// ---------- 프롬프트 상자 ----------
 function getPrompts() {
-  return $('prompts').value.split('\n').map((s) => s.trim()).filter(Boolean);
+  return state.slots.map((t, i) => ({ text: t.trim(), slot: i })).filter((p) => p.text);
 }
 
 function updateCount() {
-  const n = getPrompts().length;
-  $('prompt-count').textContent = `${n} prompt${n === 1 ? '' : 's'}`;
+  $('prompt-count').textContent = `${getPrompts().length} / ${SLOT_COUNT} 상자 사용`;
 }
 
-$('prompts').addEventListener('input', () => { updateCount(); saveDraft(); });
-$('clear-prompts').addEventListener('click', () => { $('prompts').value = ''; updateCount(); saveDraft(); });
-$('txt-input').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const text = await file.text();
-  const cur = $('prompts').value.trim();
-  $('prompts').value = (cur ? cur + '\n' : '') + text.trim();
-  e.target.value = '';
+function setSlotStatus(i, status) {
+  state.slotStatus[i] = status;
+  const tag = document.querySelector(`.slot[data-i="${i}"] .slot-tag`);
+  if (!tag) return;
+  const map = { run: '생성 중', ok: '완료', fail: '실패' };
+  tag.hidden = !status;
+  tag.className = 'slot-tag ' + status;
+  tag.textContent = map[status] || '';
+}
+
+function refreshSlot(i) {
+  const el = document.querySelector(`.slot[data-i="${i}"]`);
+  if (!el) return;
+  const len = state.slots[i].trim().length;
+  el.classList.toggle('filled', len > 0);
+  el.querySelector('.slot-len').textContent = len ? `${len.toLocaleString()}자` : '비어 있음';
+  el.querySelector('.slot-clear').hidden = !len;
+}
+
+function setSlotText(i, text) {
+  state.slots[i] = text;
+  const ta = document.querySelector(`.slot[data-i="${i}"] textarea`);
+  if (ta && ta.value !== text) ta.value = text;
+  setSlotStatus(i, '');
+  refreshSlot(i);
   updateCount();
   saveDraft();
+}
+
+function renderSlots() {
+  const box = $('slots');
+  box.innerHTML = '';
+  for (let i = 0; i < SLOT_COUNT; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'slot';
+    slot.dataset.i = i;
+
+    const head = document.createElement('div');
+    head.className = 'slot-head';
+    const num = document.createElement('span');
+    num.className = 'slot-num';
+    num.textContent = i + 1;
+    const len = document.createElement('span');
+    len.className = 'slot-len';
+    const tag = document.createElement('span');
+    tag.className = 'slot-tag';
+    tag.hidden = true;
+    const clear = document.createElement('button');
+    clear.className = 'slot-clear';
+    clear.textContent = '✕';
+    clear.title = '이 상자 비우기';
+    clear.setAttribute('aria-label', `${i + 1}번 상자 비우기`);
+    clear.addEventListener('click', () => setSlotText(i, ''));
+    head.append(num, len, tag, clear);
+
+    const ta = document.createElement('textarea');
+    ta.id = `slot-${i + 1}`;
+    ta.placeholder = '여기에 끌어다 놓기';
+    ta.value = state.slots[i];
+    ta.addEventListener('input', () => setSlotText(i, ta.value));
+
+    // 끌어다 놓기: 글이나 .txt 파일을 놓으면 상자 내용을 그것으로 바꾼다
+    slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('over'); });
+    slot.addEventListener('dragleave', (e) => { if (!slot.contains(e.relatedTarget)) slot.classList.remove('over'); });
+    slot.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      slot.classList.remove('over');
+      if (state.running) return;
+      const file = [...(e.dataTransfer.files || [])].find((f) => /^text\/|\.txt$|\.md$/i.test(f.type || f.name));
+      let text = '';
+      if (file) text = await file.text();
+      else text = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text') || '';
+      if (text.trim()) setSlotText(i, text.trim());
+    });
+
+    slot.append(head, ta);
+    box.append(slot);
+    refreshSlot(i);
+    setSlotStatus(i, state.slotStatus[i]);
+  }
+}
+
+$('clear-prompts').addEventListener('click', () => {
+  if (state.running) return;
+  for (let i = 0; i < SLOT_COUNT; i++) setSlotText(i, '');
 });
 
 // ---------- 비율 ----------
@@ -173,14 +254,22 @@ function setProgress(done, total) {
 
 // ---------- 사이트 연결 ----------
 async function getTargetTab() {
-  const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-  if (!tab || !tab.url || !SITE_RE.test(tab.url)) return null;
-  return tab;
+  // 1) 패널이 붙어 있는 창의 현재 탭
+  const [active] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (active && active.url && SITE_RE.test(active.url)) return active;
+  // 2) 같은 창에 열린 Flow / Gemini 탭 중 가장 최근에 본 탭
+  const pick = (tabs) => tabs
+    .filter((t) => t.url && SITE_RE.test(t.url))
+    .sort((x, y) => (y.lastAccessed || 0) - (x.lastAccessed || 0))[0] || null;
+  const inWindow = pick(await chrome.tabs.query({ currentWindow: true }));
+  if (inWindow) return inWindow;
+  // 3) 다른 Chrome 창까지 찾아본다
+  return pick(await chrome.tabs.query({}));
 }
 
 function siteName(url) {
   if (!url) return '';
-  if (url.includes('labs.google')) return 'Google Flow';
+  if (url.includes('flow.google.com') || url.includes('labs.google')) return 'Google Flow';
   if (url.includes('gemini.google.com')) return 'Gemini';
   return '';
 }
@@ -198,7 +287,9 @@ async function checkSite() {
   return tab;
 }
 chrome.tabs.onActivated.addListener(checkSite);
-chrome.tabs.onUpdated.addListener((id, info) => { if (info.status === 'complete') checkSite(); });
+chrome.tabs.onUpdated.addListener((id, info) => { if (info.status === 'complete' || info.url) checkSite(); });
+chrome.tabs.onRemoved.addListener(() => checkSite());
+chrome.windows.onFocusChanged.addListener(() => checkSite());
 
 async function sendToTab(tabId, msg) {
   try {
@@ -288,18 +379,19 @@ function setRunning(on) {
   state.running = on;
   $('start-btn').disabled = on;
   $('stop-btn').disabled = !on;
-  $('prompts').disabled = on;
+  document.querySelectorAll('.slot textarea').forEach((t) => { t.disabled = on; });
 }
 
 $('start-btn').addEventListener('click', async () => {
   const prompts = getPrompts();
-  if (!prompts.length) return setStatus('프롬프트를 한 줄 이상 입력하세요.', 'err');
+  if (!prompts.length) return setStatus('상자에 프롬프트를 하나 이상 넣으세요.', 'err');
   const tab = await checkSite();
-  if (!tab) return setStatus('Google Flow나 Gemini 탭을 연 상태에서 시작하세요.', 'err');
+  if (!tab) return setStatus('이 Chrome 창에서 Google Flow 프로젝트나 Gemini 대화를 연 뒤 시작하세요.', 'err');
 
   const settings = readSettings();
   const jobs = [];
   prompts.forEach((p) => { for (let r = 0; r < settings.repeat; r++) jobs.push(p); });
+  for (let k = 0; k < SLOT_COUNT; k++) setSlotStatus(k, '');
 
   state.stop = false;
   setRunning(true);
@@ -308,13 +400,15 @@ $('start-btn').addEventListener('click', async () => {
 
   for (let i = 0; i < jobs.length; i++) {
     if (state.stop) break;
-    setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${jobs[i].slice(0, 40)}`);
+    const job = jobs[i];
+    setSlotStatus(job.slot, 'run');
+    setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${job.slot + 1}번 상자`);
     let res;
     try {
       res = await sendToTab(tab.id, {
         gai: true,
         type: 'run',
-        prompt: buildPrompt(jobs[i], settings),
+        prompt: buildPrompt(job.text, settings),
         refs: state.refs,
         timeoutSec: settings.timeout
       });
@@ -324,15 +418,17 @@ $('start-btn').addEventListener('click', async () => {
     if (state.stop) break;
 
     if (res && res.ok) {
-      const items = res.items.map((it) => ({ ...it, prompt: jobs[i], time: Date.now() }));
+      const items = res.items.map((it) => ({ ...it, prompt: job.text, time: Date.now() }));
       await addToLibrary(items);
       if (settings.autoDownload) {
         for (const it of items) await download(it, ++saved, settings.folder);
       }
       done++;
+      setSlotStatus(job.slot, 'ok');
     } else {
       fail++;
-      setStatus(`${i + 1}번 실패 · ${(res && res.error) || '알 수 없는 오류'}`, 'err');
+      setSlotStatus(job.slot, 'fail');
+      setStatus(`${job.slot + 1}번 상자 실패 · ${(res && res.error) || '알 수 없는 오류'}`, 'err');
       // 생성 버튼이 막혔다면 한도에 걸린 것이므로 멈춘다
       if (res && /비활성화/.test(res.error || '')) break;
       await sleep(1500);
@@ -342,6 +438,7 @@ $('start-btn').addEventListener('click', async () => {
   }
 
   setRunning(false);
+  state.slotStatus.forEach((st, k) => { if (st === 'run') setSlotStatus(k, ''); });
   if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건`);
   else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건`, fail ? 'err' : 'ok');
 });
@@ -593,7 +690,7 @@ $('acc-add').addEventListener('click', async () => {
 
 $('acc-open-chooser').addEventListener('click', () => {
   chrome.tabs.create({
-    url: 'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent('https://labs.google/fx/tools/flow')
+    url: 'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent('https://flow.google.com/')
   });
 });
 

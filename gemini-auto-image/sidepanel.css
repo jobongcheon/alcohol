@@ -160,3 +160,28 @@ textarea::placeholder { color: var(--muted); }
 #acc-open[hidden] { display: none; }
 .status:empty { display: none; }
 [hidden] { display: none !important; }
+
+.slots { display: flex; flex-direction: column; gap: 8px; }
+.slot {
+  border: 1.5px dashed var(--line); border-radius: 10px; background: var(--bg);
+  display: flex; flex-direction: column; transition: border-color .15s, background .15s;
+}
+.slot.filled { border-style: solid; }
+.slot.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
+.slot:focus-within { border-color: var(--purple); }
+.slot-head {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px 0 10px;
+  font-size: 11px; color: var(--muted);
+}
+.slot-num {
+  width: 20px; height: 20px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--line);
+  display: grid; place-items: center; font-weight: 700; color: var(--text); font-size: 11px;
+}
+.slot-len { flex: 1; }
+.slot-tag { font-weight: 700; padding: 1px 7px; border-radius: 6px; border: 1px solid currentColor; }
+.slot-tag.run { color: var(--accent); }
+.slot-tag.ok { color: var(--ok); }
+.slot-tag.fail { color: var(--danger); }
+.slot textarea { min-height: 92px; height: 92px; padding: 8px 10px 10px; font-size: 12.5px; }
+.slot-clear { background: none; border: 0; color: var(--muted); font-size: 13px; padding: 0 2px; }
+.slot-clear:hover { color: var(--danger); }
