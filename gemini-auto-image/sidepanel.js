@@ -353,4 +353,121 @@ $('stop-btn').addEventListener('click', async () => {
   setStatus('중지하는 중...');
 });
 
+// ---------- 계정 메모 ----------
+// 사용자가 직접 복사해 붙여넣을 수 있도록 이 PC의 chrome.storage.local 에만 저장한다.
+// 자동 로그인이나 외부 전송은 하지 않는다.
+async function getAccounts() {
+  const { accounts } = await chrome.storage.local.get('accounts');
+  return accounts || [];
+}
+
+async function setAccounts(list) {
+  await chrome.storage.local.set({ accounts: list });
+}
+
+async function copyText(text, btn) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.append(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  const old = btn.textContent;
+  btn.textContent = '복사됨';
+  btn.classList.add('done');
+  setTimeout(() => { btn.textContent = old; btn.classList.remove('done'); }, 1200);
+}
+
+function miniBtn(text, cls, onClick) {
+  const b = document.createElement('button');
+  b.className = 'mini ' + (cls || '');
+  b.textContent = text;
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+async function renderAccounts() {
+  const list = await getAccounts();
+  const box = $('acc-list');
+  box.innerHTML = '';
+  list.forEach((acc, i) => {
+    const card = document.createElement('div');
+    card.className = 'acc';
+
+    const head = document.createElement('div');
+    head.className = 'acc-head';
+    const name = document.createElement('span');
+    name.className = 'acc-name';
+    name.textContent = acc.name || `계정 ${i + 1}`;
+    const del = miniBtn('삭제', 'del', async () => {
+      if (del.dataset.confirm !== '1') {
+        del.dataset.confirm = '1';
+        del.textContent = '한 번 더 누르면 삭제';
+        setTimeout(() => { del.dataset.confirm = ''; del.textContent = '삭제'; }, 2500);
+        return;
+      }
+      const cur = await getAccounts();
+      cur.splice(i, 1);
+      await setAccounts(cur);
+      renderAccounts();
+    });
+    head.append(name, del);
+
+    const idLine = document.createElement('div');
+    idLine.className = 'acc-line';
+    const idVal = document.createElement('span');
+    idVal.className = 'acc-val';
+    idVal.textContent = acc.email;
+    idVal.title = acc.email;
+    const idSpacer = document.createElement('span');
+    idLine.append(idVal, idSpacer, miniBtn('아이디 복사', 'copy', (e) => copyText(acc.email, e.currentTarget)));
+
+    card.append(head, idLine);
+
+    if (acc.pass) {
+      const pwLine = document.createElement('div');
+      pwLine.className = 'acc-line';
+      const pwVal = document.createElement('span');
+      pwVal.className = 'acc-val';
+      pwVal.textContent = '••••••••';
+      const show = miniBtn('보기', '', () => {
+        const hidden = pwVal.textContent === '••••••••';
+        pwVal.textContent = hidden ? acc.pass : '••••••••';
+        show.textContent = hidden ? '숨기기' : '보기';
+      });
+      pwLine.append(pwVal, show, miniBtn('비번 복사', 'copy', (e) => copyText(acc.pass, e.currentTarget)));
+      card.append(pwLine);
+    }
+    box.append(card);
+  });
+  $('acc-empty').hidden = list.length > 0;
+}
+
+$('acc-add').addEventListener('click', async () => {
+  const email = $('acc-email').value.trim();
+  if (!email) {
+    $('acc-email').focus();
+    return;
+  }
+  const list = await getAccounts();
+  list.push({ name: $('acc-name').value.trim(), email, pass: $('acc-pass').value });
+  await setAccounts(list);
+  $('acc-name').value = '';
+  $('acc-email').value = '';
+  $('acc-pass').value = '';
+  renderAccounts();
+});
+
+$('acc-open-chooser').addEventListener('click', () => {
+  chrome.tabs.create({
+    url: 'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent('https://labs.google/fx/tools/flow')
+  });
+});
+
+renderAccounts();
+
 load();
