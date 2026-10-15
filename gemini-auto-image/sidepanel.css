@@ -185,3 +185,18 @@ textarea::placeholder { color: var(--muted); }
 .slot textarea { min-height: 92px; height: 92px; padding: 8px 10px 10px; font-size: 12.5px; }
 .slot-clear { background: none; border: 0; color: var(--muted); font-size: 13px; padding: 0 2px; }
 .slot-clear:hover { color: var(--danger); }
+
+.model-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 64px; gap: 8px; }
+.field select {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; color: var(--text);
+  padding: 8px 6px; font: inherit;
+}
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button {
+  background: var(--panel-2); border: 0; padding: 3px 8px; font-size: 11px; font-weight: 600; color: var(--muted);
+}
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button.on { background: color-mix(in srgb, var(--purple) 30%, var(--panel-2)); color: #fff; }
+.seg.kind button.on[data-v="video"] { background: color-mix(in srgb, var(--accent) 35%, var(--panel-2)); }
+.slot-head { flex-wrap: wrap; row-gap: 4px; }
+.slot textarea { min-height: 64px; height: 64px; }

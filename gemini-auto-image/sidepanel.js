@@ -4,11 +4,11 @@ const MAX_REFS = 8;
 const MAX_LIBRARY = 300;
 const SITE_RE = /^https:\/\/(flow\.google\.com|labs\.google|gemini\.google\.com)\//;
 
-const SLOT_COUNT = 5;
+const SLOT_COUNT = 8;
+const newSlot = () => ({ text: '', kind: 'image', ratio: '16:9' });
 const state = {
-  slots: Array(SLOT_COUNT).fill(''),
+  slots: Array.from({ length: SLOT_COUNT }, newSlot),
   slotStatus: Array(SLOT_COUNT).fill(''),
-  ratio: '1:1',
   refs: [], // { name, dataUrl }
   running: false,
   stop: false
@@ -19,15 +19,26 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // ---------- 저장 ----------
 async function saveDraft() {
   await chrome.storage.local.set({
-    draft: { slots: state.slots, ratio: state.ratio, refs: state.refs }
+    draft: { slots: state.slots, refs: state.refs }
   });
 }
 
+const num = (id, def, min, max) => {
+  const v = Number($(id).value);
+  return Math.min(max, Math.max(min, Number.isFinite(v) && $(id).value !== '' ? v : def));
+};
+
 function readSettings() {
   return {
-    delay: Math.max(0, Number($('set-delay').value) || 0),
-    timeout: Math.max(30, Number($('set-timeout').value) || 300),
-    repeat: Math.min(20, Math.max(1, Number($('set-repeat').value) || 1)),
+    v: 2,
+    delay: num('set-delay', 2, 0, 600),
+    timeoutImage: num('set-timeout-image', 180, 30, 1800),
+    timeoutVideo: num('set-timeout-video', 600, 60, 3600),
+    retry: num('set-retry', 2, 0, 5),
+    repeat: num('set-repeat', 1, 1, 20),
+    modelImage: $('model-image').value.trim(),
+    modelVideo: $('model-video').value.trim(),
+    count: Number($('gen-count').value) || 1,
     ratioText: $('set-ratio-text').checked,
     autoDownload: $('set-autodl').checked,
     folder: ($('set-folder').value || 'GeminiAutoImage').replace(/[\\/:*?"<>|]/g, '_')
@@ -42,23 +53,33 @@ async function load() {
   const { draft, settings } = await chrome.storage.local.get(['draft', 'settings']);
   if (draft) {
     if (Array.isArray(draft.slots)) {
-      state.slots = draft.slots.concat(Array(SLOT_COUNT).fill('')).slice(0, SLOT_COUNT);
+      // 예전 버전은 상자 내용을 글자로만 저장했다
+      draft.slots.slice(0, SLOT_COUNT).forEach((v, i) => {
+        state.slots[i] = typeof v === 'string' ? { ...newSlot(), text: v } : { ...newSlot(), ...v };
+      });
     } else if (draft.prompts) {
-      state.slots[0] = draft.prompts; // 예전 버전의 입력을 1번 상자로 옮긴다
+      state.slots[0].text = draft.prompts;
     }
-    state.ratio = draft.ratio || '1:1';
     state.refs = draft.refs || [];
   }
-  if (settings) {
+  if (settings && settings.v === 2) {
     $('set-delay').value = settings.delay;
-    $('set-timeout').value = settings.timeout;
+    $('set-timeout-image').value = settings.timeoutImage;
+    $('set-timeout-video').value = settings.timeoutVideo;
+    $('set-retry').value = settings.retry;
     $('set-repeat').value = settings.repeat;
-    $('set-ratio-text').checked = settings.ratioText;
-    $('set-autodl').checked = settings.autoDownload;
-    $('set-folder').value = settings.folder;
+    $('model-image').value = settings.modelImage || '';
+    $('model-video').value = settings.modelVideo || '';
+    $('gen-count').value = String(settings.count || 1);
+    $('set-ratio-text').checked = !!settings.ratioText;
+    $('set-autodl').checked = settings.autoDownload !== false;
+    $('set-folder').value = settings.folder || 'GeminiAutoImage';
+  } else if (settings) {
+    $('set-repeat').value = settings.repeat || 1;
+    $('set-autodl').checked = settings.autoDownload !== false;
+    $('set-folder').value = settings.folder || 'GeminiAutoImage';
   }
   renderSlots();
-  renderRatios();
   renderRefs();
   updateCount();
   renderLibrary();
@@ -67,40 +88,66 @@ async function load() {
 
 // ---------- 프롬프트 상자 ----------
 function getPrompts() {
-  return state.slots.map((t, i) => ({ text: t.trim(), slot: i })).filter((p) => p.text);
+  return state.slots
+    .map((sl, i) => ({ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }))
+    .filter((p) => p.text);
 }
 
 function updateCount() {
   $('prompt-count').textContent = `${getPrompts().length} / ${SLOT_COUNT} 상자 사용`;
 }
 
-function setSlotStatus(i, status) {
+function setSlotStatus(i, status, title) {
   state.slotStatus[i] = status;
   const tag = document.querySelector(`.slot[data-i="${i}"] .slot-tag`);
   if (!tag) return;
-  const map = { run: '생성 중', ok: '완료', fail: '실패' };
+  const map = { run: '생성 중', ok: '완료', fail: '실패', retry: '재시도' };
   tag.hidden = !status;
-  tag.className = 'slot-tag ' + status;
+  tag.className = 'slot-tag ' + (status === 'retry' ? 'run' : status);
   tag.textContent = map[status] || '';
+  tag.title = title || '';
 }
 
 function refreshSlot(i) {
   const el = document.querySelector(`.slot[data-i="${i}"]`);
   if (!el) return;
-  const len = state.slots[i].trim().length;
+  const len = state.slots[i].text.trim().length;
   el.classList.toggle('filled', len > 0);
-  el.querySelector('.slot-len').textContent = len ? `${len.toLocaleString()}자` : '비어 있음';
+  el.querySelector('.slot-len').textContent = len ? `${len.toLocaleString()}자` : '';
   el.querySelector('.slot-clear').hidden = !len;
+  el.querySelectorAll('.seg button').forEach((b) => {
+    b.classList.toggle('on', state.slots[i][b.parentElement.dataset.key] === b.dataset.v);
+  });
 }
 
 function setSlotText(i, text) {
-  state.slots[i] = text;
+  state.slots[i].text = text;
   const ta = document.querySelector(`.slot[data-i="${i}"] textarea`);
   if (ta && ta.value !== text) ta.value = text;
   setSlotStatus(i, '');
   refreshSlot(i);
   updateCount();
   saveDraft();
+}
+
+function segment(i, key, options, extraClass) {
+  const seg = document.createElement('div');
+  seg.className = 'seg ' + (extraClass || '');
+  seg.dataset.key = key;
+  options.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.v = v;
+    b.textContent = label;
+    b.addEventListener('click', () => {
+      if (state.running) return;
+      state.slots[i][key] = v;
+      refreshSlot(i);
+      saveDraft();
+    });
+    seg.append(b);
+  });
+  return seg;
 }
 
 function renderSlots() {
@@ -116,6 +163,8 @@ function renderSlots() {
     const num = document.createElement('span');
     num.className = 'slot-num';
     num.textContent = i + 1;
+    const kind = segment(i, 'kind', [['image', '이미지'], ['video', '동영상']], 'kind');
+    const ratio = segment(i, 'ratio', [['16:9', '16:9'], ['9:16', '9:16']]);
     const len = document.createElement('span');
     len.className = 'slot-len';
     const tag = document.createElement('span');
@@ -126,16 +175,15 @@ function renderSlots() {
     clear.textContent = '✕';
     clear.title = '이 상자 비우기';
     clear.setAttribute('aria-label', `${i + 1}번 상자 비우기`);
-    clear.addEventListener('click', () => setSlotText(i, ''));
-    head.append(num, len, tag, clear);
+    clear.addEventListener('click', () => { if (!state.running) setSlotText(i, ''); });
+    head.append(num, kind, ratio, len, tag, clear);
 
     const ta = document.createElement('textarea');
     ta.id = `slot-${i + 1}`;
     ta.placeholder = '여기에 끌어다 놓기';
-    ta.value = state.slots[i];
+    ta.value = state.slots[i].text;
     ta.addEventListener('input', () => setSlotText(i, ta.value));
 
-    // 끌어다 놓기: 글이나 .txt 파일을 놓으면 상자 내용을 그것으로 바꾼다
     slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('over'); });
     slot.addEventListener('dragleave', (e) => { if (!slot.contains(e.relatedTarget)) slot.classList.remove('over'); });
     slot.addEventListener('drop', async (e) => {
@@ -159,18 +207,6 @@ function renderSlots() {
 $('clear-prompts').addEventListener('click', () => {
   if (state.running) return;
   for (let i = 0; i < SLOT_COUNT; i++) setSlotText(i, '');
-});
-
-// ---------- 비율 ----------
-function renderRatios() {
-  document.querySelectorAll('.ratio').forEach((b) => b.classList.toggle('active', b.dataset.ratio === state.ratio));
-}
-$('ratios').addEventListener('click', (e) => {
-  const b = e.target.closest('.ratio');
-  if (!b) return;
-  state.ratio = b.dataset.ratio;
-  renderRatios();
-  saveDraft();
 });
 
 // ---------- 참조 이미지 ----------
@@ -238,8 +274,26 @@ document.querySelectorAll('.tab').forEach((t) => {
 });
 
 // ---------- 설정 ----------
-['set-delay', 'set-timeout', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder'].forEach((id) => {
+['set-delay', 'set-timeout-image', 'set-timeout-video', 'set-retry', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder', 'model-image', 'model-video', 'gen-count'].forEach((id) => {
   $(id).addEventListener('change', saveSettings);
+});
+
+// ---------- 문제 해결: Flow 화면 정보 복사 ----------
+$('diag-btn').addEventListener('click', async () => {
+  const msg = $('diag-msg');
+  msg.className = 'status';
+  const tab = await checkSite();
+  if (!tab) { msg.className = 'status err'; msg.textContent = 'Flow 프로젝트 탭을 먼저 여세요.'; return; }
+  try {
+    const res = await sendToTab(tab.id, { gai: true, type: 'diag' });
+    const text = 'GAI-DIAG ' + chrome.runtime.getManifest().version + '\n' + JSON.stringify(res && res.info);
+    await navigator.clipboard.writeText(text);
+    msg.className = 'status ok';
+    msg.textContent = '복사했습니다. Claude 대화창에 붙여넣어 주세요.';
+  } catch (e) {
+    msg.className = 'status err';
+    msg.textContent = '정보를 가져오지 못했습니다. Flow 탭을 새로고침한 뒤 다시 누르세요.';
+  }
 });
 
 // ---------- 상태 표시 ----------
@@ -370,9 +424,9 @@ $('lib-clear').addEventListener('click', async () => {
 });
 
 // ---------- 실행 ----------
-function buildPrompt(text, settings) {
-  if (!settings.ratioText) return text;
-  return `${text} (aspect ratio ${state.ratio})`;
+function buildPrompt(job, settings) {
+  if (!settings.ratioText) return job.text;
+  return `${job.text} (aspect ratio ${job.ratio})`;
 }
 
 function setRunning(on) {
@@ -380,6 +434,7 @@ function setRunning(on) {
   $('start-btn').disabled = on;
   $('stop-btn').disabled = !on;
   document.querySelectorAll('.slot textarea').forEach((t) => { t.disabled = on; });
+  ['model-image', 'model-video', 'gen-count'].forEach((id) => { $(id).disabled = on; });
 }
 
 $('start-btn').addEventListener('click', async () => {
@@ -395,28 +450,42 @@ $('start-btn').addEventListener('click', async () => {
 
   state.stop = false;
   setRunning(true);
-  let done = 0, fail = 0, saved = 0;
+  let done = 0, fail = 0, saved = 0, lastError = '';
   setProgress(0, jobs.length);
 
   for (let i = 0; i < jobs.length; i++) {
     if (state.stop) break;
     const job = jobs[i];
-    setSlotStatus(job.slot, 'run');
-    setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${job.slot + 1}번 상자`);
-    let res;
-    try {
-      res = await sendToTab(tab.id, {
-        gai: true,
-        type: 'run',
-        prompt: buildPrompt(job.text, settings),
-        refs: state.refs,
-        timeoutSec: settings.timeout
-      });
-    } catch (e) {
-      res = { ok: false, error: '페이지와 연결하지 못했습니다. 탭을 새로고침해 주세요.' };
+    const label = `${job.slot + 1}번 상자 · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
+    let res = null;
+    let stopAll = false;
+    for (let attempt = 0; attempt <= settings.retry; attempt++) {
+      if (state.stop) break;
+      setSlotStatus(job.slot, attempt ? 'retry' : 'run');
+      setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${label}${attempt ? ` · 다시 시도 ${attempt}` : ''}`);
+      try {
+        res = await sendToTab(tab.id, {
+          gai: true,
+          type: 'run',
+          prompt: buildPrompt(job, settings),
+          kind: job.kind,
+          ratio: job.ratio,
+          model: job.kind === 'video' ? settings.modelVideo : settings.modelImage,
+          count: settings.count,
+          refs: state.refs,
+          timeoutSec: job.kind === 'video' ? settings.timeoutVideo : settings.timeoutImage
+        });
+      } catch (e) {
+        res = { ok: false, error: '페이지와 연결하지 못했습니다. Flow 탭을 새로고침해 주세요.', retryable: true };
+      }
+      if (state.stop || (res && res.ok)) break;
+      if (res && res.limit) { stopAll = true; break; }
+      if (res && res.retryable === false) break;
+      await sleep(2000);
     }
     if (state.stop) break;
 
+    const warn = res && res.warnings && res.warnings.length ? res.warnings.join(' ') : '';
     if (res && res.ok) {
       const items = res.items.map((it) => ({ ...it, prompt: job.text, time: Date.now() }));
       await addToLibrary(items);
@@ -424,23 +493,25 @@ $('start-btn').addEventListener('click', async () => {
         for (const it of items) await download(it, ++saved, settings.folder);
       }
       done++;
-      setSlotStatus(job.slot, 'ok');
+      setSlotStatus(job.slot, 'ok', warn);
+      if (warn) setStatus(`${job.slot + 1}번 상자 완료 · 참고: ${warn}`, 'err');
     } else {
       fail++;
-      setSlotStatus(job.slot, 'fail');
-      setStatus(`${job.slot + 1}번 상자 실패 · ${(res && res.error) || '알 수 없는 오류'}`, 'err');
-      // 생성 버튼이 막혔다면 한도에 걸린 것이므로 멈춘다
-      if (res && /비활성화/.test(res.error || '')) break;
-      await sleep(1500);
+      const why = (res && res.error) || '알 수 없는 오류';
+      lastError = `${job.slot + 1}번 상자: ${why}`;
+      setSlotStatus(job.slot, 'fail', why);
+      setStatus(`${job.slot + 1}번 상자 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
+      if (stopAll) break;
     }
     setProgress(i + 1, jobs.length);
     if (i < jobs.length - 1 && settings.delay && !state.stop) await sleep(settings.delay * 1000);
   }
 
   setRunning(false);
-  state.slotStatus.forEach((st, k) => { if (st === 'run') setSlotStatus(k, ''); });
-  if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건`);
-  else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건`, fail ? 'err' : 'ok');
+  state.slotStatus.forEach((st, k) => { if (st === 'run' || st === 'retry') setSlotStatus(k, ''); });
+  const tail = lastError ? ` · ${lastError}` : '';
+  if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : '');
+  else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : 'ok');
 });
 
 $('stop-btn').addEventListener('click', async () => {
