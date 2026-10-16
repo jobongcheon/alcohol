@@ -288,16 +288,10 @@
       await sleep(350);
     } else warnings.push(cfg.kind === 'video' ? '동영상 탭을 찾지 못했습니다.' : '이미지 탭을 찾지 못했습니다.');
 
-    // 2) 비율
-    const ratioEl = findExact([cfg.ratio]);
-    if (ratioEl) {
-      realClick(ratioEl);
-      await sleep(200);
-    } else warnings.push(`${cfg.ratio} 비율 버튼을 찾지 못했습니다.`);
-
-    // 3) 모델
+    // 2) 모델 (모델을 바꾸면 Flow 가 비율을 기본값으로 되돌릴 수 있어 비율보다 먼저 고른다)
     if (cfg.model) {
-      const popupRoot = ratioEl ? ratioEl.closest('[role="dialog"], [role="menu"], [data-radix-popper-content-wrapper]') : null;
+      const ratioProbe = findExact(['16:9']);
+      const popupRoot = ratioProbe ? ratioProbe.closest('[role="dialog"], [role="menu"], [data-radix-popper-content-wrapper]') : null;
       const already = clickableAll().find((el) => el !== chip && (!popupRoot || popupRoot.contains(el)) && MODEL_WORDS.test(textOf(el)) && textOf(el).toLowerCase().includes(cfg.model.toLowerCase()) && textOf(el).length < 60);
       if (!already) {
         const dropdown = clickableAll().find((el) => el !== chip && !chip.contains(el) && (!popupRoot || popupRoot.contains(el)) && MODEL_WORDS.test(textOf(el)) && textOf(el).length < 60);
@@ -318,6 +312,13 @@
         } else warnings.push('모델 선택 목록을 찾지 못했습니다.');
       }
     }
+
+    // 3) 비율
+    const ratioEl = findExact([cfg.ratio]);
+    if (ratioEl) {
+      realClick(ratioEl);
+      await sleep(200);
+    } else warnings.push(`${cfg.ratio} 비율 버튼을 찾지 못했습니다.`);
 
     // 4) 생성 개수
     if (cfg.count) {
@@ -444,9 +445,11 @@
   }
 
   // 생성이 시작됐다는 표시: 입력창 비워짐, 진행률 표시, 새 결과, 생성 버튼 상태 변화
+  const tileCount = () => collectMedia().length + busyCount();
+
   function startedSignal(ctx, btn) {
-    if (collectMedia().some((m) => !ctx.before.has(m.src))) return true;
-    if (busyCount() > ctx.busyBefore) return true;
+    // 새 칸(진행 중 칸 또는 결과)이 늘었으면 시작된 것이다. 앞 프롬프트가 끝나 칸이 바뀌는 것과 헷갈리지 않는다.
+    if (tileCount() > ctx.tilesBefore) return true;
     if (squash(inputText(ctx.input)).length < ctx.promptLen * 0.5) return true;
     if (btn && (!btn.isConnected || isDisabled(btn) !== ctx.btnDisabled || labelOf(btn) !== ctx.btnLabel)) return true;
     return false;
@@ -549,7 +552,7 @@
       warnings.push(...cfg.warnings);
     }
 
-    const ctx = { input, before: new Set(collectMedia().map((m) => m.src)), busyBefore: busyCount(), promptLen: squash(msg.prompt).length };
+    const ctx = { input, before: new Set(collectMedia().map((m) => m.src)), busyBefore: busyCount(), tilesBefore: tileCount(), promptLen: squash(msg.prompt).length };
 
     if (msg.refs && msg.refs.length) await attachReferences(msg.refs, input);
 
@@ -565,16 +568,43 @@
 
     const submitted = await submit(input, btn, ctx);
     if (submitted === 'stopped') return { ok: false, stopped: true, error: '중지됨' };
-    if (!submitted) return { ok: false, error: '생성 버튼이 눌리지 않았습니다. Flow 화면의 → 버튼을 직접 한 번 눌러 주면 그 버튼을 기억합니다.', warnings, retryable: true };
+    if (!submitted) return { ok: false, error: '생성 버튼이 눌리지 않았습니다. Settings 탭에서 정확한 클릭을 켜 주세요.', warnings, retryable: true };
+
+    // 연속 실행: 결과를 기다리지 않고 바로 다음 프롬프트로 넘어간다. 결과는 collect 로 나중에 모은다.
+    if (msg.wait === false) return { ok: true, submitted: true, items: [], warnings };
 
     const result = await waitForResults(ctx, msg);
     if (result.stopped) return { ok: false, stopped: true, error: '중지됨' };
     if (result.noSignal) return { ok: false, error: '생성 버튼을 눌렀지만 Flow에서 반응이 없습니다.', warnings, retryable: true };
 
     const items = [];
-    for (const it of result.items) items.push(await toTransferable(it));
+    for (const it of result.items) {
+      reported.add(it.src);
+      items.push(await toTransferable(it));
+    }
     if (!items.length) return { ok: false, error: '제한 시간 안에 결과가 나오지 않았습니다.', warnings, retryable: true };
     return { ok: true, items, warnings, timedOut: !!result.timedOut };
+  }
+
+  // ---------- 연속 실행 결과 모으기 ----------
+  let baseline = new Set();
+  let reported = new Set();
+
+  function beginSession() {
+    baseline = new Set(collectMedia().map((m) => m.src));
+    reported = new Set();
+  }
+
+  async function collectNew() {
+    const fresh = collectMedia().filter((m) => !baseline.has(m.src) && !reported.has(m.src));
+    // 화면 위쪽(먼저 보이는 것)이 최신이므로, 오래된 것부터 넘기도록 뒤집는다
+    fresh.reverse();
+    const items = [];
+    for (const it of fresh) {
+      reported.add(it.src);
+      items.push(await toTransferable(it));
+    }
+    return { ok: true, items, busy: busyCount() };
   }
 
   // ---------- 문제 해결용 화면 정보 (프롬프트 내용과 개인 정보는 담지 않는다) ----------
@@ -626,8 +656,13 @@
     }
     if (msg.type === 'resetConfig') {
       lastConfigKey = '';
+      beginSession();
       sendResponse({ ok: true });
       return;
+    }
+    if (msg.type === 'collect') {
+      collectNew().then(sendResponse).catch(() => sendResponse({ ok: false, items: [], busy: 0 }));
+      return true;
     }
     if (msg.type === 'diag') {
       try { sendResponse({ ok: true, info: diagnose() }); } catch (e) { sendResponse({ ok: false, error: String(e) }); }

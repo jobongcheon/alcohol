@@ -32,11 +32,12 @@ const num = (id, def, min, max) => {
 
 function readSettings() {
   return {
-    v: 2,
-    delay: num('set-delay', 2, 0, 600),
-    timeoutImage: num('set-timeout-image', 180, 30, 1800),
-    timeoutVideo: num('set-timeout-video', 600, 60, 3600),
-    retry: num('set-retry', 2, 0, 5),
+    v: 3,
+    delay: num('set-delay', 1, 0, 600),
+    timeoutImage: num('set-timeout-image', 120, 30, 1800),
+    timeoutVideo: num('set-timeout-video', 360, 60, 3600),
+    retry: num('set-retry', 1, 0, 5),
+    wait: $('set-wait').checked,
     repeat: num('set-repeat', 1, 1, 20),
     modelImage: $('model-image').value.trim(),
     modelVideo: $('model-video').value.trim(),
@@ -65,11 +66,15 @@ async function load() {
     state.refs = draft.refs || [];
     if (draft.bulk) state.bulk = { ...state.bulk, ...draft.bulk, done: draft.bulk.done || [] };
   }
-  if (settings && settings.v === 2) {
-    $('set-delay').value = settings.delay;
-    $('set-timeout-image').value = settings.timeoutImage;
-    $('set-timeout-video').value = settings.timeoutVideo;
-    $('set-retry').value = settings.retry;
+  if (settings && settings.v >= 2) {
+    // 1.7.0 부터 빠른 기본값을 쓴다. 예전(v2) 시간 설정은 새 기본값으로 바꾼다.
+    if (settings.v >= 3) {
+      $('set-delay').value = settings.delay;
+      $('set-timeout-image').value = settings.timeoutImage;
+      $('set-timeout-video').value = settings.timeoutVideo;
+      $('set-retry').value = settings.retry;
+      $('set-wait').checked = !!settings.wait;
+    }
     $('set-repeat').value = settings.repeat;
     $('model-image').value = settings.modelImage || '';
     $('model-video').value = settings.modelVideo || '';
@@ -229,9 +234,9 @@ function setSlotStatus(i, status, title) {
   state.slotStatus[i] = status;
   const tag = document.querySelector(`.slot[data-i="${i}"] .slot-tag`);
   if (!tag) return;
-  const map = { run: '생성 중', ok: '완료', fail: '실패', retry: '재시도' };
+  const map = { run: '보내는 중', ok: '완료', fail: '실패', retry: '재시도', wait: '대기', sent: '생성 중' };
   tag.hidden = !status;
-  tag.className = 'slot-tag ' + (status === 'retry' ? 'run' : status);
+  tag.className = 'slot-tag ' + ({ retry: 'run', wait: 'run', sent: 'run' }[status] || status);
   tag.textContent = map[status] || '';
   tag.title = title || '';
 }
@@ -409,7 +414,7 @@ document.querySelectorAll('.tab').forEach((t) => {
 });
 
 // ---------- 설정 ----------
-['set-delay', 'set-timeout-image', 'set-timeout-video', 'set-retry', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder', 'model-image', 'model-video', 'gen-count'].forEach((id) => {
+['set-delay', 'set-timeout-image', 'set-timeout-video', 'set-retry', 'set-wait', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder', 'model-image', 'model-video', 'gen-count'].forEach((id) => {
   $(id).addEventListener('change', saveSettings);
 });
 
@@ -558,7 +563,9 @@ $('lib-clear').addEventListener('click', async () => {
   renderLibrary();
 });
 
-// ---------- 실행 ----------
+// ---------- 실행 (대기열) ----------
+// ▶ 실행이나 시작을 누르면 대기열에 넣는다. 실행 중에도 언제든 더 넣을 수 있다.
+// 기본은 "연속 실행": 프롬프트를 보내자마자 다음으로 넘어가고, 결과는 끝난 순서대로 모아 저장한다.
 function buildPrompt(job, settings) {
   if (!settings.ratioText) return job.text;
   return `${job.text} (aspect ratio ${job.ratio})`;
@@ -566,8 +573,9 @@ function buildPrompt(job, settings) {
 
 function markJob(job, status, title) {
   if (!job.bulk) return setSlotStatus(job.slot, status, title);
-  state.bulkStatus[job.idx] = status === 'retry' ? 'run' : status;
-  if (status === 'ok' && !state.bulk.done.includes(job.idx)) {
+  state.bulkStatus[job.idx] = { retry: 'run', wait: '', sent: 'run' }[status] ?? status;
+  // 목록은 Flow 에 보내는 순간 끝난 것으로 기록한다 (다시 시작할 때 크레딧을 두 번 쓰지 않게)
+  if ((status === 'ok' || status === 'sent') && !state.bulk.done.includes(job.idx)) {
     state.bulk.done.push(job.idx);
     saveDraft();
   }
@@ -575,8 +583,9 @@ function markJob(job, status, title) {
 }
 
 let accurateOn = false;
+const queue = [];
+const run = { saved: 0, done: 0, fail: 0, lastError: '', inflight: [] };
 
-// Flow 에서 생성 버튼을 직접 눌러 달라고 할 때
 chrome.runtime.onMessage.addListener((msg) => {
   if (!msg || !msg.gaiStatus || !state.running) return;
   if (msg.needClick) {
@@ -589,13 +598,9 @@ chrome.runtime.onMessage.addListener((msg) => {
 
 function setRunning(on) {
   state.running = on;
-  $('start-btn').disabled = on;
   $('stop-btn').disabled = !on;
-  document.querySelectorAll('.slot textarea, .slot-run').forEach((t) => { t.disabled = on; });
-  $('bulk-text').disabled = on;
-  $('bulk-split').disabled = on;
   ['model-image', 'model-video', 'gen-count'].forEach((id) => { $(id).disabled = on; });
-  if (!on) updateStartLabel();
+  updateStartLabel();
 }
 
 function updateStartLabel() {
@@ -606,116 +611,188 @@ function updateStartLabel() {
   $('start-btn').textContent = list.length ? `목록 시작 (${left}개 남음)` : boxes ? `상자 전체 시작 (${boxes}개)` : '시작';
 }
 
-// jobs 를 차례로 실행한다. 상자 ▶ 버튼, 시작 버튼 모두 이 함수를 쓴다.
-async function runJobs(jobs, bulkTotal) {
-  const tab = await checkSite();
-  if (!tab) return setStatus('이 Chrome 창에서 Google Flow 프로젝트나 Gemini 대화를 연 뒤 시작하세요.', 'err');
+const sameJob = (a, b) => (a.bulk ? b.bulk && a.idx === b.idx : !b.bulk && a.slot === b.slot);
+
+function enqueue(jobs) {
   const settings = readSettings();
-  const all = [];
-  jobs.forEach((p) => { for (let r = 0; r < settings.repeat; r++) all.push(p); });
+  let added = 0;
+  for (const j of jobs) {
+    if (queue.some((q) => sameJob(q, j)) || (run.current && sameJob(run.current, j))) continue;
+    for (let r = 0; r < settings.repeat; r++) queue.push({ ...j });
+    markJob(j, 'wait');
+    added++;
+  }
+  if (!state.running) runQueue();
+  else if (added) setStatus(`대기열에 ${added}개 추가 · 남은 ${queue.length}개`);
+}
 
-  jobs.forEach((j) => { if (!j.bulk) setSlotStatus(j.slot, ''); });
-  state.bulkStatus = {};
+async function handleItems(items, job, settings) {
+  const stamped = items.map((it) => ({ ...it, prompt: job.text, time: Date.now() }));
+  await addToLibrary(stamped);
+  if (settings.autoDownload) for (const it of stamped) await download(it, ++run.saved, settings.folder);
+}
+
+// 연속 실행에서 모인 결과를 먼저 보낸 프롬프트부터 차례로 짝지어 저장한다
+async function collect(tab, settings) {
+  let res;
+  try { res = await chrome.tabs.sendMessage(tab.id, { gai: true, type: 'collect' }); } catch (e) { return { got: 0, busy: 0 }; }
+  const items = (res && res.items) || [];
+  for (const it of items) {
+    const owner = run.inflight.find((f) => f.got < f.need) || run.inflight[run.inflight.length - 1];
+    if (!owner) break;
+    owner.got++;
+    await handleItems([it], owner.job, settings);
+    if (owner.got >= owner.need) { markJob(owner.job, 'ok'); run.done++; }
+  }
+  run.inflight = run.inflight.filter((f) => f.got < f.need);
+  return { got: items.length, busy: (res && res.busy) || 0 };
+}
+
+async function runQueue() {
+  const tab = await checkSite();
+  if (!tab) {
+    queue.splice(0).forEach((j) => markJob(j, ''));
+    return setStatus('이 Chrome 창에서 Google Flow 프로젝트나 Gemini 대화를 연 뒤 시작하세요.', 'err');
+  }
+  const settings = readSettings();
+  Object.assign(run, { saved: run.saved, done: 0, fail: 0, lastError: '', inflight: [], current: null });
   try { await sendToTab(tab.id, { gai: true, type: 'resetConfig' }); } catch (e) {}
-
   state.stop = false;
   setRunning(true);
-  let done = 0, fail = 0, saved = 0, lastError = '';
-  setProgress(0, all.length);
+  let sent = 0;
 
-  for (let i = 0; i < all.length; i++) {
-    if (state.stop) break;
-    const job = all[i];
-    const name = job.bulk ? `목록 ${job.idx + 1}/${bulkTotal}` : `${job.slot + 1}번 상자`;
-    const label = `${name} · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
-    let res = null;
-    let stopAll = false;
-    for (let attempt = 0; attempt <= settings.retry; attempt++) {
-      if (state.stop) break;
-      markJob(job, attempt ? 'retry' : 'run');
-      setStatus(`${i + 1} / ${all.length} 생성 중 · ${label}${attempt ? ` · 다시 시도 ${attempt}` : ''}`);
-      try {
-        res = await sendToTab(tab.id, {
-          gai: true,
-          type: 'run',
-          prompt: buildPrompt(job, settings),
-          kind: job.kind,
-          ratio: job.ratio,
-          model: job.kind === 'video' ? settings.modelVideo : settings.modelImage,
-          count: settings.count,
-          refs: state.refs,
-          timeoutSec: job.kind === 'video' ? settings.timeoutVideo : settings.timeoutImage
-        });
-      } catch (e) {
-        res = { ok: false, error: '페이지와 연결하지 못했습니다. Flow 탭을 새로고침해 주세요.', retryable: true };
+  for (;;) {
+    while (queue.length && !state.stop) {
+      const job = queue.shift();
+      run.current = job;
+      const name = job.bulk ? `목록 ${job.idx + 1}/${bulkItems().length}` : `${job.slot + 1}번 상자`;
+      const label = `${name} · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
+      let res = null;
+      let stopAll = false;
+      for (let attempt = 0; attempt <= settings.retry; attempt++) {
+        if (state.stop) break;
+        markJob(job, attempt ? 'retry' : 'run');
+        setStatus(`${label} 보내는 중${attempt ? ` · 다시 시도 ${attempt}` : ''} · 대기 ${queue.length}개`);
+        try {
+          res = await sendToTab(tab.id, {
+            gai: true,
+            type: 'run',
+            wait: settings.wait,
+            prompt: buildPrompt(job, settings),
+            kind: job.kind,
+            ratio: job.ratio,
+            model: job.kind === 'video' ? settings.modelVideo : settings.modelImage,
+            count: settings.count,
+            refs: state.refs,
+            timeoutSec: job.kind === 'video' ? settings.timeoutVideo : settings.timeoutImage
+          });
+        } catch (e) {
+          res = { ok: false, error: '페이지와 연결하지 못했습니다. Flow 탭을 새로고침해 주세요.', retryable: true };
+        }
+        if (state.stop || (res && res.ok)) break;
+        if (res && res.limit) { stopAll = true; break; }
+        if (res && res.retryable === false) break;
+        await sleep(1500);
       }
-      if (state.stop || (res && res.ok)) break;
-      if (res && res.limit) { stopAll = true; break; }
-      if (res && res.retryable === false) break;
-      await sleep(2000);
-    }
-    if (state.stop) break;
+      run.current = null;
+      if (state.stop) { markJob(job, ''); break; }
 
-    const warn = res && res.warnings && res.warnings.length ? res.warnings.join(' ') : '';
-    if (res && res.ok) {
-      const items = res.items.map((it) => ({ ...it, prompt: job.text, time: Date.now() }));
-      await addToLibrary(items);
-      if (settings.autoDownload) {
-        for (const it of items) await download(it, ++saved, settings.folder);
+      const warn = res && res.warnings && res.warnings.length ? res.warnings.join(' ') : '';
+      if (res && res.ok && res.submitted) {
+        sent++;
+        markJob(job, 'sent', warn);
+      if (warn) { run.lastError = `${name} 설정 확인 필요: ${warn}`; setStatus(`${name} · 설정 확인 필요: ${warn}`, 'err'); }
+        run.inflight.push({ job, need: settings.count, got: 0, since: Date.now() });
+        await collect(tab, settings); // 그 사이 끝난 결과가 있으면 바로 저장
+      } else if (res && res.ok) {
+        sent++;
+        await handleItems(res.items, job, settings);
+        run.done++;
+        markJob(job, 'ok', warn);
+      } else {
+        run.fail++;
+        const why = (res && res.error) || '알 수 없는 오류';
+        run.lastError = `${name}: ${why}`;
+        markJob(job, 'fail', why);
+        setStatus(`${name} 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
+        if (stopAll) {
+          queue.splice(0).forEach((j) => markJob(j, ''));
+          break;
+        }
       }
-      done++;
-      markJob(job, 'ok', warn);
-      if (warn) setStatus(`${name} 완료 · 참고: ${warn}`, 'err');
-    } else {
-      fail++;
-      const why = (res && res.error) || '알 수 없는 오류';
-      lastError = `${name}: ${why}`;
-      markJob(job, 'fail', why);
-      setStatus(`${name} 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
-      if (stopAll) break;
+      if (queue.length && settings.delay && !state.stop) await sleep(settings.delay * 1000);
     }
-    setProgress(i + 1, all.length);
-    if (i < all.length - 1 && settings.delay && !state.stop) await sleep(settings.delay * 1000);
+
+    // 연속 실행: 보낸 것들의 결과가 다 나올 때까지 모은다. 그 사이 ▶ 로 새로 들어온 것은 먼저 보낸다.
+    if (!state.stop && run.inflight.length) {
+      const limitMs = Math.max(...run.inflight.map((f) => (f.job.kind === 'video' ? settings.timeoutVideo : settings.timeoutImage))) * 1000;
+      let lastNew = Date.now();
+      const start = Date.now();
+      while (!state.stop && run.inflight.length && !queue.length && Date.now() - start < limitMs) {
+        setStatus(`모두 보냈습니다 · 결과 ${run.inflight.length}개를 기다리는 중`);
+        await sleep(3000);
+        const c = await collect(tab, settings);
+        if (c.got) lastNew = Date.now();
+        if (!c.busy && Date.now() - lastNew > 20000) break;
+      }
+      if (queue.length && !state.stop) continue;
+      run.inflight.forEach((f) => { markJob(f.job, 'fail', '결과를 모으지 못했습니다. Flow 화면에서 직접 확인해 주세요.'); run.fail++; });
+      run.inflight = [];
+    }
+    if (queue.length && !state.stop) continue;
+    break;
   }
+  finish();
 
-  setRunning(false);
-  try { chrome.runtime.sendMessage({ gaiBg: 'detach' }); } catch (e) {}
-  state.slotStatus.forEach((st, k) => { if (st === 'run' || st === 'retry') setSlotStatus(k, ''); });
-  Object.keys(state.bulkStatus).forEach((k) => { if (state.bulkStatus[k] === 'run') delete state.bulkStatus[k]; });
-  renderBulk();
-  updateStartLabel();
-  const tail = lastError ? ` · ${lastError}` : '';
-  if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : '');
-  else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : 'ok');
+  function finish() {
+    setRunning(false);
+    try { chrome.runtime.sendMessage({ gaiBg: 'detach' }); } catch (e) {}
+    state.slotStatus.forEach((st, k) => { if (['run', 'retry', 'wait'].includes(st)) setSlotStatus(k, ''); });
+    Object.keys(state.bulkStatus).forEach((k) => { if (state.bulkStatus[k] === 'run') delete state.bulkStatus[k]; });
+    renderBulk();
+    const tail = run.lastError ? ` · ${run.lastError}` : '';
+    if (state.stop) setStatus(`중지됨 · 보냄 ${sent}건, 저장 ${run.done}건, 실패 ${run.fail}건${tail}`, run.fail ? 'err' : '');
+    else setStatus(`완료 · 보냄 ${sent}건, 저장 ${run.done}건, 실패 ${run.fail}건${tail}`, run.fail ? 'err' : 'ok');
+  }
+}
+
+// 처음 실행할 때 정확한 클릭 권한을 한 번 물어본다 (버튼을 누른 그 순간에만 물어볼 수 있다)
+let askedAccurate = false;
+function askAccurateOnce() {
+  if (accurateOn || askedAccurate) return Promise.resolve();
+  askedAccurate = true;
+  return chrome.permissions.request({ permissions: ['debugger'] }).catch(() => false).then(refreshAccurate);
 }
 
 // 시작 버튼: 한꺼번에 넣기 목록을 실행한다. 목록이 비어 있으면 상자 전체를 실행한다.
-$('start-btn').addEventListener('click', async () => {
-  if (state.running) return;
+$('start-btn').addEventListener('click', () => {
+  const asking = askAccurateOnce();
   const bulkList = bulkItems();
+  let jobs;
   if (bulkList.length) {
     const doneSet = new Set(state.bulk.done);
-    const jobs = bulkList
+    jobs = bulkList
       .map((text, idx) => ({ text, kind: state.bulk.kind, ratio: state.bulk.ratio, bulk: true, idx }))
       .filter((j) => !doneSet.has(j.idx));
     if (!jobs.length) return setStatus('한꺼번에 넣기 목록을 모두 끝냈습니다. 다시 하려면 "처음부터 다시"를 누르세요.', 'err');
-    return runJobs(jobs, bulkList.length);
+  } else {
+    jobs = getPrompts();
+    if (!jobs.length) return setStatus('프롬프트를 넣어 주세요.', 'err');
   }
-  const boxes = getPrompts();
-  if (!boxes.length) return setStatus('프롬프트를 넣어 주세요.', 'err');
-  return runJobs(boxes, 0);
+  asking.then(() => enqueue(jobs));
 });
 
-// 상자 ▶ 버튼: 그 상자 하나만 바로 실행한다
+// 상자 ▶ 버튼: 그 상자를 바로 대기열에 넣는다 (실행 중이어도 된다)
 function runSlot(i) {
-  if (state.running) return;
   const sl = state.slots[i];
   if (!sl.text.trim()) return setStatus(`${i + 1}번 상자가 비어 있습니다.`, 'err');
-  runJobs([{ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }], 0);
+  const asking = askAccurateOnce();
+  asking.then(() => enqueue([{ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }]));
 }
 
 $('stop-btn').addEventListener('click', async () => {
   state.stop = true;
+  queue.splice(0).forEach((j) => markJob(j, ''));
   const tab = await getTargetTab();
   if (tab) { try { await chrome.tabs.sendMessage(tab.id, { gai: true, type: 'stop' }); } catch (e) {} }
   setStatus('중지하는 중...');
