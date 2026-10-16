@@ -596,11 +596,13 @@ function safeName(text) {
   return text.replace(/[\\/:*?"<>|\n\r]/g, ' ').trim().slice(0, 40) || 'image';
 }
 
+// 파일 이름 앞 번호: 목록은 위에서부터 001, 002 … / 상자는 상자1 … 상자8. 한 번에 여러 장이면 -1, -2 를 붙인다.
 async function download(item, index, folder) {
+  const num = item.num || String(index).padStart(3, '0');
   try {
     await chrome.downloads.download({
       url: item.src,
-      filename: `${folder}/${String(index).padStart(3, '0')}_${safeName(item.prompt)}.${extOf(item)}`,
+      filename: `${folder}/${num}_${safeName(item.prompt)}.${extOf(item)}`,
       conflictAction: 'uniquify'
     });
   } catch (e) {
@@ -687,8 +689,19 @@ function enqueue(jobs) {
   else if (added) setStatus(`대기열에 ${added}개 추가 · 남은 ${queue.length}개`);
 }
 
-async function handleItems(items, job, settings) {
-  const stamped = items.map((it) => ({ ...it, prompt: job.text, time: Date.now() }));
+function jobNumber(job) {
+  return job.bulk ? String(job.idx + 1).padStart(3, '0') : `상자${job.slot + 1}`;
+}
+
+// part: 이 프롬프트에서 몇 번째 결과인지 (1부터). 개수가 x1 이면 번호만 붙인다.
+async function handleItems(items, job, settings, part) {
+  const many = settings.count > 1;
+  const stamped = items.map((it, k) => ({
+    ...it,
+    prompt: job.text,
+    time: Date.now(),
+    num: jobNumber(job) + (many ? `-${(part || 1) + k}` : '')
+  }));
   await addToLibrary(stamped);
   if (settings.autoDownload) for (const it of stamped) await download(it, ++run.saved, settings.folder);
 }
@@ -702,7 +715,7 @@ async function collect(tab, settings) {
     const owner = run.inflight.find((f) => f.got < f.need) || run.inflight[run.inflight.length - 1];
     if (!owner) break;
     owner.got++;
-    await handleItems([it], owner.job, settings);
+    await handleItems([it], owner.job, settings, owner.got);
     if (owner.got >= owner.need) { markJob(owner.job, 'ok'); run.done++; }
   }
   run.inflight = run.inflight.filter((f) => f.got < f.need);
