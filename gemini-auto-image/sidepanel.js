@@ -5,6 +5,7 @@ const MAX_LIBRARY = 300;
 const SITE_RE = /^https:\/\/(flow\.google\.com|labs\.google|gemini\.google\.com)\//;
 
 const SLOT_COUNT = 8;
+const DEFAULT_SUFFIX = '[글자 규칙] 이미지 안에 들어가는 모든 글자는 반드시 한국어(한글)로만 쓴다. 영어, 알파벳, 로마자, 한자는 한 글자도 넣지 않는다. 위에 적힌 한글 문구를 토씨 하나 바꾸지 말고 그대로 표기하며, 번역하지 않는다.';
 const newSlot = () => ({ text: '', kind: 'image', ratio: '16:9' });
 const state = {
   bulk: { text: '', kind: 'image', ratio: '16:9', split: 'auto', done: [] },
@@ -38,6 +39,8 @@ function readSettings() {
     timeoutVideo: num('set-timeout-video', 360, 60, 3600),
     retry: num('set-retry', 1, 0, 5),
     wait: $('set-wait').checked,
+    suffixOn: $('set-suffix-on').checked,
+    suffix: $('set-suffix').value.trim(),
     repeat: num('set-repeat', 1, 1, 20),
     modelImage: $('model-image').value.trim(),
     modelVideo: $('model-video').value.trim(),
@@ -75,6 +78,10 @@ async function load() {
       $('set-retry').value = settings.retry;
       $('set-wait').checked = !!settings.wait;
     }
+    if ('suffixOn' in settings) {
+      $('set-suffix-on').checked = !!settings.suffixOn;
+      $('set-suffix').value = settings.suffix || '';
+    }
     $('set-repeat').value = settings.repeat;
     $('model-image').value = settings.modelImage || '';
     $('model-video').value = settings.modelVideo || '';
@@ -87,6 +94,7 @@ async function load() {
     $('set-autodl').checked = settings.autoDownload !== false;
     $('set-folder').value = settings.folder || 'GeminiAutoImage';
   }
+  if (!$('set-suffix').value.trim()) $('set-suffix').value = DEFAULT_SUFFIX;
   renderBulk();
   renderSlots();
   renderRefs();
@@ -414,7 +422,7 @@ document.querySelectorAll('.tab').forEach((t) => {
 });
 
 // ---------- 설정 ----------
-['set-delay', 'set-timeout-image', 'set-timeout-video', 'set-retry', 'set-wait', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder', 'model-image', 'model-video', 'gen-count'].forEach((id) => {
+['set-delay', 'set-timeout-image', 'set-timeout-video', 'set-retry', 'set-wait', 'set-suffix-on', 'set-suffix', 'set-repeat', 'set-ratio-text', 'set-autodl', 'set-folder', 'model-image', 'model-video', 'gen-count'].forEach((id) => {
   $(id).addEventListener('change', saveSettings);
 });
 
@@ -567,8 +575,10 @@ $('lib-clear').addEventListener('click', async () => {
 // ▶ 실행이나 시작을 누르면 대기열에 넣는다. 실행 중에도 언제든 더 넣을 수 있다.
 // 기본은 "연속 실행": 프롬프트를 보내자마자 다음으로 넘어가고, 결과는 끝난 순서대로 모아 저장한다.
 function buildPrompt(job, settings) {
-  if (!settings.ratioText) return job.text;
-  return `${job.text} (aspect ratio ${job.ratio})`;
+  let text = job.text;
+  if (settings.suffixOn && settings.suffix && !text.includes(settings.suffix)) text += '\n' + settings.suffix;
+  if (settings.ratioText) text += ` (비율 ${job.ratio})`;
+  return text;
 }
 
 function markJob(job, status, title) {
