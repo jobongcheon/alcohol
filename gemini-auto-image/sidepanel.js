@@ -118,6 +118,31 @@ function renderMode() {
   $('boxes-card').hidden = state.mode !== 'boxes';
   if (typeof updateStartLabel === 'function') updateStartLabel();
 }
+// 전부 지우기: 한꺼번에 넣기 목록, 진행 기록, 상자 8개 내용을 모두 비운다 (모델·설정은 그대로)
+$('clear-all').addEventListener('click', () => {
+  const b = $('clear-all');
+  if (state.running) return setStatus('실행 중에는 지울 수 없습니다. 먼저 중지를 누르세요.', 'err');
+  if (b.dataset.confirm !== '1') {
+    b.dataset.confirm = '1';
+    b.classList.add('confirm');
+    b.textContent = '한 번 더 누르면 전부 지웁니다';
+    setTimeout(() => { b.dataset.confirm = ''; b.classList.remove('confirm'); b.textContent = '전부 지우기'; }, 3000);
+    return;
+  }
+  b.dataset.confirm = '';
+  b.classList.remove('confirm');
+  b.textContent = '전부 지우기';
+  state.bulk.text = '';
+  state.bulk.done = [];
+  state.bulkStatus = {};
+  for (let i = 0; i < SLOT_COUNT; i++) { state.slots[i].text = ''; state.slotStatus[i] = ''; }
+  renderBulk();
+  renderSlots();
+  updateCount();
+  saveDraft();
+  setStatus('전부 지웠습니다.', 'ok');
+});
+
 $('mode-pick').addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (!b) return;
