@@ -218,3 +218,13 @@ textarea::placeholder { color: var(--muted); }
 .bulk-list li.fail { color: var(--danger); }
 .bulk-list li.run { color: var(--accent); font-weight: 700; }
 .status.ask { color: #1b1404; background: var(--accent); border-radius: 8px; padding: 8px 10px; font-weight: 700; }
+
+.slot-run {
+  background: var(--accent); color: #1b1404; border: 0; border-radius: 7px;
+  padding: 3px 9px; font-size: 11px; font-weight: 800; margin-left: auto;
+}
+.slot-run:hover:not(:disabled) { filter: brightness(1.08); }
+.slot-run:disabled { opacity: .4; cursor: not-allowed; }
+.slot-len { flex: 0 1 auto; }
+.pill { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.pill.on { color: var(--ok); border-color: var(--ok); }

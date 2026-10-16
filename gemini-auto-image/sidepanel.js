@@ -85,6 +85,7 @@ async function load() {
   renderBulk();
   renderSlots();
   renderRefs();
+  updateStartLabel();
   updateCount();
   renderLibrary();
   checkSite();
@@ -160,9 +161,11 @@ function renderBulk() {
     li.title = it.slice(0, 400);
     ol.append(li);
   });
+  if (!state.running && typeof updateStartLabel === 'function') updateStartLabel();
 }
 
 function setBulkText(text) {
+  setTimeout(updateStartLabel, 0);
   if (text !== state.bulk.text) {
     state.bulk.text = text;
     state.bulk.done = []; // 내용이 바뀌면 진행 기록을 지운다
@@ -247,6 +250,7 @@ function refreshSlot(i) {
 
 function setSlotText(i, text) {
   state.slots[i].text = text;
+  setTimeout(updateStartLabel, 0);
   const ta = document.querySelector(`.slot[data-i="${i}"] textarea`);
   if (ta && ta.value !== text) ta.value = text;
   setSlotStatus(i, '');
@@ -301,7 +305,13 @@ function renderSlots() {
     clear.title = '이 상자 비우기';
     clear.setAttribute('aria-label', `${i + 1}번 상자 비우기`);
     clear.addEventListener('click', () => { if (!state.running) setSlotText(i, ''); });
-    head.append(num, kind, ratio, len, tag, clear);
+    const run = document.createElement('button');
+    run.className = 'slot-run';
+    run.type = 'button';
+    run.textContent = '▶ 실행';
+    run.title = '이 상자만 바로 실행';
+    run.addEventListener('click', () => runSlot(i));
+    head.append(num, kind, ratio, len, tag, run, clear);
 
     const ta = document.createElement('textarea');
     ta.id = `slot-${i + 1}`;
@@ -564,12 +574,15 @@ function markJob(job, status, title) {
   renderBulk();
 }
 
+let accurateOn = false;
+
 // Flow 에서 생성 버튼을 직접 눌러 달라고 할 때
 chrome.runtime.onMessage.addListener((msg) => {
   if (!msg || !msg.gaiStatus || !state.running) return;
   if (msg.needClick) {
     const el = $('status');
-    el.textContent = 'Flow 화면에서 노란 테두리가 생긴 → 버튼을 한 번 눌러 주세요. 그 버튼을 기억해서 다음부터 자동으로 누릅니다.';
+    el.textContent = 'Flow 화면에서 노란 테두리가 생긴 → 버튼을 한 번 눌러 주세요.' +
+      (accurateOn ? '' : ' 매번 누르지 않으려면 Settings 탭에서 "정확한 클릭"을 켜세요.');
     el.className = 'status ask';
   }
 });
@@ -578,48 +591,49 @@ function setRunning(on) {
   state.running = on;
   $('start-btn').disabled = on;
   $('stop-btn').disabled = !on;
-  document.querySelectorAll('.slot textarea').forEach((t) => { t.disabled = on; });
+  document.querySelectorAll('.slot textarea, .slot-run').forEach((t) => { t.disabled = on; });
   $('bulk-text').disabled = on;
   $('bulk-split').disabled = on;
   ['model-image', 'model-video', 'gen-count'].forEach((id) => { $(id).disabled = on; });
+  if (!on) updateStartLabel();
 }
 
-$('start-btn').addEventListener('click', async () => {
-  const bulkList = bulkItems();
-  const bulkDone = new Set(state.bulk.done);
-  const prompts = [
-    ...bulkList.map((text, idx) => ({ text, kind: state.bulk.kind, ratio: state.bulk.ratio, bulk: true, idx })).filter((j) => !bulkDone.has(j.idx)),
-    ...getPrompts()
-  ];
-  if (!prompts.length) {
-    return setStatus(bulkList.length ? '한꺼번에 넣기 목록을 모두 끝냈습니다. 다시 하려면 "처음부터 다시"를 누르세요.' : '프롬프트를 넣어 주세요.', 'err');
-  }
+function updateStartLabel() {
+  const list = bulkItems();
+  const done = new Set(state.bulk.done);
+  const left = list.filter((_, i) => !done.has(i)).length;
+  const boxes = getPrompts().length;
+  $('start-btn').textContent = list.length ? `목록 시작 (${left}개 남음)` : boxes ? `상자 전체 시작 (${boxes}개)` : '시작';
+}
+
+// jobs 를 차례로 실행한다. 상자 ▶ 버튼, 시작 버튼 모두 이 함수를 쓴다.
+async function runJobs(jobs, bulkTotal) {
   const tab = await checkSite();
   if (!tab) return setStatus('이 Chrome 창에서 Google Flow 프로젝트나 Gemini 대화를 연 뒤 시작하세요.', 'err');
-
   const settings = readSettings();
-  const jobs = [];
-  prompts.forEach((p) => { for (let r = 0; r < settings.repeat; r++) jobs.push(p); });
-  for (let k = 0; k < SLOT_COUNT; k++) setSlotStatus(k, '');
+  const all = [];
+  jobs.forEach((p) => { for (let r = 0; r < settings.repeat; r++) all.push(p); });
+
+  jobs.forEach((j) => { if (!j.bulk) setSlotStatus(j.slot, ''); });
   state.bulkStatus = {};
   try { await sendToTab(tab.id, { gai: true, type: 'resetConfig' }); } catch (e) {}
 
   state.stop = false;
   setRunning(true);
   let done = 0, fail = 0, saved = 0, lastError = '';
-  setProgress(0, jobs.length);
+  setProgress(0, all.length);
 
-  for (let i = 0; i < jobs.length; i++) {
+  for (let i = 0; i < all.length; i++) {
     if (state.stop) break;
-    const job = jobs[i];
-    const name = job.bulk ? `목록 ${job.idx + 1}/${bulkList.length}` : `${job.slot + 1}번 상자`;
+    const job = all[i];
+    const name = job.bulk ? `목록 ${job.idx + 1}/${bulkTotal}` : `${job.slot + 1}번 상자`;
     const label = `${name} · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
     let res = null;
     let stopAll = false;
     for (let attempt = 0; attempt <= settings.retry; attempt++) {
       if (state.stop) break;
       markJob(job, attempt ? 'retry' : 'run');
-      setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${label}${attempt ? ` · 다시 시도 ${attempt}` : ''}`);
+      setStatus(`${i + 1} / ${all.length} 생성 중 · ${label}${attempt ? ` · 다시 시도 ${attempt}` : ''}`);
       try {
         res = await sendToTab(tab.id, {
           gai: true,
@@ -660,18 +674,45 @@ $('start-btn').addEventListener('click', async () => {
       setStatus(`${name} 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
       if (stopAll) break;
     }
-    setProgress(i + 1, jobs.length);
-    if (i < jobs.length - 1 && settings.delay && !state.stop) await sleep(settings.delay * 1000);
+    setProgress(i + 1, all.length);
+    if (i < all.length - 1 && settings.delay && !state.stop) await sleep(settings.delay * 1000);
   }
 
   setRunning(false);
+  try { chrome.runtime.sendMessage({ gaiBg: 'detach' }); } catch (e) {}
   state.slotStatus.forEach((st, k) => { if (st === 'run' || st === 'retry') setSlotStatus(k, ''); });
   Object.keys(state.bulkStatus).forEach((k) => { if (state.bulkStatus[k] === 'run') delete state.bulkStatus[k]; });
   renderBulk();
+  updateStartLabel();
   const tail = lastError ? ` · ${lastError}` : '';
   if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : '');
   else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : 'ok');
+}
+
+// 시작 버튼: 한꺼번에 넣기 목록을 실행한다. 목록이 비어 있으면 상자 전체를 실행한다.
+$('start-btn').addEventListener('click', async () => {
+  if (state.running) return;
+  const bulkList = bulkItems();
+  if (bulkList.length) {
+    const doneSet = new Set(state.bulk.done);
+    const jobs = bulkList
+      .map((text, idx) => ({ text, kind: state.bulk.kind, ratio: state.bulk.ratio, bulk: true, idx }))
+      .filter((j) => !doneSet.has(j.idx));
+    if (!jobs.length) return setStatus('한꺼번에 넣기 목록을 모두 끝냈습니다. 다시 하려면 "처음부터 다시"를 누르세요.', 'err');
+    return runJobs(jobs, bulkList.length);
+  }
+  const boxes = getPrompts();
+  if (!boxes.length) return setStatus('프롬프트를 넣어 주세요.', 'err');
+  return runJobs(boxes, 0);
 });
+
+// 상자 ▶ 버튼: 그 상자 하나만 바로 실행한다
+function runSlot(i) {
+  if (state.running) return;
+  const sl = state.slots[i];
+  if (!sl.text.trim()) return setStatus(`${i + 1}번 상자가 비어 있습니다.`, 'err');
+  runJobs([{ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }], 0);
+}
 
 $('stop-btn').addEventListener('click', async () => {
   state.stop = true;
@@ -679,6 +720,22 @@ $('stop-btn').addEventListener('click', async () => {
   if (tab) { try { await chrome.tabs.sendMessage(tab.id, { gai: true, type: 'stop' }); } catch (e) {} }
   setStatus('중지하는 중...');
 });
+
+// ---------- 정확한 클릭 (선택 기능) ----------
+async function refreshAccurate() {
+  try { accurateOn = await chrome.permissions.contains({ permissions: ['debugger'] }); } catch (e) { accurateOn = false; }
+  $('accurate-state').textContent = accurateOn ? '켜짐' : '꺼짐';
+  $('accurate-state').className = 'pill ' + (accurateOn ? 'on' : '');
+  $('accurate-btn').textContent = accurateOn ? '끄기' : '켜기';
+}
+$('accurate-btn').addEventListener('click', async () => {
+  try {
+    if (accurateOn) await chrome.permissions.remove({ permissions: ['debugger'] });
+    else await chrome.permissions.request({ permissions: ['debugger'] });
+  } catch (e) {}
+  refreshAccurate();
+});
+refreshAccurate();
 
 // ---------- 계정 메모 (암호화 보관) ----------
 // 계정 정보는 사용자가 정한 잠금 비밀번호로 AES-GCM 암호화해 chrome.storage.local 에 저장한다.

@@ -62,6 +62,23 @@
     el.dispatchEvent(new KeyboardEvent('keyup', ev));
   }
 
+  // "정확한 클릭"이 켜져 있으면 백그라운드가 실제 마우스 클릭을 보낸다. 꺼져 있으면 false.
+  async function accurateClick(el) {
+    el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    await sleep(80);
+    const r = el.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const hit = document.elementFromPoint(x, y);
+    if (!hit || !(el.contains(hit) || hit.contains(el))) return false; // 다른 것이 가리고 있으면 누르지 않는다
+    try {
+      const res = await chrome.runtime.sendMessage({ gaiBg: 'click', x, y });
+      return !!(res && res.ok);
+    } catch (e) {
+      return false;
+    }
+  }
+
   function pressEscape() {
     const t = document.activeElement || document.body;
     const ev = { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true, cancelable: true };
@@ -455,6 +472,12 @@
   async function submit(input, btn, ctx) {
     ctx.btnDisabled = btn ? isDisabled(btn) : false;
     ctx.btnLabel = btn ? labelOf(btn) : '';
+
+    // 0) 정확한 클릭 (사용자가 켠 경우)
+    if (btn && (await accurateClick(btn))) {
+      const r = await waitSignal(ctx, btn, 8000);
+      if (r) return r;
+    }
 
     // 1) 버튼 가운데를 마우스처럼 클릭
     if (btn) {
