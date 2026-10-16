@@ -16,6 +16,43 @@
   <main>
     <!-- 제어 -->
     <section class="view" id="view-control">
+      <div class="card bulk-card" id="bulk-card">
+        <div class="row between">
+          <span class="label accent">한꺼번에 넣기</span>
+          <button class="icon-btn" id="bulk-clear" title="비우기" aria-label="한꺼번에 넣기 비우기">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12H7L6 9zm4 2v8h2v-8h-2zm4 0v8h2v-8h-2z"/></svg>
+          </button>
+        </div>
+        <p class="muted">프롬프트 여러 개를 한 번에 붙여넣으세요. 1, 2, 3 번호나 빈 줄로 나뉜 것을 알아서 하나씩 나눕니다.</p>
+        <div class="bulk-opts">
+          <div class="seg kind" id="bulk-kind" data-key="kind">
+            <button type="button" data-v="image">이미지</button><button type="button" data-v="video">동영상</button>
+          </div>
+          <div class="seg" id="bulk-ratio" data-key="ratio">
+            <button type="button" data-v="16:9">16:9</button><button type="button" data-v="9:16">9:16</button>
+          </div>
+          <label class="bulk-split">나누기
+            <select id="bulk-split">
+              <option value="auto">자동</option>
+              <option value="number">번호로</option>
+              <option value="blank">빈 줄로</option>
+              <option value="line">한 줄씩</option>
+            </select>
+          </label>
+        </div>
+        <div class="bulk-box" id="bulk-drop">
+          <textarea id="bulk-text" placeholder="1&#10;첫 번째 프롬프트&#10;&#10;2&#10;두 번째 프롬프트&#10;&#10;3&#10;세 번째 프롬프트"></textarea>
+        </div>
+        <div class="row between bulk-foot">
+          <span id="bulk-summary">비어 있음</span>
+          <button class="ghost-btn" id="bulk-reset" hidden>처음부터 다시</button>
+        </div>
+        <details class="bulk-list" id="bulk-details" hidden>
+          <summary>나뉜 목록 보기</summary>
+          <ol id="bulk-list"></ol>
+        </details>
+      </div>
+
       <div class="card model-card">
         <div class="row between">
           <span class="label accent">사용 모델</span>
@@ -191,9 +228,10 @@
         <h2>사용 방법</h2>
         <ol>
           <li>Google Flow 프로젝트 화면이나 Gemini 대화 화면을 엽니다.</li>
-          <li>프롬프트를 상자에 끌어다 놓습니다. 상자 하나가 프롬프트 하나입니다.</li>
+          <li>프롬프트 여러 개는 맨 위 "한꺼번에 넣기"에 붙여넣고, 따로 할 것은 아래 상자 8개에 끌어다 놓습니다.</li>
           <li>비율과 참조 이미지를 고르고 시작을 누릅니다.</li>
           <li>결과는 라이브러리 탭에 모이고 다운로드 폴더에 저장됩니다.</li>
+          <li>생성 버튼이 자동으로 눌리지 않으면 Flow의 → 버튼에 노란 테두리가 생깁니다. 한 번 직접 누르면 그 버튼을 기억해 다음부터 자동으로 누릅니다.</li>
           <li>상자마다 이미지·동영상과 16:9·9:16을 고르면 Flow 설정을 자동으로 바꾼 뒤 생성합니다. 모델은 맨 위에서 한 번 정하면 그대로 유지됩니다.</li>
         </ol>
         <h2>지원 사이트</h2>
@@ -202,7 +240,7 @@
           <li>Gemini · gemini.google.com</li>
         </ul>
         <p class="muted">사이트 화면 구조가 바뀌면 입력창이나 버튼을 찾지 못할 수 있습니다. 이 경우 상태 줄에 이유가 표시됩니다. 각 서비스의 사용 한도와 약관 안에서 사용하세요.</p>
-        <p class="muted">버전 1.4.0</p>
+        <p class="muted">버전 1.5.0</p>
       </div>
     </section>
   </main>

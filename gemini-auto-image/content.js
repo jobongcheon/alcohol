@@ -31,16 +31,35 @@
       .slice(0, 120);
   const isDisabled = (el) => el.disabled || el.getAttribute('aria-disabled') === 'true';
 
+  // 실제 마우스처럼 버튼 한가운데에 있는 가장 안쪽 요소에 이벤트를 보낸다.
+  // (클릭 처리기가 버튼 안쪽 아이콘에 붙어 있는 경우가 있다)
   function realClick(el) {
     el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     const r = el.getBoundingClientRect();
-    const opts = { bubbles: true, cancelable: true, view: window, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, button: 0 };
-    el.dispatchEvent(new PointerEvent('pointerover', opts));
-    el.dispatchEvent(new PointerEvent('pointerdown', { ...opts, pointerId: 1, isPrimary: true }));
-    el.dispatchEvent(new MouseEvent('mousedown', opts));
-    el.dispatchEvent(new PointerEvent('pointerup', { ...opts, pointerId: 1, isPrimary: true }));
-    el.dispatchEvent(new MouseEvent('mouseup', opts));
-    el.click();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const hit = document.elementFromPoint(x, y);
+    const target = hit && (el.contains(hit) || hit.contains(el)) ? hit : el;
+    const base = { bubbles: true, cancelable: true, composed: true, view: window, clientX: x, clientY: y, screenX: x + window.screenX, screenY: y + window.screenY, button: 0 };
+    const ptr = { ...base, pointerId: 1, pointerType: 'mouse', isPrimary: true, width: 1, height: 1, pressure: 0.5 };
+    target.dispatchEvent(new PointerEvent('pointerover', ptr));
+    target.dispatchEvent(new PointerEvent('pointerenter', { ...ptr, bubbles: false }));
+    target.dispatchEvent(new MouseEvent('mouseover', base));
+    target.dispatchEvent(new PointerEvent('pointerdown', { ...ptr, buttons: 1 }));
+    target.dispatchEvent(new MouseEvent('mousedown', { ...base, buttons: 1, detail: 1 }));
+    if (typeof el.focus === 'function') el.focus({ preventScroll: true });
+    target.dispatchEvent(new PointerEvent('pointerup', { ...ptr, buttons: 0, pressure: 0 }));
+    target.dispatchEvent(new MouseEvent('mouseup', { ...base, buttons: 0, detail: 1 }));
+    target.dispatchEvent(new MouseEvent('click', { ...base, buttons: 0, detail: 1 }));
+  }
+
+  function keyOn(el, key, extra) {
+    const code = key === 'Enter' ? 'Enter' : key === ' ' ? 'Space' : key;
+    const keyCode = key === 'Enter' ? 13 : key === ' ' ? 32 : 0;
+    const ev = { key, code, keyCode, which: keyCode, bubbles: true, cancelable: true, composed: true, ...(extra || {}) };
+    el.dispatchEvent(new KeyboardEvent('keydown', ev));
+    el.dispatchEvent(new KeyboardEvent('keypress', ev));
+    el.dispatchEvent(new KeyboardEvent('keyup', ev));
   }
 
   function pressEscape() {
@@ -134,6 +153,33 @@
   }
 
   // ---------- 생성 버튼 ----------
+  // 사용자가 한 번 직접 누른 버튼을 기억해 두고 다음부터 그 버튼을 우선 고른다.
+  let learned = null;
+  chrome.storage.local.get('learnedSubmit').then((v) => { learned = v.learnedSubmit || null; }).catch(() => {});
+
+  function signature(el, composer) {
+    const cr = composer.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    return {
+      aria: el.getAttribute('aria-label') || '',
+      text: textOf(el).slice(0, 40),
+      cls: typeof el.className === 'string' ? el.className.split(/\s+/).filter((c) => c && !/hover|focus|active|disabled/i.test(c)).slice(0, 6).join(' ') : '',
+      dx: Math.round(cr.right - r.right),
+      dy: Math.round(cr.bottom - r.bottom)
+    };
+  }
+
+  function learnedScore(b, composer) {
+    if (!learned) return 0;
+    const sig = signature(b, composer);
+    let sc = 0;
+    if (learned.aria && sig.aria === learned.aria) sc += 8;
+    if (learned.text && sig.text === learned.text) sc += 6;
+    if (learned.cls && sig.cls === learned.cls) sc += 6;
+    if (Math.abs(sig.dx - learned.dx) < 24 && Math.abs(sig.dy - learned.dy) < 24) sc += 6;
+    return sc;
+  }
+
   function findSubmitButton(input) {
     const composer = findComposer(input);
     const cr = composer.getBoundingClientRect();
@@ -143,7 +189,7 @@
     for (const b of buttons) {
       const label = labelOf(b);
       const r = b.getBoundingClientRect();
-      let score = 0;
+      let score = composer.contains(b) ? learnedScore(b, composer) : 0;
       if (SUBMIT_ICONS.test(b.innerText || '') || SUBMIT_ICONS.test(b.getAttribute('aria-label') || '')) score += 6;
       if (SUBMIT_WORDS.test(label)) score += 5;
       if (composer.contains(b)) score += 4;
@@ -356,7 +402,7 @@
     const settleMs = opts.kind === 'video' ? 5000 : 3000;
     const expected = opts.count || 1;
     const start = Date.now();
-    let sawSignal = false;
+    let sawSignal = true; // submit() 에서 이미 시작 신호를 확인했다
     let lastCount = 0;
     let lastChange = Date.now();
 
@@ -380,6 +426,95 @@
     return { items: collectMedia().filter((m) => !ctx.before.has(m.src)), timedOut: true };
   }
 
+  // 생성이 시작됐다는 표시: 입력창 비워짐, 진행률 표시, 새 결과, 생성 버튼 상태 변화
+  function startedSignal(ctx, btn) {
+    if (collectMedia().some((m) => !ctx.before.has(m.src))) return true;
+    if (busyCount() > ctx.busyBefore) return true;
+    if (squash(inputText(ctx.input)).length < ctx.promptLen * 0.5) return true;
+    if (btn && (!btn.isConnected || isDisabled(btn) !== ctx.btnDisabled || labelOf(btn) !== ctx.btnLabel)) return true;
+    return false;
+  }
+
+  async function waitSignal(ctx, btn, ms) {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      if (stopRequested) return 'stopped';
+      await sleep(500);
+      if (startedSignal(ctx, btn)) return true;
+    }
+    return false;
+  }
+
+  function notifyPanel(payload) {
+    try { chrome.runtime.sendMessage({ gaiStatus: true, ...payload }); } catch (e) {}
+  }
+
+  // 이 페이지에서 자동 클릭이 한 번 통하지 않았으면, 다음부터는 짧게 시도하고 바로 도움을 요청한다
+  let autoClickFailed = false;
+
+  async function submit(input, btn, ctx) {
+    ctx.btnDisabled = btn ? isDisabled(btn) : false;
+    ctx.btnLabel = btn ? labelOf(btn) : '';
+
+    // 1) 버튼 가운데를 마우스처럼 클릭
+    if (btn) {
+      realClick(btn);
+      const r = await waitSignal(ctx, btn, autoClickFailed ? 4000 : 8000);
+      if (r) return r;
+    }
+    if (autoClickFailed) return askUser(input, btn, ctx);
+    // 2) 버튼이 폼 안에 있으면 폼 제출, 아니면 버튼에 Enter
+    if (btn) {
+      const form = btn.closest('form');
+      if (form && typeof form.requestSubmit === 'function') {
+        try { form.requestSubmit(btn.tagName === 'BUTTON' ? btn : undefined); } catch (e) { form.requestSubmit(); }
+      } else {
+        btn.focus({ preventScroll: true });
+        keyOn(btn, 'Enter');
+      }
+      const r = await waitSignal(ctx, btn, 6000);
+      if (r) return r;
+    }
+    // 3) 입력창에서 Enter
+    input.focus();
+    keyOn(input, 'Enter');
+    {
+      const r = await waitSignal(ctx, btn, 6000);
+      if (r) return r;
+    }
+
+    autoClickFailed = true;
+    return askUser(input, btn, ctx);
+  }
+
+  // 4) 사용자에게 한 번 눌러 달라고 하고, 누른 버튼을 기억한다
+  async function askUser(input, btn, ctx) {
+    const composer = findComposer(input);
+    const mark = btn || composer;
+    const oldOutline = mark.style.outline;
+    const oldOffset = mark.style.outlineOffset;
+    mark.style.outline = '3px solid #f5b630';
+    mark.style.outlineOffset = '3px';
+    let taught = null;
+    const onPress = (e) => {
+      if (!e.isTrusted) return;
+      const b = e.target.closest && e.target.closest('button, [role="button"]');
+      if (b && composer.contains(b)) taught = b;
+    };
+    document.addEventListener('pointerdown', onPress, true);
+    notifyPanel({ needClick: true });
+    const r = await waitSignal(ctx, btn, 120000);
+    document.removeEventListener('pointerdown', onPress, true);
+    mark.style.outline = oldOutline;
+    mark.style.outlineOffset = oldOffset;
+    notifyPanel({ needClick: false });
+    if (r === true && taught) {
+      learned = signature(taught, composer);
+      chrome.storage.local.set({ learnedSubmit: learned }).catch(() => {});
+    }
+    return r;
+  }
+
   async function runPrompt(msg) {
     stopRequested = false;
     const input = findPromptInput();
@@ -400,10 +535,14 @@
     await sleep(400);
 
     const btn = findSubmitButton(input);
-    if (!btn) return { ok: false, error: '생성 버튼을 찾지 못했습니다.', warnings, retryable: true };
-    for (let i = 0; i < 25 && isDisabled(btn); i++) await sleep(200);
-    if (isDisabled(btn)) return { ok: false, error: '생성 버튼이 비활성화되어 있습니다. 크레딧이나 사용 한도를 확인해 주세요.', warnings, limit: true };
-    realClick(btn);
+    if (btn) {
+      for (let i = 0; i < 25 && isDisabled(btn); i++) await sleep(200);
+      if (isDisabled(btn)) return { ok: false, error: '생성 버튼이 비활성화되어 있습니다. 크레딧이나 사용 한도를 확인해 주세요.', warnings, limit: true };
+    }
+
+    const submitted = await submit(input, btn, ctx);
+    if (submitted === 'stopped') return { ok: false, stopped: true, error: '중지됨' };
+    if (!submitted) return { ok: false, error: '생성 버튼이 눌리지 않았습니다. Flow 화면의 → 버튼을 직접 한 번 눌러 주면 그 버튼을 기억합니다.', warnings, retryable: true };
 
     const result = await waitForResults(ctx, msg);
     if (result.stopped) return { ok: false, stopped: true, error: '중지됨' };
@@ -444,6 +583,7 @@
     }
     out.popupOpen = ratioVisible();
     out.popupItems = out.popupOpen ? clickableAll().filter((el) => textOf(el).length < 40).slice(0, 60).map(describe) : [];
+    out.learned = learned;
     out.fileInputs = document.querySelectorAll('input[type="file"]').length;
     out.media = collectMedia().length;
     out.busy = busyCount();
@@ -458,6 +598,11 @@
     }
     if (msg.type === 'stop') {
       stopRequested = true;
+      sendResponse({ ok: true });
+      return;
+    }
+    if (msg.type === 'resetConfig') {
+      lastConfigKey = '';
       sendResponse({ ok: true });
       return;
     }

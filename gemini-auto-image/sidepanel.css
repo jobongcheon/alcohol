@@ -200,3 +200,21 @@ textarea::placeholder { color: var(--muted); }
 .seg.kind button.on[data-v="video"] { background: color-mix(in srgb, var(--accent) 35%, var(--panel-2)); }
 .slot-head { flex-wrap: wrap; row-gap: 4px; }
 .slot textarea { min-height: 64px; height: 64px; }
+
+.bulk-opts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.bulk-split { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+.bulk-split select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: 3px 6px; font: inherit; font-size: 11px;
+}
+.bulk-box { border: 1.5px dashed var(--line); border-radius: 10px; background: var(--bg); }
+.bulk-box.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
+.bulk-box:focus-within { border-color: var(--purple); }
+.bulk-box textarea { min-height: 120px; height: 120px; width: 100%; box-sizing: border-box; padding: 10px; font-size: 12.5px; }
+.bulk-foot { font-size: 12px; color: var(--muted); }
+.bulk-list summary { cursor: pointer; font-size: 12px; color: var(--muted); }
+.bulk-list ol { margin: 6px 0 0; padding-left: 26px; max-height: 220px; overflow: auto; display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; }
+.bulk-list li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.bulk-list li.ok { color: var(--ok); }
+.bulk-list li.fail { color: var(--danger); }
+.bulk-list li.run { color: var(--accent); font-weight: 700; }
+.status.ask { color: #1b1404; background: var(--accent); border-radius: 8px; padding: 8px 10px; font-weight: 700; }

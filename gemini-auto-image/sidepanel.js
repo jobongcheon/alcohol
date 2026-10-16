@@ -7,6 +7,8 @@ const SITE_RE = /^https:\/\/(flow\.google\.com|labs\.google|gemini\.google\.com)
 const SLOT_COUNT = 8;
 const newSlot = () => ({ text: '', kind: 'image', ratio: '16:9' });
 const state = {
+  bulk: { text: '', kind: 'image', ratio: '16:9', split: 'auto', done: [] },
+  bulkStatus: {},
   slots: Array.from({ length: SLOT_COUNT }, newSlot),
   slotStatus: Array(SLOT_COUNT).fill(''),
   refs: [], // { name, dataUrl }
@@ -19,7 +21,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // ---------- 저장 ----------
 async function saveDraft() {
   await chrome.storage.local.set({
-    draft: { slots: state.slots, refs: state.refs }
+    draft: { bulk: state.bulk, slots: state.slots, refs: state.refs }
   });
 }
 
@@ -61,6 +63,7 @@ async function load() {
       state.slots[0].text = draft.prompts;
     }
     state.refs = draft.refs || [];
+    if (draft.bulk) state.bulk = { ...state.bulk, ...draft.bulk, done: draft.bulk.done || [] };
   }
   if (settings && settings.v === 2) {
     $('set-delay').value = settings.delay;
@@ -79,11 +82,133 @@ async function load() {
     $('set-autodl').checked = settings.autoDownload !== false;
     $('set-folder').value = settings.folder || 'GeminiAutoImage';
   }
+  renderBulk();
   renderSlots();
   renderRefs();
   updateCount();
   renderLibrary();
   checkSite();
+}
+
+// ---------- 한꺼번에 넣기 ----------
+// 번호(1, 2, 3 …)가 줄 맨 앞에 차례대로 나오면 번호로 나누고, 아니면 빈 줄로 나눈다.
+const NUM_RE = /^\s*(?:#\s*|no\.?\s*|prompt\s*)?(\d{1,4})\s*(?:[.)\]:：]|번|-(?=\s))?(?:\s+(.*))?$/i;
+
+function splitByNumber(text) {
+  const lines = text.split('\n');
+  const items = [];
+  let expect = null;
+  let cur = null;
+  for (const line of lines) {
+    const m = line.match(NUM_RE);
+    const n = m ? Number(m[1]) : NaN;
+    // 첫 번호는 0이나 1로 시작해야 하고, 그 뒤로는 1씩 커져야 번호로 본다 (본문 속 숫자와 헷갈리지 않게)
+    const isMarker = m && (expect === null ? n === 1 || n === 0 : n === expect);
+    if (isMarker) {
+      if (cur) items.push(cur);
+      cur = [m[2] || ''];
+      expect = n + 1;
+    } else if (cur) {
+      cur.push(line);
+    } else if (line.trim()) {
+      return null; // 번호 앞에 다른 글이 있으면 번호 목록이 아니다
+    }
+  }
+  if (cur) items.push(cur);
+  if (items.length < 2) return null;
+  return items.map((it) => it.join('\n').trim()).filter(Boolean);
+}
+
+function parseBulk(text, mode) {
+  const t = (text || '').replace(/\r\n?/g, '\n').trim();
+  if (!t) return { items: [], how: '' };
+  if (mode === 'line') return { items: t.split('\n').map((l) => l.trim()).filter(Boolean), how: '한 줄씩' };
+  if (mode === 'number' || mode === 'auto') {
+    const byNum = splitByNumber(t);
+    if (byNum) return { items: byNum, how: '번호로' };
+    if (mode === 'number') return { items: [t], how: '번호를 찾지 못해 하나로' };
+  }
+  const byBlank = t.split(/\n\s*\n+/).map((x) => x.trim()).filter(Boolean);
+  return { items: byBlank, how: byBlank.length > 1 ? '빈 줄로' : '하나로' };
+}
+
+function bulkItems() {
+  return parseBulk(state.bulk.text, state.bulk.split).items;
+}
+
+function renderBulk() {
+  const b = state.bulk;
+  if ($('bulk-text').value !== b.text) $('bulk-text').value = b.text;
+  $('bulk-split').value = b.split;
+  document.querySelectorAll('#bulk-kind button').forEach((x) => x.classList.toggle('on', x.dataset.v === b.kind));
+  document.querySelectorAll('#bulk-ratio button').forEach((x) => x.classList.toggle('on', x.dataset.v === b.ratio));
+  const { items, how } = parseBulk(b.text, b.split);
+  const done = new Set(b.done);
+  const doneCount = items.filter((_, i) => done.has(i)).length;
+  $('bulk-summary').textContent = items.length
+    ? `${items.length}개로 나눔 (${how})${doneCount ? ` · 완료 ${doneCount} · 남음 ${items.length - doneCount}` : ''}`
+    : '비어 있음';
+  $('bulk-reset').hidden = !doneCount;
+  $('bulk-details').hidden = items.length < 1;
+  const ol = $('bulk-list');
+  ol.innerHTML = '';
+  items.forEach((it, i) => {
+    const li = document.createElement('li');
+    const st = state.bulkStatus[i] || (done.has(i) ? 'ok' : '');
+    li.className = st;
+    li.textContent = (st === 'ok' ? '✓ ' : st === 'fail' ? '✕ ' : st === 'run' ? '▶ ' : '') + it.replace(/\s+/g, ' ').slice(0, 80);
+    li.title = it.slice(0, 400);
+    ol.append(li);
+  });
+}
+
+function setBulkText(text) {
+  if (text !== state.bulk.text) {
+    state.bulk.text = text;
+    state.bulk.done = []; // 내용이 바뀌면 진행 기록을 지운다
+    state.bulkStatus = {};
+  }
+  renderBulk();
+  saveDraft();
+}
+
+$('bulk-text').addEventListener('input', () => setBulkText($('bulk-text').value));
+$('bulk-split').addEventListener('change', () => {
+  state.bulk.split = $('bulk-split').value;
+  state.bulk.done = [];
+  state.bulkStatus = {};
+  renderBulk();
+  saveDraft();
+});
+['bulk-kind', 'bulk-ratio'].forEach((id) => {
+  $(id).addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b || state.running) return;
+    state.bulk[$(id).dataset.key] = b.dataset.v;
+    renderBulk();
+    saveDraft();
+  });
+});
+$('bulk-clear').addEventListener('click', () => { if (!state.running) setBulkText(''); });
+$('bulk-reset').addEventListener('click', () => {
+  if (state.running) return;
+  state.bulk.done = [];
+  state.bulkStatus = {};
+  renderBulk();
+  saveDraft();
+});
+{
+  const zone = $('bulk-drop');
+  zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', (e) => { if (!zone.contains(e.relatedTarget)) zone.classList.remove('over'); });
+  zone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    if (state.running) return;
+    const file = [...(e.dataTransfer.files || [])].find((f) => /^text\/|\.txt$|\.md$/i.test(f.type || f.name));
+    const text = file ? await file.text() : e.dataTransfer.getData('text/plain') || '';
+    if (text.trim()) setBulkText(text.trim());
+  });
 }
 
 // ---------- 프롬프트 상자 ----------
@@ -429,17 +554,46 @@ function buildPrompt(job, settings) {
   return `${job.text} (aspect ratio ${job.ratio})`;
 }
 
+function markJob(job, status, title) {
+  if (!job.bulk) return setSlotStatus(job.slot, status, title);
+  state.bulkStatus[job.idx] = status === 'retry' ? 'run' : status;
+  if (status === 'ok' && !state.bulk.done.includes(job.idx)) {
+    state.bulk.done.push(job.idx);
+    saveDraft();
+  }
+  renderBulk();
+}
+
+// Flow 에서 생성 버튼을 직접 눌러 달라고 할 때
+chrome.runtime.onMessage.addListener((msg) => {
+  if (!msg || !msg.gaiStatus || !state.running) return;
+  if (msg.needClick) {
+    const el = $('status');
+    el.textContent = 'Flow 화면에서 노란 테두리가 생긴 → 버튼을 한 번 눌러 주세요. 그 버튼을 기억해서 다음부터 자동으로 누릅니다.';
+    el.className = 'status ask';
+  }
+});
+
 function setRunning(on) {
   state.running = on;
   $('start-btn').disabled = on;
   $('stop-btn').disabled = !on;
   document.querySelectorAll('.slot textarea').forEach((t) => { t.disabled = on; });
+  $('bulk-text').disabled = on;
+  $('bulk-split').disabled = on;
   ['model-image', 'model-video', 'gen-count'].forEach((id) => { $(id).disabled = on; });
 }
 
 $('start-btn').addEventListener('click', async () => {
-  const prompts = getPrompts();
-  if (!prompts.length) return setStatus('상자에 프롬프트를 하나 이상 넣으세요.', 'err');
+  const bulkList = bulkItems();
+  const bulkDone = new Set(state.bulk.done);
+  const prompts = [
+    ...bulkList.map((text, idx) => ({ text, kind: state.bulk.kind, ratio: state.bulk.ratio, bulk: true, idx })).filter((j) => !bulkDone.has(j.idx)),
+    ...getPrompts()
+  ];
+  if (!prompts.length) {
+    return setStatus(bulkList.length ? '한꺼번에 넣기 목록을 모두 끝냈습니다. 다시 하려면 "처음부터 다시"를 누르세요.' : '프롬프트를 넣어 주세요.', 'err');
+  }
   const tab = await checkSite();
   if (!tab) return setStatus('이 Chrome 창에서 Google Flow 프로젝트나 Gemini 대화를 연 뒤 시작하세요.', 'err');
 
@@ -447,6 +601,8 @@ $('start-btn').addEventListener('click', async () => {
   const jobs = [];
   prompts.forEach((p) => { for (let r = 0; r < settings.repeat; r++) jobs.push(p); });
   for (let k = 0; k < SLOT_COUNT; k++) setSlotStatus(k, '');
+  state.bulkStatus = {};
+  try { await sendToTab(tab.id, { gai: true, type: 'resetConfig' }); } catch (e) {}
 
   state.stop = false;
   setRunning(true);
@@ -456,12 +612,13 @@ $('start-btn').addEventListener('click', async () => {
   for (let i = 0; i < jobs.length; i++) {
     if (state.stop) break;
     const job = jobs[i];
-    const label = `${job.slot + 1}번 상자 · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
+    const name = job.bulk ? `목록 ${job.idx + 1}/${bulkList.length}` : `${job.slot + 1}번 상자`;
+    const label = `${name} · ${job.kind === 'video' ? '동영상' : '이미지'} ${job.ratio}`;
     let res = null;
     let stopAll = false;
     for (let attempt = 0; attempt <= settings.retry; attempt++) {
       if (state.stop) break;
-      setSlotStatus(job.slot, attempt ? 'retry' : 'run');
+      markJob(job, attempt ? 'retry' : 'run');
       setStatus(`${i + 1} / ${jobs.length} 생성 중 · ${label}${attempt ? ` · 다시 시도 ${attempt}` : ''}`);
       try {
         res = await sendToTab(tab.id, {
@@ -493,14 +650,14 @@ $('start-btn').addEventListener('click', async () => {
         for (const it of items) await download(it, ++saved, settings.folder);
       }
       done++;
-      setSlotStatus(job.slot, 'ok', warn);
-      if (warn) setStatus(`${job.slot + 1}번 상자 완료 · 참고: ${warn}`, 'err');
+      markJob(job, 'ok', warn);
+      if (warn) setStatus(`${name} 완료 · 참고: ${warn}`, 'err');
     } else {
       fail++;
       const why = (res && res.error) || '알 수 없는 오류';
-      lastError = `${job.slot + 1}번 상자: ${why}`;
-      setSlotStatus(job.slot, 'fail', why);
-      setStatus(`${job.slot + 1}번 상자 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
+      lastError = `${name}: ${why}`;
+      markJob(job, 'fail', why);
+      setStatus(`${name} 실패 · ${why}${warn ? ' · ' + warn : ''}`, 'err');
       if (stopAll) break;
     }
     setProgress(i + 1, jobs.length);
@@ -509,6 +666,8 @@ $('start-btn').addEventListener('click', async () => {
 
   setRunning(false);
   state.slotStatus.forEach((st, k) => { if (st === 'run' || st === 'retry') setSlotStatus(k, ''); });
+  Object.keys(state.bulkStatus).forEach((k) => { if (state.bulkStatus[k] === 'run') delete state.bulkStatus[k]; });
+  renderBulk();
   const tail = lastError ? ` · ${lastError}` : '';
   if (state.stop) setStatus(`중지됨 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : '');
   else setStatus(`완료 · 성공 ${done}건, 실패 ${fail}건${tail}`, fail ? 'err' : 'ok');
