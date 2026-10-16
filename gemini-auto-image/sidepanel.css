@@ -233,3 +233,7 @@ textarea::placeholder { color: var(--muted); }
   background: var(--bg); border: 1px solid var(--line); border-radius: 8px; color: var(--text);
   padding: 8px 10px; font: inherit; font-size: 12px; min-height: 84px; resize: vertical;
 }
+
+.mode-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 5px; }
+.mode-pick button { background: none; border: 0; border-radius: 8px; padding: 10px 6px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.mode-pick button.on { background: var(--accent); color: #1b1404; }

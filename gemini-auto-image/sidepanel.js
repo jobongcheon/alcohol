@@ -8,6 +8,7 @@ const SLOT_COUNT = 8;
 const DEFAULT_SUFFIX = '[글자 규칙] 이미지 안에 들어가는 모든 글자는 반드시 한국어(한글)로만 쓴다. 영어, 알파벳, 로마자, 한자는 한 글자도 넣지 않는다. 위에 적힌 한글 문구를 토씨 하나 바꾸지 말고 그대로 표기하며, 번역하지 않는다.';
 const newSlot = () => ({ text: '', kind: 'image', ratio: '16:9' });
 const state = {
+  mode: 'boxes', // 'bulk' = ① 한꺼번에 넣기, 'boxes' = ② 상자 8개
   bulk: { text: '', kind: 'image', ratio: '16:9', split: 'auto', done: [] },
   bulkStatus: {},
   slots: Array.from({ length: SLOT_COUNT }, newSlot),
@@ -22,7 +23,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // ---------- 저장 ----------
 async function saveDraft() {
   await chrome.storage.local.set({
-    draft: { bulk: state.bulk, slots: state.slots, refs: state.refs }
+    draft: { mode: state.mode, bulk: state.bulk, slots: state.slots, refs: state.refs }
   });
 }
 
@@ -68,6 +69,8 @@ async function load() {
     }
     state.refs = draft.refs || [];
     if (draft.bulk) state.bulk = { ...state.bulk, ...draft.bulk, done: draft.bulk.done || [] };
+    if (draft.mode === 'bulk' || draft.mode === 'boxes') state.mode = draft.mode;
+    else if (draft.bulk && draft.bulk.text) state.mode = 'bulk';
   }
   if (settings && settings.v >= 2) {
     // 1.7.0 부터 빠른 기본값을 쓴다. 예전(v2) 시간 설정은 새 기본값으로 바꾼다.
@@ -98,11 +101,30 @@ async function load() {
   renderBulk();
   renderSlots();
   renderRefs();
-  updateStartLabel();
+  renderMode();
   updateCount();
   renderLibrary();
   checkSite();
 }
+
+// ---------- ① / ② 어느 쪽을 쓸지 ----------
+function renderMode() {
+  document.querySelectorAll('#mode-pick button').forEach((b) => {
+    const on = b.dataset.v === state.mode;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  $('bulk-card').hidden = state.mode !== 'bulk';
+  $('boxes-card').hidden = state.mode !== 'boxes';
+  if (typeof updateStartLabel === 'function') updateStartLabel();
+}
+$('mode-pick').addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  state.mode = b.dataset.v;
+  renderMode();
+  saveDraft();
+});
 
 // ---------- 한꺼번에 넣기 ----------
 // 번호(1, 2, 3 …)가 줄 맨 앞에 차례대로 나오면 번호로 나누고, 아니면 빈 줄로 나눈다.
@@ -614,11 +636,15 @@ function setRunning(on) {
 }
 
 function updateStartLabel() {
-  const list = bulkItems();
-  const done = new Set(state.bulk.done);
-  const left = list.filter((_, i) => !done.has(i)).length;
-  const boxes = getPrompts().length;
-  $('start-btn').textContent = list.length ? `목록 시작 (${left}개 남음)` : boxes ? `상자 전체 시작 (${boxes}개)` : '시작';
+  if (state.mode === 'bulk') {
+    const list = bulkItems();
+    const done = new Set(state.bulk.done);
+    const left = list.filter((_, i) => !done.has(i)).length;
+    $('start-btn').textContent = list.length ? `① 목록 시작 (${left}개 남음)` : '① 목록 시작';
+  } else {
+    const boxes = getPrompts().length;
+    $('start-btn').textContent = boxes ? `② 상자 전체 시작 (${boxes}개)` : '② 상자 전체 시작';
+  }
 }
 
 const sameJob = (a, b) => (a.bulk ? b.bulk && a.idx === b.idx : !b.bulk && a.slot === b.slot);
@@ -779,7 +805,8 @@ $('start-btn').addEventListener('click', () => {
   const asking = askAccurateOnce();
   const bulkList = bulkItems();
   let jobs;
-  if (bulkList.length) {
+  if (state.mode === 'bulk') {
+    if (!bulkList.length) return setStatus('① 한꺼번에 넣기에 프롬프트를 붙여넣어 주세요.', 'err');
     const doneSet = new Set(state.bulk.done);
     jobs = bulkList
       .map((text, idx) => ({ text, kind: state.bulk.kind, ratio: state.bulk.ratio, bulk: true, idx }))
@@ -787,7 +814,7 @@ $('start-btn').addEventListener('click', () => {
     if (!jobs.length) return setStatus('한꺼번에 넣기 목록을 모두 끝냈습니다. 다시 하려면 "처음부터 다시"를 누르세요.', 'err');
   } else {
     jobs = getPrompts();
-    if (!jobs.length) return setStatus('프롬프트를 넣어 주세요.', 'err');
+    if (!jobs.length) return setStatus('② 상자에 프롬프트를 넣어 주세요.', 'err');
   }
   asking.then(() => enqueue(jobs));
 });
