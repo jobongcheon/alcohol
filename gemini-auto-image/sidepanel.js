@@ -641,7 +641,6 @@ function markJob(job, status, title) {
   renderBulk();
 }
 
-let accurateOn = false;
 const queue = [];
 const run = { saved: 0, done: 0, fail: 0, lastError: '', inflight: [] };
 
@@ -649,8 +648,7 @@ chrome.runtime.onMessage.addListener((msg) => {
   if (!msg || !msg.gaiStatus || !state.running) return;
   if (msg.needClick) {
     const el = $('status');
-    el.textContent = 'Flow 화면에서 노란 테두리가 생긴 → 버튼을 한 번 눌러 주세요.' +
-      (accurateOn ? '' : ' 매번 누르지 않으려면 Settings 탭에서 "정확한 클릭"을 켜세요.');
+    el.textContent = 'Flow 화면에서 노란 테두리가 생긴 → 버튼을 눌러 주세요. 누르면 다음 프롬프트가 자동으로 들어갑니다.';
     el.className = 'status ask';
   }
 });
@@ -820,8 +818,7 @@ async function runQueue() {
 
   function finish() {
     setRunning(false);
-    try { chrome.runtime.sendMessage({ gaiBg: 'detach' }); } catch (e) {}
-    state.slotStatus.forEach((st, k) => { if (['run', 'retry', 'wait'].includes(st)) setSlotStatus(k, ''); });
+      state.slotStatus.forEach((st, k) => { if (['run', 'retry', 'wait'].includes(st)) setSlotStatus(k, ''); });
     Object.keys(state.bulkStatus).forEach((k) => { if (state.bulkStatus[k] === 'run') delete state.bulkStatus[k]; });
     renderBulk();
     const tail = run.lastError ? ` · ${run.lastError}` : '';
@@ -830,17 +827,8 @@ async function runQueue() {
   }
 }
 
-// 처음 실행할 때 정확한 클릭 권한을 한 번 물어본다 (버튼을 누른 그 순간에만 물어볼 수 있다)
-let askedAccurate = false;
-function askAccurateOnce() {
-  if (accurateOn || askedAccurate) return Promise.resolve();
-  askedAccurate = true;
-  return chrome.permissions.request({ permissions: ['debugger'] }).catch(() => false).then(refreshAccurate);
-}
-
 // 시작 버튼: 한꺼번에 넣기 목록을 실행한다. 목록이 비어 있으면 상자 전체를 실행한다.
 $('start-btn').addEventListener('click', () => {
-  const asking = askAccurateOnce();
   const bulkList = bulkItems();
   let jobs;
   if (state.mode === 'bulk') {
@@ -854,15 +842,14 @@ $('start-btn').addEventListener('click', () => {
     jobs = getPrompts();
     if (!jobs.length) return setStatus('② 상자에 프롬프트를 넣어 주세요.', 'err');
   }
-  asking.then(() => enqueue(jobs));
+  enqueue(jobs);
 });
 
 // 상자 ▶ 버튼: 그 상자를 바로 대기열에 넣는다 (실행 중이어도 된다)
 function runSlot(i) {
   const sl = state.slots[i];
   if (!sl.text.trim()) return setStatus(`${i + 1}번 상자가 비어 있습니다.`, 'err');
-  const asking = askAccurateOnce();
-  asking.then(() => enqueue([{ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }]));
+  enqueue([{ text: sl.text.trim(), kind: sl.kind, ratio: sl.ratio, slot: i }]);
 }
 
 $('stop-btn').addEventListener('click', async () => {
@@ -873,21 +860,6 @@ $('stop-btn').addEventListener('click', async () => {
   setStatus('중지하는 중...');
 });
 
-// ---------- 정확한 클릭 (선택 기능) ----------
-async function refreshAccurate() {
-  try { accurateOn = await chrome.permissions.contains({ permissions: ['debugger'] }); } catch (e) { accurateOn = false; }
-  $('accurate-state').textContent = accurateOn ? '켜짐' : '꺼짐';
-  $('accurate-state').className = 'pill ' + (accurateOn ? 'on' : '');
-  $('accurate-btn').textContent = accurateOn ? '끄기' : '켜기';
-}
-$('accurate-btn').addEventListener('click', async () => {
-  try {
-    if (accurateOn) await chrome.permissions.remove({ permissions: ['debugger'] });
-    else await chrome.permissions.request({ permissions: ['debugger'] });
-  } catch (e) {}
-  refreshAccurate();
-});
-refreshAccurate();
 
 // ---------- 계정 메모 (암호화 보관) ----------
 // 계정 정보는 사용자가 정한 잠금 비밀번호로 AES-GCM 암호화해 chrome.storage.local 에 저장한다.

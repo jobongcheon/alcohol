@@ -233,16 +233,6 @@
       </div>
 
       <div class="card">
-        <div class="row between">
-          <span class="label">정확한 클릭</span>
-          <span class="pill" id="accurate-state">꺼짐</span>
-        </div>
-        <p class="muted">Flow의 → 생성 버튼이 자동으로 눌리지 않을 때 켜세요. 켜면 Chrome이 권한을 물어봅니다. 허락하면 작업하는 동안 Flow 탭에만 실제 마우스 클릭을 보내고, 작업이 끝나면 바로 멈춥니다.</p>
-        <p class="muted">작업 중에는 Chrome 위쪽에 "Gemini Auto Image이(가) 이 브라우저 디버깅을 시작함"이라는 안내줄이 뜹니다. 정상입니다. 그 줄의 취소를 누르면 그 작업에서는 정확한 클릭이 꺼집니다.</p>
-        <button class="ghost-btn" id="accurate-btn">켜기</button>
-      </div>
-
-      <div class="card">
         <span class="label">문제 해결</span>
         <p class="muted">잘 안 될 때 Flow 프로젝트 화면을 연 상태에서 누르세요. 버튼과 입력창 위치 정보만 복사되고, 프롬프트 내용이나 계정 정보는 담기지 않습니다. 복사한 내용을 Claude에게 붙여넣어 주세요.</p>
         <button class="ghost-btn" id="diag-btn">Flow 화면 정보 복사</button>
@@ -260,7 +250,7 @@
           <li>비율과 참조 이미지를 고르고 시작을 누릅니다.</li>
           <li>결과는 라이브러리 탭에 모이고 다운로드 폴더에 저장됩니다.</li>
           <li>상자 오른쪽의 ▶ 실행을 누르면 그 상자 하나만 바로 만듭니다. 아래 시작 버튼은 한꺼번에 넣기 목록을 실행합니다.</li>
-          <li>생성 버튼이 자동으로 눌리지 않으면 Settings 탭에서 "정확한 클릭"을 켜세요. 꺼져 있으면 Flow의 → 버튼에 노란 테두리가 생기고, 직접 한 번 누르면 이어서 진행합니다.</li>
+          <li>Flow의 → 생성 버튼은 사람이 직접 눌러야 합니다. 프롬프트가 들어가고 → 버튼에 노란 테두리가 생기면 한 번 누르세요. 그다음 프롬프트는 자동으로 들어갑니다.</li>
           <li>상자마다 이미지·동영상과 16:9·9:16을 고르면 Flow 설정을 자동으로 바꾼 뒤 생성합니다. 모델은 맨 위에서 한 번 정하면 그대로 유지됩니다.</li>
         </ol>
         <h2>지원 사이트</h2>
@@ -269,7 +259,7 @@
           <li>Gemini · gemini.google.com</li>
         </ul>
         <p class="muted">사이트 화면 구조가 바뀌면 입력창이나 버튼을 찾지 못할 수 있습니다. 이 경우 상태 줄에 이유가 표시됩니다. 각 서비스의 사용 한도와 약관 안에서 사용하세요.</p>
-        <p class="muted">버전 1.9.2</p>
+        <p class="muted">버전 1.9.3</p>
       </div>
     </section>
   </main>
