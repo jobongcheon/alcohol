@@ -585,6 +585,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .rant-btn:hover:not(:disabled) { transform: translateY(-2px); }
 .rant-btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.rant-btn.nudge { animation: nudge .7s var(--ease); }
+@keyframes nudge { 25% { transform: scale(1.1); } 55% { transform: scale(.96); } 80% { transform: scale(1.03); } }
 .main-tools { left: 14px; justify-content: flex-end; }
 .main-tools .rant-btn { margin-right: auto; }
 .rant-box {
@@ -1912,9 +1914,15 @@ ${text}
     let ctrl = null, tick = 0, burnT = 0;
     const level = () => Number(document.querySelector('#rant-level [aria-pressed="true"]').dataset.lv);
     const dialect = () => document.querySelector('#rant-dialect [aria-pressed="true"]').dataset.d;
+    // 세기나 말투를 바꾸면 바로 반영해요: 욕 상자가 열려 있으면 새로 욕해 주고, 아니면 버튼이 통통 튀어 알려 줘요
+    let reT = 0;
     ["rant-level", "rant-dialect"].forEach(id => $(id).addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
+      const changed = b.getAttribute("aria-pressed") !== "true";
       $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      if (!changed || !$("text").value.trim()) return;
+      if (!box.hidden && !box.classList.contains("burn")) { clearTimeout(reT); reT = setTimeout(() => btn.click(), 250); }
+      else { btn.classList.remove("nudge"); void btn.offsetWidth; btn.classList.add("nudge"); }
     }));
     // 읽어 주기: 기기에 있는 한국어 목소리로 소리 내어 읽어요 (말투마다 빠르기를 달리해요)
     const sayBtn = $("rant-say"), sayLbl = sayBtn.querySelector("span"), footNote = $("rant-foot-note");
