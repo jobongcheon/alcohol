@@ -362,6 +362,102 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .mic-note { font-size: .9375rem; }
 .mic-note b { color: var(--ink); }
 
+/* 스트레스 풀기 */
+.relief-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 640px) { .relief-grid { grid-template-columns: repeat(3, 1fr); } }
+.relief-card {
+  position: relative; overflow: hidden; text-align: left; display: grid; gap: 6px; align-content: start;
+  border: 1px solid var(--hair); background: var(--card); border-radius: 22px; padding: 16px; box-shadow: var(--shadow);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.relief-card::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 18%, transparent); margin-bottom: 4px; }
+.relief-card::after { content: ""; position: absolute; right: -36px; bottom: -44px; width: 120px; height: 120px; border-radius: 50%; background: var(--c); opacity: .12; filter: blur(16px); transition: opacity .4s, transform .6s var(--ease); pointer-events: none; }
+.relief-card:hover { transform: translateY(-4px); box-shadow: 0 22px 40px -18px color-mix(in srgb, var(--c) 70%, transparent); }
+.relief-card:hover::after { opacity: .24; transform: scale(1.3); }
+.relief-card h3 { font-size: 1.3rem; }
+.relief-card p { font-size: .9375rem; color: var(--ink-soft); line-height: 1.45; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.chip { font-size: .8125rem; padding: 2px 10px; border-radius: 999px; font-weight: 700; background: color-mix(in srgb, var(--c) 13%, #ffffff); color: var(--c); }
+.chip.plain { background: var(--wash); color: var(--ink-soft); }
+.relief-stage { display: grid; gap: 18px; }
+.back-btn { justify-self: start; display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 4px 0; font-weight: 700; color: var(--ink-soft); }
+.back-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.stage-head { display: flex; align-items: center; gap: 12px; }
+.stage-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 6px color-mix(in srgb, var(--c) 18%, transparent); flex: none; }
+.stage-title { font-size: var(--step-2); }
+.relief-stage .ex { display: grid; gap: 16px; }
+.relief-stage #stage-go, .relief-stage .next-btn, .relief-stage #res-other { background: var(--c); box-shadow: 0 18px 36px -16px color-mix(in srgb, var(--c) 80%, transparent); }
+.score-row { display: grid; grid-template-columns: repeat(11, 1fr); gap: 6px; }
+@media (max-width: 639px) { .score-row { grid-template-columns: repeat(6, 1fr); } }
+.score { aspect-ratio: 1; border: 0; border-radius: 14px; color: #ffffff; font-weight: 700; font-size: 1.125rem; background: var(--sc); font-variant-numeric: tabular-nums; transition: transform .25s var(--ease), box-shadow .25s; }
+.score:hover { transform: translateY(-2px) scale(1.06); box-shadow: 0 10px 20px -10px var(--sc); }
+.dur-row { gap: 12px; }
+.dur-row input[type="range"] { flex: 1; min-width: 140px; accent-color: var(--c); }
+.sigh-stage { display: grid; justify-items: center; gap: 14px; padding-block: 8px; text-align: center; }
+.sigh-orb { width: min(240px, 64vw); aspect-ratio: 1; border-radius: 50%; transform: scale(.5); background: radial-gradient(circle at 35% 30%, #ffffff 0, var(--m3) 24%, color-mix(in srgb, var(--c) 45%, var(--m1)) 62%, var(--m2) 100%); box-shadow: 0 30px 70px -22px color-mix(in srgb, var(--c) 60%, transparent); }
+.pmr-stage { position: relative; width: min(260px, 72vw); aspect-ratio: 1; margin: 0 auto; }
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 9; }
+.ring .track { stroke: var(--wash); }
+.ring .prog { stroke: var(--pc, var(--c)); stroke-linecap: round; stroke-dasharray: 326.7; stroke-dashoffset: 326.7; transition: stroke .4s; }
+.ring-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 4px; padding: 30px; }
+.ring-text b { font-family: var(--display); font-size: var(--step-2); }
+.ring-text span { color: var(--ink-soft); font-size: 1rem; line-height: 1.4; }
+.ring-text em { font-style: normal; font-family: var(--display); font-size: var(--step-2); font-variant-numeric: tabular-nums; color: var(--pc, var(--c)); }
+.step-list { margin: 0; padding-left: 1.4em; display: grid; gap: 4px; color: var(--ink-soft); }
+.step-list li.now { color: var(--ink); font-weight: 700; }
+.step-list li.done { opacity: .5; text-decoration: line-through; }
+.picks { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick { border: 1px solid var(--hair); background: var(--card); border-radius: 999px; padding: 8px 16px; font-weight: 700; transition: background-color .3s, color .3s, transform .3s var(--ease); }
+.pick:hover { transform: translateY(-2px); }
+.pick[aria-pressed="true"] { background: var(--c); color: #ffffff; border-color: transparent; }
+.sentence { font-family: var(--display); font-size: var(--step-1); line-height: 1.7; }
+.sentence b { color: var(--c); }
+.sentence .field { font-family: var(--body); font-size: 1.0625rem; margin-block: 6px; }
+.music-wave { width: 100%; height: 170px; border-radius: 22px; background: color-mix(in srgb, var(--c) 8%, #ffffff); border: 1px solid var(--hair); display: block; }
+.move-stage { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+.move-text { display: grid; gap: 4px; }
+.move-text b { font-family: var(--display); font-size: var(--step-2); }
+.move-text span { color: var(--ink-soft); }
+.move-text em { font-style: normal; color: var(--c); }
+.fig { width: 130px; height: 184px; overflow: visible; }
+.fig line, .fig circle { stroke: var(--ink); stroke-width: 6; stroke-linecap: round; fill: none; }
+.fig .head { fill: color-mix(in srgb, var(--c) 18%, #ffffff); }
+.fig * { transform-box: view-box; }
+.fig .head { transform-origin: 60px 42px; }
+.fig .arm-l, .fig .arm-r { transform-origin: 60px 52px; }
+.fig .leg-l, .fig .leg-r { transform-origin: 60px 96px; }
+.fig .upper { transform-origin: 60px 96px; }
+.fig[data-move="neck"] .head { animation: figNeck 4s ease-in-out infinite; }
+.fig[data-move="shrug"] .arm-l, .fig[data-move="shrug"] .arm-r { animation: figShrug 2s ease-in-out infinite; }
+.fig[data-move="reach"] .arm-l { animation: figReachL 3s ease-in-out infinite alternate; }
+.fig[data-move="reach"] .arm-r { animation: figReachR 3s ease-in-out infinite alternate; }
+.fig[data-move="side"] .upper { animation: figSide 4s ease-in-out infinite; }
+.fig[data-move="side"] .arm-l { transform: rotate(150deg); }
+.fig[data-move="side"] .arm-r { transform: rotate(-150deg); }
+.fig[data-move="walk"] .leg-l, .fig[data-move="walk"] .arm-r { animation: figSwing 1.1s ease-in-out infinite alternate; }
+.fig[data-move="walk"] .leg-r, .fig[data-move="walk"] .arm-l { animation: figSwing 1.1s ease-in-out -1.1s infinite alternate-reverse; }
+@keyframes figNeck { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(7px, 3px); } 50% { transform: translate(0, 7px); } 75% { transform: translate(-7px, 3px); } }
+@keyframes figShrug { 0%, 100% { transform: translateY(0); } 40%, 60% { transform: translateY(-10px); } }
+@keyframes figReachL { from { transform: rotate(0); } to { transform: rotate(140deg); } }
+@keyframes figReachR { from { transform: rotate(0); } to { transform: rotate(-140deg); } }
+@keyframes figSide { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+@keyframes figSwing { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+.result-big { font-family: var(--display); font-size: clamp(2.6rem, 10vw, 4rem); line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--c); }
+.disclaimer { margin-top: 8px; font-size: .9375rem; }
+@media (max-width: 639px) {
+  .move-stage { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .relief-grid { gap: 10px; }
+  .relief-card { padding: 14px 12px; border-radius: 18px; gap: 4px; }
+  .relief-card h3 { font-size: 1.125rem; }
+  .relief-card p { font-size: .8125rem; }
+  .chip { font-size: .75rem; padding: 1px 8px; }
+  .chip-row { gap: 4px; }
+  .fig { width: 110px; height: 156px; }
+}
+
+.bar.rank { grid-template-columns: minmax(0, 11em) 1fr 4.4em; }
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -417,7 +513,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <span class="tab-pill" aria-hidden="true"></span>
     <a href="#write" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
     <a href="#board" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
-    <a href="#shout" aria-label="소리 지르기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">소리 지르기</span><span class="ts">소리</span></a>
+    <a href="#shout" aria-label="스트레스 풀기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">스트레스 풀기</span><span class="ts">스트레스</span></a>
     <a href="#face" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
     <a href="#vault" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
     <a href="#letter" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
@@ -477,30 +573,129 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   <!-- 소리 지르기 -->
   <section class="view" id="view-shout" hidden>
     <div class="lede">
-      <h2>소리 한번 질러 보세요</h2>
-      <p>마이크로 소리 크기만 재고, 녹음은 하지 않아요. 3초 동안 가장 컸던 순간을 보여 드려요.</p>
+      <h2>스트레스 풀기</h2>
+      <p>연구로 효과가 확인된 방법들을 모았어요. 하기 전과 후에 스트레스 점수를 매기면, 나에게 가장 잘 맞는 방법을 찾아 드려요.</p>
     </div>
     <details class="guide" open>
       <summary>이렇게 쓰세요</summary>
       <div class="guide-body">
         <ol>
-          <li>「소리 지르기 시작」을 누르고, 마이크를 쓰겠냐고 물으면 허락하세요.</li>
-          <li>3초 동안 크게 외치세요. 가장 컸던 순간이 데시벨과 게이지로 나와요.</li>
-          <li>마이크를 쓸 수 없는 곳이면 큰 버튼이 나와요. 3초 동안 마구 두드리면 두드린 횟수로 분노를 재요.</li>
+          <li>마음에 드는 방법을 하나 고르세요.</li>
+          <li>시작 전에 지금 스트레스가 몇 점인지 0부터 10 중에서 눌러요.</li>
+          <li>화면 안내를 따라 해요. 1~5분이면 끝나요.</li>
+          <li>끝나면 다시 점수를 눌러요. 몇 점 내려갔는지 보여 드리고, 기록이 쌓이면 나에게 맞는 순위를 알려 드려요.</li>
         </ol>
-        <p class="note">소리는 녹음하지 않고, 재고 나면 마이크를 바로 꺼요. 차 안이나 빈 회의실처럼 혼자 있는 곳에서 해 보세요.</p>
+        <p class="note">화가 확 났을 때는 소리를 지르는 것보다 숨쉬기나 근육 풀기처럼 몸을 가라앉히는 방법이 더 효과적이라는 연구가 있어요. 소리를 질렀다면 이어서 숨을 골라 보세요.</p>
       </div>
     </details>
-    <div class="panel">
-      <div class="label">오늘 당신의 분노는</div>
-      <div class="db-number"><span id="db-val">0</span><small>데시벨</small></div>
-      <div class="gauge" aria-hidden="true"><i id="db-bar"></i></div>
-      <div class="scale"><span>30</span><span>60 대화</span><span>90 고함</span><span>120</span></div>
-      <p class="verdict" id="db-verdict">버튼을 누르고 3초 동안 크게 외쳐 보세요.</p>
+
+    <div class="relief-hub" id="relief-hub">
+      <div class="relief-grid" id="relief-grid"></div>
+      <div class="panel" id="relief-rank" hidden>
+        <div class="label">나에게 맞는 방법</div>
+        <div class="bars" id="rank-list"></div>
+        <div class="row" style="justify-content:space-between"><p class="note">점수 기록은 이 기기에만 저장돼요.</p><button class="btn ghost small" id="rank-reset" type="button">기록 지우기</button></div>
+      </div>
     </div>
-    <button class="btn block" id="shout-start">소리 지르기 시작</button>
-    <button class="btn ghost block tapzone" id="tapzone" hidden>여기를 마구 두드리세요!</button>
-    <p class="note" id="shout-note">측정이 끝나면 마이크를 바로 꺼요.</p>
+
+    <div class="relief-stage" id="relief-stage" hidden>
+      <button class="back-btn" id="relief-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>목록으로</button>
+      <div class="stage-head"><span class="stage-dot"></span><h3 class="stage-title" id="stage-title"></h3></div>
+
+      <div class="panel" id="score-box" hidden>
+        <p class="verdict" id="score-q">지금 스트레스는 몇 점이에요?</p>
+        <div class="score-row" id="score-row"></div>
+        <div class="scale"><span>0 아주 편안해요</span><span>10 견디기 힘들어요</span></div>
+      </div>
+
+      <div class="ex" id="ex-shout" hidden>
+        <div class="panel">
+          <div class="label">오늘 당신의 분노는</div>
+          <div class="db-number"><span id="db-val">0</span><small>데시벨</small></div>
+          <div class="gauge" aria-hidden="true"><i id="db-bar"></i></div>
+          <div class="scale"><span>30</span><span>60 대화</span><span>90 고함</span><span>120</span></div>
+          <p class="verdict" id="db-verdict">버튼을 누르고 3초 동안 크게 외쳐 보세요.</p>
+        </div>
+        <button class="btn block" id="shout-start" type="button">소리 지르기 시작</button>
+        <button class="btn ghost block tapzone" id="tapzone" type="button" hidden>여기를 마구 두드리세요!</button>
+        <p class="note" id="shout-note">마이크로 소리 크기만 재고 녹음은 하지 않아요. 재고 나면 마이크를 바로 꺼요.</p>
+        <button class="btn block next-btn" id="shout-next" type="button" hidden>이제 숨을 골라 볼까요?</button>
+      </div>
+
+      <div class="ex" id="ex-sigh" hidden>
+        <div class="row dur-row"><span class="label">시간</span><div class="seg" id="sigh-dur"><button type="button" data-min="1" aria-pressed="true">1분</button><button type="button" data-min="3" aria-pressed="false">3분</button><button type="button" data-min="5" aria-pressed="false">5분</button></div></div>
+        <div class="sigh-stage">
+          <div class="sigh-orb" id="sigh-orb"></div>
+          <p class="verdict" id="sigh-word">코로 두 번 들이쉬고, 입으로 길게 내쉬어요</p>
+          <p class="big-count" id="sigh-left"></p>
+        </div>
+        <p class="note">연구에서는 하루 5분씩 했어요. 짧게라도 매일 하면 좋아요.</p>
+      </div>
+
+      <div class="ex" id="ex-pmr" hidden>
+        <div class="pmr-stage">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="track" cx="60" cy="60" r="52"/><circle class="prog" id="pmr-prog" cx="60" cy="60" r="52"/></svg>
+          <div class="ring-text"><b id="pmr-part">준비</b><span id="pmr-phase">시작을 누르세요</span><em id="pmr-count"></em></div>
+        </div>
+        <ol class="step-list" id="pmr-steps"></ol>
+      </div>
+
+      <div class="ex" id="ex-label" hidden>
+        <div class="label">1. 지금 가장 가까운 감정</div>
+        <div class="picks" id="lab-base"></div>
+        <div class="label">2. 더 정확한 말을 골라요 (3개까지)</div>
+        <div class="picks" id="lab-words"><p class="note">위에서 감정을 먼저 골라 주세요.</p></div>
+        <div class="label">3. 문장을 완성해요</div>
+        <div class="panel sentence">
+          <p>나는 지금 <b id="lab-picked">……</b> 느낀다.</p>
+          <p>왜냐하면 <input type="text" class="field" id="lab-why" maxlength="80" placeholder="예: 내 의견이 무시당했기"> 때문이다.</p>
+        </div>
+        <p class="note">완성한 문장을 작게 소리 내어 한 번 읽어 보세요. 이 문장은 어디에도 저장하지 않아요.</p>
+      </div>
+
+      <div class="ex" id="ex-music" hidden>
+        <div class="row dur-row"><span class="label">시간</span><div class="seg" id="music-dur"><button type="button" data-min="3" aria-pressed="true">3분</button><button type="button" data-min="5" aria-pressed="false">5분</button><button type="button" data-min="10" aria-pressed="false">10분</button></div></div>
+        <canvas class="music-wave" id="music-wave" aria-label="잔잔한 물결"></canvas>
+        <div class="row dur-row"><label class="label" for="music-vol">소리 크기</label><input type="range" id="music-vol" min="0" max="100" value="60"></div>
+        <p class="big-count" id="music-left"></p>
+        <p class="note">느리고 잔잔한 소리를 이 화면에서 직접 만들어 들려 드려요. 이어폰을 쓰면 더 좋아요.</p>
+      </div>
+
+      <div class="ex" id="ex-move" hidden>
+        <div class="move-stage">
+          <svg class="fig" id="fig" viewBox="0 0 120 170" aria-hidden="true" data-move="">
+            <g class="upper">
+              <circle class="head" cx="60" cy="26" r="14"/>
+              <line x1="60" y1="42" x2="60" y2="96"/>
+              <line class="arm-l" x1="60" y1="52" x2="36" y2="84"/>
+              <line class="arm-r" x1="60" y1="52" x2="84" y2="84"/>
+            </g>
+            <line class="leg-l" x1="60" y1="96" x2="46" y2="150"/>
+            <line class="leg-r" x1="60" y1="96" x2="74" y2="150"/>
+          </svg>
+          <div class="move-text"><b id="move-name">준비</b><span id="move-how">시작을 누르면 동작을 하나씩 안내해요</span><em class="big-count" id="move-count"></em></div>
+        </div>
+        <ol class="step-list" id="move-steps"></ol>
+        <p class="note">숨이 찰 정도로 하지 말고 가볍게 해요. 아프면 바로 멈추세요.</p>
+      </div>
+
+      <button class="btn block" id="stage-go" type="button" hidden>시작하기</button>
+
+      <div class="panel result" id="relief-result" hidden>
+        <div class="label">결과</div>
+        <p class="result-big" id="res-big"></p>
+        <p class="verdict" id="res-text"></p>
+        <p class="note" id="res-help" hidden>많이 힘든 상태가 계속되면 혼자 견디지 마세요. 자살예방상담전화 109(24시간), 위급하면 112·119.</p>
+        <div class="row"><button class="btn" id="res-other" type="button">다른 방법 해 보기</button><button class="btn ghost" id="res-again" type="button">한 번 더 하기</button></div>
+      </div>
+
+      <details class="guide evidence" id="stage-evidence">
+        <summary>근거 보기</summary>
+        <div class="guide-body" id="ev-body"></div>
+      </details>
+    </div>
+
+    <p class="note disclaimer">이 방법들은 치료가 아니에요. 힘든 마음이 2주 넘게 이어지면 전문가와 상담하세요. 자살예방상담전화 109.</p>
   </section>
 
   <!-- 셀카 -->
@@ -743,7 +938,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (!firstRoute) { const top = sec.getBoundingClientRect().top + scrollY - 12; if (scrollY > top) scrollTo({ top, behavior: motionOff() ? "auto" : "smooth" }); }
     firstRoute = false;
     if (v === "letter") renderLetters();
-    if (v !== "shout") stopMic();
+    if (v !== "shout") { stopMic(); stopRelief(); }
   }
   window.addEventListener("hashchange", route);
 
@@ -1540,6 +1735,7 @@ ${text}
     $("db-bar").style.width = Math.max(0, Math.min(100, (n - 30) / 90 * 100)) + "%";
   }
   function dbVerdict(n) {
+    show($("shout-next"));
     const panel = $("db-val").closest(".panel");
     panel.classList.remove("roar"); void panel.offsetWidth;
     if (n >= 85) panel.classList.add("roar");
@@ -1601,10 +1797,347 @@ ${text}
     };
   }
 
+  // ---------- 스트레스 풀기 ----------
+  // 연구로 효과가 확인된 방법 + 재미로 하는 소리 지르기. 하기 전과 후의 스트레스 점수(0~10)를 이 기기에 모아 나에게 맞는 순위를 보여 줘요.
+  const METHODS = [
+    { key: "sigh", name: "생리적 한숨", c: "#3f6fe0", time: "1~5분", tag: "연구로 확인됨", line: "코로 두 번 들이쉬고, 입으로 길게 내쉬어요.",
+      ev: '<p>스탠퍼드 대학 연구팀의 무작위 비교 실험(Balban 외, 2023, <i>Cell Reports Medicine</i>)에서 하루 5분씩 한 달 동안 했더니, 명상만 한 사람들보다 기분이 더 좋아지고 쉬는 동안의 호흡도 더 느려졌어요.</p><p>숨을 길게 내쉬면 몸의 긴장을 푸는 신경(부교감 신경)이 켜져요.</p><p><a href="https://pmc.ncbi.nlm.nih.gov/articles/9873947/" target="_blank" rel="noopener">논문 보기</a></p>' },
+    { key: "pmr", name: "근육 힘 줬다 풀기", c: "#2f8f6f", time: "약 2분", tag: "연구로 확인됨", line: "몸 곳곳에 5초 힘을 줬다가 10초 동안 툭 풀어요.",
+      ev: '<p>점진적 근육 이완법이라고 해요. 무작위 비교 실험(Toussaint 외, 2021)에서 마음의 긴장이 풀렸고, 심박 같은 몸의 긴장도 함께 내려갔어요.</p><p>154개 연구를 모은 2024년 분석(Kjærvik &amp; Bushman, <i>Clinical Psychology Review</i>)에서도 화를 줄이는 방법으로 꼽혔어요.</p><p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8272667/" target="_blank" rel="noopener">논문 보기</a> · <a href="https://news.osu.edu/breathe-dont-vent-turning-down-the-heat-is-key-to-managing-anger/" target="_blank" rel="noopener">2024년 분석 소개</a></p>' },
+    { key: "label", name: "감정에 이름 붙이기", c: "#8a4fd6", time: "약 1분", tag: "연구로 확인됨", line: "지금 느낌에 정확한 이름을 붙이고 한 문장으로 말해요.",
+      ev: '<p>UCLA 연구팀의 뇌 영상 연구(Lieberman 외, 2007, <i>Psychological Science</i>)에서 감정을 말로 이름 붙이자, 불안과 분노에 반응하는 뇌 부위(편도체)의 반응이 줄었어요.</p><p>감정을 말로 정리하면 생각하는 뇌가 감정의 뇌를 진정시켜요.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/17576282/" target="_blank" rel="noopener">논문 보기</a></p>' },
+    { key: "music", name: "느린 음악 듣기", c: "#c4711a", time: "3~10분", tag: "연구로 확인됨", line: "느린 박자의 잔잔한 소리를 들으며 쉬어요.",
+      ev: '<p>무작위 비교 실험 104개, 9,617명을 모은 분석(de Witte 외, 2020, <i>Health Psychology Review</i>)에서 음악을 들은 사람들의 마음의 스트레스와 심박 같은 몸의 스트레스가 모두 줄었어요.</p><p>느린 박자를 따라 심박과 호흡도 느려져요.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/31167611/" target="_blank" rel="noopener">논문 보기</a></p>' },
+    { key: "move", name: "가볍게 몸 움직이기", c: "#1b8fa3", time: "2분", tag: "연구로 확인됨", line: "목, 어깨, 기지개, 옆구리, 제자리 걷기를 따라 해요.",
+      ev: '<p>리뷰 97개, 12만 8천여 명을 모은 종합 연구(Singh 외, 2023, <i>British Journal of Sports Medicine</i>)에서 몸을 움직이는 활동이 우울, 불안, 심리적 고통을 뚜렷하게 줄였어요.</p><p>다만 화가 확 났을 때 숨이 찰 정도로 뛰면 오히려 흥분이 올라갈 수 있어서(2024년 분석), 여기서는 가벼운 스트레칭과 걷기만 안내해요.</p><p><a href="https://bjsm.bmj.com/content/57/18/1203" target="_blank" rel="noopener">논문 보기</a></p>' },
+    { key: "shout", name: "소리 지르기", c: "#e5482f", time: "3초", tag: "재미로", noScore: true, line: "3초 동안 크게 외치고 분노를 데시벨로 재 봐요.",
+      ev: '<p>소리를 지르거나 샌드백을 치는 것처럼 흥분을 올리는 방법은, 154개 연구를 모은 2024년 분석에서 화를 줄이는 효과가 거의 없었고 오히려 화를 키우기도 했어요.</p><p>그래서 재미로 한 번 질러 보고, 이어서 숨을 고르는 걸 추천해요.</p><p><a href="https://news.osu.edu/breathe-dont-vent-turning-down-the-heat-is-key-to-managing-anger/" target="_blank" rel="noopener">2024년 분석 소개</a></p>' },
+  ];
+  const MBY = Object.fromEntries(METHODS.map(m => [m.key, m]));
+  let cur = null, before = null, phase = "", timers = [], rafId = 0, audio = null;
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
+  const every = (fn, ms) => { const t = setInterval(fn, ms); timers.push(t); return t; };
+  const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  const josa = (s) => { const c = s.charCodeAt(s.length - 1) - 0xAC00; return s + (c >= 0 && c < 11172 && c % 28 ? "을" : "를"); };
+  function stopRelief() { timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers = []; cancelAnimationFrame(rafId); stopMusic(); stopMic(); }
+  const records = () => store.get("sg.relief", []);
+
+  function renderHub() {
+    const g = $("relief-grid"); g.innerHTML = "";
+    METHODS.forEach(m => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "relief-card"; b.style.setProperty("--c", m.c);
+      b.innerHTML = `<h3></h3><p></p><div class="chip-row"><span class="chip"></span><span class="chip plain"></span></div>`;
+      b.querySelector("h3").textContent = m.name; b.querySelector("p").textContent = m.line;
+      const [c1, c2] = b.querySelectorAll(".chip"); c1.textContent = m.tag; c2.textContent = m.time;
+      b.addEventListener("click", () => openMethod(m.key));
+      g.appendChild(b);
+    });
+    renderRank();
+  }
+  function renderRank() {
+    const agg = {};
+    records().forEach(r => { if (MBY[r.m]) (agg[r.m] = agg[r.m] || []).push(r.b - r.a); });
+    const rows = Object.entries(agg).map(([k, ds]) => ({ k, n: ds.length, avg: ds.reduce((x, y) => x + y, 0) / ds.length })).sort((a, b) => b.avg - a.avg);
+    $("relief-rank").hidden = rows.length === 0;
+    const list = $("rank-list"); list.innerHTML = "";
+    const max = Math.max(1, ...rows.map(r => Math.abs(r.avg)));
+    rows.forEach(r => {
+      const row = document.createElement("div"); row.className = "bar rank";
+      row.innerHTML = `<span></span><div class="track"><i></i></div><span class="pct"></span>`;
+      row.children[0].textContent = `${MBY[r.k].name} · ${r.n}번`;
+      const bar = row.querySelector("i"); bar.style.width = Math.max(4, Math.abs(r.avg) / max * 100) + "%"; bar.style.background = MBY[r.k].c;
+      row.querySelector(".pct").textContent = (r.avg >= 0 ? "−" : "+") + Math.abs(r.avg).toFixed(1) + "점";
+      list.appendChild(row);
+    });
+  }
+  let rankArmed = false;
+  $("rank-reset").addEventListener("click", () => {
+    const b = $("rank-reset");
+    if (!rankArmed) { rankArmed = true; b.textContent = "한 번 더 누르면 지워요"; setTimeout(() => { rankArmed = false; b.textContent = "기록 지우기"; }, 4000); return; }
+    rankArmed = false; b.textContent = "기록 지우기"; store.del("sg.relief"); renderRank();
+  });
+
+  function openMethod(key) {
+    stopRelief();
+    cur = MBY[key]; before = null;
+    const st = $("relief-stage"); st.style.setProperty("--c", cur.c);
+    hide($("relief-hub")); show(st);
+    $("stage-title").textContent = cur.name;
+    $("ev-body").innerHTML = cur.ev; $("stage-evidence").open = false;
+    document.querySelectorAll("#relief-stage .ex").forEach(e => hide(e));
+    hide($("relief-result")); hide($("stage-go")); hide($("score-box"));
+    if (cur.noScore) { resetShout(); show($("ex-" + key)); }
+    else askScore("before");
+    const top = st.getBoundingClientRect().top + scrollY - 90;
+    if (scrollY > top || st.getBoundingClientRect().top > innerHeight * 0.5) scrollTo({ top: Math.max(0, top), behavior: motionOff() ? "auto" : "smooth" });
+  }
+  function backToHub() { stopRelief(); hide($("relief-stage")); show($("relief-hub")); renderRank(); }
+  $("relief-back").addEventListener("click", backToHub);
+  $("res-other").addEventListener("click", backToHub);
+  $("res-again").addEventListener("click", () => openMethod(cur.key));
+
+  function askScore(when) {
+    phase = when;
+    document.querySelectorAll("#relief-stage .ex").forEach(e => hide(e));
+    hide($("stage-go"));
+    $("score-q").textContent = when === "before" ? "시작 전, 지금 스트레스는 몇 점이에요?" : "끝난 지금은 몇 점이에요?";
+    const row = $("score-row"); row.innerHTML = "";
+    for (let i = 0; i <= 10; i++) {
+      const b = document.createElement("button"); b.type = "button"; b.className = "score"; b.textContent = i;
+      b.setAttribute("aria-label", `${i}점`);
+      b.style.setProperty("--sc", `hsl(${150 - i * 14} 55% 38%)`);
+      b.addEventListener("click", () => scored(i));
+      row.appendChild(b);
+    }
+    show($("score-box"));
+  }
+  function scored(i) {
+    hide($("score-box"));
+    if (phase === "before") { before = i; prepare(cur.key); } else finish(i);
+  }
+  function goStop(label) { const go = $("stage-go"); go.textContent = label; go.disabled = false; go.onclick = () => { stopRelief(); askScore("after"); }; }
+  function prepare(key) {
+    show($("ex-" + key));
+    const go = $("stage-go"); show(go); go.disabled = false; go.textContent = "시작하기";
+    if (key === "sigh") { setupSigh(); go.onclick = runSigh; }
+    else if (key === "pmr") { setupPmr(); go.onclick = runPmr; }
+    else if (key === "label") { setupLabel(); go.textContent = "다 했어요"; go.onclick = () => askScore("after"); }
+    else if (key === "music") { setupMusic(); go.textContent = "듣기 시작"; go.onclick = runMusic; }
+    else if (key === "move") { setupMove(); go.onclick = runMove; }
+  }
+  function finish(after) {
+    stopRelief();
+    const recs = records(); recs.push({ m: cur.key, b: before, a: after, at: Date.now() }); store.set("sg.relief", recs.slice(-300));
+    const d = before - after;
+    $("res-big").textContent = `${before}점 → ${after}점`;
+    $("res-text").textContent = d > 0 ? `${d}점 내려갔어요. ${d >= 3 ? "효과가 컸네요!" : "조금 가벼워졌어요."}`
+      : d === 0 ? "그대로예요. 다른 방법도 한번 해 볼까요?" : `${-d}점 올라갔어요. 지금은 이 방법이 안 맞을 수 있어요. 다른 방법을 해 봐요.`;
+    $("res-help").hidden = after < 8;
+    show($("relief-result"));
+    renderRank();
+  }
+  const segValue = (id) => Number(document.querySelector(`#${id} [aria-pressed="true"]`).dataset.min);
+  document.querySelectorAll("#sigh-dur, #music-dur").forEach(seg => seg.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    if (seg.id === "sigh-dur") $("sigh-left").textContent = mmss(segValue("sigh-dur") * 60);
+    else $("music-left").textContent = mmss(segValue("music-dur") * 60);
+  }));
+  function listSteps(id, names, now) {
+    const ol = $(id); ol.innerHTML = "";
+    names.forEach((n, i) => { const li = document.createElement("li"); li.textContent = n; if (i < now) li.className = "done"; if (i === now) li.className = "now"; ol.appendChild(li); });
+  }
+
+  // 생리적 한숨: 들이쉬기 2초 + 한 번 더 1초 + 길게 내쉬기 6초
+  function setupSigh() {
+    const o = $("sigh-orb"); o.style.transition = "none"; o.style.transform = "scale(.5)";
+    $("sigh-word").textContent = "코로 두 번 들이쉬고, 입으로 길게 내쉬어요";
+    $("sigh-left").textContent = mmss(segValue("sigh-dur") * 60);
+    $("sigh-dur").closest(".dur-row").hidden = false;
+  }
+  function runSigh() {
+    const end = Date.now() + segValue("sigh-dur") * 60000;
+    $("sigh-dur").closest(".dur-row").hidden = true;
+    goStop("그만하고 점수 매기기");
+    const o = $("sigh-orb"), w = $("sigh-word");
+    const step = (scale, sec, text) => { o.style.transition = `transform ${sec}s ease-in-out`; o.style.transform = `scale(${scale})`; w.textContent = text; };
+    const cycle = () => {
+      if (Date.now() >= end) { step(.5, 1, "잘했어요. 이제 점수를 매겨요"); later(() => askScore("after"), 1500); return; }
+      step(.85, 2, "코로 깊게 들이쉬고");
+      later(() => step(1, 1, "한 번 더 짧게 들이쉬고"), 2000);
+      later(() => step(.5, 6, "입으로 천천히 길게 내쉬어요"), 3000);
+      later(cycle, 9000);
+    };
+    every(() => { $("sigh-left").textContent = mmss(Math.max(0, Math.ceil((end - Date.now()) / 1000))); }, 250);
+    cycle();
+  }
+
+  // 근육 힘 줬다 풀기: 부위마다 5초 힘 주기, 10초 풀기
+  const PMR = [["두 손", "주먹을 꽉 쥐세요"], ["두 팔", "팔꿈치를 굽혀 팔에 힘을 주세요"], ["어깨", "어깨를 귀까지 끌어 올리세요"], ["얼굴", "눈을 꼭 감고 입술을 꽉 다무세요"], ["배", "배에 힘을 꽉 주세요"], ["다리와 발", "발가락을 오므리고 다리에 힘을 주세요"]];
+  const RING = 326.7;
+  function setupPmr() {
+    $("pmr-part").textContent = "준비"; $("pmr-phase").textContent = "편하게 앉아서 시작을 누르세요"; $("pmr-count").textContent = "";
+    $("pmr-prog").style.strokeDashoffset = RING; listSteps("pmr-steps", PMR.map(p => p[0]), -1);
+  }
+  function runPmr() {
+    goStop("그만하고 점수 매기기");
+    const seq = [];
+    PMR.forEach(([part, how], i) => { seq.push({ i, part, text: how, sec: 5, tense: true }); seq.push({ i, part, text: "툭 풀고, 풀린 느낌을 느껴 보세요", sec: 10, tense: false }); });
+    const st = $("relief-stage"), prog = $("pmr-prog");
+    let k = 0;
+    const begin = () => {
+      if (k >= seq.length) {
+        $("pmr-part").textContent = "끝"; $("pmr-phase").textContent = "몸 전체가 풀린 느낌을 느껴 보세요"; $("pmr-count").textContent = "";
+        listSteps("pmr-steps", PMR.map(p => p[0]), PMR.length); later(() => askScore("after"), 2500); return;
+      }
+      const s = seq[k], t0 = performance.now();
+      st.style.setProperty("--pc", s.tense ? "var(--heat-2)" : "var(--pine)");
+      $("pmr-part").textContent = s.part; $("pmr-phase").textContent = s.text; listSteps("pmr-steps", PMR.map(p => p[0]), s.i);
+      const tick = () => {
+        const el = (performance.now() - t0) / 1000;
+        prog.style.strokeDashoffset = RING * (1 - Math.min(1, el / s.sec));
+        $("pmr-count").textContent = Math.max(1, Math.ceil(s.sec - el));
+        if (el >= s.sec) { k++; begin(); } else rafId = requestAnimationFrame(tick);
+      };
+      tick();
+    };
+    begin();
+  }
+
+  // 감정에 이름 붙이기
+  const LABELS = {
+    "화남": ["짜증남", "분함", "무시당한 느낌", "배신감", "답답함", "모욕감"],
+    "서운함": ["섭섭함", "외로움", "소외감", "실망", "서글픔", "허전함"],
+    "억울함": ["부당함", "누명 쓴 느낌", "원망", "분함", "답답함", "말 못 할 사정"],
+    "지침": ["기진맥진", "무기력", "번아웃", "막막함", "귀찮음", "버거움"],
+    "불안": ["초조함", "걱정", "두려움", "긴장", "조마조마함", "막막함"],
+    "슬픔": ["우울함", "상실감", "서러움", "후회", "허무함", "눈물 날 것 같은 마음"],
+  };
+  let labBase = null, labWords = [];
+  const pickBtn = (text) => { const b = document.createElement("button"); b.type = "button"; b.className = "pick"; b.textContent = text; b.setAttribute("aria-pressed", "false"); return b; };
+  function setupLabel() {
+    labBase = null; labWords = []; $("lab-why").value = "";
+    const base = $("lab-base"); base.innerHTML = "";
+    Object.keys(LABELS).forEach(k => {
+      const b = pickBtn(k);
+      b.addEventListener("click", () => { labBase = k; labWords = []; base.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", String(x === b))); setupWords(); });
+      base.appendChild(b);
+    });
+    $("lab-words").innerHTML = `<p class="note">위에서 감정을 먼저 골라 주세요.</p>`;
+    updateSentence();
+  }
+  function setupWords() {
+    const box = $("lab-words"); box.innerHTML = "";
+    LABELS[labBase].forEach(wd => {
+      const b = pickBtn(wd);
+      b.addEventListener("click", () => {
+        const i = labWords.indexOf(wd);
+        if (i >= 0) labWords.splice(i, 1); else if (labWords.length < 3) labWords.push(wd); else return;
+        b.setAttribute("aria-pressed", String(labWords.includes(wd))); updateSentence();
+      });
+      box.appendChild(b);
+    });
+    updateSentence();
+  }
+  function updateSentence() {
+    const words = labWords.length ? labWords : (labBase ? [labBase] : []);
+    $("lab-picked").textContent = words.length ? josa(words.join(", ")) : "……";
+    $("stage-go").disabled = !labBase;
+  }
+
+  // 느린 음악: 화면에서 직접 만드는 잔잔한 화음과 종소리
+  function setupMusic() {
+    $("music-left").textContent = mmss(segValue("music-dur") * 60);
+    $("music-dur").closest(".dur-row").hidden = false;
+    drawWave(0);
+  }
+  function drawWave(t) {
+    const cv = $("music-wave"), dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
+    if (!W) return;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    const breath = 0.6 + 0.4 * Math.sin(t * Math.PI / 4);
+    for (let j = 0; j < 3; j++) {
+      ctx.beginPath();
+      for (let x = 0; x <= W; x += 4) {
+        const y = H / 2 + Math.sin(x * (0.012 + j * 0.004) + t * (0.6 + j * 0.25) + j * 2) * (18 + j * 10) * breath;
+        x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.strokeStyle = cur.c; ctx.globalAlpha = 0.25 + j * 0.2; ctx.lineWidth = 2.5 - j * 0.5; ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+  const musicVol = () => Number($("music-vol").value) / 100 * 0.9;
+  $("music-vol").addEventListener("input", () => { if (audio) audio.master.gain.setTargetAtTime(musicVol(), audio.ctx.currentTime, 0.2); });
+  function startMusic() {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    const ctx = new AC(), master = ctx.createGain();
+    master.gain.setValueAtTime(0, ctx.currentTime); master.gain.linearRampToValueAtTime(musicVol(), ctx.currentTime + 3);
+    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1600;
+    const delay = ctx.createDelay(1), fb = ctx.createGain(); delay.delayTime.value = 0.42; fb.gain.value = 0.32;
+    delay.connect(fb); fb.connect(delay); delay.connect(lp); lp.connect(master); master.connect(ctx.destination);
+    const CH = [[130.81, 196.0, 246.94, 329.63], [110.0, 164.81, 261.63, 329.63], [87.31, 174.61, 220.0, 329.63], [98.0, 146.83, 246.94, 293.66]];
+    let ci = 0;
+    const pad = () => {
+      const t = ctx.currentTime, notes = CH[ci++ % CH.length];
+      notes.forEach((f, j) => [0, 5].forEach(det => {
+        const o = ctx.createOscillator(), g = ctx.createGain(), peak = j === 0 ? 0.08 : 0.03;
+        o.type = j === 0 ? "sine" : "triangle"; o.frequency.value = f; o.detune.value = det;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + 2.5); g.gain.setValueAtTime(peak, t + 7); g.gain.linearRampToValueAtTime(0, t + 10.5);
+        o.connect(g); g.connect(lp); g.connect(delay); o.start(t); o.stop(t + 11);
+      }));
+    };
+    const bell = () => {
+      const t = ctx.currentTime, notes = CH[(ci + CH.length - 1) % CH.length], f = notes[1 + Math.floor(Math.random() * 3)] * 2;
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.045, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 3);
+      o.connect(g); g.connect(lp); g.connect(delay); o.start(t); o.stop(t + 3.1);
+    };
+    pad();
+    audio = { ctx, master, ip: setInterval(pad, 8000), ib: setInterval(() => { if (Math.random() < 0.6) bell(); }, 2000) };
+  }
+  function stopMusic() {
+    if (!audio) return;
+    const a = audio; audio = null; clearInterval(a.ip); clearInterval(a.ib);
+    try { a.master.gain.cancelScheduledValues(a.ctx.currentTime); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.4); } catch {}
+    setTimeout(() => a.ctx.close().catch(() => {}), 1800);
+  }
+  function runMusic() {
+    const end = Date.now() + segValue("music-dur") * 60000;
+    $("music-dur").closest(".dur-row").hidden = true;
+    goStop("그만 듣고 점수 매기기");
+    startMusic();
+    const loop = (now) => {
+      drawWave(motionOff() ? 0 : now / 1000);
+      const left = Math.ceil((end - Date.now()) / 1000);
+      $("music-left").textContent = mmss(Math.max(0, left));
+      if (left <= 0) { stopMusic(); askScore("after"); return; }
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // 가볍게 몸 움직이기
+  const MOVES = [["목 돌리기", "고개를 천천히 크게 돌려요", 20, "neck"], ["어깨 으쓱", "어깨를 귀까지 올렸다가 툭 떨어뜨려요", 20, "shrug"], ["기지개", "두 팔을 위로 쭉 뻗어요", 20, "reach"], ["옆구리 늘이기", "팔을 올리고 좌우로 천천히 기울여요", 20, "side"], ["제자리 걷기", "무릎을 가볍게 올리며 걸어요", 40, "walk"]];
+  function setupMove() {
+    $("fig").dataset.move = ""; $("move-name").textContent = "준비"; $("move-how").textContent = "자리에서 일어나 시작을 누르세요"; $("move-count").textContent = "";
+    listSteps("move-steps", MOVES.map(m => m[0]), -1);
+  }
+  function runMove() {
+    goStop("그만하고 점수 매기기");
+    let k = 0;
+    const begin = () => {
+      if (k >= MOVES.length) {
+        $("fig").dataset.move = ""; $("move-name").textContent = "끝"; $("move-how").textContent = "천천히 숨을 고르세요"; $("move-count").textContent = "";
+        listSteps("move-steps", MOVES.map(m => m[0]), MOVES.length); later(() => askScore("after"), 2000); return;
+      }
+      const [name, how, sec, mv] = MOVES[k], end = Date.now() + sec * 1000;
+      $("fig").dataset.move = mv; $("move-name").textContent = name; $("move-how").textContent = how;
+      listSteps("move-steps", MOVES.map(m => m[0]), k);
+      const iv = every(() => {
+        const left = Math.ceil((end - Date.now()) / 1000);
+        $("move-count").textContent = `${Math.max(0, left)}초`;
+        if (left <= 0) { clearInterval(iv); k++; begin(); }
+      }, 200);
+    };
+    begin();
+  }
+
+  // 소리 지르기 화면 처음 상태로
+  function resetShout() {
+    stopMic(); showDb(0);
+    $("db-verdict").textContent = "버튼을 누르고 3초 동안 크게 외쳐 보세요.";
+    show($("shout-start")); $("shout-start").disabled = false; $("shout-start").textContent = "소리 지르기 시작";
+    hide($("tapzone")); hide($("shout-next"));
+    $("shout-note").textContent = "마이크로 소리 크기만 재고 녹음은 하지 않아요. 재고 나면 마이크를 바로 꺼요.";
+  }
+  $("shout-next").addEventListener("click", () => openMethod("sigh"));
+  renderHub();
+
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
   const FACE_LINE = {
-    angry: "지금 꽤 화가 나 있는 얼굴이에요. 「소리 지르기」로 한번 털어 볼까요?",
+    angry: "지금 꽤 화가 나 있는 얼굴이에요. 「스트레스 풀기」에서 숨부터 골라 볼까요?",
     sad: "서운하거나 지친 얼굴이에요. 「털어놓기」에 조금 적어 보세요.",
     happy: "웃고 있네요! 오늘 그 기분, 오래 가길 바라요.",
     neutral: "덤덤한 얼굴이에요. 속은 어떤지 한번 들여다봐도 좋아요.",
