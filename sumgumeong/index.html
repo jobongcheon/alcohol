@@ -220,6 +220,18 @@ input[type="password"], input[type="text"].field {
       <h2>오늘 어떤 마음이에요?</h2>
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
+    <details class="guide" open>
+      <summary>이렇게 쓰세요</summary>
+      <div class="guide-body">
+        <ol>
+          <li>지금 마음에 가장 가까운 감정을 하나 고르세요.</li>
+          <li>하고 싶은 말을 다 쓰세요. 이름이나 회사명을 그대로 써도 게시판에 올릴 때 별표로 바뀌어요.</li>
+          <li>게시판에 올릴지, 한 달 뒤 편지로 받을지 고르세요. 둘 다 끄면 아무 데도 남지 않아요.</li>
+          <li>「바람에 날려 보내기」를 누르면 글이 날아가고 위로 한마디가 나와요. 많이 화난 글이면 30초 심호흡을 먼저 해요.</li>
+        </ol>
+        <div class="example"><span class="label">예시 · 화남</span><p class="quote">“오늘 또 퇴근 10분 전에 일을 떠넘겼다. 왜 맨날 나만 남아야 하는데.”</p></div>
+      </div>
+    </details>
     <div class="emos" id="emos" role="group" aria-label="감정 고르기"></div>
     <div style="display:grid;gap:10px">
       <label class="label" for="text">하고 싶은 말</label>
@@ -255,6 +267,17 @@ input[type="password"], input[type="text"].field {
       <h2>소리 한번 질러 보세요</h2>
       <p>마이크로 소리 크기만 재고, 녹음은 하지 않아요. 3초 동안 가장 컸던 순간을 보여 드려요.</p>
     </div>
+    <details class="guide" open>
+      <summary>이렇게 쓰세요</summary>
+      <div class="guide-body">
+        <ol>
+          <li>「소리 지르기 시작」을 누르고, 마이크를 쓰겠냐고 물으면 허락하세요.</li>
+          <li>3초 동안 크게 외치세요. 가장 컸던 순간이 데시벨과 게이지로 나와요.</li>
+          <li>마이크를 쓸 수 없는 곳이면 큰 버튼이 나와요. 3초 동안 마구 두드리면 두드린 횟수로 분노를 재요.</li>
+        </ol>
+        <p class="note">소리는 녹음하지 않고, 재고 나면 마이크를 바로 꺼요. 차 안이나 빈 회의실처럼 혼자 있는 곳에서 해 보세요.</p>
+      </div>
+    </details>
     <div class="panel">
       <div class="label">오늘 당신의 분노는</div>
       <div class="db-number"><span id="db-val">0</span><small>데시벨</small></div>
@@ -273,6 +296,17 @@ input[type="password"], input[type="text"].field {
       <h2>지금 내 표정은?</h2>
       <p>셀카를 찍으면 이 기기 안에서만 표정을 읽어요. 사진은 어디에도 보내지 않고, 결과를 보여 준 뒤 5초 후에 지워요.</p>
     </div>
+    <details class="guide" open>
+      <summary>이렇게 쓰세요</summary>
+      <div class="guide-body">
+        <ol>
+          <li>「셀카 찍기」를 누르면 카메라가 열려요. 얼굴이 화면에 크게 나오게 찍으세요.</li>
+          <li>몇 초 뒤 지금 표정이 화남, 슬픔, 즐거움, 덤덤함 중 무엇에 가까운지 나와요.</li>
+          <li>사진은 남은 시간을 보여 준 뒤 5초 만에 지워지고, 결과만 남아요.</li>
+        </ol>
+        <p class="note">밝은 곳에서 정면으로 찍으면 더 잘 읽어요. 내 얼굴만 찍어 주세요. 다른 사람 얼굴은 허락 없이 찍으면 안 돼요.</p>
+      </div>
+    </details>
     <input type="file" id="selfie" accept="image/*" capture="user" hidden>
     <button class="btn block" id="selfie-btn">셀카 찍기</button>
     <div class="shot" id="shot" hidden>
@@ -376,6 +410,17 @@ input[type="password"], input[type="text"].field {
       <h2>한 달 뒤의 나에게</h2>
       <p>털어놓기에서 「한 달 뒤 편지로 받기」를 고른 글이 여기 모여요. 이 기기 안에만 있고, 30일이 지나면 열려요.</p>
     </div>
+    <details class="guide" open>
+      <summary>이렇게 쓰세요</summary>
+      <div class="guide-body">
+        <ol>
+          <li>「털어놓기」에서 글을 쓰고 「한 달 뒤 나에게 편지로 받기」를 켠 다음 보내세요.</li>
+          <li>편지는 30일 동안 봉인돼요. 여기서 열리는 날까지 남은 날이 「D-23」처럼 보여요.</li>
+          <li>30일이 지나면 그때 쓴 글이 열려요. 다 읽고 「이제 놓아 주기」를 누르면 지워져요.</li>
+        </ol>
+        <p class="note">편지는 이 기기에만 저장돼서 다른 휴대폰이나 컴퓨터에서는 보이지 않아요.</p>
+      </div>
+    </details>
     <div id="letters" style="display:grid;gap:14px"></div>
   </section>
 
