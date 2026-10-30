@@ -282,9 +282,10 @@ input[type="password"], input[type="text"].field {
   <section class="view" id="view-vault" hidden>
     <div class="lede">
       <h2>비밀 금고</h2>
-      <p>여기 쓴 글은 이 기기 안에서 암호화해 저장해요. 비밀번호나 패턴을 아는 본인 말고는 운영자도 열 수 없어요.</p>
+      <p>여기 쓴 글은 내 휴대폰에서 먼저 암호를 건 다음 사이트에 보관해요. 사이트에는 알아볼 수 없는 암호문만 남아서, 비밀번호나 패턴을 아는 본인 말고는 운영자도 열 수 없어요.</p>
     </div>
     <div class="warn"><strong>비밀번호를 잊으면 복구할 수 없어요.</strong><p>운영자에게도 열쇠가 없어서 되찾아 드릴 방법이 없어요. 꼭 기억할 수 있는 걸로 정해 주세요.</p></div>
+    <p class="note" id="vault-where"></p>
     <div id="vault-lock" class="panel">
       <div class="row" style="justify-content:space-between">
         <b id="vault-title">금고 만들기</b>
@@ -305,8 +306,10 @@ input[type="password"], input[type="text"].field {
       <p class="note" id="vault-msg" role="status"></p>
     </div>
     <div id="vault-open" hidden style="display:grid;gap:16px">
-      <textarea id="vault-text" style="min-height:160px" placeholder="아무에게도 못 한 말을 적어 두세요."></textarea>
+      <p class="note" id="vault-open-note"></p>
+      <textarea id="vault-text" maxlength="5000" style="min-height:160px" placeholder="아무에게도 못 한 말을 적어 두세요."></textarea>
       <div class="row"><button class="btn" id="vault-save">금고에 넣기</button><button class="btn ghost" id="vault-close">잠그기</button></div>
+      <div class="label" id="vault-count"></div>
       <div id="vault-list"></div>
     </div>
     <div class="row">
@@ -329,7 +332,8 @@ input[type="password"], input[type="text"].field {
     <ul>
       <li>게시판 글에는 쓴 사람 정보를 저장하지 않아요.</li>
       <li>게시판 글은 3일이 지나면 지워져요.</li>
-      <li>금고, 편지, 셀카, 소리는 이 기기 밖으로 나가지 않아요.</li>
+      <li>비밀 금고는 암호가 걸린 채로만 사이트에 보관돼요.</li>
+      <li>편지, 셀카, 소리는 이 기기 밖으로 나가지 않아요.</li>
       <li>힘들 때는 자살예방상담전화 109, 위급할 때는 112·119에 연락하세요.</li>
     </ul>
   </footer>
@@ -844,31 +848,60 @@ ${text}
     }
   });
 
-  // ---------- 비밀 금고 (기기 안 암호화) ----------
+  // ---------- 비밀 금고 (기기에서 암호화한 뒤 사이트의 내 공간에 보관) ----------
   const enc = new TextEncoder(), dec = new TextDecoder();
-  const b64 = (u8) => btoa(String.fromCharCode(...u8));
+  const b64 = (u8) => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
   const unb64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
   async function deriveKey(secret, salt) {
     const base = await crypto.subtle.importKey("raw", enc.encode(secret), "PBKDF2", false, ["deriveKey"]);
     return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 250000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
   }
-  async function sealVault(key, salt, mode, entries) {
+  async function encJSON(key, value) {
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(entries))));
-    return store.set("sg.vault", { v: 1, mode, salt: b64(salt), iv: b64(iv), ct: b64(ct) });
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(value))));
+    return { iv: b64(iv), ct: b64(ct) };
   }
-  let vaultMode = "pw", vaultKey = null, vaultSalt = null, vaultEntries = [], patternSecret = "";
-  function vaultState() {
-    const v = store.get("sg.vault", null);
-    const exists = !!(v && v.ct);
-    if (exists) setMode(v.mode || "pw", true);
+  async function decJSON(key, box) {
+    return JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(box.iv) }, key, unb64(box.ct))));
+  }
+  const CHECK = "sumgumeong-vault";
+  const PAGE_BYTES = 150000; // 문서 하나에 담는 글의 양 (암호문이 문서 크기 한도 256KB를 넘지 않게)
+
+  // 금고는 여러 쪽(page)으로 나눠 보관해요: data/users/<내 id>/vault 와 그 아래 pages/p0, p1, …
+  let uid = null, vaultBoot = true;
+  let vaultMode = "pw", vaultKey = null, vaultSalt = null, vaultPages = [], vaultWhere = "local", patternSecret = "";
+  const online = () => !!(db && uid);
+  const metaRef = () => db.doc(`data/users/${uid}/vault`);
+  const pageRef = (id) => metaRef().collection("pages").doc(id);
+  async function loadVaultMeta() {
+    if (!online()) return null;
+    try { const s = await metaRef().get(); return s.exists ? s.data() : null; } catch { return null; }
+  }
+  async function writePage(p) { await pageRef(p.id).set({ ...(await encJSON(vaultKey, p.entries)), count: p.entries.length, at: Date.now() }); }
+  async function writeMeta() { await metaRef().set({ v: 2, mode: vaultMode, salt: b64(vaultSalt), check: await encJSON(vaultKey, CHECK), pages: vaultPages.length, at: Date.now() }); }
+  async function pushAll() { for (const p of vaultPages) await writePage(p); await writeMeta(); }
+  async function sealLocal() {
+    const box = await encJSON(vaultKey, vaultPages.flatMap(p => p.entries));
+    return store.set("sg.vault", { v: 1, mode: vaultMode, salt: b64(vaultSalt), ...box });
+  }
+
+  async function vaultState() {
+    const remote = await loadVaultMeta();
+    const local = store.get("sg.vault", null);
+    const hasLocal = !!(local && local.ct);
+    const exists = !!remote || hasLocal;
+    setMode(exists ? ((remote || local).mode || "pw") : vaultMode, exists);
     $("vault-title").textContent = exists ? "금고 열기" : "금고 만들기";
-    $("vault-go").textContent = exists ? "열기" : "금고 만들기";
+    $("vault-go").textContent = vaultBoot ? "불러오는 중…" : (exists ? "열기" : "금고 만들기");
+    $("vault-go").disabled = vaultBoot;
     $("pw2").hidden = exists;
     $("pw").placeholder = exists ? "비밀번호" : "비밀번호 (4자 이상)";
     $("pt-hint").textContent = exists ? "패턴을 그려 주세요." : "점 4개 이상을 이어 그려 주세요.";
     $("vault-reset").hidden = !exists;
-    return { exists, v };
+    $("vault-where").textContent = online()
+      ? "금고는 암호가 걸린 채로 이 사이트의 내 계정 공간에 보관돼요. 다른 휴대폰이나 컴퓨터에서도 같은 계정으로 들어와 비밀번호나 패턴만 넣으면 열려요."
+      : (vaultBoot ? "금고를 찾고 있어요…" : "지금은 사이트에 연결되지 않아 이 기기에만 저장돼요. 연결된 상태로 다시 열면 사이트로 옮겨 드려요.");
+    return { remote, local: hasLocal ? local : null, exists };
   }
   function setMode(m, locked) {
     vaultMode = m;
@@ -912,44 +945,69 @@ ${text}
   })();
 
   $("vault-go").addEventListener("click", async () => {
-    const { exists, v } = vaultState();
     const msg = $("vault-msg"); msg.textContent = "";
+    $("vault-go").disabled = true;
+    const st = await vaultState();
     let secret = "";
     if (vaultMode === "pw") {
       secret = $("pw").value;
-      if (secret.length < 4) { msg.textContent = "비밀번호를 4자 이상 입력해 주세요."; return; }
-      if (!exists && secret !== $("pw2").value) { msg.textContent = "두 비밀번호가 달라요. 다시 확인해 주세요."; return; }
+      if (secret.length < 4) { msg.textContent = "비밀번호를 4자 이상 입력해 주세요."; $("vault-go").disabled = false; return; }
+      if (!st.exists && secret !== $("pw2").value) { msg.textContent = "두 비밀번호가 달라요. 다시 확인해 주세요."; $("vault-go").disabled = false; return; }
       secret = "pw:" + secret;
     } else {
       secret = patternSecret;
-      if (!secret) { msg.textContent = "점 4개 이상을 이어 그려 주세요."; return; }
+      if (!secret) { msg.textContent = "점 4개 이상을 이어 그려 주세요."; $("vault-go").disabled = false; return; }
     }
-    $("vault-go").disabled = true; msg.textContent = exists ? "여는 중…" : "만드는 중…";
+    msg.textContent = st.exists ? "여는 중…" : "만드는 중…";
+    let note = "";
     try {
-      if (exists) {
-        vaultSalt = unb64(v.salt);
+      if (st.remote) {
+        vaultSalt = unb64(st.remote.salt);
         vaultKey = await deriveKey(secret, vaultSalt);
-        const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(v.iv) }, vaultKey, unb64(v.ct));
-        vaultEntries = JSON.parse(dec.decode(pt));
+        if ((await decJSON(vaultKey, st.remote.check)) !== CHECK) throw new DOMException("wrong", "OperationError");
+        vaultPages = [];
+        for (let i = 0; i < (st.remote.pages || 1); i++) {
+          const s = await pageRef("p" + i).get();
+          vaultPages.push({ id: "p" + i, entries: s.exists ? await decJSON(vaultKey, s.data()) : [] });
+        }
+        vaultWhere = "site";
+      } else if (st.local) {
+        vaultSalt = unb64(st.local.salt);
+        vaultKey = await deriveKey(secret, vaultSalt);
+        vaultPages = [{ id: "p0", entries: await decJSON(vaultKey, st.local) }];
+        vaultWhere = "local";
+        if (online()) {
+          try { await pushAll(); store.del("sg.vault"); vaultWhere = "site"; note = "이 기기에만 있던 금고를 사이트의 내 공간으로 옮겼어요."; }
+          catch { note = "사이트로 옮기지 못해 이 기기에만 저장돼 있어요."; }
+        }
       } else {
         vaultSalt = crypto.getRandomValues(new Uint8Array(16));
         vaultKey = await deriveKey(secret, vaultSalt);
-        vaultEntries = [];
-        if (!(await sealVault(vaultKey, vaultSalt, vaultMode, vaultEntries))) throw new Error("storage");
+        vaultPages = [{ id: "p0", entries: [] }];
+        vaultWhere = "local";
+        if (online()) {
+          try { await pushAll(); vaultWhere = "site"; } catch { note = "사이트에 저장할 수 없어서 이 기기에만 만들었어요."; }
+        }
+        if (vaultWhere === "local" && !(await sealLocal())) throw new Error("storage");
       }
       $("pw").value = ""; $("pw2").value = ""; window.__resetPattern();
       msg.textContent = "";
+      $("vault-open-note").textContent = note || (vaultWhere === "site" ? "사이트의 내 공간에 암호가 걸린 채로 보관 중이에요." : "이 기기에만 저장돼 있어요.");
       hide($("vault-lock")); show($("vault-open")); renderVault();
     } catch (e) {
       vaultKey = null;
-      msg.textContent = exists ? "비밀번호나 패턴이 맞지 않아요." : "이 브라우저에서는 기기 저장소를 쓸 수 없어서 금고를 만들지 못했어요.";
+      if (e && e.name === "OperationError") msg.textContent = "비밀번호나 패턴이 맞지 않아요.";
+      else if (!st.exists) msg.textContent = "금고를 만들지 못했어요. 인터넷 연결을 확인하고 다시 해 주세요.";
+      else msg.textContent = "금고를 불러오지 못했어요. 인터넷 연결을 확인하고 다시 해 주세요.";
       window.__resetPattern();
     } finally { $("vault-go").disabled = false; }
   });
   function renderVault() {
     const list = $("vault-list"); list.innerHTML = "";
-    if (!vaultEntries.length) { list.innerHTML = `<p class="note">아직 넣어 둔 글이 없어요.</p>`; return; }
-    [...vaultEntries].reverse().forEach(en => {
+    const all = vaultPages.flatMap(p => p.entries);
+    $("vault-count").textContent = all.length ? `넣어 둔 글 ${all.length}개` : "";
+    if (!all.length) { list.innerHTML = `<p class="note">아직 넣어 둔 글이 없어요.</p>`; return; }
+    all.slice().reverse().forEach(en => {
       const d = document.createElement("div"); d.className = "entry";
       d.innerHTML = `<span class="note"></span><p class="text"></p>`;
       d.querySelector(".note").textContent = new Date(en.at).toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" });
@@ -957,19 +1015,40 @@ ${text}
       list.appendChild(d);
     });
   }
+  let vaultSaving = false;
   $("vault-save").addEventListener("click", async () => {
-    const t = $("vault-text").value.trim(); if (!t || !vaultKey) return;
-    vaultEntries.push({ text: t, at: Date.now() });
-    const v = store.get("sg.vault", {});
-    if (await sealVault(vaultKey, vaultSalt, v.mode || vaultMode, vaultEntries)) { $("vault-text").value = ""; renderVault(); }
+    const t = $("vault-text").value.trim(); if (!t || !vaultKey || vaultSaving) return;
+    vaultSaving = true; $("vault-save").disabled = true;
+    const entry = { text: t, at: Date.now() };
+    let page = vaultPages[vaultPages.length - 1], newPage = false;
+    if (enc.encode(JSON.stringify(page.entries)).length + enc.encode(t).length > PAGE_BYTES) {
+      page = { id: "p" + vaultPages.length, entries: [] }; vaultPages.push(page); newPage = true;
+    }
+    page.entries.push(entry);
+    let ok = true;
+    try {
+      if (vaultWhere === "site") { await writePage(page); if (newPage) await writeMeta(); }
+      else ok = await sealLocal();
+    } catch { ok = false; }
+    if (ok) { $("vault-text").value = ""; $("vault-open-note").textContent = vaultWhere === "site" ? "금고에 넣었어요. 사이트의 내 공간에 암호가 걸린 채로 보관돼요." : "금고에 넣었어요. 이 기기에 저장돼요."; }
+    else { page.entries.pop(); if (newPage) vaultPages.pop(); $("vault-open-note").textContent = "저장하지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요."; }
+    renderVault();
+    vaultSaving = false; $("vault-save").disabled = false;
   });
-  function lockVault() { vaultKey = null; vaultEntries = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
+  function lockVault() { vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
   $("vault-close").addEventListener("click", lockVault);
   let resetArmed = false;
-  $("vault-reset").addEventListener("click", () => {
+  $("vault-reset").addEventListener("click", async () => {
     if (!resetArmed) { resetArmed = true; $("vault-reset").textContent = "정말 비울게요 (되돌릴 수 없음)"; $("vault-reset-msg").textContent = "한 번 더 누르면 금고 안 글이 모두 지워져요."; setTimeout(() => { resetArmed = false; $("vault-reset").textContent = "금고 통째로 비우기"; $("vault-reset-msg").textContent = ""; }, 5000); return; }
-    store.del("sg.vault"); resetArmed = false; $("vault-reset").textContent = "금고 통째로 비우기"; $("vault-reset-msg").textContent = "금고를 비웠어요.";
-    setMode("pw"); lockVault();
+    resetArmed = false; $("vault-reset").disabled = true; $("vault-reset-msg").textContent = "지우는 중…";
+    try {
+      const m = await loadVaultMeta();
+      if (m) { for (let i = 0; i < (m.pages || 1); i++) await pageRef("p" + i).delete(); await metaRef().delete(); }
+      store.del("sg.vault");
+      $("vault-reset-msg").textContent = "금고를 비웠어요.";
+      setMode("pw", false); lockVault();
+    } catch { $("vault-reset-msg").textContent = "지우지 못했어요. 인터넷 연결을 확인하고 다시 해 주세요."; }
+    $("vault-reset").textContent = "금고 통째로 비우기"; $("vault-reset").disabled = false;
   });
 
   // ---------- 한 달 편지 ----------
@@ -1008,8 +1087,11 @@ ${text}
     sample = sampleNs;
     $("ai-status").textContent = sample ? "AI가 이름을 가리고 위로해 드려요" : "";
     if (userNs) { try { const w = await userNs.can("data.write"); if (w === false) canWrite = false; } catch {} }
-    if (!dbNs) { renderBoard(); return; }
+    if (dbNs && userNs) { try { uid = await userNs.id(); } catch {} }
     db = dbNs;
+    vaultBoot = false;
+    if (!$("vault-lock").hidden) vaultState();
+    if (!dbNs) { renderBoard(); return; }
     renderEmos();
     db.collection("posts").orderBy("at", "desc").limit(300).onSnapshot(snap => {
       posts = snap.docs.map(d => ({ id: d.id, path: "posts/" + d.id, ...d.data() })).filter(p => typeof p.text === "string" && typeof p.at === "number");
