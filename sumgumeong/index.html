@@ -299,7 +299,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 @keyframes sway { 0%, 100% { transform: translateX(0) skewX(0deg); } 50% { transform: translateX(4px) skewX(-5deg); } }
 
 /* 약속 */
-.promises { margin-top: 56px; padding: 16px 18px; border-radius: 22px; display: grid; gap: 6px; background: linear-gradient(135deg, color-mix(in srgb, var(--m1) 32%, #ffffff), color-mix(in srgb, var(--m2) 32%, #ffffff)); border: 1px solid var(--hair); }
+.promises { margin-top: 36px; padding: 16px 18px; border-radius: 22px; display: grid; gap: 6px; background: linear-gradient(135deg, color-mix(in srgb, var(--m1) 32%, #ffffff), color-mix(in srgb, var(--m2) 32%, #ffffff)); border: 1px solid var(--hair); }
 .promises h3 { font-size: 1.125rem; }
 .trust-wrap { overflow-x: auto; margin-top: 4px; }
 .trust-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; font-size: .875rem; }
@@ -581,7 +581,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <label class="check"><input type="checkbox" id="opt-letter"><span><b>한 달 뒤 나에게 편지로 받기</b><br><span class="note">원문이 이 기기 안에만 저장되고, 한 달 뒤 「한 달 편지」에서 열려요.</span></span></label>
     </div>
     <button class="btn block send-btn" id="send" disabled><canvas class="gust" aria-hidden="true"></canvas><span class="send-label">바람에 날려 보내기</span></button>
-    <p class="note" id="send-hint">감정을 고르고 한 글자 이상 써 주세요.</p>
   </section>
 
   <!-- 게시판 -->
@@ -1008,7 +1007,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     $("count").textContent = `${$("text").value.length} / 1000`;
     const ok = !!pickedEmo && t.length > 0;
     $("send").disabled = !ok;
-    $("send-hint").hidden = ok;
   }
   $("text").addEventListener("input", updateSend);
 
