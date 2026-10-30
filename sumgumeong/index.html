@@ -390,6 +390,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .mic-btn[aria-pressed="true"]::after { animation-delay: .8s; }
 @keyframes micRing { from { transform: scale(1); opacity: .7; } to { transform: scale(1.12, 1.6); opacity: 0; } }
 .mic-note { font-size: .9375rem; }
+.mic-note.mic-help { display: grid; gap: 4px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, #6c5ce7 8%, #ffffff); border: 1px solid color-mix(in srgb, #6c5ce7 30%, transparent); color: var(--ink); animation: fadeUp .45s var(--ease) both; }
+.mic-help .mh-title { font-size: 1rem; }
+.mic-help .mh-how { font-size: 1.0625rem; font-weight: 500; }
+.mic-help .mh-sub { font-size: .875rem; color: var(--ink-soft); }
+.mic-help kbd { display: inline-block; font: inherit; font-weight: 700; font-size: .9em; padding: 1px 8px; margin: 0 2px; border-radius: 7px; background: #ffffff; border: 1px solid var(--hair); box-shadow: 0 2px 0 rgba(20, 20, 40, .12); }
 .mic-note b { color: var(--ink); }
 
 /* 스트레스 풀기 */
@@ -1026,13 +1031,25 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   // ---------- 말로 입력 ----------
   // 기본은 타자. 마이크를 누르면 휴대폰의 음성 인식으로 말을 글자로 받아 적어요.
+  // claude.ai 안처럼 마이크가 막힌 화면인지 미리 알아봐요 (크롬 계열)
+  let micBlocked = !!(document.featurePolicy && document.featurePolicy.allowsFeature && !document.featurePolicy.allowsFeature("microphone"));
+  try { navigator.permissions.query({ name: "microphone" }).then(st => { if (st.state === "denied") micBlocked = true; }).catch(() => {}); } catch {}
+  function dictationHow() {
+    const ua = navigator.userAgent;
+    if (/Android|iPhone|iPad|iPod/i.test(ua)) return `휴대폰 키보드에 있는 <kbd>마이크</kbd> 버튼을 누르고 말하면 글자로 들어가요.`;
+    if (/Mac/i.test(ua)) return `키보드의 <kbd>fn</kbd> 키(또는 <kbd>🌐</kbd> 키)를 두 번 누르고 말하면 글자로 들어가요.`;
+    if (/Windows/i.test(ua)) return `키보드에서 <kbd>Windows 키</kbd> + <kbd>H</kbd>를 함께 누르고 말하면 글자로 들어가요.`;
+    return `기기의 음성 입력 기능(키보드의 마이크 버튼)을 쓰면 말로 입력할 수 있어요.`;
+  }
   function attachVoice(btn, ta, note, max, onChange) {
     const label = btn.querySelector(".mic-label");
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     let rec = null, listening = false, base = "", finals = "";
-    const say = (html) => { note.innerHTML = html; note.hidden = !html; };
+    const say = (html) => { note.classList.remove("mic-help"); note.innerHTML = html; note.hidden = !html; };
+    // 이 화면에서 마이크를 못 쓸 때: 기기에 원래 있는 음성 입력을 바로 안내해요
     const keyboardHint = (why) => {
-      say(`${why} 대신 글 쓰는 칸을 누르고, <b>휴대폰 키보드의 마이크 버튼</b>을 누르면 말로 입력할 수 있어요.`);
+      say(`<b class="mh-title">${why}</b><span class="mh-how">${dictationHow()}</span><span class="mh-sub">글 쓰는 칸에 커서를 두었어요. 지금 바로 해 보세요.</span>`);
+      note.classList.add("mic-help");
       ta.focus();
     };
     function setListening(on) {
@@ -1045,7 +1062,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     function cancel() { if (rec) { rec.onresult = null; rec.onend = null; rec.onerror = null; try { rec.abort(); } catch {} } if (listening) setListening(false); say(""); }
     btn.addEventListener("click", () => {
       if (listening) { stop(); return; }
-      if (!SR) { keyboardHint("이 화면에서는 바로 받아 적기를 쓸 수 없어요."); return; }
+      if (!SR || micBlocked) { keyboardHint("이 화면에서는 마이크 버튼을 쓸 수 없어요."); return; }
       rec = new SR();
       rec.lang = "ko-KR"; rec.continuous = true; rec.interimResults = true;
       base = ta.value && !/\s$/.test(ta.value) ? ta.value + " " : ta.value; finals = "";
@@ -1068,7 +1085,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       let gotAudio = false;
       rec.onaudiostart = () => { gotAudio = true; };
       // 마이크가 끝내 켜지지 않으면 (권한이 막힌 화면 등) 키보드 음성 입력을 안내해요
-      setTimeout(() => { if (listening && !gotAudio) { try { rec.abort(); } catch {} setListening(false); keyboardHint("마이크가 켜지지 않았어요."); } }, 4000);
+      setTimeout(() => { if (listening && !gotAudio) { try { rec.abort(); } catch {} setListening(false); keyboardHint("마이크가 켜지지 않았어요."); } }, 2500);
       try {
         rec.start(); setListening(true);
         say("말씀하세요. 다 말했으면 버튼을 한 번 더 누르세요. 음성은 휴대폰의 음성 인식 서비스가 글자로 바꿔 주고, 숨구멍은 녹음을 남기지 않아요.");
