@@ -802,13 +802,20 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .sleep-panel .opt-label { color: #4b4fb8; }
 .sleep-panel .seg { background: color-mix(in srgb, #4b4fb8 9%, #ffffff); }
 .sleep-panel .seg button[aria-pressed="true"] { background: #4b4fb8; color: #ffffff; }
+.sleep-panel .seg { display: flex; flex-wrap: wrap; }
+.sleep-panel .seg button { white-space: nowrap; padding: 8px 13px; }
 .sleep-panel input[type="range"] { flex: 1; min-width: 160px; accent-color: #4b4fb8; }
 .sleep-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .sleep-play { background: #4b4fb8; }
 .sleep-play.on { background: #1d2550; }
 .sleep-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; gap: 14px; text-align: center; background: #04050c; color: rgba(238, 240, 255, .45); cursor: pointer; }
-.sleep-dim .moon { position: static; margin: 0 auto; opacity: .5; }
-.sleep-dim b { font-family: var(--display); font-size: 2rem; color: rgba(238, 240, 255, .6); font-variant-numeric: tabular-nums; }
+.sleep-dim { overflow: hidden; }
+.dim-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.dim-text { position: relative; display: grid; gap: 10px; justify-items: center; padding: 0 16px; margin-top: -8vh; text-shadow: 0 2px 18px rgba(0, 0, 0, .6); animation: dimIn 2.4s var(--ease) both; }
+.dim-text p { margin: 0; }
+.dim-mix { font-size: .8125rem; letter-spacing: .28em; color: rgba(214, 222, 255, .5); }
+.sleep-dim b { font-family: var(--display); font-size: clamp(1.375rem, 6vw, 2rem); white-space: nowrap; font-weight: 600; color: rgba(238, 240, 255, .62); font-variant-numeric: tabular-nums; }
+@keyframes dimIn { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } }
 
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
@@ -1164,8 +1171,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
     <div class="panel sleep-panel">
       <div class="label">수면 음악</div>
-      <div class="sleep-row"><span class="opt-label">소리</span><div class="seg" id="sleep-kind" role="group" aria-label="소리 고르기"><button type="button" data-k="rain" aria-pressed="true">빗소리</button><button type="button" data-k="waves" aria-pressed="false">파도</button><button type="button" data-k="chord" aria-pressed="false">잔잔한 화음</button><button type="button" data-k="mix" aria-pressed="false">다 섞기</button></div></div>
-      <div class="sleep-row"><span class="opt-label">끄기</span><div class="seg" id="sleep-min" role="group" aria-label="끌 시간"><button type="button" data-m="15" aria-pressed="false">15분 뒤</button><button type="button" data-m="30" aria-pressed="true">30분 뒤</button><button type="button" data-m="60" aria-pressed="false">60분 뒤</button></div></div>
+      <div class="sleep-row"><span class="opt-label">소리</span><div class="seg" id="sleep-kind" role="group" aria-label="소리 고르기"><button type="button" data-k="rain" aria-pressed="true">빗소리</button><button type="button" data-k="waves" aria-pressed="false">파도</button><button type="button" data-k="wind" aria-pressed="false">바람</button><button type="button" data-k="chord" aria-pressed="false">잔잔한 화음</button><button type="button" data-k="mix" aria-pressed="false">다 섞기</button></div><span class="note">여러 개 눌러 섞을 수 있어요</span></div>
+      <div class="sleep-row"><span class="opt-label">끄기</span><div class="seg" id="sleep-min" role="group" aria-label="끌 시간"><button type="button" data-m="15" aria-pressed="false">15분 뒤</button><button type="button" data-m="30" aria-pressed="true">30분 뒤</button><button type="button" data-m="60" aria-pressed="false">60분 뒤</button><button type="button" data-m="180" aria-pressed="false">3시간 뒤</button></div></div>
       <div class="sleep-row"><label class="opt-label" for="sleep-vol">크기</label><input type="range" id="sleep-vol" min="0" max="100" value="55"></div>
       <div class="sleep-actions"><button class="btn sleep-play" id="sleep-play" type="button">수면 음악 틀기</button><button class="btn ghost" id="sleep-dim-btn" type="button">화면 어둡게</button></div>
       <p class="note" id="sleep-left">소리는 이 화면에서 직접 만들어요. 휴대폰 화면이 꺼지면 기기에 따라 소리가 멈출 수 있어요.</p>
@@ -1330,7 +1337,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 </div>
 
 <!-- 덮개 화면 -->
-<div class="sleep-dim" id="sleep-dim" hidden role="button" aria-label="화면 밝게 돌아가기"><div class="moon"></div><b id="dim-left"></b><p>화면을 누르면 돌아가요</p></div>
+<div class="sleep-dim" id="sleep-dim" hidden role="button" aria-label="화면 밝게 돌아가기"><canvas class="dim-cv" id="dim-cv" aria-hidden="true"></canvas><div class="dim-text"><span class="dim-mix" id="dim-mix"></span><b id="dim-left"></b><p>화면을 누르면 돌아가요</p></div></div>
 <div class="overlay" id="ov-busy" hidden><div class="inner"><div class="spinner"></div><p class="comfort" style="font-size:var(--step-1)">글을 살펴보고 있어요…</p></div></div>
 
 <div class="overlay" id="ov-breath" hidden>
@@ -3440,86 +3447,359 @@ ${text}
     renderSavedTodo();
   });
 
-  // 수면 음악
+  // 수면 음악: 빗소리, 파도, 바람, 잔잔한 화음을 골라 섞어요. 여러 개를 켜면 크기를 자동으로 맞추고, 파도와 화음은 12초 박자에 맞춰 함께 숨 쉬어요
+  const SLEEP_KINDS = ["rain", "waves", "wind", "chord"];
+  const SLEEP_NAME = { rain: "빗소리", waves: "파도", wind: "바람", chord: "잔잔한 화음" };
+  const SLEEP_TRIM = { rain: 1, waves: .9, wind: .85, chord: 1.15 }; // 섞을 때 서로 묻히지 않게 맞춘 비율
+  const MIX_K = [1, .7, .58, .5];
+  const BEAT = 12000;
+  let sleepSel = store.get("sg.sleepmix", ["rain"]).filter(k => SLEEP_KINDS.includes(k)); if (!sleepSel.length) sleepSel = ["rain"];
+  const sleepFx = { beatT0: performance.now(), chordI: 0, gust: null, splash: [] }; // 소리와 화면 움직임을 맞추는 공용 박자
   let sleepA = null;
   const sleepVol = () => Number($("sleep-vol").value) / 100 * 0.8;
   const segPick = (id, attr) => document.querySelector(`#${id} [aria-pressed="true"]`).dataset[attr];
-  ["sleep-kind", "sleep-min"].forEach(id => $(id).addEventListener("click", e => {
+  const leftText = (ms) => { const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60; return `${h ? h + "시간 " : ""}${m}분 ${String(s % 60).padStart(2, "0")}초 뒤에 꺼져요`; };
+  function paintSleepKinds() {
+    $("sleep-kind").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === "mix" ? sleepSel.length === SLEEP_KINDS.length : sleepSel.includes(b.dataset.k))));
+    $("dim-mix").textContent = sleepSel.map(k => SLEEP_NAME[k]).join(" · ");
+  }
+  paintSleepKinds();
+  $("sleep-kind").addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
-    $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    if (!sleepA) return;
-    if (id === "sleep-kind") { const left = sleepA.end - Date.now(); stopSleep(true); startSleep(left); }
-    else { sleepA.end = Date.now() + Number(b.dataset.m) * 60000; }
-  }));
+    const k = b.dataset.k;
+    if (k === "mix") sleepSel = sleepSel.length === SLEEP_KINDS.length ? ["rain"] : SLEEP_KINDS.slice();
+    else if (sleepSel.includes(k)) { if (sleepSel.length > 1) sleepSel = sleepSel.filter(x => x !== k); }
+    else sleepSel = SLEEP_KINDS.filter(x => x === k || sleepSel.includes(x));
+    store.set("sg.sleepmix", sleepSel); paintSleepKinds(); syncLayers();
+  });
+  $("sleep-min").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("sleep-min").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    if (sleepA) sleepA.end = Date.now() + Number(b.dataset.m) * 60000;
+  });
   function brownNoise(ac, secs) {
     const len = Math.floor(secs * ac.sampleRate), buf = ac.createBuffer(2, len, ac.sampleRate);
     for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); let last = 0; for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; } }
     const s = ac.createBufferSource(); s.buffer = buf; s.loop = true; return s;
   }
-  function startSleep(ms) {
-    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { $("sleep-left").textContent = "이 기기에서는 소리를 만들 수 없어요."; return; }
-    const ac = new AC(), kind = segPick("sleep-kind", "k"), mix = kind === "mix";
-    const master = ac.createGain(); master.gain.setValueAtTime(0, ac.currentTime); master.gain.linearRampToValueAtTime(sleepVol(), ac.currentTime + 6);
-    master.connect(ac.destination);
-    const timers = [];
-    const filt = (type, f) => { const n = ac.createBiquadFilter(); n.type = type; n.frequency.value = f; return n; };
-    const gain = (v) => { const g = ac.createGain(); g.gain.value = v; return g; };
-    if (kind === "rain" || mix) {
-      const n = brownNoise(ac, 6), hp = filt("highpass", 300), lp = filt("lowpass", 5200), g = gain(mix ? 0.3 : 0.55);
-      n.connect(hp); hp.connect(lp); lp.connect(g); g.connect(master); n.start();
-      const drop = () => { const src = noiseBurst(ac, 0.03, 4), bp = filt("bandpass", rnd(2500, 6500)), g2 = gain(rnd(0.04, 0.14)); bp.Q.value = 3; src.connect(bp); bp.connect(g2); g2.connect(master); src.start(); };
-      timers.push(setInterval(() => { for (let i = 0; i < 3; i++) if (Math.random() < 0.7) setTimeout(drop, Math.random() * 200); }, 220));
-    }
-    if (kind === "waves" || mix) {
-      const n = brownNoise(ac, 8), lp = filt("lowpass", 500), g = gain(0.05);
-      n.connect(lp); lp.connect(g); g.connect(master); n.start();
-      const swell = () => {
-        const t = ac.currentTime, peak = mix ? 0.35 : 0.85;
-        g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(peak, t + 4); g.gain.linearRampToValueAtTime(0.06, t + 10);
-        lp.frequency.cancelScheduledValues(t); lp.frequency.setValueAtTime(380, t); lp.frequency.linearRampToValueAtTime(1300, t + 4); lp.frequency.linearRampToValueAtTime(340, t + 10);
+  const ramp = (param, v, t, dur) => { param.cancelScheduledValues(t); param.setValueAtTime(param.value, t); param.linearRampToValueAtTime(v, t + dur); };
+  // 소리 층마다 { stop, beat } 를 돌려줘요. beat 는 12초 박자마다 불려요
+  const LAYERS = {
+    rain(ac, bus, filt, gain) {
+      const n = brownNoise(ac, 6), hp = filt("highpass", 300), lp = filt("lowpass", 5200), g = gain(0.55);
+      n.connect(hp); hp.connect(lp); lp.connect(g); g.connect(bus); n.start();
+      const drop = () => {
+        try {
+          const src = noiseBurst(ac, 0.03, 4), bp = filt("bandpass", rnd(2500, 6500)), g2 = gain(rnd(0.04, 0.14)); bp.Q.value = 3;
+          src.connect(bp); bp.connect(g2); g2.connect(bus); src.start();
+          if (Math.random() < 0.5) { sleepFx.splash.push({ x: Math.random(), y: Math.random(), at: performance.now(), s: rnd(.6, 1.4) }); if (sleepFx.splash.length > 40) sleepFx.splash.shift(); }
+        } catch {}
       };
-      swell(); timers.push(setInterval(swell, 10000));
-    }
-    if (kind === "chord" || mix) {
-      const lp = filt("lowpass", 950); lp.connect(master);
+      const iv = setInterval(() => { for (let i = 0; i < 3; i++) if (Math.random() < 0.7) setTimeout(drop, Math.random() * 200); }, 220);
+      return { stop() { clearInterval(iv); try { n.stop(); } catch {} } };
+    },
+    waves(ac, bus, filt, gain) {
+      const n = brownNoise(ac, 8), lp = filt("lowpass", 500), g = gain(0.05);
+      n.connect(lp); lp.connect(g); g.connect(bus); n.start();
+      return {
+        stop() { try { n.stop(); } catch {} },
+        beat() { // 4초 밀려왔다가 6초 쓸려 나가요
+          const t = ac.currentTime;
+          g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0.85, t + 4); g.gain.linearRampToValueAtTime(0.06, t + 10);
+          lp.frequency.cancelScheduledValues(t); lp.frequency.setValueAtTime(380, t); lp.frequency.linearRampToValueAtTime(1300, t + 4); lp.frequency.linearRampToValueAtTime(340, t + 10);
+        }
+      };
+    },
+    wind(ac, bus, filt, gain) {
+      // 낮게 흐르는 바람 + 세게 불 때만 들리는 가는 휘파람 소리, 좌우로 천천히 움직여요
+      const n = brownNoise(ac, 10), bp = filt("bandpass", 420), g = gain(0.2), pan = ac.createStereoPanner ? ac.createStereoPanner() : null;
+      bp.Q.value = 0.7; n.connect(bp); bp.connect(g);
+      if (pan) { g.connect(pan); pan.connect(bus); } else g.connect(bus);
+      const n2 = brownNoise(ac, 7), bp2 = filt("bandpass", 900), g2 = gain(0.002); bp2.Q.value = 16;
+      n2.connect(bp2); bp2.connect(g2); g2.connect(bus); n.start(); n2.start();
+      let cur = 0.3, to_ = 0;
+      const gust = () => {
+        const t = ac.currentTime, dur = rnd(4, 9), v = Math.random() < 0.3 ? rnd(0.75, 1) : rnd(0.15, 0.55);
+        ramp(g.gain, 0.1 + v * 0.55, t, dur); ramp(bp.frequency, 260 + v * 700, t, dur);
+        ramp(g2.gain, v > 0.7 ? (v - 0.6) * 0.12 : 0.002, t, dur); ramp(bp2.frequency, rnd(650, 1300), t, dur);
+        if (pan) ramp(pan.pan, rnd(-0.6, 0.6), t, dur);
+        sleepFx.gust = { from: cur, to: v, t0: performance.now(), dur: dur * 1000 }; cur = v;
+        to_ = setTimeout(gust, dur * 1000 * rnd(0.8, 1));
+      };
+      gust();
+      return { stop() { clearTimeout(to_); sleepFx.gust = null; try { n.stop(); n2.stop(); } catch {} } };
+    },
+    chord(ac, bus, filt) {
+      const lp = filt("lowpass", 950); lp.connect(bus);
       const CH = [[130.81, 196.0, 246.94, 329.63], [110.0, 164.81, 261.63, 329.63], [87.31, 174.61, 220.0, 329.63], [98.0, 146.83, 246.94, 293.66]];
       let ci = 0;
-      const pad = () => {
-        const t = ac.currentTime, notes = CH[ci++ % CH.length], peak = mix ? 0.03 : 0.055;
-        notes.forEach((f, j) => { const o = ac.createOscillator(), g = ac.createGain(); o.type = j ? "triangle" : "sine"; o.frequency.value = f;
-          g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + 4); g.gain.setValueAtTime(peak, t + 9); g.gain.linearRampToValueAtTime(0, t + 14);
-          o.connect(g); g.connect(lp); o.start(t); o.stop(t + 14.5); });
+      return {
+        stop() { try { lp.disconnect(); } catch {} },
+        beat() {
+          const t = ac.currentTime, notes = CH[ci % CH.length], peak = 0.055; sleepFx.chordI = ci++;
+          notes.forEach((f, j) => {
+            const o = ac.createOscillator(), g = ac.createGain(); o.type = j ? "triangle" : "sine"; o.frequency.value = f; o.detune.value = rnd(-4, 4);
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + 4); g.gain.setValueAtTime(peak, t + 9); g.gain.linearRampToValueAtTime(0, t + 14);
+            o.connect(g); g.connect(lp); o.start(t); o.stop(t + 14.5);
+          });
+        }
       };
-      pad(); timers.push(setInterval(pad, 12000));
     }
-    const total = ms || Number(segPick("sleep-min", "m")) * 60000;
-    sleepA = { ac, master, timers, end: Date.now() + total };
+  };
+  function syncLayers() {
+    if (!sleepA) return;
+    const { ac, layers } = sleepA, n = sleepSel.length, t = ac.currentTime;
+    const filt = (type, f) => { const x = ac.createBiquadFilter(); x.type = type; x.frequency.value = f; return x; };
+    const gain = (v) => { const g = ac.createGain(); g.gain.value = v; return g; };
+    SLEEP_KINDS.forEach(k => {
+      const on = sleepSel.includes(k), L = layers[k];
+      if (on && !L) {
+        const bus = ac.createGain(); bus.gain.setValueAtTime(0, t); bus.connect(sleepA.master);
+        layers[k] = Object.assign({ bus }, LAYERS[k](ac, bus, filt, gain));
+        if (layers[k].beat) layers[k].beat();
+      } else if (!on && L) {
+        ramp(L.bus.gain, 0, t, 2); delete layers[k];
+        setTimeout(() => { L.stop(); try { L.bus.disconnect(); } catch {} }, 2300);
+      }
+    });
+    Object.entries(layers).forEach(([k, L]) => ramp(L.bus.gain, MIX_K[n - 1] * (n > 1 ? SLEEP_TRIM[k] : 1), t, 2.5));
+  }
+  function startSleep() {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { $("sleep-left").textContent = "이 기기에서는 소리를 만들 수 없어요."; return; }
+    const ac = new AC();
+    const master = ac.createGain(); master.gain.setValueAtTime(0, ac.currentTime); master.gain.linearRampToValueAtTime(sleepVol(), ac.currentTime + 6);
+    master.connect(ac.destination);
+    sleepA = { ac, master, layers: {}, end: Date.now() + Number(segPick("sleep-min", "m")) * 60000 };
+    sleepFx.beatT0 = performance.now(); sleepFx.chordI = 0;
+    syncLayers();
+    sleepA.beat = setInterval(() => { sleepFx.beatT0 = performance.now(); Object.values(sleepA.layers).forEach(L => L.beat && L.beat()); }, BEAT);
     sleepA.tick = setInterval(() => {
       const left = sleepA.end - Date.now();
       if (left <= 0) { stopSleep(); return; }
       if (left < 300000) sleepA.master.gain.setTargetAtTime(sleepVol() * left / 300000, sleepA.ac.currentTime, 0.5); // 마지막 5분은 천천히 작아져요
-      const txt = `${Math.floor(left / 60000)}분 ${String(Math.floor(left / 1000) % 60).padStart(2, "0")}초 뒤에 꺼져요`;
+      const txt = leftText(left);
       $("sleep-left").textContent = txt + (left < 300000 ? " · 소리가 천천히 작아지는 중" : "");
       $("dim-left").textContent = txt;
     }, 1000);
     $("sleep-play").textContent = "수면 음악 끄기"; $("sleep-play").classList.add("on");
     $("sleep-left").textContent = "틀었어요. 천천히 커져요.";
+    $("dim-left").textContent = leftText(sleepA.end - Date.now());
   }
-  function stopSleep(silent) {
+  function stopSleep() {
     if (!sleepA) return;
     const a = sleepA; sleepA = null;
-    a.timers.forEach(t => clearInterval(t)); clearInterval(a.tick);
+    clearInterval(a.beat); clearInterval(a.tick);
     try { a.master.gain.cancelScheduledValues(a.ac.currentTime); a.master.gain.setTargetAtTime(0, a.ac.currentTime, 0.4); } catch {}
-    setTimeout(() => a.ac.close().catch(() => {}), 1800);
-    if (silent) return;
+    setTimeout(() => { Object.values(a.layers).forEach(L => L.stop()); a.ac.close().catch(() => {}); }, 1800);
     $("sleep-play").textContent = "수면 음악 틀기"; $("sleep-play").classList.remove("on");
     $("sleep-left").textContent = "껐어요. 좋은 꿈 꾸세요.";
-    hide($("sleep-dim"));
+    closeDim();
   }
+
+  // 덮개 화면의 밤 풍경: 고른 소리마다 그림이 하나씩 겹쳐요. 비는 떨어지고, 파도는 박자에 맞춰 밀려오고, 바람은 흐르고, 화음은 오로라로 번져요
+  const dimScene = (function () {
+    const cv = $("dim-cv"), ctx = cv.getContext("2d"), off = document.createElement("canvas"), octx = off.getContext("2d");
+    const AUR = [[60, 235, 170], [150, 110, 255], [70, 195, 255], [255, 115, 195]];
+    let W = 0, H = 0, raf = 0, last = 0, stars = [], drops = [], motes = [], clouds = [], ripples = [], reeds = [];
+    let simT0 = performance.now(), simGust = { from: .3, to: .3, t0: 0, dur: 1 }, aurCol = AUR[0].slice();
+    const newDrop = (anyY) => { const z = [.45, .7, 1][Math.floor(Math.random() * 3)]; return { x: rnd(-W * .2, W), y: anyY ? rnd(-H, H) : rnd(-H * .3, -20), len: rnd(12, 26) * z, sp: rnd(560, 900) * z, z }; };
+    function size() {
+      const dpr = Math.min(1.5, devicePixelRatio || 1);
+      W = cv.clientWidth || innerWidth; H = cv.clientHeight || innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      off.width = Math.ceil(W / 4); off.height = Math.ceil(H / 4);
+      stars = Array.from({ length: Math.round(W * H / 7000) }, () => ({ x: Math.random() * W, y: Math.random() * H * .66, r: rnd(.4, 1.5), ph: rnd(0, 6.28), sp: rnd(.4, 1.4) }));
+      drops = Array.from({ length: Math.round(W * H / 5200) }, () => newDrop(true));
+      motes = Array.from({ length: 80 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: rnd(.6, 1.9), ph: rnd(0, 6.28), z: rnd(.35, 1) }));
+      reeds = Array.from({ length: Math.round(W / 9) }, (_, i) => { const x = i * 9 + rnd(-3, 3), edge = Math.min(x, W - x) / W; return { x, h: rnd(.06, .2) * H * Math.max(.25, 1 - edge * 2.4), ph: rnd(0, 6.28), w: rnd(1.2, 2.6) }; });
+      clouds = Array.from({ length: 6 }, (_, i) => ({ x: rnd(0, W), y: rnd(H * .02, H * .24), r: rnd(.16, .3) * Math.max(W, 600), sp: rnd(6, 14), a: rnd(.5, .85) }));
+    }
+    const on = (k) => sleepSel.includes(k);
+    const beatSec = (now) => (((now - (sleepA ? sleepFx.beatT0 : simT0)) % BEAT) + BEAT) % BEAT / 1000;
+    function gustNow(now) {
+      let G = sleepA && sleepA.layers.wind && sleepFx.gust;
+      if (!G) { // 소리가 꺼져 있으면 화면 혼자 바람을 흉내 내요
+        if (now - simGust.t0 > simGust.dur) { const c = simGust.to; simGust = { from: c, to: Math.random() < .3 ? rnd(.75, 1) : rnd(.15, .55), t0: now, dur: rnd(4000, 9000) }; }
+        G = simGust;
+      }
+      const k = Math.min(1, Math.max(0, (now - G.t0) / G.dur)), e = k * k * (3 - 2 * k);
+      return G.from + (G.to - G.from) * e;
+    }
+    function frame(now, dt) {
+      const R = on("rain"), Wv = on("waves"), Wd = on("wind"), C = on("chord");
+      const s = beatSec(now), ts = now / 1000, g = Wd ? gustNow(now) : 0;
+      const we = s < 4 ? s / 4 : s < 10 ? 1 - (s - 4) / 6 : 0; // 파도: 소리와 같은 4초 밀물, 6초 썰물
+      const ce = s < 4 ? .3 + .7 * (s / 4) : s < 9 ? 1 : 1 - .7 * ((s - 9) / 3); // 화음: 4초 커지고 5초 머물다 잦아들어요
+      const horizon = H * (Wv ? .66 : .9), mx = W * .76, my = H * .2, mr = Math.max(16, Math.min(W, H) * .042);
+      // 하늘
+      const sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, "#02030a"); sky.addColorStop(.55, R ? "#070a17" : "#0a0f27"); sky.addColorStop(1, Wv ? "#0c1733" : "#05060f");
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+      // 별
+      ctx.fillStyle = "#e9edff";
+      stars.forEach(st => { if (st.y > horizon - 6) return; ctx.globalAlpha = (.18 + .5 * (.5 + .5 * Math.sin(ts * st.sp + st.ph))) * (R ? .3 : 1); ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, 6.283); ctx.fill(); });
+      ctx.globalAlpha = 1;
+      // 흐릿한 층(1/4 크기로 그려서 크게 펼치면 부드럽게 번져요): 오로라, 달무리, 비구름
+      octx.setTransform(1, 0, 0, 1, 0, 0); octx.clearRect(0, 0, off.width, off.height); octx.setTransform(.25, 0, 0, .25, 0, 0);
+      const halo = octx.createRadialGradient(mx, my, mr, mx, my, mr * 7);
+      halo.addColorStop(0, `rgba(253,243,196,${(C ? .16 + .1 * ce : .14) * (R ? .5 : 1)})`); halo.addColorStop(1, "rgba(253,243,196,0)");
+      octx.fillStyle = halo; octx.fillRect(0, 0, W, H);
+      if (C) {
+        const tgt = AUR[(sleepA ? sleepFx.chordI : Math.floor((now - simT0) / BEAT)) % AUR.length];
+        aurCol = aurCol.map((v, i) => v + (tgt[i] - v) * Math.min(1, dt * .6));
+        const [r0, g0, b0] = aurCol.map(Math.round);
+        octx.globalCompositeOperation = "lighter";
+        for (let k = 0; k < 3; k++) {
+          const a = (.16 + .3 * ce) * (k === 1 ? 1 : .7), top = (x) => H * (.1 + k * .055) + Math.sin(x * .0024 + ts * .07 + k * 2.1) * H * .05 + Math.sin(x * .0061 - ts * .045 + k) * H * .02;
+          const hgt = (x) => H * (.15 + .07 * Math.sin(x * .0037 + ts * .09 + k * 1.3));
+          const gr = octx.createLinearGradient(0, H * .02, 0, H * .52);
+          gr.addColorStop(0, `rgba(${r0},${g0},${b0},0)`); gr.addColorStop(.5, `rgba(${r0},${g0},${b0},${a * .5})`); gr.addColorStop(.78, `rgba(${r0},${g0},${b0},${a})`); gr.addColorStop(1, `rgba(${r0},${g0},${b0},0)`);
+          octx.beginPath(); octx.moveTo(-40, top(-40));
+          for (let x = -40; x <= W + 40; x += 24) octx.lineTo(x, top(x));
+          for (let x = W + 40; x >= -40; x -= 24) octx.lineTo(x, top(x) + hgt(x));
+          octx.closePath(); octx.fillStyle = gr; octx.fill();
+        }
+        octx.globalCompositeOperation = "source-over";
+      }
+      if (R) {
+        clouds.forEach(c => {
+          c.x += c.sp * (1 + g * 3) * dt; if (c.x - c.r > W) c.x = -c.r;
+          const cg = octx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+          cg.addColorStop(0, `rgba(26,31,52,${c.a})`); cg.addColorStop(1, "rgba(26,31,52,0)");
+          octx.fillStyle = cg; octx.fillRect(c.x - c.r, c.y - c.r, c.r * 2, c.r * 2);
+        });
+      }
+      ctx.drawImage(off, 0, 0, W, H);
+      if (C) { // 오로라 커튼의 세로 빛줄기
+        const [r0, g0, b0] = aurCol.map(Math.round);
+        ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineWidth = 3;
+        for (let k = 0; k < 3; k++) {
+          for (let x = 0; x <= W; x += 7) {
+            const top = H * (.1 + k * .055) + Math.sin(x * .0024 + ts * .07 + k * 2.1) * H * .05 + Math.sin(x * .0061 - ts * .045 + k) * H * .02;
+            const hgt = H * (.15 + .07 * Math.sin(x * .0037 + ts * .09 + k * 1.3));
+            const n = Math.sin(x * 12.9898 + k * 78.233) * 43758.5453, jit = n - Math.floor(n); // 줄마다 밝기를 다르게
+            const f = Math.max(0, Math.sin(x * .045 + ts * (.4 + k * .15) + k * 3)) * (.5 + .5 * Math.sin(x * .013 - ts * .2)) * (.35 + .65 * jit);
+            if (f < .15) continue;
+            const lg = ctx.createLinearGradient(0, top + hgt * .15, 0, top + hgt);
+            lg.addColorStop(0, `rgba(${r0},${g0},${b0},0)`); lg.addColorStop(.8, `rgba(${r0},${g0},${b0},${f * (.035 + .08 * ce)})`); lg.addColorStop(1, `rgba(${r0},${g0},${b0},0)`);
+            ctx.strokeStyle = lg; ctx.beginPath(); ctx.moveTo(x, top + hgt * .15); ctx.lineTo(x, top + hgt); ctx.stroke();
+          }
+        }
+        ctx.restore();
+      }
+      // 달
+      ctx.save(); ctx.globalAlpha = R ? .6 : .95;
+      ctx.shadowColor = "rgba(253,243,196,.55)"; ctx.shadowBlur = mr * .9;
+      const mg = ctx.createRadialGradient(mx - mr * .35, my - mr * .35, mr * .1, mx, my, mr);
+      mg.addColorStop(0, "#fffbe4"); mg.addColorStop(1, "#ecdd9c");
+      ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(mx, my, mr, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
+      ctx.clip(); ctx.fillStyle = "rgba(190,170,100,.22)"; // 달 표면의 얼룩
+      [[-.3, -.15, .28], [.25, .25, .2], [.1, -.4, .13], [-.15, .4, .16]].forEach(([dx, dy, rr]) => { ctx.beginPath(); ctx.arc(mx + dx * mr, my + dy * mr, rr * mr, 0, 6.283); ctx.fill(); });
+      ctx.restore();
+      // 바람: 흐르는 바람결과 떠다니는 먼지
+      if (Wd) {
+        ctx.save(); ctx.lineCap = "round";
+        for (let i = 0; i < 9; i++) {
+          const y0 = H * (.12 + i * .085), A = 12 + 22 * g;
+          ctx.beginPath();
+          for (let x = -60; x <= W + 60; x += 14) { const y = y0 + Math.sin(x * .0042 + i * 1.7 + ts * .3) * A + Math.sin(x * .011 - ts * .5 * (1 + g)) * A * .35; x === -60 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+          ctx.setLineDash([W * (.18 + .1 * g), W * .7]); ctx.lineDashOffset = -(ts * (50 + 260 * g) + i * 173);
+          ctx.strokeStyle = `rgba(205,218,255,${.07 + .18 * g})`; ctx.lineWidth = 1.2 + (i % 3) * .7; ctx.shadowColor = "rgba(190,210,255,.5)"; ctx.shadowBlur = 6; ctx.stroke(); ctx.shadowBlur = 0;
+        }
+        ctx.setLineDash([]);
+        motes.forEach(m => { // 바람에 실려 가는 꽃가루: 바람이 셀수록 꼬리가 길어져요
+          const vx = (14 + 170 * g) * m.z, vy = Math.sin(ts * .8 + m.ph) * 10 * m.z;
+          m.x += vx * dt; m.y += vy * dt;
+          if (m.x > W + 10) { m.x = -10; m.y = Math.random() * H; }
+          const tail = 2 + vx * .06;
+          ctx.strokeStyle = `rgba(230,236,255,${.1 + .25 * m.z})`; ctx.lineWidth = m.r * m.z * 1.4;
+          ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x - tail, m.y - vy * .06); ctx.stroke();
+        });
+        ctx.restore();
+      }
+      // 파도: 네 겹의 물결이 박자에 맞춰 부풀고, 달빛이 물 위에서 반짝여요
+      const surface = (x, k) => horizon + k * H * .075 + Math.sin(x * (.0058 - k * .0008) + ts * (.32 + k * .1) + k * 1.3) * (5 + k * 6) * (.5 + .9 * we) + Math.sin(x * .016 - ts * (.48 + k * .09) + k) * (5 + k * 6) * .3 - we * k * 4;
+      if (Wv) {
+        for (let k = 0; k < 4; k++) {
+          ctx.beginPath(); ctx.moveTo(0, H);
+          for (let x = 0; x <= W + 12; x += 12) ctx.lineTo(x, surface(x, k));
+          ctx.lineTo(W, H); ctx.closePath();
+          const wg = ctx.createLinearGradient(0, horizon + k * H * .07 - 20, 0, H);
+          wg.addColorStop(0, `rgb(${14 + k * 5},${26 + k * 8},${56 + k * 10})`); wg.addColorStop(1, "#03050c");
+          ctx.fillStyle = wg; ctx.fill();
+          ctx.beginPath(); for (let x = 0; x <= W + 12; x += 12) { const y = surface(x, k); x ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+          ctx.strokeStyle = `rgba(185,205,255,${.06 + .16 * we * (k + 1) / 4})`; ctx.lineWidth = 1.2; ctx.stroke();
+        }
+        ctx.save(); ctx.globalCompositeOperation = "lighter";
+        for (let j = 0; j < 30; j++) {
+          const yy = horizon + 6 + j * (H - horizon) / 30, w = (6 + j * 3.2) * (.55 + .45 * Math.sin(ts * 1.6 + j * 1.9));
+          ctx.fillStyle = `rgba(253,243,196,${(.04 + .16 * (1 - j / 30)) * (.55 + .45 * we) * (R ? .5 : 1)})`;
+          ctx.fillRect(mx - w / 2 + Math.sin(ts * .9 + j) * 5, yy, w, 1.6);
+        }
+        ctx.restore();
+      } else if (R) {
+        const gg = ctx.createLinearGradient(0, horizon, 0, H); gg.addColorStop(0, "#080b18"); gg.addColorStop(1, "#020308");
+        ctx.fillStyle = gg; ctx.fillRect(0, horizon, W, H - horizon);
+        ctx.strokeStyle = "rgba(170,190,255,.08)"; ctx.beginPath(); ctx.moveTo(0, horizon); ctx.lineTo(W, horizon); ctx.stroke();
+      }
+      // 바람이 불면 앞쪽 갈대가 바람 세기만큼 휘어요
+      if (Wd) {
+        ctx.save(); ctx.strokeStyle = "#020309"; ctx.lineCap = "round";
+        reeds.forEach(r => {
+          if (r.h < H * .02) return;
+          const bend = (6 + 46 * g) * (r.h / (H * .2)) + Math.sin(ts * (1.2 + g * 2.5) + r.ph) * (3 + 9 * g);
+          ctx.lineWidth = r.w; ctx.beginPath(); ctx.moveTo(r.x, H + 4);
+          ctx.quadraticCurveTo(r.x + bend * .25, H - r.h * .55, r.x + bend, H - r.h); ctx.stroke();
+        });
+        ctx.restore();
+      }
+      // 비: 세 겹 깊이로 떨어지고, 빗방울 소리마다 물 위에 동그라미가 퍼져요
+      if (R) {
+        const slant = Wd ? .12 + .38 * g : .1;
+        ctx.save(); ctx.lineCap = "round";
+        [.45, .7, 1].forEach(z => {
+          ctx.beginPath();
+          drops.forEach(d => {
+            if (d.z !== z) return;
+            d.y += d.sp * dt; d.x += d.sp * slant * dt;
+            if (d.y > H + 20 || d.x > W + 40) Object.assign(d, newDrop(false));
+            ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - slant * d.len, d.y - d.len);
+          });
+          ctx.strokeStyle = `rgba(175,195,255,${.08 + .2 * z})`; ctx.lineWidth = z * 1.1; ctx.stroke();
+        });
+        ctx.restore();
+        const fresh = sleepA && sleepA.layers.rain ? sleepFx.splash.splice(0) : (Math.random() < dt * 8 ? [{ x: Math.random(), y: Math.random(), s: rnd(.6, 1.4) }] : []);
+        fresh.forEach(f => ripples.push({ x: f.x * W, y: horizon + 8 + f.y * (H - horizon - 12), s: f.s, at: now }));
+        ripples = ripples.filter(r => now - r.at < 1100);
+        ctx.save(); ctx.lineWidth = 1;
+        ripples.forEach(r => {
+          const age = (now - r.at) / 1100, rx = (3 + age * 34) * r.s * (.5 + (r.y - horizon) / (H - horizon));
+          ctx.strokeStyle = `rgba(185,205,255,${.32 * (1 - age)})`; ctx.beginPath(); ctx.ellipse(r.x, r.y, rx, rx * .26, 0, 0, 6.283); ctx.stroke();
+        });
+        ctx.restore();
+      }
+      // 가장자리를 어둡게
+      const vg = ctx.createRadialGradient(W / 2, H * .45, Math.min(W, H) * .3, W / 2, H * .5, Math.max(W, H) * .8);
+      vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.6)");
+      ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    }
+    const loop = (now) => {
+      raf = requestAnimationFrame(loop);
+      if (now - last < 30) return; // 30프레임이면 충분해요(배터리 아끼기)
+      const dt = Math.min(.08, (now - last) / 1000); last = now;
+      frame(now, dt);
+    };
+    const resize = () => { size(); if (motionOff()) frame(performance.now(), 0); };
+    return {
+      start() { size(); addEventListener("resize", resize); last = performance.now(); frame(last, 0); if (!motionOff()) raf = requestAnimationFrame(loop); },
+      stop() { cancelAnimationFrame(raf); raf = 0; removeEventListener("resize", resize); }
+    };
+  })();
+  function closeDim() { hide($("sleep-dim")); dimScene.stop(); }
   $("sleep-play").addEventListener("click", () => (sleepA ? stopSleep() : startSleep()));
   $("sleep-vol").addEventListener("input", () => { if (sleepA && sleepA.end - Date.now() > 300000) sleepA.master.gain.setTargetAtTime(sleepVol(), sleepA.ac.currentTime, 0.2); });
-  $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? "" : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); });
-  $("sleep-dim").addEventListener("click", () => hide($("sleep-dim")));
+  $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? leftText(sleepA.end - Date.now()) : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); dimScene.start(); });
+  $("sleep-dim").addEventListener("click", closeDim);
 
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
