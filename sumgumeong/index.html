@@ -301,7 +301,14 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 /* 약속 */
 .promises { margin-top: 56px; padding: 24px; border-radius: 24px; display: grid; gap: 10px; background: linear-gradient(135deg, color-mix(in srgb, var(--m1) 32%, #ffffff), color-mix(in srgb, var(--m2) 32%, #ffffff)); border: 1px solid var(--hair); }
 .promises h3 { font-size: var(--step-1); }
-.promises ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; color: var(--ink-soft); font-size: 1rem; }
+.trust { display: grid; gap: 8px; margin-top: 4px; }
+.trust-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 14px; background: rgba(255, 255, 255, .72); border-radius: 16px; }
+.trust-row b { font-size: 1.0625rem; }
+.trust-row p { grid-column: 1 / -1; font-size: .9375rem; color: var(--ink-soft); line-height: 1.5; }
+.pill { font-size: .8125rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.safe { background: var(--pine-wash); color: #1f6f55; }
+.pill.open { background: color-mix(in srgb, var(--heat-1) 18%, #ffffff); color: #8a5208; }
+.help-line { margin-top: 6px; font-size: 1rem; }
 
 /* 휴대폰: 메뉴는 화면 아래 탭 막대로 옮기고, 글자와 여백은 한 단계 작게 해서 화면을 넓게 써요 */
 @media (max-width: 639px) {
@@ -544,7 +551,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <ol>
           <li>지금 마음에 가장 가까운 감정을 하나 고르세요.</li>
           <li>하고 싶은 말을 다 쓰세요. 이름이나 회사명을 그대로 써도 게시판에 올릴 때 별표로 바뀌어요.</li>
-          <li>게시판에 올릴지, 한 달 뒤 편지로 받을지 고르세요. 둘 다 끄면 아무 데도 남지 않아요.</li>
+          <li>게시판에 올릴지, 한 달 뒤 편지로 받을지 고르세요. 둘 다 끄면 게시판에도, 휴대폰에도 남지 않아요.</li>
           <li>「바람에 날려 보내기」를 누르면 글이 날아가고 위로 한마디가 나와요. 많이 화난 글이면 30초 심호흡을 먼저 해요.</li>
         </ol>
         <div class="example"><span class="label">예시 · 화남</span><p class="quote">“오늘 또 퇴근 10분 전에 일을 떠넘겼다. 왜 맨날 나만 남아야 하는데.”</p></div>
@@ -561,7 +568,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
     </div>
     <div class="panel">
-      <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b><br><span class="note">이름·회사명·부서명은 별표로 바뀌고, 3일 뒤 저절로 지워져요. 끄면 아무 데도 남기지 않고 바람에만 날려요.</span></span></label>
+      <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b><br><span class="note">이름·회사명·부서명은 별표로 바뀌고, 3일 뒤 저절로 지워져요. 끄면 게시판에 올리지 않고 바람에만 날려요. 위로 한마디를 위해 AI는 읽어요.</span></span></label>
       <label class="check"><input type="checkbox" id="opt-letter"><span><b>한 달 뒤 나에게 편지로 받기</b><br><span class="note">원문이 이 기기 안에만 저장되고, 한 달 뒤 「한 달 편지」에서 열려요.</span></span></label>
     </div>
     <button class="btn block send-btn" id="send" disabled><canvas class="gust" aria-hidden="true"></canvas><span class="send-label">바람에 날려 보내기</span></button>
@@ -854,13 +861,16 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   <footer class="promises">
     <h3>숨구멍의 약속</h3>
-    <ul>
-      <li>게시판 글에는 쓴 사람 정보를 저장하지 않아요.</li>
-      <li>게시판 글은 3일이 지나면 지워져요.</li>
-      <li>비밀 금고는 암호가 걸린 채로만 사이트에 보관돼요.</li>
-      <li>편지, 셀카, 소리는 이 기기 밖으로 나가지 않아요.</li>
-      <li>힘들 때는 자살예방상담전화 109, 위급할 때는 112·119에 연락하세요.</li>
-    </ul>
+    <p class="note">내가 쓴 것이 어디로 가고, 누가 볼 수 있는지 그대로 알려 드려요.</p>
+    <div class="trust">
+      <div class="trust-row"><b>비밀 금고</b><span class="pill safe">운영자도 못 봐요</span><p>휴대폰에서 암호를 건 뒤, 나만 열 수 있는 공간에 보관해요. 운영자는 암호가 걸린 글조차 볼 수 없어요.</p></div>
+      <div class="trust-row"><b>한 달 편지 · 셀카 · 소리</b><span class="pill safe">운영자도 못 봐요</span><p>이 휴대폰 밖으로 아예 나가지 않아요.</p></div>
+      <div class="trust-row"><b>게시판 글을 쓴 사람</b><span class="pill safe">운영자도 몰라요</span><p>누가 썼는지 저장하지 않아요. 토닥토닥도 누가 눌렀는지 남기지 않아요.</p></div>
+      <div class="trust-row"><b>게시판 글 내용</b><span class="pill open">누구나 읽어요</span><p>공개 게시판이라 운영자를 포함해 누구나 읽을 수 있어요. 이름과 회사명은 별표로 가려지고, 3일 뒤 지워져요.</p></div>
+      <div class="trust-row"><b>보내는 글</b><span class="pill open">AI가 읽어요</span><p>위로 한마디, 이름 가리기, 위험한 글 거르기를 위해 AI(Claude)가 읽어요. 게시판에 올리지 않아도 마찬가지예요.</p></div>
+      <div class="trust-row"><b>말로 입력</b><span class="pill open">음성 인식이 들어요</span><p>목소리는 휴대폰의 음성 인식 서비스(구글, 삼성 등)가 글자로 바꿔 줘요. 숨구멍은 녹음을 남기지 않아요.</p></div>
+    </div>
+    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
   </footer>
 </div>
 
@@ -920,11 +930,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
     del(k) { try { localStorage.removeItem(k); } catch {} },
   };
-  const deviceKey = (() => {
-    let k = store.get("sg.device", null);
-    if (!k) { k = Math.random().toString(36).slice(2, 12); store.set("sg.device", k); }
-    return k;
-  })();
+  store.del("sg.device"); // 예전에 쓰던 기기 번호는 지워요
   const todayKey = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   const show = (el) => { el.hidden = false; };
@@ -1714,7 +1720,8 @@ ${text}
     myPats.add(postId); store.set("sg.pats", [...myPats]);
     btn.setAttribute("aria-pressed", "true"); burst(btn);
     btn.querySelector(".n").textContent = (pats[postId] || 0) + 1;
-    try { await db.collection("pats").doc(postId + "--" + deviceKey).set({ post: postId, at: Date.now() }); }
+    // 토닥토닥은 매번 새 임의 번호로 저장해서, 같은 사람이 누른 것끼리 묶을 수 없게 해요
+    try { await db.collection("pats").add({ post: postId, at: Date.now() }); }
     catch { myPats.delete(postId); store.set("sg.pats", [...myPats]); renderBoard(); }
   }
   async function tidyExpired(list) {
