@@ -64,7 +64,8 @@ body {
   padding-block: 0 72px;
   -webkit-tap-highlight-color: transparent;
 }
-.wrap { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; }
+/* 화면 전체를 20% 작게: 폭은 그대로 두고 안의 글자와 요소만 줄여요 */
+.wrap { position: relative; z-index: 2; max-width: 1075px; margin: 0 auto; zoom: .8; }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.2; }
 p { margin: 0; }
 button, input, textarea, select { font: inherit; color: inherit; }
@@ -474,7 +475,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 :root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .motion-toggle, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
 :root[data-wide="on"] section.view { padding-block: 16px 4px; gap: 14px; }
 :root[data-wide="on"] .lede h2 { font-size: var(--step-2); }
-:root[data-wide="on"] .wrap { max-width: 1040px; }
+:root[data-wide="on"] .wrap { max-width: 1300px; }
 @media (max-width: 639px) {
   .wide-btn { font-size: .8125rem; padding: 4px 11px 4px 8px; }
   .wide-btn svg { width: 15px; height: 15px; }
