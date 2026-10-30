@@ -603,7 +603,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div id="vault-open" hidden style="display:grid;gap:16px">
       <p class="note" id="vault-open-note"></p>
       <div class="tpls"><span class="note">틀 불러오기</span><button class="btn ghost small" type="button" data-tpl="vent">털어놓기</button><button class="btn ghost small" type="button" data-tpl="record">기록해 두기</button><button class="btn ghost small" type="button" data-tpl="letter">못 보낸 편지</button></div>
-      <textarea id="vault-text" maxlength="5000" style="min-height:160px" placeholder="아무에게도 못 한 말을 적어 두세요."></textarea>
+      <div class="ta-wrap">
+        <textarea id="vault-text" maxlength="5000" style="min-height:200px" placeholder="아무에게도 못 한 말을 적어 두세요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
+        <button class="mic-btn" id="vault-mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button>
+      </div>
+      <p class="note mic-note" id="vault-mic-note" role="status" hidden></p>
       <div class="row"><button class="btn" id="vault-save">금고에 넣기</button><button class="btn ghost" id="vault-close">잠그기</button></div>
       <div class="label" id="vault-count"></div>
       <div id="vault-list"></div>
@@ -777,8 +781,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   // ---------- 말로 입력 ----------
   // 기본은 타자. 마이크를 누르면 휴대폰의 음성 인식으로 말을 글자로 받아 적어요.
-  (function voiceInput() {
-    const btn = $("mic-btn"), ta = $("text"), note = $("mic-note"), label = btn.querySelector(".mic-label");
+  function attachVoice(btn, ta, note, max, onChange) {
+    const label = btn.querySelector(".mic-label");
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     let rec = null, listening = false, base = "", finals = "";
     const say = (html) => { note.innerHTML = html; note.hidden = !html; };
@@ -792,6 +796,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       label.textContent = on ? "듣는 중… 누르면 멈춤" : "말로 입력";
     }
     function stop() { if (rec) { try { rec.stop(); } catch {} } setListening(false); }
+    // 잠그거나 보낼 때: 듣던 것을 버리고 바로 꺼요 (잠근 뒤에 글자가 다시 채워지지 않게)
+    function cancel() { if (rec) { rec.onresult = null; rec.onend = null; rec.onerror = null; try { rec.abort(); } catch {} } if (listening) setListening(false); say(""); }
     btn.addEventListener("click", () => {
       if (listening) { stop(); return; }
       if (!SR) { keyboardHint("이 화면에서는 바로 받아 적기를 쓸 수 없어요."); return; }
@@ -804,8 +810,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           const r = e.results[i];
           if (r.isFinal) finals += r[0].transcript.trim() + " "; else interim += r[0].transcript;
         }
-        ta.value = (base + finals + interim).slice(0, 1000);
-        updateSend();
+        ta.value = (base + finals + interim).slice(0, max);
+        onChange();
       };
       rec.onerror = (e) => {
         setListening(false);
@@ -813,7 +819,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         else if (e.error === "aborted") return;
         else keyboardHint("이 화면에서는 마이크를 쓸 수 없어요.");
       };
-      rec.onend = () => { ta.value = (base + finals).trimEnd().slice(0, 1000); updateSend(); if (listening) setListening(false); };
+      rec.onend = () => { ta.value = (base + finals).trimEnd().slice(0, max); onChange(); if (listening) setListening(false); };
       let gotAudio = false;
       rec.onaudiostart = () => { gotAudio = true; };
       // 마이크가 끝내 켜지지 않으면 (권한이 막힌 화면 등) 키보드 음성 입력을 안내해요
@@ -824,7 +830,10 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       } catch { setListening(false); keyboardHint("이 화면에서는 마이크를 쓸 수 없어요."); }
     });
     window.addEventListener("hashchange", () => { if (listening) stop(); });
-  })();
+    return cancel;
+  }
+  const cancelMainMic = attachVoice($("mic-btn"), $("text"), $("mic-note"), 1000, () => updateSend());
+  const cancelVaultMic = attachVoice($("vault-mic-btn"), $("vault-text"), $("vault-mic-note"), 5000, () => {});
 
   // ---------- 가림 처리, 걸러내기 (AI가 없을 때의 대비책) ----------
   function fallbackMask(s) {
@@ -1383,7 +1392,7 @@ ${text}
     if (sending) return;
     const raw = $("text").value.trim();
     if (!pickedEmo || !raw) return;
-    sending = true; $("send").disabled = true;
+    sending = true; $("send").disabled = true; cancelMainMic();
     const emo = pickedEmo, wantPublic = $("opt-public").checked, wantLetter = $("opt-letter").checked;
     show($("ov-busy"));
     const r = await review(raw, emo);
@@ -1884,7 +1893,7 @@ ${text}
     t.value = (t.value.trim() ? t.value.replace(/\s*$/, "\n\n") : "") + TEMPLATES[b.dataset.tpl];
     t.focus();
   }));
-  function lockVault() { vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
+  function lockVault() { cancelVaultMic(); vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
   $("vault-close").addEventListener("click", lockVault);
   let resetArmed = false;
   $("vault-reset").addEventListener("click", async () => {
