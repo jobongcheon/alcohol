@@ -514,6 +514,34 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
 .bar.rank { grid-template-columns: minmax(0, 11em) 1fr 4.4em; }
 
+/* 같이 욕해 주기 */
+.rant-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.rant-btn { background: linear-gradient(120deg, var(--heat-2), var(--heat-3)); font-size: 1.125rem; min-height: 50px; padding: 12px 22px; box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--heat-3) 80%, transparent); }
+.rant-box {
+  position: relative; overflow: hidden; display: grid; gap: 12px; padding: 18px 20px 16px; border-radius: 22px;
+  background: #171313; color: #ffffff; box-shadow: 0 22px 46px -18px rgba(196, 29, 29, .6);
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; animation: fadeUp .5s var(--ease);
+}
+.rant-box::before { content: ""; position: absolute; left: -20%; right: -20%; top: -60%; height: 140%; background: radial-gradient(closest-side, rgba(240, 100, 47, .34), transparent); pointer-events: none; animation: ember 3.5s ease-in-out infinite alternate; }
+.rant-box > * { position: relative; }
+.rant-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.rant-label { font-size: .875rem; font-weight: 700; letter-spacing: .06em; color: #ffb08a; }
+.rant-timer { font-size: .875rem; color: rgba(255, 255, 255, .7); font-variant-numeric: tabular-nums; }
+.rant-text { font-family: var(--display); font-size: var(--step-1); line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.6em; transition: filter .2s; }
+.rant-text.typing::after { content: "▍"; color: var(--heat-2); animation: blink 1s steps(1) infinite; }
+.rant-help { color: #ffd2c2; font-size: 1rem; }
+.rant-bar { height: 5px; border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, .12); }
+.rant-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--heat-1), var(--heat-3)); transition: width .2s linear; }
+.rant-foot { display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: space-between; align-items: center; font-size: .875rem; color: rgba(255, 255, 255, .62); }
+.rant-actions { display: inline-flex; gap: 8px; align-items: center; }
+.rant-link { color: #9fe3c9; font-weight: 700; text-decoration: none; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(159, 227, 201, .35); }
+.rant-close { border: 1px solid rgba(255, 255, 255, .28); background: transparent; color: #ffffff; font-weight: 700; padding: 6px 12px; border-radius: 999px; }
+.rant-box.veiled .rant-text { filter: blur(12px); }
+.rant-box.burn { animation: burnAway .7s ease forwards; }
+@keyframes burnAway { to { opacity: 0; transform: translateY(-10px) scale(.98); filter: blur(8px); } }
+@keyframes ember { from { transform: translateX(-10%); } to { transform: translateX(10%); } }
+@keyframes blink { 50% { opacity: 0; } }
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -602,6 +630,17 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       </div>
       <p class="note mic-note" id="mic-note" role="status" hidden></p>
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
+      <div class="rant-row">
+        <div class="seg" id="rant-level" role="group" aria-label="욕의 세기"><button type="button" data-lv="1" aria-pressed="false">순한맛</button><button type="button" data-lv="2" aria-pressed="false">매운맛</button><button type="button" data-lv="3" aria-pressed="true">불닭맛</button></div>
+        <button class="btn rant-btn" id="rant-btn" type="button" disabled>같이 욕해 줘</button>
+      </div>
+      <div class="rant-box" id="rant-box" hidden aria-live="polite">
+        <div class="rant-head"><span class="rant-label">숨구멍이 대신 욕해 줄게</span><span class="rant-timer" id="rant-timer"></span></div>
+        <p class="rant-text" id="rant-text"></p>
+        <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
+        <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
+        <div class="rant-foot"><span>복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
+      </div>
     </div>
     <div class="panel">
       <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b><br><span class="note">이름·회사명·부서명은 별표로 바뀌고, 3일 뒤 저절로 지워져요. 끄면 게시판에 올리지 않고 바람에만 날려요. 위로 한마디를 위해 AI는 읽어요.</span></span></label>
@@ -905,7 +944,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           <tr><th scope="row">셀카 · 소리 · 목소리</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
           <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
           <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
-          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>위로, 이름 가리기, 위험한 글 거르기용</td></tr>
+          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
         </tbody>
       </table>
     </div>
@@ -1033,6 +1072,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   let syncMainClear = () => {}, syncVaultClear = () => {};
   function updateSend() {
     syncMainClear();
+    $("rant-btn").disabled = !$("text").value.trim();
     const t = $("text").value.trim();
     $("count").textContent = `${$("text").value.length} / 1000`;
     const ok = !!pickedEmo && t.length > 0;
@@ -1732,13 +1772,107 @@ ${text}
     hide(ov);
   }
 
+  // ---------- 같이 욕해 주기 ----------
+  // 위로 대신 내 편이 되어 같이 욕해 줘요. 화면에만 잠깐 보이고 1분 뒤 사라지며, 복사와 저장은 안 돼요.
+  const RANT_LEVEL = {
+    1: "순한맛: 욕설 없이 \"미친 거 아냐?\", \"어이가 없네\", \"양심 어디 갔대\" 정도로 격하게 편들어.",
+    2: "매운맛: \"미친\", \"개념 없는\", \"빡치네\", \"지랄\", \"개떡 같은\" 같은 거친 말을 섞어서 세게.",
+    3: "불닭맛: 한국어 욕설을 아끼지 말고 아주 세게. \"씨발\", \"좆같다\", \"개새끼\", \"존나\", \"미친놈\", \"지랄하네\" 같은 욕을 마음껏 써.",
+  };
+  const RANT_CANNED = {
+    1: ["와, 진짜 너무하네. 그게 사람한테 할 소리야?", "양심이 있으면 그렇게는 못 하지. 어이가 없다 정말.", "너 오늘 진짜 잘 참았어. 이상한 건 그쪽이야."],
+    2: ["아 진짜 미친 거 아냐? 개념을 어디다 두고 다니는 거야.", "듣기만 해도 빡치네. 그딴 식으로 하면 누가 참아.", "넌 하나도 잘못 없어. 그 인간이 개떡 같은 거야."],
+    3: ["아 씨발, 듣기만 해도 열받네. 그딴 식으로 사람을 대하는 게 말이 돼?", "개념을 국 끓여 먹었나, 좆같은 소리를 아주 당당하게 하고 자빠졌네.", "그 새끼가 존나 이상한 거야. 넌 진짜 하나도 잘못 없어."],
+  };
+  function rantPrompt(text, lv) {
+    return `너는 익명 감정 해소 앱 「숨구멍」의 '같이 욕해 주는 친구'야. 사용자는 성인 직장인이고, 직접 「같이 욕해 줘」 버튼을 눌렀어. 네 말은 사용자 화면에만 1분 동안 보였다가 사라지고, 아무에게도 전달되지 않아.
+할 일: 사용자 편을 확실하게 들고, 사용자를 화나게 한 사람이나 상황을 사용자보다 더 세게 욕해 줘. 친한 친구처럼 반말로.
+세기 — ${RANT_LEVEL[lv]}
+지킬 것:
+- 욕은 사용자를 화나게 한 사람과 상황에게만 해. 사용자에게는 절대 욕하지 말고, 마지막 한 문장은 사용자를 확실히 편들어.
+- 여성·남성, 지역, 장애, 인종, 나이, 성적 지향을 비하하는 말은 쓰지 마. ("병신" 같은 장애 비하 욕도 빼.)
+- 때리거나 해치라고 부추기거나 복수하는 방법을 알려 주지 마.
+- 사람 이름이 보이면 이름 대신 "그 인간", "그 새끼"처럼 불러.
+- 3~6문장, 300자 이내. 머리말이나 설명 없이 바로 시작해.
+- 글에 자해나 자살 생각, 또는 누군가를 실제로 해치려는 계획이 보이면 욕하지 말고 "[STOP]"으로 시작해서 걱정하는 말 한두 문장만 해.
+사용자가 쓴 글:
+<<<
+${text}
+>>>`;
+  }
+  const wipeRant = (function rant() {
+    const btn = $("rant-btn"), box = $("rant-box"), out = $("rant-text"), bar = $("rant-bar"), timer = $("rant-timer"), help = $("rant-help");
+    let ctrl = null, tick = 0, burnT = 0;
+    const level = () => Number(document.querySelector('#rant-level [aria-pressed="true"]').dataset.lv);
+    $("rant-level").addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      $("rant-level").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    });
+    function wipe() {
+      if (ctrl) { ctrl.abort(); ctrl = null; }
+      clearInterval(tick); clearTimeout(burnT);
+      if (box.hidden) return;
+      box.classList.add("burn");
+      burnT = setTimeout(() => { out.textContent = ""; help.hidden = true; hide(box); box.classList.remove("burn"); btn.textContent = "같이 욕해 줘"; }, 700);
+    }
+    function countdown() {
+      const end = Date.now() + 60000;
+      clearInterval(tick);
+      tick = setInterval(() => {
+        const left = Math.max(0, end - Date.now());
+        bar.style.width = (left / 600) + "%";
+        timer.textContent = `${Math.ceil(left / 1000)}초 뒤 사라져요`;
+        if (!left) wipe();
+      }, 200);
+    }
+    const clean = (t) => String(t || "").replace(/^\s*\[STOP\]\s*/, "").trim();
+    btn.addEventListener("click", async () => {
+      const raw = $("text").value.trim(); if (!raw) return;
+      if (ctrl) ctrl.abort();
+      clearInterval(tick); clearTimeout(burnT);
+      box.classList.remove("burn"); show(box); help.hidden = true;
+      out.textContent = ""; out.classList.add("typing");
+      bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.textContent = "한 번 더 욕해 줘";
+      const lv = level();
+      let text = "";
+      if (SELF.test(raw) || DANGER.test(raw)) text = "[STOP]";
+      else if (sample) {
+        const my = ctrl = new AbortController();
+        try {
+          const r = await sample(rantPrompt(fallbackMask(raw), lv), { modelTier: "default", cache: false, signal: my.signal, onText: ({ text: t }) => { if (!/^\s*\[S/.test(t)) out.textContent = clean(t); } });
+          text = r.text;
+        } catch (e) { if (e && e.code === "cancelled") return; text = ""; }
+        if (ctrl !== my) return;
+        ctrl = null;
+      }
+      out.classList.remove("typing");
+      if (/^\s*\[STOP\]/.test(text)) {
+        out.textContent = clean(text) || "지금 마음이 많이 위태로워 보여. 욕보다 네가 먼저야.";
+        help.hidden = false;
+      } else {
+        out.textContent = clean(text) || RANT_CANNED[lv].join(" ");
+      }
+      countdown();
+    });
+    $("rant-close").addEventListener("click", wipe);
+    $("rant-box").querySelector(".rant-link").addEventListener("click", wipe);
+    // 복사, 길게 누르기, 끌기 막기. 다른 창으로 넘어가면 글씨를 흐리게 해요.
+    ["copy", "cut", "contextmenu", "selectstart", "dragstart"].forEach(ev => box.addEventListener(ev, e => e.preventDefault()));
+    document.addEventListener("copy", e => { const sel = getSelection(); if (sel && box.contains(sel.anchorNode)) e.preventDefault(); });
+    window.addEventListener("blur", () => box.classList.add("veiled"));
+    window.addEventListener("focus", () => box.classList.remove("veiled"));
+    document.addEventListener("visibilitychange", () => box.classList.toggle("veiled", document.hidden));
+    window.addEventListener("hashchange", () => { if (location.hash !== "#write" && location.hash !== "") wipe(); });
+    return wipe;
+  })();
+
   // ---------- 보내기 ----------
   let sending = false;
   $("send").addEventListener("click", async () => {
     if (sending) return;
     const raw = $("text").value.trim();
     if (!pickedEmo || !raw) return;
-    sending = true; $("send").disabled = true; cancelMainMic();
+    sending = true; $("send").disabled = true; cancelMainMic(); wipeRant();
     const emo = pickedEmo, wantPublic = $("opt-public").checked, wantLetter = $("opt-letter").checked;
     show($("ov-busy"));
     const r = await review(raw, emo);
