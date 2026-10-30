@@ -543,7 +543,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .move-stage { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .relief-grid { gap: 10px; }
   .rant-row .rant-btn { width: 100%; }
-  .rant-opts .opt-group { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .rant-row, .rant-go { width: 100%; }
+  .rant-row .opt-group { flex-direction: column; align-items: flex-start; gap: 4px; }
   .relief-card { padding: 14px 12px; border-radius: 18px; gap: 4px; }
   .relief-card h3 { font-size: 1.125rem; }
   .relief-card p { font-size: .8125rem; }
@@ -555,7 +556,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .bar.rank { grid-template-columns: minmax(0, 11em) 1fr 4.4em; }
 
 /* 같이 욕해 주기 */
-.rant-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.rant-row { display: grid; gap: 10px; justify-items: start; }
+.rant-go { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
 .rant-opts { display: grid; gap: 8px; justify-items: start; }
 .opt-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .opt-label { font-size: .8125rem; font-weight: 700; letter-spacing: .06em; min-width: 2.6em; }
@@ -687,11 +689,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <p class="note mic-note" id="mic-note" role="status" hidden></p>
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
       <div class="rant-row">
-        <div class="rant-opts">
           <div class="opt-group opt-heat"><span class="opt-label">세기</span><div class="seg" id="rant-level" role="group" aria-label="욕의 세기"><button type="button" data-lv="1" aria-pressed="false">순한맛</button><button type="button" data-lv="2" aria-pressed="false">매운맛</button><button type="button" data-lv="3" aria-pressed="true">불닭맛</button></div></div>
-          <div class="opt-group opt-tone"><span class="opt-label">말투</span><div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button><button type="button" data-d="en" aria-pressed="false">영어</button></div></div>
+        <div class="rant-go">
+            <div class="opt-group opt-tone"><span class="opt-label">말투</span><div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button><button type="button" data-d="en" aria-pressed="false">영어</button></div></div>
+          <button class="btn rant-btn" id="rant-btn" type="button" disabled>같이 욕해 줘</button>
         </div>
-        <button class="btn rant-btn" id="rant-btn" type="button" disabled>같이 욕해 줘</button>
       </div>
       <div class="rant-box" id="rant-box" hidden aria-live="polite">
         <div class="rant-head"><span class="rant-label" id="rant-label">숨구멍이 대신 욕해 줄게</span><span class="rant-timer" id="rant-timer"></span></div>
