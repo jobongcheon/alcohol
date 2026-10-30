@@ -576,6 +576,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-say svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .rant-say[aria-pressed="true"] svg { animation: pulseSay 1s ease-in-out infinite; }
 .rant-say:disabled { opacity: .4; }
+.rant-voice { max-width: 200px; font-size: .8125rem; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .28); background: #241c1c; color: #ffffff; }
 @keyframes pulseSay { 50% { transform: scale(1.18); } }
 .rant-btn {
   display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; min-height: 46px; padding: 10px 16px 10px 12px;
@@ -828,7 +829,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <p class="rant-trans" id="rant-trans" hidden></p>
         <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
         <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
-        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
+        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><select class="rant-voice" id="rant-voice" aria-label="읽어 주는 목소리" hidden></select><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
       </div>
     </div>
     <div class="panel">
@@ -2131,8 +2132,24 @@ ${text}
     const sayBtn = $("rant-say"), sayLbl = sayBtn.querySelector("span"), footNote = $("rant-foot-note");
     const FOOT = "복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.";
     let speaking = false, saidDialect = "std", saidLevel = 3;
-    const enVoice = () => { const vs = speechSynthesis.getVoices() || []; return vs.find(v => /^en-US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null; };
-    const koVoice = () => (speechSynthesis.getVoices() || []).find(v => /^ko/i.test(v.lang)) || null;
+    // 기기에 있는 목소리 중 사람 목소리에 가까운 것(Natural, Online, Google, Enhanced)을 먼저 골라요
+    const isNatural = (v) => /(Natural|Neural|Online|Premium|Enhanced)/i.test(v.name);
+    const voiceScore = (v) => (isNatural(v) ? 6 : 0) + (/Google/i.test(v.name) ? 4 : 0) + (v.localService ? 0 : 1);
+    const voicesFor = (lang) => (("speechSynthesis" in window && speechSynthesis.getVoices()) || [])
+      .filter(v => (lang === "en" ? /^en/i : /^ko/i).test(v.lang))
+      .sort((a, b) => voiceScore(b) - voiceScore(a) || (lang === "en" ? (/en-US/i.test(b.lang) - /en-US/i.test(a.lang)) : 0));
+    const voiceLabel = (v) => v.name.replace(/^(Microsoft|Google)\s*/i, "").replace(/\s*-\s*(Korean|English).*$/i, "").replace(/\s*Online\s*\(Natural\)/i, "").trim() + (isNatural(v) ? " · 자연스러움" : "");
+    const voiceSel = $("rant-voice");
+    function fillVoices() {
+      const lang = saidDialect === "en" ? "en" : "ko", list = voicesFor(lang), saved = store.get("sg.voice." + lang, "");
+      voiceSel.innerHTML = "";
+      list.forEach(v => { const o = document.createElement("option"); o.value = v.name; o.textContent = voiceLabel(v); voiceSel.appendChild(o); });
+      voiceSel.hidden = list.length < 2;
+      if (list.some(v => v.name === saved)) voiceSel.value = saved;
+    }
+    voiceSel.addEventListener("change", () => { store.set("sg.voice." + (saidDialect === "en" ? "en" : "ko"), voiceSel.value); if (speaking) { stopSay(); sayBtn.click(); } });
+    if ("speechSynthesis" in window) { try { speechSynthesis.addEventListener("voiceschanged", fillVoices); } catch {} }
+    const pickVoice = (lang) => { const list = voicesFor(lang); return list.find(v => v.name === voiceSel.value) || list[0] || null; };
     if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", () => {}); } catch {} }
     function stopSay() {
       try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch {}
@@ -2144,9 +2161,10 @@ ${text}
       let text = out.textContent.trim(); if (!text) return;
       const en = saidDialect === "en";
       if (en) text = text.replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase()); // 대문자 낱말을 한 글자씩 읽지 않게
-      const v = en ? enVoice() : koVoice(), u = new SpeechSynthesisUtterance(text);
+      const v = pickVoice(en ? "en" : "ko"), u = new SpeechSynthesisUtterance(text);
       u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
-      u.rate = RANT_DIALECT[saidDialect].rate; u.pitch = saidLevel >= 3 ? (en ? 0.82 : 0.9) : 1;
+      u.rate = RANT_DIALECT[saidDialect].rate;
+      u.pitch = v && isNatural(v) ? 1 : (saidLevel >= 3 ? (en ? 0.82 : 0.9) : 1); // 자연스러운 목소리는 높낮이를 건드리지 않아야 덜 기계 같아요
       u.onend = () => stopSay(); u.onerror = () => stopSay();
       speechSynthesis.cancel(); speechSynthesis.speak(u);
       speaking = true; sayLbl.textContent = "멈추기"; sayBtn.setAttribute("aria-pressed", "true");
@@ -2188,7 +2206,7 @@ ${text}
       bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.querySelector("span").textContent = "한 번 더 욕해 줘";
       const lv = level(), d = dialect();
       stopSay(); footNote.textContent = FOOT; sayBtn.disabled = true;
-      saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en");
+      saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en"); fillVoices();
       $("rant-label").textContent = d === "std" ? "숨구멍이 대신 욕해 줄게" : `숨구멍이 대신 욕해 줄게 · ${RANT_DIALECT[d].name} 버전`;
       let text = "";
       if (SELF.test(raw) || DANGER.test(raw)) text = "[STOP]";
