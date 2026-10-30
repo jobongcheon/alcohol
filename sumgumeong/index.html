@@ -297,12 +297,17 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .promises h3 { font-size: var(--step-1); }
 .promises ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; color: var(--ink-soft); font-size: 1rem; }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
-  .atmos { transform: none; }
-}
+/* 움직임 줄이기: 기기 설정을 따르되, 화면의 「움직임 켜기」로 바꿀 수 있어요 */
+:root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
+:root[data-motion="off"] .atmos { transform: none; }
+:root[data-motion="off"] .orb .out { display: none; }
+.motion-toggle { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .72); border-radius: 999px; padding: 6px 14px; font-size: .9375rem; font-weight: 700; color: var(--ink-soft); }
+.motion-toggle::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mood); }
+:root[data-motion="off"] .motion-toggle { background: var(--ink); color: #ffffff; border-color: transparent; }
+:root[data-motion="off"] .motion-toggle::before { background: #ffffff; }
 @media print { body * { visibility: hidden !important; } }
 </style>
+<script>try { var m = JSON.parse(localStorage.getItem("sg.motion") || "null"); } catch (e) { m = null; } document.documentElement.dataset.motion = m || (matchMedia("(prefers-reduced-motion: reduce)").matches ? "off" : "on");</script>
 
 <div class="atmos" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wrap">
@@ -311,6 +316,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <p class="eyebrow">익명 감정 쉼터</p>
       <h1 class="title" aria-label="숨구멍"><span style="--d:0">숨</span><span style="--d:1">구</span><span style="--d:2">멍</span></h1>
       <p class="sub">참지 말고, 여기 내려놓고 가세요.</p>
+      <button class="motion-toggle" id="motion-toggle" type="button"></button>
     </div>
     <div class="breath" aria-hidden="true"><div class="orb"><span class="in">들이쉬고</span><span class="out">내쉬고</span></div></div>
   </header>
@@ -750,6 +756,18 @@ ${text}
     });
   }
 
+  // ---------- 움직임 켜고 끄기 ----------
+  const motionOff = () => document.documentElement.dataset.motion === "off";
+  function syncMotionToggle() { $("motion-toggle").textContent = motionOff() ? "움직임 켜기" : "움직임 줄이기"; }
+  $("motion-toggle").addEventListener("click", () => {
+    const next = motionOff() ? "on" : "off";
+    document.documentElement.dataset.motion = next; store.set("sg.motion", next);
+    syncMotionToggle(); window.dispatchEvent(new Event("sg-motion"));
+    // 멈춰 있던 애니메이션을 처음부터 다시 맞춰 틀어요
+    requestAnimationFrame(() => document.getAnimations().forEach(a => { try { a.cancel(); a.play(); } catch {} }));
+  });
+  syncMotionToggle();
+
   // ---------- 바람 애니메이션 ----------
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   // 바람 세기: 위치와 시간에 따라 일렁이는 돌풍
@@ -763,7 +781,7 @@ ${text}
   // 「바람에 날려 보내기」 버튼 위에 늘 흐르는 바람결
   (function buttonGust() {
     const btn = $("send"), cv = btn.querySelector(".gust"), ctx = cv.getContext("2d");
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const reduce = { get matches() { return motionOff(); } };
     let W = 0, H = 0, streaks = [], hover = false, last = performance.now(), speed = 0.4;
     function size() {
       const r = btn.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
@@ -801,6 +819,7 @@ ${text}
     btn.addEventListener("pointerleave", () => { hover = false; });
     new ResizeObserver(size).observe(btn);
     document.addEventListener("visibilitychange", start);
+    window.addEventListener("sg-motion", start);
     size(); start();
   })();
 
@@ -1164,7 +1183,7 @@ ${text}
     const fs = W < 500 ? 21 : 25, lineH = fs * 1.6, font = `${fs}px "Gowun Batang", serif`;
     try { await Promise.race([document.fonts.load(font), sleep(400)]); } catch {}
     const S = { ctx, W, H, fs, lineH, font, text, INK: css("--ink") || "#111111", PAPER: css("--paper") || "#ffffff", ...layoutPaper(ctx, text, W, H, font, fs, lineH) };
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = motionOff();
     const scene = reduce ? { title: "", run: sceneFade } : pickScene();
     const title = $("scene-title");
     title.textContent = scene.title; title.classList.remove("show"); void title.offsetWidth; title.classList.add("show");
@@ -1737,9 +1756,10 @@ ${text}
   }
 
   // 마우스를 따라 배경 공기가 살짝 움직여요
-  if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (matchMedia("(pointer: fine)").matches) {
     let pending = false, mx = 0, my = 0;
     window.addEventListener("pointermove", e => {
+      if (motionOff()) return;
       mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5;
       if (pending) return; pending = true;
       requestAnimationFrame(() => { pending = false; const r = document.documentElement.style; r.setProperty("--px", mx.toFixed(3)); r.setProperty("--py", my.toFixed(3)); });
