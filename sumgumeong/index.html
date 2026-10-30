@@ -2176,6 +2176,7 @@ ${text}
       .filter(v => (lang === "en" ? /^en/i : /^ko/i).test(v.lang))
       .sort((a, b) => voiceScore(b) - voiceScore(a) || (lang === "en" ? (/en-US/i.test(b.lang) - /en-US/i.test(a.lang)) : 0));
     // 읽어 주는 사람: 여자 3명, 남자 3명 + 나이(20~60대). 기기 목소리를 성별로 나누고, 높낮이·빠르기로 사람과 나이를 만들어요
+    const SAY_SPEED = 1.5; // 욕은 빨라야 맛: 기본보다 1.5배 빠르게 읽어요
     const CAST = [
       { id: "f1", g: "f", name: "소희", p: .08, r: .03 },
       { id: "f2", g: "f", name: "다은", p: .02, r: -.06 },
@@ -2217,7 +2218,7 @@ ${text}
       const nth = CAST.filter(x => x.g === c.g).indexOf(c);
       const v = same.length ? same[nth % same.length] : (all[0] || null);
       const shift = same.length || !v ? 0 : (c.g === "m" ? -.32 : .28);
-      return { v, c, faked: !same.length && !!v, pitch: Math.min(2, Math.max(.5, 1 + c.p + a.p + shift)), rate: 1 + c.r + a.r };
+      return { v, c, faked: !same.length && !!v, pitch: Math.min(2, Math.max(.5, 1 + c.p + a.p + shift)), rate: Math.min(2.5, SAY_SPEED * (1 + c.r + a.r)) };
     }
     function preview() {
       const en = dialect() === "en", pick = voiceFor(en ? "en" : "ko");
@@ -2245,7 +2246,7 @@ ${text}
       if (en) text = text.replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase()); // 대문자 낱말을 한 글자씩 읽지 않게
       const pick = voiceFor(en ? "en" : "ko"), v = pick.v, u = new SpeechSynthesisUtterance(text);
       u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
-      u.rate = RANT_DIALECT[saidDialect].rate * pick.rate;
+      u.rate = Math.min(2.5, RANT_DIALECT[saidDialect].rate * pick.rate);
       u.pitch = pick.pitch;
       u.onend = () => stopSay(); u.onerror = () => stopSay();
       speechSynthesis.cancel(); speechSynthesis.speak(u);
