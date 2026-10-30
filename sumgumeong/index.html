@@ -190,6 +190,7 @@ textarea::placeholder { color: #9a9a9e; }
 .guide-hook { font-family: var(--display); font-size: 1.1875rem; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--hk, var(--heat-3)) 9%, #ffffff); border-left: 4px solid var(--hk, var(--heat-3)); border-radius: 4px 12px 12px 4px; padding: 10px 14px; }
 .guide ol b { color: var(--ink); }
 .hook-in { animation: fadeUp .6s var(--ease) both; }
+.label.text-label { font-family: var(--display); font-size: 1.45rem; letter-spacing: 0; color: var(--hk, var(--heat-3)); }
 .guide-block h3 { font-size: 1.2rem; }
 .guide ul, .guide ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
 .guide ol li::marker { color: var(--mood); font-weight: 700; }
@@ -697,7 +698,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     </details>
     <div class="emos" id="emos" role="group" aria-label="감정 고르기"></div>
     <div style="display:grid;gap:10px">
-      <label class="label" for="text">하고 싶은 말</label>
+      <label class="label text-label" id="text-label" for="text">하고 싶은 말</label>
       <div class="ta-wrap">
         <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
         <div class="ta-tools main-tools"><button class="rant-btn" id="rant-btn" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.6 2-4.6.3 1.6 1.2 2.6 2.2 2.6C10.8 9 11 6 12 3z"/></svg><span>같이 욕해 줘</span></button><button class="clear-btn" id="clear-btn" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg><span>지우기</span></button><button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button></div>
@@ -2948,6 +2949,7 @@ ${text}
     ["이 정도면 화낼 만했어요", "여기선 아무도 「예민하다」고 안 해요."],
     ["5분만 미친 듯이 털고 가요", "다 비우고 나가면, 그 인간도 그냥 지나가는 사람 1이에요."],
   ];
+  const TEXT_LABELS = ["쏟아내요, 필터 없이", "그 인간한테 못 한 말", "오늘 삼킨 말, 여기다 뱉어요", "속에 있는 거 전부 다", "욕부터 써도 괜찮아요", "하고 싶었던 그 말, 지금", "아무도 안 봐요, 마음껏", "참았던 만큼 길게", "받아치고 싶었던 한마디", "머릿속 그 장면, 그대로 적어요"];
   const HOOK_COLORS = ["#d43a22", "#6c5ce7", "#3f6fe0", "#2f8f6f", "#c96a12", "#d9506f"];
   function pickHook() {
     const last = store.get("sg.hook", -1);
@@ -2955,7 +2957,12 @@ ${text}
     store.set("sg.hook", i);
     const t = $("write-guide-title"), h = $("write-guide-hook");
     t.textContent = GUIDE_HOOKS[i][0]; h.textContent = GUIDE_HOOKS[i][1];
-    t.closest(".guide").style.setProperty("--hk", HOOK_COLORS[i % HOOK_COLORS.length]);
+    $("view-write").style.setProperty("--hk", HOOK_COLORS[i % HOOK_COLORS.length]);
+    const lastL = store.get("sg.tlabel", -1);
+    let j; do { j = Math.floor(Math.random() * TEXT_LABELS.length); } while (j === lastL);
+    store.set("sg.tlabel", j);
+    const lb = $("text-label"); lb.textContent = TEXT_LABELS[j];
+    lb.classList.remove("hook-in"); void lb.offsetWidth; lb.classList.add("hook-in");
     [t, h].forEach(el => { el.classList.remove("hook-in"); void el.offsetWidth; el.classList.add("hook-in"); });
   }
   pickHook();
