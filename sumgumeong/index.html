@@ -727,6 +727,53 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .bub { aspect-ratio: 1; border-radius: 50%; cursor: pointer; background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .95) 0 14%, rgba(190, 222, 245, .75) 40%, rgba(120, 175, 215, .45) 100%); box-shadow: inset 0 -3px 6px rgba(60, 120, 170, .25), 0 2px 4px rgba(60, 120, 170, .15); transition: transform .15s ease; }
 .bub:hover { transform: scale(1.05); }
 .bub.popped { background: radial-gradient(circle at 50% 50%, rgba(200, 220, 235, .35), rgba(200, 220, 235, .15)); box-shadow: inset 0 1px 2px rgba(60, 120, 170, .2); transform: scale(.86) rotate(8deg); clip-path: polygon(10% 30%, 30% 8%, 55% 18%, 80% 6%, 94% 34%, 84% 60%, 96% 84%, 66% 94%, 40% 82%, 16% 94%, 6% 66%); }
+/* 두더지 잡기 */
+.mole-hud, .mole-board { max-width: 600px; margin-inline: auto; width: 100%; }
+.mole-hud { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 1rem; }
+.mole-hud b { font-family: var(--display); font-size: var(--step-1); color: var(--c); font-variant-numeric: tabular-nums; }
+.mole-left.hurry b { color: #e5482f; animation: hurry .5s ease-in-out infinite alternate; display: inline-block; }
+@keyframes hurry { to { transform: scale(1.25); } }
+.mole-combo { font-weight: 800; color: #e5482f; font-family: var(--display); }
+.mole-combo:not(:empty) { animation: comboPop .3s var(--ease); }
+@keyframes comboPop { from { transform: scale(1.5); } }
+.mole-board {
+  position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 16px; padding: 64px 22px 20px; border-radius: 24px; overflow: hidden;
+  touch-action: manipulation; user-select: none; -webkit-user-select: none; border: 1px solid var(--hair);
+  background: radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .35), transparent 40%), radial-gradient(ellipse at 50% 120%, #6fa64a, #8fc566 55%, #b5dc8c);
+}
+.mole-board.mouse { cursor: none; }
+.hole { position: relative; aspect-ratio: 1 / .78; }
+.hole::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: 6%; height: 34%; border-radius: 50%; background: radial-gradient(ellipse at 50% 35%, #1e120a 0 50%, #3d2615 72%, #5a3a20); }
+.hole::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 24%; z-index: 2; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: linear-gradient(#9a6a3e, #7a4f2b); box-shadow: 0 5px 0 rgba(40, 70, 20, .25); pointer-events: none; }
+.pit { position: absolute; left: 12%; right: 12%; top: -85%; bottom: 20%; overflow: hidden; }
+.mole { position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(104%); transition: transform .18s cubic-bezier(.3, 1.5, .6, 1); --fur: #8b5e3c; --belly: #e3c29c; }
+.mole.up { transform: translateY(-10%); }
+.mole.hit { transform: translateY(14%) scale(1.06, .8); transition: transform .07s ease-out; }
+.mole.gold { --fur: #e2a72a; --belly: #fff0b8; filter: drop-shadow(0 0 10px rgba(255, 210, 80, .8)); }
+.mole svg { display: block; width: 100%; height: auto; }
+.mole .fur { fill: var(--fur); } .mole .belly, .mole .claw { fill: var(--belly); }
+.mole .x, .mole .crown { display: none; }
+.mole.hit .x, .mole.gold .crown { display: inline; }
+.mole.hit .eye, .mole.hit .brow { display: none; }
+.mole .tag { position: absolute; left: 50%; top: 58%; transform: translateX(-50%) rotate(-3deg); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background: #ffffff; color: #3a2414; font-weight: 800; font-size: clamp(.6875rem, 2.4vw, 1rem); padding: 2px 8px; border-radius: 6px; box-shadow: 0 2px 0 rgba(0, 0, 0, .18); pointer-events: none; }
+.bonk { position: absolute; z-index: 4; pointer-events: none; font-family: var(--display); font-weight: 900; font-size: 1.75rem; color: #ffffff; -webkit-text-stroke: 1.5px #c0392b; paint-order: stroke; text-shadow: 0 3px 0 #c0392b; transform: translate(-50%, -50%); animation: bonkUp .7s var(--ease) forwards; }
+.bonk.gold { color: #ffe066; -webkit-text-stroke-color: #a8760a; text-shadow: 0 3px 0 #a8760a; font-size: 2rem; }
+.bonk-ring { position: absolute; z-index: 3; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; border: 3px solid #ffffff; pointer-events: none; animation: bonkRing .4s ease-out forwards; }
+@keyframes bonkUp { 0% { transform: translate(-50%, -50%) scale(.4) rotate(-12deg); opacity: 0; } 25% { transform: translate(-50%, -80%) scale(1.15) rotate(6deg); opacity: 1; } 100% { transform: translate(-50%, -170%) scale(1) rotate(0); opacity: 0; } }
+@keyframes bonkRing { to { transform: scale(4.5); opacity: 0; } }
+.hammer { position: absolute; left: 0; top: 0; width: 80px; height: 80px; margin: -21px 0 0 -23px; z-index: 5; pointer-events: none; transform-origin: 70px 71px; rotate: 32deg; opacity: 0; transition: opacity .15s; filter: drop-shadow(0 6px 6px rgba(0, 0, 0, .25)); }
+.hammer.show { opacity: 1; }
+.hammer.swing { animation: hamSwing .22s ease-out; }
+@keyframes hamSwing { 0% { rotate: 32deg; } 35% { rotate: -6deg; } 55% { rotate: 0deg; } 100% { rotate: 32deg; } }
+.mole-cover { position: absolute; inset: 0; z-index: 6; display: grid; place-content: center; justify-items: center; gap: 14px; padding: 20px; text-align: center; color: #ffffff; background: rgba(28, 44, 16, .55); backdrop-filter: blur(3px); }
+.mole-msg { margin: 0; font-family: var(--display); font-size: var(--step-1); line-height: 1.4; text-shadow: 0 2px 8px rgba(0, 0, 0, .35); }
+.mole-msg small { display: block; margin-top: 6px; font-family: var(--body); font-size: .9375rem; opacity: .85; }
+.mole-cover .btn { min-width: 160px; background: #e5482f; color: #ffffff; }
+@media (max-width: 639px) {
+  .mole-board { gap: 22px 10px; padding: 52px 12px 14px; }
+  .bonk { font-size: 1.375rem; }
+}
 @media (max-width: 639px) {
   .monster-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .mon-stage { width: 128px; }
@@ -928,7 +975,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           <li>화면 안내를 따라 해요. 1~5분이면 끝나요.</li>
           <li>끝나면 다시 점수를 눌러요. 몇 점 내려갔는지 보여 드리고, 기록이 쌓이면 나에게 맞는 순위를 알려 드려요.</li>
         </ol>
-        <p class="note">분노 몬스터는 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이를 할 때마다 내 분노를 먹고 자라요. 몬스터를 누르면 말을 걸어요.</p>
+        <p class="note">분노 몬스터는 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이, 두더지 잡기를 할 때마다 내 분노를 먹고 자라요. 몬스터를 누르면 말을 걸어요.</p>
         <p class="note">화가 확 났을 때는 소리를 지르는 것보다 숨쉬기나 근육 풀기처럼 몸을 가라앉히는 방법이 더 효과적이라는 연구가 있어요. 소리를 질렀다면 이어서 숨을 골라 보세요.</p>
       </div>
     </details>
@@ -1028,6 +1075,16 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <div class="bubble-grid" id="bubble-grid" aria-label="뽁뽁이 판. 누르거나 문질러서 터뜨려요."></div>
         <div class="row" style="justify-content:space-between"><p class="game-count">터뜨린 뽁뽁이 <b id="bubble-count">0</b></p><button class="btn ghost small" id="bubble-new" type="button">새 뽁뽁이 깔기</button></div>
         <p class="note" id="bubble-msg" role="status"></p>
+      </div>
+
+      <div class="ex" id="ex-mole" hidden>
+        <div class="row dur-row"><label class="label" for="mole-word">두더지 이름</label><input type="text" class="field plate-word" id="mole-word" maxlength="6" placeholder="예: 김부장 (비우면 랜덤)"></div>
+        <div class="mole-hud"><span>잡은 두더지 <b id="mole-score">0</b></span><span class="mole-combo" id="mole-combo" aria-live="polite"></span><span class="mole-left">남은 시간 <b id="mole-time">30</b>초</span></div>
+        <div class="mole-board" id="mole-board" aria-label="두더지 잡기 판. 튀어나온 두더지를 누르세요.">
+          <svg class="hammer" id="mole-hammer" viewBox="0 0 80 80" aria-hidden="true"><path d="M27 28L70 71" stroke="#c98a2b" stroke-width="8" stroke-linecap="round"/><path d="M27 28L70 71" stroke="#ffd34d" stroke-width="4" stroke-linecap="round"/><rect x="5" y="10" width="36" height="22" rx="9" fill="#e5482f"/><rect x="5" y="10" width="7" height="22" rx="3.5" fill="#ffd34d"/><rect x="34" y="10" width="7" height="22" rx="3.5" fill="#ffd34d"/><rect x="14" y="13" width="16" height="4" rx="2" fill="#ffffff" opacity=".45"/></svg>
+          <div class="mole-cover" id="mole-cover"><p class="mole-msg" id="mole-msg">튀어나오는 놈들을 뿅망치로 쾅!<br><small>30초 동안 몇 마리 잡을까? 황금 두더지는 3점</small></p><button class="btn" id="mole-start" type="button">시작!</button></div>
+        </div>
+        <p class="game-count"><span class="note">최고 기록 <b id="mole-best">0</b>마리 · 소리가 나요. 놓치거나 헛치면 콤보가 끊겨요.</span></p>
       </div>
 
       <div class="ex" id="ex-move" hidden>
@@ -2666,6 +2723,8 @@ ${text}
       ev: '<p>접시를 깨며 화를 푸는 「분노의 방」이 유행이지만, 연구로 효과가 확인된 방법은 아니에요. 154개 연구를 모은 2024년 분석에서는 흥분을 올리는 활동이 화를 줄이는 효과가 거의 없었어요.</p><p>재미로 깨 보고 점수를 매겨서 나한테 맞는지 직접 확인해 보세요. 깬 다음엔 「한숨 호흡」으로 이어 가면 좋아요.</p>' },
     { key: "bubble", short: "뽁뽁이", name: "뽁뽁이 터뜨리기", c: "#2f8fc9", time: "자유롭게", tag: "재미로", line: "뽁뽁이를 누르거나 문질러서 마구 터뜨려요.",
       ev: '<p>뽁뽁이를 터뜨리면 긴장이 풀린다는 사람이 많지만, 제대로 된 연구는 아직 적어요. 손을 단순하게 반복해서 움직이면 잠깐 머리를 쉬게 하는 데 도움이 될 수 있어요.</p><p>점수를 매겨서 나한테 맞는지 직접 확인해 보세요.</p>' },
+    { key: "mole", short: "두더지 잡기", name: "두더지 잡기", c: "#8b5e3c", time: "30초", tag: "재미로", line: "화나게 한 놈들이 두더지로 튀어나와요. 뿅망치로 쾅!",
+      ev: '<p>빠르게 나타나는 표적을 잡는 놀이는 잠깐 머리를 딴 데로 돌리는 데 도움이 될 수 있지만, 화를 줄이는 효과가 연구로 확인된 방법은 아니에요.</p><p>재미로 한 판 하고 점수를 매겨서 나한테 맞는지 직접 확인해 보세요. 끝나고 「한숨 호흡」으로 이어 가면 더 좋아요.</p>' },
     { key: "shout", short: "소리 지르기", name: "소리 지르기", c: "#e5482f", time: "3초", tag: "재미로", noScore: true, line: "3초 동안 크게 외치고 분노를 데시벨로 재 봐요.",
       ev: '<p>소리를 지르거나 샌드백을 치는 것처럼 흥분을 올리는 방법은, 154개 연구를 모은 2024년 분석에서 화를 줄이는 효과가 거의 없었고 오히려 화를 키우기도 했어요.</p><p>그래서 재미로 한 번 질러 보고, 이어서 숨을 고르는 걸 추천해요.</p><p><a href="https://news.osu.edu/breathe-dont-vent-turning-down-the-heat-is-key-to-managing-anger/" target="_blank" rel="noopener">2024년 분석 소개</a></p>' },
   ];
@@ -2774,6 +2833,7 @@ ${text}
     else if (key === "music") { setupMusic(); go.textContent = "듣기 시작"; go.onclick = runMusic; }
     else if (key === "move") { setupMove(); go.onclick = runMove; }
     else if (key === "plate") { setupPlate(); go.textContent = "다 깼어요, 점수 매기기"; go.onclick = () => { stopRelief(); askScore("after"); }; }
+    else if (key === "mole") { setupMole(); go.textContent = "그만하고 점수 매기기"; go.onclick = () => { stopRelief(); askScore("after"); }; }
     else if (key === "bubble") { setupBubble(); go.textContent = "다 터뜨렸어요, 점수 매기기"; go.onclick = () => { stopRelief(); askScore("after"); }; }
   }
   function finish(after) {
@@ -3007,7 +3067,7 @@ ${text}
   renderHub();
 
   // ---------- 분노 몬스터 ----------
-  // 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이를 할 때마다 내 분노를 먹고 자라요. 기록은 이 기기에만 남아요.
+  // 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이, 두더지 잡기를 할 때마다 내 분노를 먹고 자라요. 기록은 이 기기에만 남아요.
   const MON_STAGES = [{ at: 0, n: "알" }, { at: 3, n: "아기 몬스터" }, { at: 10, n: "꼬마 몬스터" }, { at: 25, n: "사춘기 몬스터" }, { at: 50, n: "대왕 몬스터" }, { at: 100, n: "전설의 몬스터" }];
   const MON_COLOR = { angry: "#e5482f", hurt: "#4a6cf0", unfair: "#8a4fd6", tired: "#2f8f6f" };
   const MON_SAY = {
@@ -3021,6 +3081,7 @@ ${text}
     shout: ["고함 소리 꿀꺽!", "목청 좋네! 소리째로 먹었다!"],
     plate: ["접시 조각은 바삭바삭해!", "와장창 소리 맛있다!"],
     bubble: ["뽁뽁 소리가 간지러워!", "뽁! 뽁! 한 장 더 줘!"],
+    mole: ["두더지 맛 쫀득하다! 크앙!", "뿅망치 소리 맛있다! 한 판 더!"],
     calm: ["후… 너 덕분에 나도 좀 진정됐어.", "숨 쉬니까 나도 졸려… 좋다."],
     hungry: ["요즘 평화로웠나 봐. 배는 고프지만, 그건 좋은 일이야."],
   };
@@ -3097,7 +3158,7 @@ ${text}
   });
   renderMonster(mon.food === 0 ? monLine("egg") : (Date.now() - mon.last > 3 * DAY ? monLine("hungry") : monLine("idle")));
 
-  // ---------- 접시 깨기, 뽁뽁이 ----------
+  // ---------- 접시 깨기, 뽁뽁이, 두더지 잡기 ----------
   let gameAC = null;
   const gac = () => { if (!gameAC) gameAC = new (window.AudioContext || window.webkitAudioContext)(); if (gameAC.state === "suspended") gameAC.resume(); return gameAC; };
   function noiseBurst(ac, dur, curve) {
@@ -3222,6 +3283,97 @@ ${text}
     $("bubble-new").onclick = () => { $("bubble-msg").textContent = ""; fill(); };
     $("bubble-msg").textContent = "";
     fill();
+  }
+
+  // 두더지 잡기: 30초 동안 튀어나오는 두더지(화나게 한 것)를 뿅망치로 잡아요. 최고 기록만 이 기기에 남아요
+  const MOLE_WORDS = ["부장님", "팀장님", "야근", "잔소리", "갑질", "월요일", "단톡방", "꼰대", "마감", "카드값", "진상", "빌런"];
+  const MOLE_HIT = ["퍽!", "쾅!", "뿅!", "콱!", "빡!"];
+  const MOLE_SVG = '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="crown" d="M33 14L36 0l9 8 5-9 5 9 9-8 3 14z" fill="#ffd34d" stroke="#b8860b" stroke-width="1.5"/><path class="fur" d="M10 102V50C10 22 28 6 50 6s40 16 40 44v52z"/><ellipse class="belly" cx="50" cy="82" rx="28" ry="26"/><path class="brow" d="M29 26l13 5M71 26l-13 5" stroke="#1d130c" stroke-width="3.2" stroke-linecap="round"/><g class="eye"><circle cx="37" cy="37" r="4.4" fill="#1d130c"/><circle cx="63" cy="37" r="4.4" fill="#1d130c"/><circle cx="38.5" cy="35.5" r="1.5" fill="#fff"/><circle cx="64.5" cy="35.5" r="1.5" fill="#fff"/></g><g class="x" stroke="#1d130c" stroke-width="3" stroke-linecap="round"><path d="M32 32l9 9M41 32l-9 9M59 32l9 9M68 32l-9 9"/></g><ellipse cx="26" cy="48" rx="6" ry="3.5" fill="#f08a96" opacity=".55"/><ellipse cx="74" cy="48" rx="6" ry="3.5" fill="#f08a96" opacity=".55"/><ellipse cx="50" cy="47" rx="8" ry="6" fill="#e2667a"/><path d="M45.5 53h9v6.5h-9z" fill="#fff" stroke="#cdbba3"/><path d="M50 53v6.5" stroke="#cdbba3"/><g class="claw"><ellipse cx="21" cy="72" rx="9" ry="7"/><ellipse cx="79" cy="72" rx="9" ry="7"/></g></svg>';
+  function whackSound(gold) {
+    try {
+      const ac = gac(), t = ac.currentTime;
+      const o = ac.createOscillator(), g = ac.createGain(); o.type = "sine";
+      o.frequency.setValueAtTime(190, t); o.frequency.exponentialRampToValueAtTime(55, t + 0.14);
+      g.gain.setValueAtTime(0.7, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + 0.2);
+      const src = noiseBurst(ac, 0.06, 3), lp = ac.createBiquadFilter(), ng = ac.createGain(); lp.type = "lowpass"; lp.frequency.value = 1800; ng.gain.value = 0.5;
+      src.connect(lp); lp.connect(ng); ng.connect(ac.destination); src.start(t);
+      // 뿅망치의 삑 소리
+      const sq = ac.createOscillator(), sg = ac.createGain(); sq.type = "square";
+      sq.frequency.setValueAtTime(gold ? 1320 : 880, t + 0.01); sq.frequency.exponentialRampToValueAtTime(gold ? 1980 : 1320, t + 0.08);
+      sg.gain.setValueAtTime(0.0001, t); sg.gain.linearRampToValueAtTime(0.06, t + 0.015); sg.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+      sq.connect(sg); sg.connect(ac.destination); sq.start(t); sq.stop(t + 0.14);
+    } catch {}
+  }
+  function setupMole() {
+    const board = $("mole-board"), cover = $("mole-cover"), hammer = $("mole-hammer"), ROUND = 30;
+    if (!board.querySelector(".hole")) {
+      for (let i = 0; i < 9; i++) board.insertAdjacentHTML("beforeend", `<div class="hole" style="z-index:${1 + Math.floor(i / 3)}"><div class="pit"><div class="mole">${MOLE_SVG}<span class="tag"></span></div></div></div>`);
+    }
+    const moles = [...board.querySelectorAll(".mole")];
+    let score = 0, combo = 0, left = ROUND, playing = false, t0 = 0, round = 0, tick = 0, best = store.get("sg.mole.best", 0);
+    const pick = (a) => a[Math.floor(Math.random() * a.length)];
+    const words = () => { const own = $("mole-word").value.trim(); return own ? [own] : MOLE_WORDS; };
+    const hud = () => {
+      $("mole-score").textContent = score; $("mole-time").textContent = left; $("mole-best").textContent = best;
+      $("mole-time").parentElement.classList.toggle("hurry", playing && left <= 5);
+      $("mole-combo").textContent = combo >= 3 ? `${combo}콤보!` : "";
+    };
+    const down = (m) => { m.classList.remove("up", "hit", "gold"); m.dataset.id = ""; };
+    function spawnOne() {
+      const free = moles.filter(m => !m.classList.contains("up")); if (!free.length) return;
+      const m = pick(free), el = (performance.now() - t0) / 1000, id = String(Math.random());
+      m.querySelector(".tag").textContent = pick(words());
+      m.classList.toggle("gold", Math.random() < 0.1); m.classList.add("up"); m.dataset.id = id;
+      later(() => { if (m.dataset.id === id && !m.classList.contains("hit")) { down(m); combo = 0; hud(); } }, Math.max(560, 1150 - el * 20) + rnd(-120, 120));
+    }
+    function schedule(r) {
+      if (r !== round || !playing) return;
+      const el = (performance.now() - t0) / 1000;
+      spawnOne(); if (el > 12 && Math.random() < 0.35) later(spawnOne, 140); // 후반엔 두 마리씩 나와요
+      later(() => schedule(r), Math.max(300, 760 - el * 16) + rnd(-100, 140));
+    }
+    function start() {
+      round++; score = 0; combo = 0; left = ROUND; playing = true; t0 = performance.now();
+      moles.forEach(down); cover.hidden = true; hud();
+      later(() => schedule(round), 450);
+      clearInterval(tick); tick = every(() => { left--; hud(); if (left <= 0) end(); }, 1000);
+    }
+    function end() {
+      playing = false; clearInterval(tick); moles.forEach(down);
+      const record = score > best; if (record) { best = score; store.set("sg.mole.best", best); }
+      hud();
+      $("mole-msg").innerHTML = `${score}마리 잡았어요!<small>${record && score ? "최고 기록 갱신! 손맛 미쳤다" : `최고 기록은 ${best}마리`}</small>`;
+      $("mole-start").textContent = "한 판 더"; cover.hidden = false;
+      if (score) feedMonster("angry", Math.max(1, Math.min(5, Math.round(score / 8))), "mole");
+    }
+    function bonk(x, y, text, gold) {
+      const b = document.createElement("span"); b.className = "bonk" + (gold ? " gold" : ""); b.textContent = text; b.style.left = x + "px"; b.style.top = y + "px";
+      const r = document.createElement("span"); r.className = "bonk-ring"; r.style.left = x + "px"; r.style.top = y + "px";
+      board.append(r, b); setTimeout(() => { b.remove(); r.remove(); }, 720);
+    }
+    const at = (e) => { const r = board.getBoundingClientRect(), k = board.offsetWidth / r.width; return [(e.clientX - r.left) * k, (e.clientY - r.top) * k]; };
+    const place = (x, y) => { hammer.style.left = x + "px"; hammer.style.top = y + "px"; };
+    board.onpointermove = (e) => { if (e.pointerType !== "mouse") return; board.classList.add("mouse"); hammer.classList.add("show"); place(...at(e)); };
+    board.onpointerleave = (e) => { if (e.pointerType === "mouse") hammer.classList.remove("show"); };
+    board.onpointerdown = (e) => {
+      if (e.target.closest(".mole-cover")) return;
+      const [x, y] = at(e); place(x, y);
+      hammer.classList.add("show"); hammer.classList.remove("swing"); void hammer.getBoundingClientRect(); hammer.classList.add("swing");
+      if (e.pointerType !== "mouse") { clearTimeout(hammer._t); hammer._t = setTimeout(() => hammer.classList.remove("show"), 320); }
+      if (!playing) return;
+      const m = e.target.closest(".mole");
+      if (m && m.classList.contains("up") && !m.classList.contains("hit")) {
+        const gold = m.classList.contains("gold"); combo++; score += gold ? 3 : 1;
+        m.classList.add("hit"); whackSound(gold); buzz(gold ? 40 : 22);
+        bonk(x, y - 10, gold ? "+3 대박!" : (combo >= 5 && combo % 5 === 0 ? `${combo}콤보!` : pick(MOLE_HIT)), gold);
+        later(() => down(m), 360);
+      } else combo = 0;
+      hud();
+    };
+    $("mole-start").onclick = start;
+    $("mole-start").textContent = "시작!";
+    $("mole-msg").innerHTML = "튀어나오는 놈들을 뿅망치로 쾅!<small>30초 동안 몇 마리 잡을까? 황금 두더지는 3점</small>";
+    moles.forEach(down); cover.hidden = false; hud();
   }
 
   // ---------- 꿀잠 ----------
