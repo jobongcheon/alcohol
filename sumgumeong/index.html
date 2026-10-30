@@ -131,7 +131,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: saturate(1.5) blur(16px); backdrop-filter: saturate(1.5) blur(16px);
   border: 1px solid var(--hair); border-radius: 22px; box-shadow: var(--shadow);
 }
-@media (min-width: 640px) { .tabs { grid-template-columns: repeat(7, 1fr); } }
+@media (min-width: 640px) { .tabs { grid-template-columns: repeat(8, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
 .tabs a:hover { color: var(--ink); background: color-mix(in srgb, var(--tc, var(--mood)) 8%, transparent); }
 .tabs a:hover .ti { transform: translateY(-2px); }
@@ -385,7 +385,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .motion-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
   .tabs {
     position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 20;
-    grid-template-columns: repeat(7, 1fr); gap: 1px;
+    grid-template-columns: repeat(8, 1fr); gap: 0;
     padding: 6px max(6px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
     border-radius: 20px 20px 0 0; border-width: 1px 0 0; background: rgba(255, 255, 255, .9);
     box-shadow: 0 -10px 30px -18px rgba(20, 20, 60, .35);
@@ -694,6 +694,35 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .plate-cv { height: 280px; }
 }
 
+/* 꿀잠 */
+.night-card { position: relative; overflow: hidden; border-radius: 26px; color: #eef0ff; background: linear-gradient(180deg, #121836 0%, #1d2550 55%, #2a2d68 100%); box-shadow: 0 24px 50px -24px rgba(20, 24, 70, .7); }
+.night-sky { position: relative; height: 150px; }
+.night-sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.moon { position: absolute; right: 28px; top: 24px; width: 54px; height: 54px; border-radius: 50%; background: #fdf3c4; box-shadow: 0 0 34px 10px rgba(253, 243, 196, .3), inset -12px -6px 0 0 #e6d68c; }
+.night-body { display: grid; gap: 10px; padding: 0 20px 22px; }
+.night-q { font-family: var(--display); font-size: 1.25rem; }
+.night-q span { font-family: var(--body); font-size: .875rem; color: rgba(238, 240, 255, .62); margin-left: 6px; }
+.night-card textarea { min-height: 110px; font-size: 1.125rem; color: #ffffff; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .16); box-shadow: none; }
+.night-card textarea::placeholder { color: rgba(238, 240, 255, .42); }
+.night-card textarea:focus { border-color: #a9adff; box-shadow: 0 0 0 4px rgba(169, 173, 255, .18); }
+.night-card label.check { color: rgba(238, 240, 255, .85); font-size: 1rem; }
+.night-card label.check input { accent-color: #a9adff; }
+.night-go { background: linear-gradient(120deg, #6c6fe0, #9b7bea); box-shadow: 0 16px 34px -16px rgba(108, 111, 224, .9); }
+.night-done { color: #cfd2ff; min-height: 1.4em; }
+.night-saved { border-left: 4px solid #4b4fb8; }
+.night-saved-text { white-space: pre-wrap; font-family: var(--display); font-size: 1.125rem; }
+.sleep-panel .sleep-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.sleep-panel .opt-label { color: #4b4fb8; }
+.sleep-panel .seg { background: color-mix(in srgb, #4b4fb8 9%, #ffffff); }
+.sleep-panel .seg button[aria-pressed="true"] { background: #4b4fb8; color: #ffffff; }
+.sleep-panel input[type="range"] { flex: 1; min-width: 160px; accent-color: #4b4fb8; }
+.sleep-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.sleep-play { background: #4b4fb8; }
+.sleep-play.on { background: #1d2550; }
+.sleep-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; gap: 14px; text-align: center; background: #04050c; color: rgba(238, 240, 255, .45); cursor: pointer; }
+.sleep-dim .moon { position: static; margin: 0 auto; opacity: .5; }
+.sleep-dim b { font-family: var(--display); font-size: 2rem; color: rgba(238, 240, 255, .6); font-variant-numeric: tabular-nums; }
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -751,6 +780,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <a href="#board" style="--tc:#3f6fe0" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
     <a href="#rooms" style="--tc:#b84fb0" aria-label="속풀이방"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5v-5h5v5"/></svg><span class="tl">속풀이방</span><span class="ts">속풀이방</span></a>
     <a href="#shout" style="--tc:#2f8f6f" aria-label="스트레스 풀기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">스트레스 풀기</span><span class="ts">스트레스</span></a>
+    <a href="#night" style="--tc:#4b4fb8" aria-label="꿀잠"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/></svg><span class="tl">꿀잠</span><span class="ts">꿀잠</span></a>
     <a href="#face" style="--tc:#d9821e" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
     <a href="#vault" style="--tc:#1b8fa3" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
     <a href="#letter" style="--tc:#d9506f" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
@@ -997,6 +1027,54 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <p class="note disclaimer">이 방법들은 치료가 아니에요. 힘든 마음이 2주 넘게 이어지면 전문가와 상담하세요. 자살예방상담전화 109.</p>
   </section>
 
+  <!-- 꿀잠 -->
+  <section class="view" id="view-night" hidden>
+    <div class="lede">
+      <h2>꿀잠</h2>
+      <p>머릿속에 남은 걸 꺼내 놓고, 잔잔한 소리와 함께 잠들어요.</p>
+    </div>
+    <details class="guide">
+      <summary>이렇게 하면 잠이 와요</summary>
+      <div class="guide-body">
+        <ol>
+          <li><b>오늘 마음에 걸린 일</b>을 적어요. 머릿속에서 꺼내 두면 덜 맴돌아요.</li>
+          <li><b>내일 할 일</b>을 적어요. 자세히 적을수록 좋아요.</li>
+          <li>「별로 띄워 보내기」를 누르면 글이 별이 되어 사라져요. 어디에도 저장하지 않아요. 원하면 내일 할 일만 이 기기에 남겨 두고 내일 다시 보여 드려요.</li>
+          <li>수면 음악을 고르고 끌 시간을 정해요. 마지막 5분은 소리가 천천히 작아져요. 「화면 어둡게」를 누르면 화면이 까맣게 바뀌어요.</li>
+        </ol>
+        <p class="note">2018년 미국 베일러 대학 연구(Scullin 외)에서, 잠들기 전 5분 동안 내일 할 일을 적은 사람들이 이미 한 일을 적은 사람들보다 평균 9분 빨리 잠들었어요. 할 일을 자세히 적을수록 더 빨랐어요. <a href="https://news.web.baylor.edu/news/story/2018/can-writing-your-dos-help-you-doze-baylor-study-suggests-jotting-down-tasks-can" target="_blank" rel="noopener">연구 소개 보기</a></p>
+      </div>
+    </details>
+
+    <div class="panel night-saved" id="night-saved" hidden>
+      <div class="label" id="night-saved-label">어젯밤 적어 둔 내일 할 일</div>
+      <p class="night-saved-text" id="night-saved-text"></p>
+      <div class="row"><button class="btn ghost small" id="night-saved-done" type="button">확인했어요, 지우기</button></div>
+    </div>
+
+    <div class="night-card">
+      <div class="night-sky" aria-hidden="true"><canvas id="night-sky"></canvas><div class="moon"></div></div>
+      <div class="night-body">
+        <p class="night-q">오늘 마음에 걸린 일</p>
+        <textarea id="night-worry" maxlength="1000" placeholder="오늘 계속 떠오르는 일, 아직 속상한 일을 적어요."></textarea>
+        <p class="night-q">내일 할 일 <span>꺼내 두면 머리가 쉬어요</span></p>
+        <textarea id="night-todo" maxlength="600" placeholder="예: 9시 보고서 마무리하기, 점심에 엄마한테 전화하기"></textarea>
+        <label class="check"><input type="checkbox" id="night-keep"><span>내일 할 일은 이 기기에 남겨 두고 내일 다시 보여 주기</span></label>
+        <button class="btn block night-go" id="night-go" type="button" disabled>별로 띄워 보내기</button>
+        <p class="night-done" id="night-done" role="status"></p>
+      </div>
+    </div>
+
+    <div class="panel sleep-panel">
+      <div class="label">수면 음악</div>
+      <div class="sleep-row"><span class="opt-label">소리</span><div class="seg" id="sleep-kind" role="group" aria-label="소리 고르기"><button type="button" data-k="rain" aria-pressed="true">빗소리</button><button type="button" data-k="waves" aria-pressed="false">파도</button><button type="button" data-k="chord" aria-pressed="false">잔잔한 화음</button><button type="button" data-k="mix" aria-pressed="false">다 섞기</button></div></div>
+      <div class="sleep-row"><span class="opt-label">끄기</span><div class="seg" id="sleep-min" role="group" aria-label="끌 시간"><button type="button" data-m="15" aria-pressed="false">15분 뒤</button><button type="button" data-m="30" aria-pressed="true">30분 뒤</button><button type="button" data-m="60" aria-pressed="false">60분 뒤</button></div></div>
+      <div class="sleep-row"><label class="opt-label" for="sleep-vol">크기</label><input type="range" id="sleep-vol" min="0" max="100" value="55"></div>
+      <div class="sleep-actions"><button class="btn sleep-play" id="sleep-play" type="button">수면 음악 틀기</button><button class="btn ghost" id="sleep-dim-btn" type="button">화면 어둡게</button></div>
+      <p class="note" id="sleep-left">소리는 이 화면에서 직접 만들어요. 휴대폰 화면이 꺼지면 기기에 따라 소리가 멈출 수 있어요.</p>
+    </div>
+  </section>
+
   <!-- 셀카 -->
   <section class="view" id="view-face" hidden>
     <div class="lede">
@@ -1142,8 +1220,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
         <tbody>
           <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
-          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
-          <tr><th scope="row">셀카 · 소리 · 목소리</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
+          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
           <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
           <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
           <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
@@ -1155,6 +1233,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 </div>
 
 <!-- 덮개 화면 -->
+<div class="sleep-dim" id="sleep-dim" hidden role="button" aria-label="화면 밝게 돌아가기"><div class="moon"></div><b id="dim-left"></b><p>화면을 누르면 돌아가요</p></div>
 <div class="overlay" id="ov-busy" hidden><div class="inner"><div class="spinner"></div><p class="comfort" style="font-size:var(--step-1)">글을 살펴보고 있어요…</p></div></div>
 
 <div class="overlay" id="ov-breath" hidden>
@@ -1217,7 +1296,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   const hide = (el) => { el.hidden = true; };
 
   // ---------- 탭 ----------
-  const VIEWS = ["write", "board", "rooms", "shout", "face", "vault", "letter"];
+  const VIEWS = ["write", "board", "rooms", "shout", "night", "face", "vault", "letter"];
   const pill = document.querySelector(".tab-pill");
   function placePill() {
     const a = document.querySelector('.tabs a[aria-current="page"]');
@@ -1243,6 +1322,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     firstRoute = false;
     if (v === "letter") renderLetters();
     if (v === "rooms") renderRooms();
+    if (v === "night") { nightSky.start(); renderSavedTodo(); } else if (typeof nightSky !== "undefined") nightSky.stop();
     if (v !== "shout") { stopMic(); stopRelief(); }
   }
   window.addEventListener("hashchange", route);
@@ -3009,6 +3089,151 @@ ${text}
     $("bubble-msg").textContent = "";
     fill();
   }
+
+  // ---------- 꿀잠 ----------
+  // 잠들기 전 글은 별이 되어 사라지고(저장 안 함), 수면 음악은 이 화면에서 직접 만들어요.
+  const nightSky = (function () {
+    const cv = $("night-sky"), ctx = cv.getContext("2d");
+    let W = 0, H = 0, stars = [], fliers = [], raf = 0, running = false;
+    function size() {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      W = cv.clientWidth; H = cv.clientHeight; if (!W) return;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (!stars.length) stars = Array.from({ length: 70 }, () => ({ x: rnd(0, W), y: rnd(0, H), r: rnd(0.5, 1.6), ph: rnd(0, 6.28) }));
+    }
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        ctx.globalAlpha = motionOff() ? 0.8 : 0.45 + 0.45 * Math.sin(t * 1.6 + s.ph);
+        ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+      });
+      fliers = fliers.filter(f => {
+        const k = Math.min(1, (t - f.t0) / f.dur), e = 1 - Math.pow(1 - k, 3);
+        const x = f.x0 + (f.tx - f.x0) * e, y = f.y0 + (f.ty - f.y0) * e - Math.sin(k * Math.PI) * 30;
+        ctx.globalAlpha = 1;
+        if (k < 0.65) { ctx.fillStyle = "#e9ebff"; ctx.font = `${16 - k * 10}px "Gowun Batang", serif`; ctx.textAlign = "center"; ctx.fillText(f.ch, x, y); }
+        else { ctx.fillStyle = "#fff6cf"; ctx.beginPath(); ctx.arc(x, y, 1 + (1 - k) * 4, 0, 6.283); ctx.fill(); }
+        if (k >= 1) { stars.push({ x: f.tx, y: f.ty, r: rnd(0.8, 1.8), ph: rnd(0, 6.28) }); if (stars.length > 240) stars.shift(); return false; }
+        return true;
+      });
+      ctx.globalAlpha = 1;
+    }
+    const loop = (now) => { draw(now / 1000); raf = requestAnimationFrame(loop); };
+    return {
+      start() { size(); if (running) return; running = true; raf = requestAnimationFrame(loop); },
+      stop() { running = false; cancelAnimationFrame(raf); },
+      send(text) {
+        size();
+        const chars = Array.from(text.replace(/\s+/g, "")).slice(0, 160), now = performance.now() / 1000;
+        chars.forEach((ch, i) => fliers.push({ ch, x0: rnd(W * 0.1, W * 0.9), y0: H + 10, tx: rnd(8, W - 8), ty: rnd(8, H * 0.85), t0: now + i * 0.03, dur: motionOff() ? 0.01 : rnd(1.6, 2.6) }));
+        if (motionOff()) draw(now + 3);
+      },
+    };
+  })();
+  function renderSavedTodo() {
+    const t = store.get("sg.todo", null);
+    $("night-saved").hidden = !(t && t.text);
+    if (!t || !t.text) return;
+    const sameDay = new Date(t.at).toDateString() === new Date().toDateString();
+    $("night-saved-label").textContent = sameDay ? "오늘 밤 적어 둔 내일 할 일" : "어젯밤 적어 둔 내일 할 일";
+    $("night-saved-text").textContent = t.text;
+  }
+  $("night-saved-done").addEventListener("click", () => { store.del("sg.todo"); renderSavedTodo(); });
+  const syncNightGo = () => { $("night-go").disabled = !($("night-worry").value.trim() || $("night-todo").value.trim()); };
+  $("night-worry").addEventListener("input", syncNightGo);
+  $("night-todo").addEventListener("input", syncNightGo);
+  $("night-go").addEventListener("click", () => {
+    const worry = $("night-worry").value.trim(), todo = $("night-todo").value.trim();
+    if (!worry && !todo) return;
+    if (todo && $("night-keep").checked) store.set("sg.todo", { text: todo, at: Date.now() });
+    nightSky.send(worry + todo);
+    $("night-worry").value = ""; $("night-todo").value = ""; syncNightGo();
+    $("night-done").textContent = todo && $("night-keep").checked
+      ? "잘 내려놓았어요. 내일 할 일은 내일 다시 보여 드릴게요. 이제 소리를 틀고 눈을 감아 보세요."
+      : "잘 내려놓았어요. 이제 소리를 틀고 눈을 감아 보세요.";
+    renderSavedTodo();
+  });
+
+  // 수면 음악
+  let sleepA = null;
+  const sleepVol = () => Number($("sleep-vol").value) / 100 * 0.8;
+  const segPick = (id, attr) => document.querySelector(`#${id} [aria-pressed="true"]`).dataset[attr];
+  ["sleep-kind", "sleep-min"].forEach(id => $(id).addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    if (!sleepA) return;
+    if (id === "sleep-kind") { const left = sleepA.end - Date.now(); stopSleep(true); startSleep(left); }
+    else { sleepA.end = Date.now() + Number(b.dataset.m) * 60000; }
+  }));
+  function brownNoise(ac, secs) {
+    const len = Math.floor(secs * ac.sampleRate), buf = ac.createBuffer(2, len, ac.sampleRate);
+    for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); let last = 0; for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; } }
+    const s = ac.createBufferSource(); s.buffer = buf; s.loop = true; return s;
+  }
+  function startSleep(ms) {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { $("sleep-left").textContent = "이 기기에서는 소리를 만들 수 없어요."; return; }
+    const ac = new AC(), kind = segPick("sleep-kind", "k"), mix = kind === "mix";
+    const master = ac.createGain(); master.gain.setValueAtTime(0, ac.currentTime); master.gain.linearRampToValueAtTime(sleepVol(), ac.currentTime + 6);
+    master.connect(ac.destination);
+    const timers = [];
+    const filt = (type, f) => { const n = ac.createBiquadFilter(); n.type = type; n.frequency.value = f; return n; };
+    const gain = (v) => { const g = ac.createGain(); g.gain.value = v; return g; };
+    if (kind === "rain" || mix) {
+      const n = brownNoise(ac, 6), hp = filt("highpass", 300), lp = filt("lowpass", 5200), g = gain(mix ? 0.3 : 0.55);
+      n.connect(hp); hp.connect(lp); lp.connect(g); g.connect(master); n.start();
+      const drop = () => { const src = noiseBurst(ac, 0.03, 4), bp = filt("bandpass", rnd(2500, 6500)), g2 = gain(rnd(0.04, 0.14)); bp.Q.value = 3; src.connect(bp); bp.connect(g2); g2.connect(master); src.start(); };
+      timers.push(setInterval(() => { for (let i = 0; i < 3; i++) if (Math.random() < 0.7) setTimeout(drop, Math.random() * 200); }, 220));
+    }
+    if (kind === "waves" || mix) {
+      const n = brownNoise(ac, 8), lp = filt("lowpass", 500), g = gain(0.05);
+      n.connect(lp); lp.connect(g); g.connect(master); n.start();
+      const swell = () => {
+        const t = ac.currentTime, peak = mix ? 0.35 : 0.85;
+        g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(peak, t + 4); g.gain.linearRampToValueAtTime(0.06, t + 10);
+        lp.frequency.cancelScheduledValues(t); lp.frequency.setValueAtTime(380, t); lp.frequency.linearRampToValueAtTime(1300, t + 4); lp.frequency.linearRampToValueAtTime(340, t + 10);
+      };
+      swell(); timers.push(setInterval(swell, 10000));
+    }
+    if (kind === "chord" || mix) {
+      const lp = filt("lowpass", 950); lp.connect(master);
+      const CH = [[130.81, 196.0, 246.94, 329.63], [110.0, 164.81, 261.63, 329.63], [87.31, 174.61, 220.0, 329.63], [98.0, 146.83, 246.94, 293.66]];
+      let ci = 0;
+      const pad = () => {
+        const t = ac.currentTime, notes = CH[ci++ % CH.length], peak = mix ? 0.03 : 0.055;
+        notes.forEach((f, j) => { const o = ac.createOscillator(), g = ac.createGain(); o.type = j ? "triangle" : "sine"; o.frequency.value = f;
+          g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + 4); g.gain.setValueAtTime(peak, t + 9); g.gain.linearRampToValueAtTime(0, t + 14);
+          o.connect(g); g.connect(lp); o.start(t); o.stop(t + 14.5); });
+      };
+      pad(); timers.push(setInterval(pad, 12000));
+    }
+    const total = ms || Number(segPick("sleep-min", "m")) * 60000;
+    sleepA = { ac, master, timers, end: Date.now() + total };
+    sleepA.tick = setInterval(() => {
+      const left = sleepA.end - Date.now();
+      if (left <= 0) { stopSleep(); return; }
+      if (left < 300000) sleepA.master.gain.setTargetAtTime(sleepVol() * left / 300000, sleepA.ac.currentTime, 0.5); // 마지막 5분은 천천히 작아져요
+      const txt = `${Math.floor(left / 60000)}분 ${String(Math.floor(left / 1000) % 60).padStart(2, "0")}초 뒤에 꺼져요`;
+      $("sleep-left").textContent = txt + (left < 300000 ? " · 소리가 천천히 작아지는 중" : "");
+      $("dim-left").textContent = txt;
+    }, 1000);
+    $("sleep-play").textContent = "수면 음악 끄기"; $("sleep-play").classList.add("on");
+    $("sleep-left").textContent = "틀었어요. 천천히 커져요.";
+  }
+  function stopSleep(silent) {
+    if (!sleepA) return;
+    const a = sleepA; sleepA = null;
+    a.timers.forEach(t => clearInterval(t)); clearInterval(a.tick);
+    try { a.master.gain.cancelScheduledValues(a.ac.currentTime); a.master.gain.setTargetAtTime(0, a.ac.currentTime, 0.4); } catch {}
+    setTimeout(() => a.ac.close().catch(() => {}), 1800);
+    if (silent) return;
+    $("sleep-play").textContent = "수면 음악 틀기"; $("sleep-play").classList.remove("on");
+    $("sleep-left").textContent = "껐어요. 좋은 꿈 꾸세요.";
+    hide($("sleep-dim"));
+  }
+  $("sleep-play").addEventListener("click", () => (sleepA ? stopSleep() : startSleep()));
+  $("sleep-vol").addEventListener("input", () => { if (sleepA && sleepA.end - Date.now() > 300000) sleepA.master.gain.setTargetAtTime(sleepVol(), sleepA.ac.currentTime, 0.2); });
+  $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? "" : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); });
+  $("sleep-dim").addEventListener("click", () => hide($("sleep-dim")));
 
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
