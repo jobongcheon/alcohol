@@ -121,7 +121,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (min-width: 640px) { .tabs { grid-template-columns: repeat(6, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
 .tabs a:hover { color: var(--ink); }
-.tabs .ti { display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs a:hover .ti { transform: translateY(-2px); }
+.tabs a[aria-current="page"] .ti { transform: scale(1.08); }
+.tabs a { display: grid; justify-items: center; gap: 4px; padding: 10px 4px 9px; line-height: 1.2; }
+.tabs .ti { display: block; width: 24px; height: 24px; transition: transform .4s var(--ease); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .tabs .ts { display: none; }
 .tabs a[aria-current="page"] { color: #ffffff; }
 .tab-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; border-radius: 16px; background: var(--mood); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--mood) 80%, transparent); transition: transform .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
