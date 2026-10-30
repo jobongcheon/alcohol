@@ -131,7 +131,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: saturate(1.5) blur(16px); backdrop-filter: saturate(1.5) blur(16px);
   border: 1px solid var(--hair); border-radius: 22px; box-shadow: var(--shadow);
 }
-@media (min-width: 640px) { .tabs { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 640px) { .tabs { grid-template-columns: repeat(7, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
 .tabs a:hover { color: var(--ink); background: color-mix(in srgb, var(--tc, var(--mood)) 8%, transparent); }
 .tabs a:hover .ti { transform: translateY(-2px); }
@@ -385,12 +385,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .motion-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
   .tabs {
     position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 20;
-    grid-template-columns: repeat(6, 1fr); gap: 2px;
+    grid-template-columns: repeat(7, 1fr); gap: 1px;
     padding: 6px max(6px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
     border-radius: 20px 20px 0 0; border-width: 1px 0 0; background: rgba(255, 255, 255, .9);
     box-shadow: 0 -10px 30px -18px rgba(20, 20, 60, .35);
   }
-  .tabs a { display: grid; justify-items: center; gap: 3px; font-size: .75rem; padding: 8px 1px 7px; line-height: 1.2; border-radius: 14px; }
+  .tabs a { display: grid; justify-items: center; gap: 3px; font-size: .7rem; letter-spacing: -0.04em; padding: 8px 0 7px; line-height: 1.2; border-radius: 14px; }
   .tabs .ti { display: block; }
   .tabs .tl { display: none; }
   .tabs .ts { display: inline; }
@@ -616,6 +616,23 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 @keyframes ember { from { transform: translateX(-10%); } to { transform: translateX(10%); } }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* 속풀이방 */
+.room-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.room-chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--hair); background: var(--card); border-radius: 999px; padding: 8px 14px; font-weight: 700; box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
+.room-chip em { font-style: normal; font-size: .8125rem; min-width: 1.6em; padding: 1px 7px; border-radius: 999px; background: color-mix(in srgb, #b84fb0 12%, #ffffff); color: #8f3489; font-variant-numeric: tabular-nums; }
+.room-chip:hover { transform: translateY(-2px); }
+.room-chip[aria-pressed="true"] { background: #b84fb0; color: #ffffff; border-color: transparent; }
+.room-chip[aria-pressed="true"] em { background: rgba(255, 255, 255, .22); color: #ffffff; }
+.room-banner { display: grid; gap: 4px; padding: 16px 18px; border-radius: 20px; background: linear-gradient(120deg, color-mix(in srgb, #b84fb0 14%, #ffffff), color-mix(in srgb, var(--m2) 30%, #ffffff)); }
+.room-banner b { font-family: var(--display); font-size: var(--step-2); color: #8f3489; }
+.room-banner p { color: var(--ink-soft); }
+.room-compose textarea { min-height: 120px; font-size: 1.125rem; }
+.room-emos .pick { padding: 6px 14px; font-size: .9375rem; }
+.room-send { background: #b84fb0; }
+.room-tag { border-radius: 999px; padding: 2px 10px; font-weight: 700; background: color-mix(in srgb, #b84fb0 12%, #ffffff); color: #8f3489; }
+.room-pick { display: grid; gap: 6px; }
+.room-pick .pick { padding: 6px 14px; font-size: .9375rem; --c: #b84fb0; }
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -671,6 +688,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <span class="tab-pill" aria-hidden="true"></span>
     <a href="#write" style="--tc:#6c5ce7" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
     <a href="#board" style="--tc:#3f6fe0" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
+    <a href="#rooms" style="--tc:#b84fb0" aria-label="속풀이방"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5v-5h5v5"/></svg><span class="tl">속풀이방</span><span class="ts">속풀이방</span></a>
     <a href="#shout" style="--tc:#2f8f6f" aria-label="스트레스 풀기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">스트레스 풀기</span><span class="ts">스트레스</span></a>
     <a href="#face" style="--tc:#d9821e" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
     <a href="#vault" style="--tc:#1b8fa3" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
@@ -724,6 +742,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     </div>
     <div class="panel">
       <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b><br><span class="note">이름·회사명·부서명은 별표로 바뀌고, 3일 뒤 저절로 지워져요. 끄면 게시판에 올리지 않고 바람에만 날려요. 위로 한마디를 위해 AI는 읽어요.</span></span></label>
+      <div class="room-pick"><span class="note">어느 방에 올릴까요?</span><div class="picks" id="write-room"></div></div>
       <label class="check"><input type="checkbox" id="opt-letter"><span><b>한 달 뒤 나에게 편지로 받기</b><br><span class="note">원문이 이 기기 안에만 저장되고, 한 달 뒤 「한 달 편지」에서 열려요.</span></span></label>
     </div>
     <button class="btn block send-btn" id="send" disabled><canvas class="gust" aria-hidden="true"></canvas><span class="send-label">바람에 날려 보내기</span></button>
@@ -745,6 +764,25 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   </section>
 
   <!-- 소리 지르기 -->
+  <!-- 속풀이방 -->
+  <section class="view" id="view-rooms" hidden>
+    <div class="lede">
+      <h2>속풀이방</h2>
+      <p>같은 일로 속 터지는 사람들끼리 모인 방이에요. 내 방을 골라 털어놓고, 남의 얘기엔 「토닥토닥」 해 주세요.</p>
+    </div>
+    <div class="room-chips" id="room-chips" role="group" aria-label="방 고르기"></div>
+    <div class="room-banner"><b id="room-title"></b><p id="room-sub"></p></div>
+    <div class="panel room-compose">
+      <div class="picks room-emos" id="room-emos" role="group" aria-label="감정 고르기"></div>
+      <textarea id="room-text" maxlength="500" placeholder="이 방에 털어놓기. 이름이나 회사명은 별표로 가려져요."></textarea>
+      <div class="row" style="justify-content:space-between"><span class="note" id="room-count">0 / 500</span><button class="btn small room-send" id="room-send" type="button" disabled>이 방에 올리기</button></div>
+      <p class="note" id="room-msg" role="status"></p>
+    </div>
+    <div class="board" id="room-board">
+      <div class="empty" id="room-empty"><b>아직 이 방은 조용해요</b><p>첫 글을 남겨 보세요. 글은 3일 뒤 사라져요.</p></div>
+    </div>
+  </section>
+
   <section class="view" id="view-shout" hidden>
     <div class="lede">
       <h2>스트레스 풀기</h2>
@@ -1095,7 +1133,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   const hide = (el) => { el.hidden = true; };
 
   // ---------- 탭 ----------
-  const VIEWS = ["write", "board", "shout", "face", "vault", "letter"];
+  const VIEWS = ["write", "board", "rooms", "shout", "face", "vault", "letter"];
   const pill = document.querySelector(".tab-pill");
   function placePill() {
     const a = document.querySelector('.tabs a[aria-current="page"]');
@@ -1120,6 +1158,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (v === "write" && !firstRoute) pickHook();
     firstRoute = false;
     if (v === "letter") renderLetters();
+    if (v === "rooms") renderRooms();
     if (v !== "shout") { stopMic(); stopRelief(); }
   }
   window.addEventListener("hashchange", route);
@@ -1896,7 +1935,7 @@ ${text}
     return `너는 익명 감정 해소 앱 「숨구멍」의 '같이 욕해 주는 친구'야. 사용자는 성인 직장인이고, 직접 「같이 욕해 줘」 버튼을 눌렀어. 네 말은 사용자 화면에만 1분 동안 보였다가 사라지고, 아무에게도 전달되지 않아.
 할 일: 사용자 편을 확실하게 들고, 사용자를 화나게 한 사람이나 상황을 사용자보다 더 세게 욕해 줘. 친한 친구처럼 반말로.
 세기 — ${RANT_LEVEL[lv]}
-말투 — ${RANT_DIALECT[d].rule}${d === "en" ? "\n(한국어로 하라는 위 규칙 중 \"반말로\", \"3~6문장\"은 영어 부분에 맞게 따르고, 사람 이름 대신 \"that jerk\", \"that bastard\"처럼 불러.)" : ""}
+말투 — ${RANT_DIALECT[d].rule}${writeRoom ? "\n고민 주제 — " + ROOM_NAME[writeRoom] + " 문제" : ""}${d === "en" ? "\n(한국어로 하라는 위 규칙 중 \"반말로\", \"3~6문장\"은 영어 부분에 맞게 따르고, 사람 이름 대신 \"that jerk\", \"that bastard\"처럼 불러.)" : ""}
 지킬 것:
 - 욕은 사용자를 화나게 한 사람과 상황에게만 해. 사용자에게는 절대 욕하지 말고, 마지막 한 문장은 사용자를 확실히 편들어.
 - 여성·남성, 지역, 장애, 인종, 나이, 성적 지향을 비하하는 말은 쓰지 마. ("병신" 같은 장애 비하 욕도 빼.)
@@ -2021,6 +2060,72 @@ ${text}
     return wipe;
   })();
 
+  // ---------- 속풀이방 ----------
+  const ROOMS = [
+    { k: "work", n: "직장", sub: "월요병부터 퇴사 충동까지, 회사 얘기는 여기서." },
+    { k: "job", n: "취업", sub: "서류 광탈, 면접 멘붕… 버티는 사람들의 방." },
+    { k: "exam", n: "시험", sub: "공부한 만큼 안 나오는 날, 여기서 털어요." },
+    { k: "inlaw", n: "시댁", sub: "명절, 전화벨, 말 한마디… 여기선 다 말해요." },
+    { k: "kids", n: "육아", sub: "오늘도 버틴 엄마 아빠들의 방." },
+    { k: "love", n: "연애", sub: "읽씹, 잠수, 이별까지. 마음 아픈 얘기는 여기서." },
+    { k: "money", n: "돈", sub: "월급은 스쳐 가고 카드값만 남는 방." },
+  ];
+  const ROOM_NAME = Object.fromEntries(ROOMS.map(r => [r.k, r.n]));
+  let curRoom = ROOM_NAME[store.get("sg.room", "work")] ? store.get("sg.room", "work") : "work";
+  let roomEmo = "angry", writeRoom = "";
+  function renderRooms() {
+    const live = posts.filter(p => Date.now() - p.at < POST_TTL);
+    const chips = $("room-chips"); chips.innerHTML = "";
+    ROOMS.forEach(r => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "room-chip";
+      b.setAttribute("aria-pressed", String(r.k === curRoom));
+      b.innerHTML = "<span></span><em></em>";
+      b.firstChild.textContent = r.n + "방"; b.lastChild.textContent = live.filter(p => p.room === r.k).length;
+      b.addEventListener("click", () => { curRoom = r.k; store.set("sg.room", r.k); renderRooms(); });
+      chips.appendChild(b);
+    });
+    const room = ROOMS.find(r => r.k === curRoom);
+    $("room-title").textContent = room.n + "방"; $("room-sub").textContent = room.sub;
+    $("room-send").textContent = room.n + "방에 올리기";
+    const box = $("room-board"); box.querySelectorAll(".post").forEach(n => n.remove());
+    const inRoom = live.filter(p => p.room === curRoom);
+    $("room-empty").hidden = inRoom.length > 0;
+    inRoom.forEach(p => box.appendChild(postEl(p)));
+  }
+  (function roomCompose() {
+    const emos = $("room-emos");
+    EMOS.forEach(e => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "pick"; b.textContent = e.name;
+      b.style.setProperty("--c", `var(--c-${e.key})`); b.setAttribute("aria-pressed", String(e.key === roomEmo));
+      b.addEventListener("click", () => { roomEmo = e.key; emos.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", String(x === b))); });
+      emos.appendChild(b);
+    });
+    const ta = $("room-text"), send = $("room-send"), msg = $("room-msg");
+    ta.addEventListener("input", () => { $("room-count").textContent = `${ta.value.length} / 500`; send.disabled = !ta.value.trim(); });
+    send.addEventListener("click", async () => {
+      const raw = ta.value.trim(); if (!raw) return;
+      if (!db) { msg.textContent = "지금은 게시판에 연결되지 않아서 올릴 수 없어요."; return; }
+      if (!canWrite) { msg.textContent = "이 링크에서는 글을 올릴 권한이 없어요."; return; }
+      send.disabled = true; msg.textContent = "살펴보는 중…";
+      const r = await review(raw, roomEmo);
+      if (r.blocked || r.selfHarm) { msg.textContent = (r.reason || "이 글은 올릴 수 없어요.") + (r.selfHarm ? " 혼자 견디지 마세요. 자살예방상담전화 109." : ""); send.disabled = false; return; }
+      try {
+        await db.collection("posts").add({ text: r.masked, emo: roomEmo, room: curRoom, at: Date.now() });
+        ta.value = ""; $("room-count").textContent = "0 / 500";
+        msg.textContent = r.masked !== raw ? "올렸어요. 이름이나 회사명으로 보이는 부분은 별표로 바꿨어요." : "올렸어요.";
+        if (typeof feedMonster === "function") feedMonster(roomEmo, 1, "send");
+      } catch { msg.textContent = "올리지 못했어요. 잠시 뒤 다시 해 주세요."; send.disabled = false; }
+    });
+    // 털어놓기에서 올릴 방 고르기
+    const wr = $("write-room");
+    [{ k: "", n: "그냥 게시판" }, ...ROOMS.map(r => ({ k: r.k, n: r.n + "방" }))].forEach(r => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "pick"; b.textContent = r.n;
+      b.setAttribute("aria-pressed", String(r.k === writeRoom));
+      b.addEventListener("click", () => { writeRoom = r.k; wr.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", String(x === b))); });
+      wr.appendChild(b);
+    });
+  })();
+
   // ---------- 보내기 ----------
   let sending = false;
   $("send").addEventListener("click", async () => {
@@ -2055,7 +2160,7 @@ ${text}
       else if (!canWrite) postErr = "이 링크에서는 글을 올릴 권한이 없어서 바람에만 날렸어요.";
       else {
         try {
-          await db.collection("posts").add({ text: r.masked, emo, at: Date.now() });
+          await db.collection("posts").add({ text: r.masked, emo, room: writeRoom, at: Date.now() });
           posted = true;
         } catch (e) {
           postErr = e && e.code === "quota_exceeded" ? "게시판이 가득 차서 올리지 못했어요. 조금 뒤에 다시 해 주세요." : "게시판에 올리지 못했어요. 잠시 뒤 다시 해 주세요.";
@@ -2102,13 +2207,18 @@ ${text}
     board.querySelectorAll(".post").forEach(n => n.remove());
     $("board-empty").hidden = live.length > 0;
     if (!db) { $("board-empty").querySelector("b").textContent = "게시판에 연결되지 않았어요"; $("board-empty").querySelector("p").textContent = "claude.ai에서 로그인한 상태로 열면 다른 사람들의 글이 보여요."; }
-    live.forEach(p => {
+    live.forEach(p => board.appendChild(postEl(p)));
+    renderRooms();
+  }
+  function postEl(p) {
+    {
       const el = document.createElement("article");
       el.className = "post" + (seenPosts.has(p.id) ? "" : " new");
       seenPosts.add(p.id);
       el.style.setProperty("--c", `var(--c-${EMO_NAME[p.emo] ? p.emo : "tired"})`);
-      el.innerHTML = `<div class="meta"><span class="tag"></span><span class="when"></span></div><p class="text"></p><button class="pat" type="button"><span>토닥토닥</span><span class="n"></span></button>`;
+      el.innerHTML = `<div class="meta"><span class="tag"></span><span class="room-tag" hidden></span><span class="when"></span></div><p class="text"></p><button class="pat" type="button"><span>토닥토닥</span><span class="n"></span></button>`;
       el.querySelector(".tag").textContent = EMO_NAME[p.emo] || "마음";
+      if (ROOM_NAME[p.room]) { const rt = el.querySelector(".room-tag"); rt.hidden = false; rt.textContent = ROOM_NAME[p.room] + "방"; }
       el.querySelector(".when").textContent = `${ago(p.at)} · ${leftTime(p.at)}`;
       el.querySelector(".text").textContent = p.text;
       const btn = el.querySelector(".pat");
@@ -2117,8 +2227,8 @@ ${text}
       btn.querySelector(".n").textContent = pats[p.id] || 0;
       btn.disabled = !canWrite;
       btn.addEventListener("click", () => pat(p.id, btn));
-      board.appendChild(el);
-    });
+      return el;
+    }
   }
   const seenPosts = new Set();
   function burst(btn) {
@@ -2156,9 +2266,12 @@ ${text}
   });
   let veilTimer;
   function veil() { boardEl.classList.add("veiled"); clearTimeout(veilTimer); veilTimer = setTimeout(() => { if (document.hasFocus()) boardEl.classList.remove("veiled"); }, 1500); }
-  window.addEventListener("blur", () => boardEl.classList.add("veiled"));
-  window.addEventListener("focus", () => boardEl.classList.remove("veiled"));
-  document.addEventListener("visibilitychange", () => { if (document.hidden) boardEl.classList.add("veiled"); });
+  const roomBoardEl = $("room-board");
+  ["copy", "cut", "contextmenu", "dragstart", "selectstart"].forEach(ev => roomBoardEl.addEventListener(ev, e => e.preventDefault()));
+  const allBoards = [boardEl, roomBoardEl];
+  window.addEventListener("blur", () => allBoards.forEach(b => b.classList.add("veiled")));
+  window.addEventListener("focus", () => allBoards.forEach(b => b.classList.remove("veiled")));
+  document.addEventListener("visibilitychange", () => { if (document.hidden) allBoards.forEach(b => b.classList.add("veiled")); });
 
   // ---------- 소리 지르기 ----------
   let micStream = null, audioCtx = null, raf = 0;
