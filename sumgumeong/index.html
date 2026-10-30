@@ -158,6 +158,16 @@ input[type="password"], input[type="text"].field {
 }
 .entry { border-bottom: 2px solid var(--line); padding-block: 14px; display: grid; gap: 6px; }
 .entry .text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1.125rem; }
+.guide { border: 2px solid var(--ink); border-radius: 18px; padding: 2px 20px; }
+.guide summary { cursor: pointer; font-family: var(--display); font-weight: 700; font-size: var(--step-1); padding-block: 14px; }
+.guide-body { display: grid; gap: 22px; padding-bottom: 20px; }
+.guide-block { display: grid; gap: 6px; }
+.guide-block h3 { font-size: 1.25rem; }
+.guide ul, .guide ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.examples { display: grid; gap: 10px; }
+.example { background: var(--wash); border-radius: 14px; padding: 14px 16px; display: grid; gap: 6px; }
+.example .quote { font-family: var(--display); font-size: 1.125rem; }
+.tpls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
 /* 편지 */
 .letter { border: 2px solid var(--ink); border-radius: 18px; padding: 20px; display: grid; gap: 10px; }
@@ -286,6 +296,47 @@ input[type="password"], input[type="text"].field {
     </div>
     <div class="warn"><strong>비밀번호를 잊으면 복구할 수 없어요.</strong><p>운영자에게도 열쇠가 없어서 되찾아 드릴 방법이 없어요. 꼭 기억할 수 있는 걸로 정해 주세요.</p></div>
     <p class="note" id="vault-where"></p>
+    <details class="guide" open>
+      <summary>금고, 이렇게 쓰세요</summary>
+      <div class="guide-body">
+        <div class="guide-block">
+          <h3>무엇을 넣나요</h3>
+          <ul>
+            <li>게시판에 올리기엔 너무 개인적인 이야기</li>
+            <li>실명이나 회사 이름을 그대로 쓰고 싶은 일. 금고 글은 나만 보니까 별표로 가리지 않아요.</li>
+            <li>나중에 필요할 수 있는 일의 기록 (날짜, 장소, 들은 말)</li>
+            <li>보내지 못할 편지</li>
+          </ul>
+        </div>
+        <div class="examples">
+          <article class="example"><span class="label">예시 · 털어놓기</span><p class="quote">“오늘 회의에서 팀장님이 다들 보는 앞에서 내 보고서를 던졌다. 아무 말도 못 한 내가 더 싫다.”</p></article>
+          <article class="example"><span class="label">예시 · 기록해 두기</span><p class="quote">“10월 28일 오후 3시, 3층 회의실. 김○○ 과장이 ‘이것도 못 하냐’며 소리 지름. 옆에 박 대리 있었음. 손이 떨려서 30분 동안 일을 못 함.”</p><p class="note">날짜·시간·장소·들은 말·본 사람을 적어 두면 나중에 상담하거나 신고할 때 도움이 돼요. 직장 내 괴롭힘 상담은 고용노동부 1350.</p></article>
+          <article class="example"><span class="label">예시 · 못 보낸 편지</span><p class="quote">“엄마, 사실 요즘 회사 그만두고 싶어. 걱정할까 봐 말 못 했어.”</p></article>
+        </div>
+        <div class="guide-block">
+          <h3>얼마나 쓰나요</h3>
+          <p>한 줄도 괜찮고, 한 번에 5,000자까지 쓸 수 있어요. 글 개수에는 제한이 없고, 넣은 글은 날짜와 함께 최신 순으로 쌓여요.</p>
+        </div>
+        <div class="guide-block">
+          <h3>이런 건 넣지 마세요</h3>
+          <p>다른 사이트 비밀번호, 계좌·카드 번호, 주민등록번호는 넣지 마세요. 금고 비밀번호를 잊으면 영영 꺼낼 수 없어요.</p>
+        </div>
+        <div class="guide-block">
+          <h3>비밀번호는 이렇게 정하세요</h3>
+          <p>나만 아는 짧은 문장이 좋아요. 예를 들면 <b>콩이랑첫산책2019</b> 같은 거예요. 이 예시를 그대로 쓰지는 마세요.</p>
+          <p>1234, 생일, 휴대폰 번호, 다른 사이트와 같은 비밀번호는 피하세요. 패턴은 점 5개 이상으로, ㄱ자처럼 단순한 모양은 피하세요.</p>
+        </div>
+        <div class="guide-block">
+          <h3>쓰는 순서</h3>
+          <ol>
+            <li>비밀번호나 패턴으로 금고를 만들어요.</li>
+            <li>글을 쓰고 「금고에 넣기」를 눌러요. 아래 틀 버튼을 누르면 쓸 내용의 칸이 채워져요.</li>
+            <li>다 봤으면 「잠그기」를 눌러요. 회사 공용 PC라면 꼭 잠그세요.</li>
+            <li>다음에는 어느 기기에서든 같은 계정으로 들어와 비밀번호만 넣으면 열려요.</li>
+          </ol>
+        </div>
+      </div>
+    </details>
     <div id="vault-lock" class="panel">
       <div class="row" style="justify-content:space-between">
         <b id="vault-title">금고 만들기</b>
@@ -307,6 +358,7 @@ input[type="password"], input[type="text"].field {
     </div>
     <div id="vault-open" hidden style="display:grid;gap:16px">
       <p class="note" id="vault-open-note"></p>
+      <div class="tpls"><span class="note">틀 불러오기</span><button class="btn ghost small" type="button" data-tpl="vent">털어놓기</button><button class="btn ghost small" type="button" data-tpl="record">기록해 두기</button><button class="btn ghost small" type="button" data-tpl="letter">못 보낸 편지</button></div>
       <textarea id="vault-text" maxlength="5000" style="min-height:160px" placeholder="아무에게도 못 한 말을 적어 두세요."></textarea>
       <div class="row"><button class="btn" id="vault-save">금고에 넣기</button><button class="btn ghost" id="vault-close">잠그기</button></div>
       <div class="label" id="vault-count"></div>
@@ -1035,6 +1087,16 @@ ${text}
     renderVault();
     vaultSaving = false; $("vault-save").disabled = false;
   });
+  const TEMPLATES = {
+    vent: "오늘 있었던 일:\n\n그때 하고 싶었던 말:\n\n지금 내 마음:",
+    record: "날짜와 시간:\n장소:\n누가:\n한 말이나 행동 (들은 그대로):\n옆에서 본 사람:\n그 뒤 내 몸과 마음:",
+    letter: "○○에게,\n\n사실은 ",
+  };
+  document.querySelectorAll("[data-tpl]").forEach(b => b.addEventListener("click", () => {
+    const t = $("vault-text");
+    t.value = (t.value.trim() ? t.value.replace(/\s*$/, "\n\n") : "") + TEMPLATES[b.dataset.tpl];
+    t.focus();
+  }));
   function lockVault() { vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
   $("vault-close").addEventListener("click", lockVault);
   let resetArmed = false;
