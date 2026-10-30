@@ -842,13 +842,23 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 :root[data-wide="on"] .hero { grid-template-columns: 1fr; padding-block: 10px 6px; }
 :root[data-wide="on"] .hero-main { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 :root[data-wide="on"] .hero .title { order: 1; font-size: 1.75rem; margin: 0; letter-spacing: -0.02em; }
-:root[data-wide="on"] .hero-top { order: 2; }
-:root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .hero-btns, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
+:root[data-wide="on"] .hero-top { display: none; }
+:root[data-wide="on"] .hero-btns { order: 2; }
+:root[data-wide="on"] .hero-btns > :not(.wide-btn) { display: none; }
+.hero-btns .wide-btn { margin-top: 14px; }
+:root[data-wide="on"] .hero-btns .wide-btn { margin-top: 0; }
+:root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
 :root[data-wide="on"] section.view { padding-block: 16px 4px; gap: 14px; }
 :root[data-wide="on"] .lede h2 { font-size: var(--step-2); }
 :root[data-wide="on"] .wrap { max-width: 1300px; }
 @media (max-width: 639px) {
   .wide-btn { font-size: .8125rem; padding: 4px 11px 4px 8px; }
+  .hero-btns .wide-btn { margin-top: 10px; }
+  /* 휴대폰: 버튼 셋이 한 줄에 들어가게 조금 작게, 오른쪽 숨쉬기 공 위로 살짝 걸쳐도 돼요 */
+  .hero-btns { flex-wrap: nowrap; gap: 6px; width: max-content; position: relative; z-index: 2; }
+  .hero-btns .motion-toggle, .hero-btns .music-toggle, .hero-btns .wide-btn { font-size: .75rem; padding: 4px 9px; gap: 5px; }
+  .hero-btns .motion-toggle::before { width: 6px; height: 6px; }
+  .hero-btns .wide-btn svg { width: 13px; height: 13px; }
   .wide-btn svg { width: 15px; height: 15px; }
   :root[data-wide="on"] .tabs { padding-top: 4px; }
   :root[data-wide="on"] .panel { padding: 14px; }
@@ -880,11 +890,10 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div class="hero-main">
       <div class="hero-top">
         <p class="eyebrow">익명 감정 쉼터</p>
-        <button class="wide-btn" id="wide-btn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ex" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="sh" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg><span>넓게</span></button>
       </div>
       <h1 class="title" aria-label="숨구멍"><span style="--d:0">숨</span><span style="--d:1">구</span><span style="--d:2">멍</span></h1>
       <p class="sub">참지 말고, 여기 내려놓고 가세요.</p>
-      <div class="hero-btns"><button class="motion-toggle" id="motion-toggle" type="button"></button><button class="music-toggle" id="music-toggle" type="button" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mt-label">수면 음악 틀기</span></button></div>
+      <div class="hero-btns"><button class="motion-toggle" id="motion-toggle" type="button"></button><button class="music-toggle" id="music-toggle" type="button" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mt-label">수면 음악 틀기</span></button><button class="wide-btn" id="wide-btn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ex" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="sh" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg><span>넓게</span></button></div>
     </div>
     <div class="breath" aria-hidden="true"><div class="orb"><span class="in">들이쉬고</span><span class="out">내쉬고</span></div></div>
   </header>
