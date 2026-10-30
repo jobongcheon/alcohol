@@ -341,6 +341,30 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .promises { margin-top: 40px; padding: 18px; }
 }
 
+/* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
+.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
+.wide-btn:hover { transform: translateY(-1px); }
+.wide-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wide-btn .sh { display: none; }
+:root[data-wide="on"] .wide-btn { background: var(--mood); color: #ffffff; border-color: transparent; }
+:root[data-wide="on"] .wide-btn .ex { display: none; }
+:root[data-wide="on"] .wide-btn .sh { display: inline; }
+:root[data-wide="on"] .hero { grid-template-columns: 1fr; padding-block: 10px 6px; }
+:root[data-wide="on"] .hero > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+:root[data-wide="on"] .hero .title { order: 1; font-size: 1.75rem; margin: 0; letter-spacing: -0.02em; }
+:root[data-wide="on"] .hero-top { order: 2; }
+:root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .motion-toggle, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
+:root[data-wide="on"] section.view { padding-block: 16px 4px; gap: 14px; }
+:root[data-wide="on"] .lede h2 { font-size: var(--step-2); }
+:root[data-wide="on"] .wrap { max-width: 1040px; }
+@media (max-width: 639px) {
+  .wide-btn { font-size: .8125rem; padding: 4px 11px 4px 8px; }
+  .wide-btn svg { width: 15px; height: 15px; }
+  :root[data-wide="on"] .tabs { padding-top: 4px; }
+  :root[data-wide="on"] .panel { padding: 14px; }
+}
+
 /* 움직임 줄이기: 기기 설정을 따르되, 화면의 「움직임 켜기」로 바꿀 수 있어요 */
 :root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
 :root[data-motion="off"] .atmos { transform: none; }
@@ -357,7 +381,10 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 <div class="wrap">
   <header class="hero">
     <div>
-      <p class="eyebrow">익명 감정 쉼터</p>
+      <div class="hero-top">
+        <p class="eyebrow">익명 감정 쉼터</p>
+        <button class="wide-btn" id="wide-btn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ex" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="sh" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg><span>넓게</span></button>
+      </div>
       <h1 class="title" aria-label="숨구멍"><span style="--d:0">숨</span><span style="--d:1">구</span><span style="--d:2">멍</span></h1>
       <p class="sub">참지 말고, 여기 내려놓고 가세요.</p>
       <button class="motion-toggle" id="motion-toggle" type="button"></button>
@@ -813,6 +840,33 @@ ${text}
     requestAnimationFrame(() => document.getAnimations().forEach(a => { try { a.cancel(); a.play(); } catch {} }));
   });
   syncMotionToggle();
+
+  // ---------- 넓게 보기 ----------
+  // 휴대폰이 허락하면 전체 화면으로 바꾸고, 머리 부분은 한 줄로 접어 내용만 넓게 보여 줘요
+  const root = document.documentElement;
+  function setWide(on) {
+    root.dataset.wide = on ? "on" : "off";
+    $("wide-btn").setAttribute("aria-pressed", String(on));
+    $("wide-btn").querySelector("span").textContent = on ? "원래대로" : "넓게";
+    store.set("sg.wide", on);
+    requestAnimationFrame(placePill);
+  }
+  $("wide-btn").addEventListener("click", async () => {
+    const on = root.dataset.wide !== "on";
+    setWide(on);
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    try {
+      if (on && !fsEl) {
+        const req = root.requestFullscreen || root.webkitRequestFullscreen;
+        if (req) await req.call(root, { navigationUI: "hide" });
+      } else if (!on && fsEl) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) await exit.call(document);
+      }
+    } catch {}
+    scrollTo({ top: 0 });
+  });
+  setWide(store.get("sg.wide", false) === true);
 
   // ---------- 바람 애니메이션 ----------
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
