@@ -182,6 +182,9 @@ input[type="password"], input[type="text"].field {
 .breath-ring b { font-family: var(--display); font-size: var(--step-2); color: var(--pine); }
 .big-count { font-family: var(--display); font-size: var(--step-3); font-variant-numeric: tabular-nums; }
 .wind { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.scene-title { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 9%); margin: 0; text-align: center; font-family: var(--display); font-size: var(--step-1); color: var(--ink-soft); opacity: 0; padding-inline: 16px; pointer-events: none; }
+.scene-title.show { animation: titleIn 3.6s ease forwards; }
+@keyframes titleIn { 0% { opacity: 0; transform: translateY(8px); } 15%, 75% { opacity: 1; transform: none; } 100% { opacity: 0; } }
 .send-btn { position: relative; overflow: hidden; isolation: isolate; }
 .send-btn .gust { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .send-btn .send-label { position: relative; display: inline-block; }
@@ -201,6 +204,7 @@ input[type="password"], input[type="text"].field {
   .gauge i { transition: none; }
   .spinner { animation-duration: 3s; }
   .send-btn .send-label { animation: none !important; }
+  .scene-title.show { animation: none; opacity: 0; }
 }
 @media print { body * { visibility: hidden !important; } }
 </style>
@@ -454,7 +458,7 @@ input[type="password"], input[type="text"].field {
   </div>
 </div>
 
-<div class="overlay" id="ov-wind" hidden><canvas class="wind" id="wind-canvas" aria-label="글이 바람에 날아가는 모습"></canvas></div>
+<div class="overlay" id="ov-wind" hidden><canvas class="wind" id="wind-canvas" aria-label="쓴 글을 떠나보내는 장면"></canvas><p class="scene-title" id="scene-title" aria-live="polite"></p></div>
 
 <div class="overlay" id="ov-done" hidden>
   <div class="inner">
@@ -680,131 +684,384 @@ ${text}
     size(); start();
   })();
 
-  // 보낼 때: 글이 적힌 종이에서 글자가 한 자씩 뜯겨 바람에 날아가고, 빈 종이도 뒤집히며 날아가요
+  // 보낼 때 나오는 장면 다섯 가지. 매번 무작위로 고르되, 바로 전 장면은 다시 고르지 않아요.
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const easeOut = (v) => 1 - Math.pow(1 - clamp01(v), 3);
+
+  function layoutPaper(ctx, text, W, H, font, fs, lineH) {
+    ctx.font = font;
+    const cw = Math.min(W - 40, 540), pad = 26, maxLines = Math.max(3, Math.floor((H * 0.5 - pad * 2) / lineH));
+    const chars = Array.from(text.replace(/\s+/g, " ").trim());
+    const glyphs = []; let cx = 0, line = 0;
+    for (const ch of chars) {
+      const w = ctx.measureText(ch).width;
+      if (cx + w > cw - pad * 2) { line++; cx = 0; if (ch === " ") continue; }
+      if (line >= maxLines) { if (glyphs.length) glyphs[glyphs.length - 1].ch = "…"; break; }
+      if (ch !== " ") glyphs.push({ ch, lx: cx, line, w });
+      cx += w;
+    }
+    const lines = Math.min(maxLines, line + 1);
+    const card = { w: cw, h: lines * lineH + pad * 2, pad };
+    card.x = (W - cw) / 2; card.y = H * 0.46 - card.h / 2;
+    glyphs.forEach(g => { g.x = card.x + pad + g.lx; g.y = card.y + pad + g.line * lineH + fs; g.cx = g.x + g.w / 2; g.cy = g.y - fs * 0.35; });
+    return { card, glyphs };
+  }
+  function bg(S) { const { ctx, W, H, PAPER } = S; ctx.globalAlpha = 1; ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H); }
+  function drawCard(S, o = {}) {
+    const { ctx, card, PAPER, INK } = S;
+    const cx = o.cx ?? card.x + card.w / 2, cy = o.cy ?? card.y + card.h / 2;
+    ctx.save();
+    ctx.globalAlpha = o.alpha ?? 1;
+    ctx.translate(cx, cy); ctx.rotate(o.rot || 0); ctx.scale(o.sx ?? 1, o.sy ?? 1);
+    if (o.skew) ctx.transform(1, 0, o.skew, 1, 0, 0);
+    ctx.shadowColor = "rgba(0,0,0,0.14)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+    ctx.fillStyle = PAPER; ctx.fillRect(-card.w / 2, -card.h / 2, card.w, card.h);
+    ctx.shadowColor = "transparent";
+    ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(-card.w / 2, -card.h / 2, card.w, card.h);
+    ctx.restore();
+  }
+  function drawGlyph(S, g, cx, cy, o = {}) {
+    const { ctx, fs, font } = S;
+    const a = o.alpha ?? 1; if (a <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = a; ctx.font = font; ctx.fillStyle = o.color || S.INK;
+    ctx.translate(cx, cy); ctx.rotate(o.rot || 0); ctx.scale(o.sx ?? 1, o.sy ?? 1);
+    ctx.fillText(g.ch, -g.w / 2, fs * 0.35);
+    ctx.restore();
+  }
+  function makeAir(S, n, color) {
+    const { W, H } = S;
+    const streaks = Array.from({ length: n }, () => ({ x: rnd(-W, W), y: rnd(0, H), len: rnd(60, 220), v: rnd(0.9, 1.5), a: rnd(0.04, 0.12), ph: rnd(0, 6.28) }));
+    return (t, dt, k) => {
+      const { ctx } = S; ctx.lineCap = "round";
+      for (const s of streaks) {
+        s.x += W * s.v * dt * (0.4 + k);
+        if (s.x - s.len > W) { s.x = rnd(-200, -40); s.y = rnd(0, H); }
+        const g = ctx.createLinearGradient(s.x - s.len, 0, s.x, 0);
+        g.addColorStop(0, `rgba(${color},0)`); g.addColorStop(1, `rgba(${color},${s.a * k})`);
+        ctx.strokeStyle = g; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(s.x - s.len, s.y + Math.sin(t * 3 + s.ph) * 6);
+        ctx.quadraticCurveTo(s.x - s.len / 2, s.y - 8 * Math.sin(t * 2 + s.ph), s.x, s.y); ctx.stroke();
+      }
+    };
+  }
+
+  // 1. 바람: 종이에서 글자가 한 자씩 뜯겨 날아가고, 빈 종이도 뒤집히며 날아가요
+  function sceneWind(S) {
+    const { ctx, W, H, card, glyphs, INK } = S;
+    glyphs.forEach(g => {
+      const xr = g.lx / (card.w - card.pad * 2);
+      Object.assign(g, { px: g.cx, py: g.cy, release: 0.75 + (1 - xr) * 1.0 + g.line * 0.07 + rnd(0, 0.35), vx: 0, vy: 0, rot: 0, vr: rnd(-1, 1), flip: 0, vflip: rnd(4, 11) * (Math.random() < 0.5 ? -1 : 1), mass: rnd(0.7, 1.4), alpha: 1, free: false, age: 0, seed: rnd(0, 100) });
+    });
+    const lastRelease = glyphs.reduce((m, g) => Math.max(m, g.release), 0.8);
+    const paper = { dx: 0, dy: 0, vx: 0, vy: 0, rot: 0, vr: 0, flip: 0, alpha: 1, go: lastRelease + 0.25 };
+    const air = makeAir(S, 42, "17,17,17");
+    const dust = Array.from({ length: 70 }, () => ({ x: rnd(-W * 0.5, W), y: rnd(0, H), r: rnd(0.8, 2.2), a: rnd(0.15, 0.4) }));
+    return (t, dt) => {
+      bg(S);
+      const k = clamp01((t - 0.25) / 0.6);
+      air(t, dt, k);
+      for (const d of dust) {
+        const [wx, wy] = windAt(d.x, d.y, t, W);
+        d.x += wx * k * dt * 0.8; d.y += wy * k * dt * 0.5;
+        if (d.x > W + 10) { d.x = rnd(-80, -5); d.y = rnd(0, H); }
+        ctx.globalAlpha = d.a * k; ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.283); ctx.fill();
+      }
+      if (t > paper.go) {
+        const [wx, wy] = windAt(card.x + paper.dx, card.y + paper.dy, t, W);
+        paper.vx += (wx * 0.8 - paper.vx) * dt * 1.6; paper.vy += (wy - 60 - paper.vy) * dt * 1.6;
+        paper.vr += (Math.sin(t * 4) * 1.6 - paper.vr) * dt * 2; paper.rot += paper.vr * dt; paper.flip += dt * 3.2;
+        paper.dx += paper.vx * dt; paper.dy += paper.vy * dt; paper.alpha = Math.max(0, paper.alpha - dt * 0.55);
+      }
+      const flutter = t < paper.go ? Math.sin(t * 17) * 0.012 * k : 0;
+      if (paper.alpha > 0) drawCard(S, { cx: card.x + card.w / 2 + paper.dx, cy: card.y + card.h / 2 + paper.dy, rot: paper.rot + flutter, sx: Math.cos(paper.flip), sy: 1 - Math.abs(Math.sin(paper.flip)) * 0.15, skew: -flutter * 4, alpha: paper.alpha });
+      for (const g of glyphs) {
+        if (g.alpha <= 0) continue;
+        if (!g.free && t >= g.release) { g.free = true; g.vx = rnd(20, 80); g.vy = rnd(-90, -30); }
+        else if (g.free) {
+          g.age += dt;
+          const [wx, wy] = windAt(g.px, g.py, t + g.seed, W), kk = dt * 2.4 / g.mass;
+          g.vx += (wx - g.vx) * kk; g.vy += (wy - g.vy) * kk + 40 * dt;
+          g.vr += (Math.sin(t * 6 + g.seed) * 7 - g.vr) * dt * 1.5;
+          g.rot += g.vr * dt; g.flip += g.vflip * dt; g.px += g.vx * dt; g.py += g.vy * dt;
+          if (g.age > 1.1 || g.px > W + 30) g.alpha -= dt * 1.1;
+        }
+        const tremble = g.free ? 0 : Math.sin(t * 38 + g.seed) * 1.4 * k;
+        drawGlyph(S, g, g.px, g.py + tremble, { rot: g.rot, sx: Math.cos(g.flip) || 0.05, alpha: g.alpha });
+      }
+      return t > lastRelease + 2.6;
+    };
+  }
+
+  // 2. 종이비행기: 글이 접혀 들어가고, 종이비행기가 한 바퀴 돌아 멀리 날아가요
+  function scenePlane(S) {
+    const { ctx, W, H, card, glyphs, INK, PAPER } = S;
+    const cx0 = card.x + card.w / 2, cy0 = card.y + card.h / 2;
+    const L = W - cx0 + 160, R = Math.max(L / 5, 60);
+    const path = (u) => [cx0 + L * u + R * Math.sin(2 * Math.PI * u), cy0 - R * (1 - Math.cos(2 * Math.PI * u)) - H * 0.7 * Math.pow(Math.max(0, u - 0.55) / 0.45, 2)];
+    const trail = [];
+    const LINE = css("--line") || "#e4e4e0";
+    const air = makeAir(S, 16, "17,17,17");
+    function plane(x, y, ang, s, a) {
+      ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y); ctx.rotate(ang); ctx.scale(s, s);
+      ctx.lineJoin = "round"; ctx.strokeStyle = INK; ctx.lineWidth = 2 / s;
+      const poly = (pts, fill) => { ctx.beginPath(); pts.forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.stroke(); };
+      poly([[38, 0], [-32, 18], [-20, 0]], LINE);
+      poly([[38, 0], [-26, 7], [-20, 0]], "#c9c9c4");
+      poly([[38, 0], [-32, -24], [-20, 0]], PAPER);
+      ctx.restore();
+    }
+    return (t, dt) => {
+      bg(S);
+      air(t, dt, clamp01((t - 1.2) / 0.8) * 0.6);
+      const fold = easeOut((t - 0.5) / 0.7);          // 0→1 접히는 정도
+      const morph = clamp01((t - 1.05) / 0.35);       // 종이 → 비행기
+      if (morph < 1) {
+        drawCard(S, { sx: 1 - fold * 0.8, sy: 1 - fold * 0.86, rot: fold * -0.08, alpha: 1 - morph });
+        if (fold > 0.05 && morph < 1) { // 접힌 자국
+          ctx.save(); ctx.globalAlpha = (1 - morph) * 0.6; ctx.strokeStyle = INK; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+          ctx.beginPath(); ctx.moveTo(cx0 - card.w * (1 - fold * 0.8) / 2, cy0); ctx.lineTo(cx0 + card.w * (1 - fold * 0.8) / 2, cy0); ctx.stroke(); ctx.restore();
+        }
+        for (const g of glyphs) {
+          const k = fold;
+          drawGlyph(S, g, g.cx + (cx0 - g.cx) * k * 0.85, g.cy + (cy0 - g.cy) * k * 0.9, { sx: 1 - k * 0.7, sy: 1 - k * 0.8, alpha: 1 - clamp01((t - 0.6) / 0.5) });
+        }
+      }
+      if (morph > 0) {
+        const u = clamp01((t - 1.3) / 2.7), ue = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+        const [x, y] = path(ue), [x2, y2] = path(Math.min(1, ue + 0.01));
+        const ang = (u === 0) ? 0 : Math.atan2(y2 - y, x2 - x);
+        const s = (0.6 + morph * 0.6) * (1 - ue * 0.45);
+        if (u > 0) { trail.push([x, y]); if (trail.length > 70) trail.shift(); }
+        ctx.save(); ctx.setLineDash([3, 7]); ctx.lineWidth = 1.6;
+        for (let i = 1; i < trail.length; i++) {
+          ctx.globalAlpha = (i / trail.length) * 0.5; ctx.strokeStyle = INK;
+          ctx.beginPath(); ctx.moveTo(trail[i - 1][0], trail[i - 1][1]); ctx.lineTo(trail[i][0], trail[i][1]); ctx.stroke();
+        }
+        ctx.restore();
+        plane(x, y, ang, s, morph);
+        return u >= 1 && t > 4.1;
+      }
+      return false;
+    };
+  }
+
+  // 3. 풍선: 글이 몇 조각으로 나뉘어 풍선에 매달려 하늘로 올라가요
+  function sceneBalloon(S) {
+    const { ctx, W, H, card, glyphs, fs, INK, PAPER } = S;
+    const words = glyphs.length ? S.text.replace(/\s+/g, " ").trim().split(" ") : [];
+    const chunks = []; let cur = "";
+    for (const w of words) { if (!cur || (cur + " " + w).length <= 9) cur = (cur + " " + w).trim(); else { chunks.push(cur); cur = w; } }
+    if (cur) chunks.push(cur);
+    const cols = W < 500 ? 2 : 3, maxN = cols * 2;
+    const list = chunks.slice(0, maxN).map((c, i) => (i === maxN - 1 && chunks.length > maxN) ? "…" : (c.length > 11 ? c.slice(0, 10) + "…" : c));
+    const COLORS = ["#1b5e4f", "#e2591d", "#e0a100", "#3d5a80", "#c41d1d", "#6b4e8a"];
+    const tf = Math.round(fs * 0.72), tagFont = `${tf}px "Gowun Batang", serif`;
+    ctx.font = tagFont;
+    // 두 줄로 엇갈려 놓아서 풍선과 이름표가 겹치지 않게 해요
+    const cellW = Math.min(W - 32, card.w) / cols, y0 = card.y + card.h * 0.35;
+    const items = list.map((txt, i) => {
+      const row = i % 2, col = Math.floor(i / 2);
+      const x = W / 2 + (col - (cols - 1) / 2) * cellW + (row ? cellW / 4 : -cellW / 4);
+      return { txt, w: ctx.measureText(txt).width + 22, x, y: y0 + row * 150 + rnd(-8, 8), r: rnd(22, 28), str: rnd(55, 75), col: COLORS[i % COLORS.length], ph: rnd(0, 6.28), vy: 0, acc: rnd(80, 130), delay: 1.2 + row * 0.25 + col * 0.12 + rnd(0, 0.2) };
+    });
+    return (t, dt) => {
+      bg(S);
+      const fade = clamp01((t - 0.5) / 0.4);
+      if (fade < 1) { drawCard(S, { alpha: 1 - fade }); glyphs.forEach(g => drawGlyph(S, g, g.cx, g.cy, { alpha: 1 - fade })); }
+      let alive = 0;
+      for (const b of items) {
+        const pop = easeOut((t - 0.7) / 0.45);
+        if (t > b.delay) { b.vy = Math.min(b.vy + b.acc * dt, 230); b.y -= b.vy * dt; }
+        const sway = Math.sin(t * 1.6 + b.ph) * 12 * clamp01((t - b.delay) / 0.6);
+        const tx = b.x + sway * 0.4, ty = b.y;
+        const bx = b.x + sway, by = ty - b.str - b.r;
+        if (by + b.r + b.str + 30 > -20) alive++;
+        ctx.save(); ctx.globalAlpha = fade;
+        // 줄
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(tx, ty - 14);
+        ctx.quadraticCurveTo((tx + bx) / 2 + Math.sin(t * 3 + b.ph) * 8, (ty + by) / 2, bx, by + b.r * pop + 4); ctx.stroke();
+        // 이름표
+        ctx.fillStyle = PAPER; ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(tx - b.w / 2, ty - 14, b.w, tf + 14, 8) : ctx.rect(tx - b.w / 2, ty - 14, b.w, tf + 14); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = INK; ctx.font = tagFont; ctx.textAlign = "center"; ctx.fillText(b.txt, tx, ty + tf - 9); ctx.textAlign = "start";
+        // 풍선
+        if (pop > 0) {
+          ctx.translate(bx, by); ctx.rotate(sway * 0.01); ctx.scale(pop, pop);
+          ctx.fillStyle = b.col; ctx.beginPath(); ctx.ellipse(0, 0, b.r * 0.86, b.r, 0, 0, 6.283); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-4, b.r + 5); ctx.lineTo(4, b.r + 5); ctx.lineTo(0, b.r - 1); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.beginPath(); ctx.ellipse(-b.r * 0.32, -b.r * 0.38, b.r * 0.18, b.r * 0.3, -0.5, 0, 6.283); ctx.fill();
+        }
+        ctx.restore();
+      }
+      return (t > 2 && alive === 0) || t > 6;
+    };
+  }
+
+  // 4. 빗물: 비가 내려 글씨가 번지며 흘러내리고, 종이도 씻겨 내려가요
+  function sceneRain(S) {
+    const { ctx, W, H, card, glyphs, INK } = S;
+    const drops = [], ripples = [], spots = [];
+    glyphs.forEach(g => Object.assign(g, { wet: rnd(0.7, 2.6), dy: 0, vy: 0 }));
+    let paperY = 0;
+    return (t, dt) => {
+      bg(S);
+      const rain = clamp01((t - 0.2) / 0.8) * (1 - clamp01((t - 3.8) / 0.8));
+      const spawn = rain * 260 * dt;
+      for (let i = 0; i < spawn; i++) drops.push({ x: rnd(-60, W), y: rnd(-60, -10), v: rnd(900, 1300), len: rnd(14, 28), end: rnd(H * 0.3, H) });
+      // 젖은 자국
+      if (t > 0.6 && t < 3.4 && Math.random() < rain * 0.6) spots.push({ x: rnd(card.x, card.x + card.w), y: rnd(card.y, card.y + card.h), r: rnd(6, 18) });
+      const paperA = 1 - clamp01((t - 2.7) / 1.0);
+      if (t > 2.7) paperY += 60 * dt;
+      if (paperA > 0) {
+        drawCard(S, { cy: card.y + card.h / 2 + paperY, alpha: paperA });
+        ctx.save(); ctx.beginPath(); ctx.rect(card.x, card.y + paperY, card.w, card.h); ctx.clip();
+        ctx.fillStyle = INK;
+        for (const s of spots) { ctx.globalAlpha = 0.05 * paperA; ctx.beginPath(); ctx.arc(s.x, s.y + paperY, s.r, 0, 6.283); ctx.fill(); }
+        ctx.restore();
+      }
+      for (const g of glyphs) {
+        let a = 1, sy = 1;
+        if (t > g.wet) {
+          g.vy += 180 * dt; g.dy += g.vy * dt;
+          sy = 1 + Math.min(1.8, g.dy / 30); a = 1 - clamp01(g.dy / 140);
+          ctx.save(); ctx.globalAlpha = 0.25 * a; ctx.strokeStyle = INK; ctx.lineWidth = Math.max(1, g.w * 0.12);
+          ctx.beginPath(); ctx.moveTo(g.cx, g.cy + paperY); ctx.lineTo(g.cx, g.cy + g.dy + paperY); ctx.stroke(); ctx.restore();
+        }
+        drawGlyph(S, g, g.cx, g.cy + g.dy + paperY, { sy, alpha: a * Math.max(paperA, t < 2.7 ? 1 : 0) });
+      }
+      ctx.save(); ctx.strokeStyle = INK; ctx.lineCap = "round";
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i]; d.y += d.v * dt; d.x += 120 * dt;
+        ctx.globalAlpha = 0.28; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * 0.12, d.y - d.len); ctx.stroke();
+        if (d.y > d.end) { ripples.push({ x: d.x, y: d.end, r: 1, a: 0.35 }); drops.splice(i, 1); }
+      }
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i]; r.r += 40 * dt; r.a -= 0.9 * dt;
+        if (r.a <= 0) { ripples.splice(i, 1); continue; }
+        ctx.globalAlpha = r.a; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(r.x, r.y, r.r, r.r * 0.35, 0, 0, 6.283); ctx.stroke();
+      }
+      ctx.restore();
+      return t > 4.8 && drops.length === 0;
+    };
+  }
+
+  // 5. 태우기: 종이가 아래부터 타들어 가고, 글자는 재와 불씨가 되어 날아올라요
+  function sceneBurn(S) {
+    const { ctx, W, H, card, glyphs, INK, PAPER } = S;
+    const parts = [], smoke = [];
+    const prog = (t) => { const p = clamp01((t - 0.6) / 2.5); return p * p * (3 - 2 * p); };
+    const front = (x, t) => card.y + card.h + 16 - prog(t) * (card.h + 48) + 9 * Math.sin(x * 0.045 + t * 3) + 6 * Math.sin(x * 0.11 - t * 5);
+    glyphs.forEach(g => { g.burnt = false; });
+    const ember = (x, y, k = 1) => parts.push({ kind: "ember", x, y, vx: rnd(-25, 25), vy: rnd(-130, -50) * k, life: rnd(0.8, 1.5), age: 0, r: rnd(1.2, 2.6) });
+    const ash = (x, y) => parts.push({ kind: "ash", x, y, vx: rnd(-20, 30), vy: rnd(-70, -25), life: rnd(1.2, 2), age: 0, r: rnd(2, 4.5), rot: rnd(0, 6), vr: rnd(-4, 4) });
+    return (t, dt) => {
+      bg(S);
+      const p = prog(t), x0 = card.x, x1 = card.x + card.w;
+      const pts = []; for (let x = x0; x <= x1 + 0.1; x += 6) pts.push([x, Math.max(card.y, Math.min(card.y + card.h, front(x, t)))]);
+      const visible = pts.some(([, y]) => y > card.y + 0.5);
+      if (visible) {
+        // 남은 종이
+        ctx.save();
+        ctx.beginPath(); ctx.moveTo(x0, card.y); ctx.lineTo(x1, card.y);
+        for (let i = pts.length - 1; i >= 0; i--) ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.closePath();
+        ctx.shadowColor = "rgba(0,0,0,0.14)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+        ctx.fillStyle = PAPER; ctx.fill(); ctx.shadowColor = "transparent";
+        ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+        ctx.clip();
+        // 글자 (불길 가까이는 그을려요)
+        for (const g of glyphs) {
+          const fy = front(g.cx, t);
+          if (!g.burnt && fy < g.y + 2) { g.burnt = true; for (let i = 0; i < 4; i++) ash(g.cx + rnd(-6, 6), g.cy + rnd(-6, 6)); for (let i = 0; i < 3; i++) ember(g.cx, g.cy); }
+          if (!g.burnt) drawGlyph(S, g, g.cx, g.cy, { color: fy - g.y < 22 ? "#5a3a1a" : INK });
+        }
+        // 그을린 띠
+        ctx.strokeStyle = "rgba(70,40,15,0.55)"; ctx.lineWidth = 14;
+        ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke();
+        ctx.restore();
+        // 불길 가장자리
+        if (p > 0 && p < 1) {
+          ctx.save(); ctx.shadowColor = "#ff5a00"; ctx.shadowBlur = 16; ctx.strokeStyle = "#ff7a1a"; ctx.lineWidth = 3;
+          ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke(); ctx.restore();
+          for (let i = 0; i < 40 * dt * 3; i++) { const [x, y] = pts[Math.floor(Math.random() * pts.length)]; ember(x, y, 0.8); }
+          if (Math.random() < 10 * dt) { const [x, y] = pts[Math.floor(Math.random() * pts.length)]; smoke.push({ x, y, r: 10, a: 0.1 }); }
+        }
+      }
+      for (let i = smoke.length - 1; i >= 0; i--) {
+        const s = smoke[i]; s.y -= 40 * dt; s.x += 10 * dt; s.r += 22 * dt; s.a -= 0.05 * dt;
+        if (s.a <= 0) { smoke.splice(i, 1); continue; }
+        ctx.globalAlpha = s.a; ctx.fillStyle = "#8a8a86"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+      }
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const q = parts[i]; q.age += dt;
+        if (q.age > q.life) { parts.splice(i, 1); continue; }
+        q.vx += Math.sin(t * 4 + q.y * 0.05) * 30 * dt; q.x += q.vx * dt; q.y += q.vy * dt;
+        const a = 1 - q.age / q.life;
+        if (q.kind === "ember") {
+          ctx.globalAlpha = a * (0.6 + 0.4 * Math.sin(q.age * 30)); ctx.fillStyle = a > 0.5 ? "#ffb347" : "#ff5a1a";
+          ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 6.283); ctx.fill();
+        } else {
+          q.rot += q.vr * dt; ctx.save(); ctx.globalAlpha = a * 0.7; ctx.fillStyle = "#4a4a48";
+          ctx.translate(q.x, q.y); ctx.rotate(q.rot); ctx.fillRect(-q.r / 2, -q.r / 3, q.r, q.r * 0.66); ctx.restore();
+        }
+      }
+      ctx.globalAlpha = 1;
+      return t > 3.4 && parts.length === 0 && smoke.length < 3 || t > 5.5;
+    };
+  }
+
+  function sceneFade(S) {
+    return (t) => {
+      bg(S);
+      const a = 1 - clamp01((t - 0.3) / 0.9);
+      drawCard(S, { alpha: a }); S.glyphs.forEach(g => drawGlyph(S, g, g.cx, g.cy, { alpha: a }));
+      return t > 1.4;
+    };
+  }
+
+  const SCENES = [
+    { title: "바람에 날려 보내요", run: sceneWind },
+    { title: "종이비행기로 멀리 보내요", run: scenePlane },
+    { title: "풍선에 실어 보내요", run: sceneBalloon },
+    { title: "빗물에 씻어 보내요", run: sceneRain },
+    { title: "태워서 재로 날려 보내요", run: sceneBurn },
+  ];
+  function pickScene() {
+    const last = store.get("sg.scene", -1);
+    let i; do { i = Math.floor(Math.random() * SCENES.length); } while (i === last);
+    store.set("sg.scene", i);
+    return SCENES[i];
+  }
+
   async function blowAway(text) {
     const ov = $("ov-wind"), cv = $("wind-canvas"), ctx = cv.getContext("2d");
     show(ov);
     const W = innerWidth, H = innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const INK = css("--ink") || "#111111", PAPER = css("--paper") || "#ffffff";
     const fs = W < 500 ? 21 : 25, lineH = fs * 1.6, font = `${fs}px "Gowun Batang", serif`;
     try { await Promise.race([document.fonts.load(font), sleep(400)]); } catch {}
-    ctx.font = font;
-
-    // 종이 위에 글자 배치
-    const cardW = Math.min(W - 40, 540), pad = 26, maxLines = Math.max(3, Math.floor((H * 0.5 - pad * 2) / lineH));
-    let chars = Array.from(text.replace(/\s+/g, " ").trim());
-    const glyphs = []; let cx = 0, line = 0;
-    for (let i = 0; i < chars.length; i++) {
-      const ch = chars[i], w = ctx.measureText(ch).width;
-      if (cx + w > cardW - pad * 2) { line++; cx = 0; if (ch === " ") continue; }
-      if (line >= maxLines) { glyphs[glyphs.length - 1].ch = "…"; break; }
-      if (ch !== " ") glyphs.push({ ch, lx: cx, line, w });
-      cx += w;
-    }
-    const lines = Math.min(maxLines, line + 1);
-    const cardH = lines * lineH + pad * 2, cardX = (W - cardW) / 2, cardY = H * 0.44 - cardH / 2;
-    const rand = (a, b) => a + Math.random() * (b - a);
-    glyphs.forEach(g => {
-      g.x = cardX + pad + g.lx; g.y = cardY + pad + g.line * lineH + fs;
-      const xr = g.lx / (cardW - pad * 2);
-      g.release = 0.75 + (1 - xr) * 1.0 + g.line * 0.07 + rand(0, 0.35); // 바람 맞은편 끝부터 뜯겨요
-      g.vx = 0; g.vy = 0; g.rot = 0; g.vr = rand(-1, 1); g.flip = 0; g.vflip = rand(4, 11) * (Math.random() < 0.5 ? -1 : 1);
-      g.mass = rand(0.7, 1.4); g.alpha = 1; g.free = false; g.age = 0; g.seed = rand(0, 100);
-    });
-    const lastRelease = glyphs.reduce((m, g) => Math.max(m, g.release), 0.8);
-    const paper = { x: cardX, y: cardY, vx: 0, vy: 0, rot: 0, vr: 0, flip: 0, alpha: 1, go: lastRelease + 0.25 };
-
-    const streaks = Array.from({ length: 42 }, () => ({ x: rand(-W, W), y: rand(0, H), len: rand(60, 220), v: rand(0.9, 1.5), a: rand(0.04, 0.12), ph: rand(0, 6.28) }));
-    const dust = Array.from({ length: 70 }, () => ({ x: rand(-W * 0.5, W), y: rand(0, H), r: rand(0.8, 2.2), a: rand(0.15, 0.4) }));
+    const S = { ctx, W, H, fs, lineH, font, text, INK: css("--ink") || "#111111", PAPER: css("--paper") || "#ffffff", ...layoutPaper(ctx, text, W, H, font, fs, lineH) };
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const END = reduce ? 1.4 : lastRelease + 2.6;
-
+    const scene = reduce ? { title: "", run: sceneFade } : pickScene();
+    const title = $("scene-title");
+    title.textContent = scene.title; title.classList.remove("show"); void title.offsetWidth; title.classList.add("show");
+    const step = scene.run(S);
     await new Promise(resolve => {
-      const t0 = performance.now(); let prev = t0;
+      const t0 = performance.now(); let prev = t0, done = false;
+      const finish = () => { if (!done) { done = true; resolve(); } };
+      setTimeout(finish, 9000); // 화면이 숨겨져 애니메이션이 멈춰도 다음으로 넘어가요
       function frame(now) {
+        if (done) return;
         const t = (now - t0) / 1000, dt = Math.min(0.04, (now - prev) / 1000); prev = now;
-        ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
-        const windUp = Math.min(1, Math.max(0, (t - 0.25) / 0.6)); // 바람이 점점 세져요
-
-        if (!reduce) {
-          // 바람결
-          ctx.lineCap = "round";
-          for (const s of streaks) {
-            s.x += W * s.v * dt * (0.4 + windUp);
-            if (s.x - s.len > W) { s.x = rand(-200, -40); s.y = rand(0, H); }
-            const [, wy] = windAt(s.x, s.y, t, W);
-            s.y += wy * 0.15 * dt;
-            const g = ctx.createLinearGradient(s.x - s.len, 0, s.x, 0);
-            g.addColorStop(0, "rgba(17,17,17,0)"); g.addColorStop(1, `rgba(17,17,17,${s.a * windUp})`);
-            ctx.strokeStyle = g; ctx.lineWidth = 1.2;
-            ctx.beginPath(); ctx.moveTo(s.x - s.len, s.y + Math.sin(t * 3 + s.ph) * 6);
-            ctx.quadraticCurveTo(s.x - s.len / 2, s.y - 8 * Math.sin(t * 2 + s.ph), s.x, s.y); ctx.stroke();
-          }
-          for (const d of dust) {
-            const [wx, wy] = windAt(d.x, d.y, t, W);
-            d.x += wx * windUp * dt * 0.8; d.y += wy * windUp * dt * 0.5;
-            if (d.x > W + 10) { d.x = rand(-80, -5); d.y = rand(0, H); }
-            ctx.globalAlpha = d.a * windUp; ctx.fillStyle = INK;
-            ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.283); ctx.fill();
-          }
-          ctx.globalAlpha = 1;
-        }
-
-        // 종이
-        if (reduce) paper.alpha = Math.max(0, 1 - Math.max(0, t - 0.3) / 0.9);
-        else if (t > paper.go) {
-          const [wx, wy] = windAt(paper.x, paper.y, t, W);
-          paper.vx += (wx * 0.8 - paper.vx) * dt * 1.6; paper.vy += (wy - 60 - paper.vy) * dt * 1.6;
-          paper.vr += (Math.sin(t * 4) * 1.6 - paper.vr) * dt * 2; paper.rot += paper.vr * dt;
-          paper.flip += dt * 3.2; paper.x += paper.vx * dt; paper.y += paper.vy * dt;
-          paper.alpha = Math.max(0, paper.alpha - dt * 0.55);
-        }
-        if (paper.alpha > 0) {
-          const flutter = reduce ? 0 : Math.sin(t * 17) * 0.012 * windUp * (t < paper.go ? 1 : 0);
-          ctx.save();
-          ctx.globalAlpha = paper.alpha;
-          ctx.translate(paper.x + cardW / 2, paper.y + cardH / 2);
-          ctx.rotate(paper.rot + flutter);
-          ctx.scale(Math.cos(paper.flip), 1 - Math.abs(Math.sin(paper.flip)) * 0.15);
-          ctx.transform(1, 0, -flutter * 4, 1, 0, 0);
-          ctx.shadowColor = "rgba(0,0,0,0.14)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
-          ctx.fillStyle = PAPER; ctx.fillRect(-cardW / 2, -cardH / 2, cardW, cardH);
-          ctx.shadowColor = "transparent";
-          ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(-cardW / 2, -cardH / 2, cardW, cardH);
-          ctx.restore();
-        }
-
-        // 글자
-        ctx.font = font; ctx.textBaseline = "alphabetic"; ctx.fillStyle = INK;
-        for (const g of glyphs) {
-          if (g.alpha <= 0) continue;
-          if (reduce) { g.alpha = paper.alpha; }
-          else if (!g.free && t >= g.release) { g.free = true; g.vx = rand(20, 80); g.vy = rand(-90, -30); }
-          else if (g.free) {
-            g.age += dt;
-            const [wx, wy] = windAt(g.x, g.y, t + g.seed, W);
-            const k = dt * 2.4 / g.mass;
-            g.vx += (wx - g.vx) * k; g.vy += (wy - g.vy) * k + 40 * dt;
-            g.vr += (Math.sin(t * 6 + g.seed) * 7 - g.vr) * dt * 1.5;
-            g.rot += g.vr * dt; g.flip += g.vflip * dt;
-            g.x += g.vx * dt; g.y += g.vy * dt;
-            if (g.age > 1.1 || g.x > W + 30) g.alpha -= dt * 1.1;
-          }
-          const tremble = (!g.free && !reduce) ? Math.sin(t * 38 + g.seed) * 1.4 * windUp : 0;
-          ctx.save();
-          ctx.globalAlpha = Math.max(0, g.alpha) * (reduce ? 1 : paper.alpha > 0 || g.free ? 1 : 0);
-          ctx.translate(g.x + g.w / 2, g.y - fs * 0.35 + tremble);
-          ctx.rotate(g.rot);
-          ctx.scale(Math.cos(g.flip) || 0.05, 1);
-          ctx.fillText(g.ch, -g.w / 2, fs * 0.35);
-          ctx.restore();
-        }
-        if (t < END) requestAnimationFrame(frame); else resolve();
+        ctx.save(); const end = step(t, dt); ctx.restore();
+        if (end) finish(); else requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
     });
+    title.classList.remove("show");
     hide(ov);
   }
 
