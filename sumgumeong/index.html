@@ -2266,25 +2266,32 @@ ${text}
       .sort((a, b) => voiceScore(b) - voiceScore(a) || (lang === "en" ? (/en-US/i.test(b.lang) - /en-US/i.test(a.lang)) : 0));
     // 읽어 주는 사람: 여자 3명, 남자 3명 + 나이(20~60대). 기기 목소리를 성별로 나누고, 높낮이·빠르기로 사람과 나이를 만들어요
     // 읽어 주는 사람: 이 기기에 실제로 들어 있는 목소리만 보여 줘요. 가짜로 높낮이를 비틀어 사람을 만들어 내면 바로 기계음이 나서, 그 방식은 버렸어요
+    // 한국어 Windows에서는 이름이 「선희」처럼 한글로 나오기도 해서 영문·한글 둘 다 알아봐요
     const VOICE_DB = [
-      [/SunHi/i, "선희", "f", "또렷하고 밝은 여성"], [/JiMin/i, "지민", "f", "차분한 여성"], [/SeoHyeon/i, "서현", "f", "부드러운 여성"], [/YuJin/i, "유진", "f", "통통 튀는 여성"], [/SoonBok/i, "순복", "f", "푸근한 중년 여성"],
-      [/InJoon/i, "인준", "m", "차분한 남성"], [/BongJin/i, "봉진", "m", "묵직한 남성"], [/GookMin/i, "국민", "m", "친근한 남성"], [/Hyunsu/i, "현수", "m", "또렷한 남성"],
-      [/Yuna/i, "유나", "f", "애플 여성"], [/Suhyun/i, "수현", "f", "애플 여성"], [/Heami/i, "해미", "f", "윈도우 기본 (기계음)"], [/Google/i, "구글", "f", "구글 여성"]
+      [/SunHi|선희/i, "선희", "f", "또렷하고 밝은 여성"], [/JiMin|지민/i, "지민", "f", "차분한 여성"], [/SeoHyeon|서현/i, "서현", "f", "부드러운 여성"], [/YuJin|유진/i, "유진", "f", "통통 튀는 여성"], [/SoonBok|순복/i, "순복", "f", "푸근한 중년 여성"],
+      [/InJoon|인준/i, "인준", "m", "차분한 남성"], [/BongJin|봉진/i, "봉진", "m", "묵직한 남성"], [/GookMin|국민/i, "국민", "m", "친근한 남성"], [/Hyunsu|현수/i, "현수", "m", "또렷한 남성"],
+      [/Yuna|유나/i, "유나", "f", "애플 여성"], [/Suhyun|수현/i, "수현", "f", "애플 여성"], [/Heami|해미/i, "해미", "f", "윈도우 기본 (기계음)"], [/Google/i, "구글", "f", "구글 여성"],
+      // 다른 나라 말 목소리지만 한국어도 읽는 「다국어」 목소리: 억양이 살짝 외국 사람 같아요. 남자 목소리를 늘리는 데 요긴해요
+      [/Andrew/i, "앤드루", "m", "다국어 · 미국 남성, 한국어는 살짝 외국 억양"], [/Brian/i, "브라이언", "m", "다국어 · 미국 남성, 한국어는 살짝 외국 억양"], [/Florian/i, "플로리안", "m", "다국어 · 독일 남성"], [/Remy/i, "레미", "m", "다국어 · 프랑스 남성"], [/Giuseppe/i, "주세페", "m", "다국어 · 이탈리아 남성"], [/Masaru/i, "마사루", "m", "다국어 · 일본 남성"], [/Yunyi|Yunfan|Yunxiao/i, "윈이", "m", "다국어 · 중국 남성"], [/Ollie|Oliver/i, "올리", "m", "다국어 · 영국 남성"],
+      [/\bAva\b/i, "에이바", "f", "다국어 · 미국 여성"], [/Emma/i, "엠마", "f", "다국어 · 미국 여성"], [/Vivienne/i, "비비엔", "f", "다국어 · 프랑스 여성"], [/Seraphina/i, "세라피나", "f", "다국어 · 독일 여성"], [/Xiaoxiao|Xiaochen|Xiaoyu/i, "샤오샤오", "f", "다국어 · 중국 여성"], [/Nanami/i, "나나미", "f", "다국어 · 일본 여성"]
     ];
-    const MALE_RE = /(InJoon|Hyunsu|BongJin|GookMin|Minsu|ko-kr-x-(koc|kod|kob)|Guy|Christopher|Eric|Roger|Steffan|Andrew|Brian|Davis|Tony|Daniel|Alex\b|Fred|Aaron|Arthur|Ryan|Thomas|David|Mark|George|James|Male)/i;
+    const MALE_RE = /(InJoon|인준|Hyunsu|현수|BongJin|봉진|GookMin|국민|Minsu|ko-kr-x-(koc|kod|kob)|Guy|Christopher|Eric|Roger|Steffan|Andrew|Brian|Davis|Tony|Daniel|Alex\b|Fred|Aaron|Arthur|Ryan|Thomas|David|Mark|George|James|Florian|Remy|Giuseppe|Masaru|Yunyi|Yunfan|Yunxiao|Ollie|Oliver|Male)/i;
+    const isMulti = (v) => /Multilingual|다국어/i.test(v.name);
+    // 한국어 목소리 + 다른 나라 다국어 목소리(한국어도 읽어요). 한국어 목소리가 먼저, 그다음 다국어
+    const koVoices = () => { const all = ("speechSynthesis" in window && speechSynthesis.getVoices()) || []; const by = (a, b) => voiceScore(b) - voiceScore(a); return all.filter(v => /^ko/i.test(v.lang)).sort(by).concat(all.filter(v => !/^ko/i.test(v.lang) && isMulti(v)).sort(by)); };
     const genderOf = (v) => (MALE_RE.test(v.name + " " + (v.voiceURI || "")) && !/Female/i.test(v.name) ? "m" : "f");
     // 사람처럼 들리는(신경망) 목소리인지: 이름에 Natural·Online·Premium·Enhanced가 있거나, 기기 밖(서버)에서 만들어 오는 목소리
-    const isNeural = (v) => /(Natural|Neural|Online|Premium|Enhanced|향상|프리미엄)/i.test(v.name) || (!v.localService && !/Heami/i.test(v.name));
+    const isNeural = (v) => /(Natural|Neural|Online|Premium|Enhanced|자연스러|온라인|향상|프리미엄)/i.test(v.name) || (!v.localService && !/Heami|해미/i.test(v.name));
     const AGE = { 20: { r: 1.06, p: .04 }, 30: { r: 1.02, p: .02 }, 40: { r: 1, p: 0 }, 50: { r: .95, p: -.03 }, 60: { r: .9, p: -.06 } };
     const SPEEDS = [[1, "보통"], [1.2, "빠르게"], [1.45, "아주 빠르게"]];
     let cast = Object.assign({ who: "", age: 30, speed: 1 }, store.get("sg.cast", {})); if (!SPEEDS[cast.speed]) cast.speed = 1; if (!AGE[cast.age]) cast.age = 30;
     function castList() {
-      const seen = {};
-      const list = voicesFor("ko").map((v, i) => {
-        const hit = VOICE_DB.find(([re]) => re.test(v.name) || re.test(v.voiceURI || ""));
-        const g = hit ? hit[2] : genderOf(v); let name = hit ? hit[1] : (g === "m" ? "남자" : "여자");
+      const seen = {}, pool = { f: ["소희", "다은", "미경", "지우", "하린"], m: ["준호", "태현", "민재", "도윤", "시우"] }; // 이름을 모르는 목소리에는 한국 이름을 붙여요
+      const list = koVoices().map((v, i) => {
+        const hit = VOICE_DB.find(([re]) => re.test(v.name) || re.test(v.voiceURI || "")), foreign = !/^ko/i.test(v.lang);
+        const g = hit ? hit[2] : genderOf(v); let name = hit ? hit[1] : (foreign ? (v.name.match(/Microsoft\s+(\S+)/) || [])[1] || "다국어" : (pool[g].shift() || (g === "m" ? "남자" : "여자")));
         seen[name] = (seen[name] || 0) + 1; if (seen[name] > 1) name += " " + seen[name];
-        return { key: v.voiceURI || v.name, v, name, g, desc: hit ? hit[3] : (g === "m" ? "남성" : "여성"), neural: isNeural(v) };
+        return { key: v.voiceURI || v.name, v, name, g, foreign, desc: hit ? hit[3] : (foreign ? "다국어 목소리, 한국어는 살짝 외국 억양" : (g === "m" ? "남성" : "여성")), neural: isNeural(v) };
       });
       return list.filter(x => x.g === "f").concat(list.filter(x => x.g === "m"));
     }
@@ -2306,10 +2313,10 @@ ${text}
       list.forEach((x, i) => {
         if (i && list[i - 1].g !== x.g) { const sp = document.createElement("i"); sp.className = "sep"; sp.setAttribute("aria-hidden", "true"); whoEl.appendChild(sp); }
         const b = document.createElement("button"); b.type = "button"; b.dataset.who = x.key; b.dataset.g = x.g; b.title = x.desc + (x.neural ? " · 사람 같은 목소리" : "");
-        b.innerHTML = `<span class="g">${x.g === "f" ? "여" : "남"}</span>${x.name}${x.neural ? '<i class="dot" aria-hidden="true"></i>' : ""}`; whoEl.appendChild(b);
+        b.innerHTML = `<span class="g">${x.g === "f" ? "여" : "남"}</span>${x.name}${x.foreign ? '<span class="g"> 다국어</span>' : ""}${x.neural ? '<i class="dot" aria-hidden="true"></i>' : ""}`; whoEl.appendChild(b);
       });
-      const real = list.filter(x => x.neural).length;
-      countEl.innerHTML = list.length ? `이 기기의 한국어 목소리 ${list.length}개 · <span class="dot"></span> 사람 같은 목소리 ${real}개` : "이 기기에 한국어 목소리가 아직 안 보여요.";
+      const real = list.filter(x => x.neural).length, foreign = list.filter(x => x.foreign).length;
+      countEl.innerHTML = list.length ? `이 기기의 목소리 ${list.length}개 · <span class="dot"></span> 사람 같은 목소리 ${real}개${foreign ? ` · 「다국어」 ${foreign}개는 한국어를 읽지만 억양이 살짝 외국 사람 같아요` : ""}` : "이 기기에 한국어 목소리가 아직 안 보여요.";
       tipEl.innerHTML = voiceTip(list);
       const cp = $("cast-copy"); if (cp) cp.onclick = async (e) => { e.stopPropagation(); try { await navigator.clipboard.writeText(location.href); cp.textContent = "복사했어요"; } catch { cp.textContent = location.href; } };
       paintCast();
