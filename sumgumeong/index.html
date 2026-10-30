@@ -341,6 +341,24 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .promises { margin-top: 40px; padding: 18px; }
 }
 
+/* 말로 입력 */
+.ta-wrap { position: relative; }
+.ta-wrap textarea { padding-bottom: 72px; display: block; }
+.mic-btn {
+  position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 999px; padding: 10px 16px 10px 12px; min-height: 46px; font-weight: 700; font-size: 1rem;
+  background: var(--mood); color: #ffffff; box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--mood) 80%, transparent);
+  transition: transform .3s var(--ease), background-color .4s;
+}
+.mic-btn:hover { transform: translateY(-2px); }
+.mic-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mic-btn[aria-pressed="true"] { background: var(--heat-3); }
+.mic-btn[aria-pressed="true"]::before, .mic-btn[aria-pressed="true"]::after { content: ""; position: absolute; inset: 0; border-radius: 999px; border: 2px solid var(--heat-3); animation: micRing 1.6s ease-out infinite; pointer-events: none; }
+.mic-btn[aria-pressed="true"]::after { animation-delay: .8s; }
+@keyframes micRing { from { transform: scale(1); opacity: .7; } to { transform: scale(1.12, 1.6); opacity: 0; } }
+.mic-note { font-size: .9375rem; }
+.mic-note b { color: var(--ink); }
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -423,7 +441,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div class="emos" id="emos" role="group" aria-label="감정 고르기"></div>
     <div style="display:grid;gap:10px">
       <label class="label" for="text">하고 싶은 말</label>
-      <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요."></textarea>
+      <div class="ta-wrap">
+        <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
+        <button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button>
+      </div>
+      <p class="note mic-note" id="mic-note" role="status" hidden></p>
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
     </div>
     <div class="panel">
@@ -752,6 +774,57 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     $("send-hint").hidden = ok;
   }
   $("text").addEventListener("input", updateSend);
+
+  // ---------- 말로 입력 ----------
+  // 기본은 타자. 마이크를 누르면 휴대폰의 음성 인식으로 말을 글자로 받아 적어요.
+  (function voiceInput() {
+    const btn = $("mic-btn"), ta = $("text"), note = $("mic-note"), label = btn.querySelector(".mic-label");
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let rec = null, listening = false, base = "", finals = "";
+    const say = (html) => { note.innerHTML = html; note.hidden = !html; };
+    const keyboardHint = (why) => {
+      say(`${why} 대신 글 쓰는 칸을 누르고, <b>휴대폰 키보드의 마이크 버튼</b>을 누르면 말로 입력할 수 있어요.`);
+      ta.focus();
+    };
+    function setListening(on) {
+      listening = on;
+      btn.setAttribute("aria-pressed", String(on));
+      label.textContent = on ? "듣는 중… 누르면 멈춤" : "말로 입력";
+    }
+    function stop() { if (rec) { try { rec.stop(); } catch {} } setListening(false); }
+    btn.addEventListener("click", () => {
+      if (listening) { stop(); return; }
+      if (!SR) { keyboardHint("이 화면에서는 바로 받아 적기를 쓸 수 없어요."); return; }
+      rec = new SR();
+      rec.lang = "ko-KR"; rec.continuous = true; rec.interimResults = true;
+      base = ta.value && !/\s$/.test(ta.value) ? ta.value + " " : ta.value; finals = "";
+      rec.onresult = (e) => {
+        let interim = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const r = e.results[i];
+          if (r.isFinal) finals += r[0].transcript.trim() + " "; else interim += r[0].transcript;
+        }
+        ta.value = (base + finals + interim).slice(0, 1000);
+        updateSend();
+      };
+      rec.onerror = (e) => {
+        setListening(false);
+        if (e.error === "no-speech") say("아무 소리도 들리지 않았어요. 다시 누르고 말해 주세요.");
+        else if (e.error === "aborted") return;
+        else keyboardHint("이 화면에서는 마이크를 쓸 수 없어요.");
+      };
+      rec.onend = () => { ta.value = (base + finals).trimEnd().slice(0, 1000); updateSend(); if (listening) setListening(false); };
+      let gotAudio = false;
+      rec.onaudiostart = () => { gotAudio = true; };
+      // 마이크가 끝내 켜지지 않으면 (권한이 막힌 화면 등) 키보드 음성 입력을 안내해요
+      setTimeout(() => { if (listening && !gotAudio) { try { rec.abort(); } catch {} setListening(false); keyboardHint("마이크가 켜지지 않았어요."); } }, 4000);
+      try {
+        rec.start(); setListening(true);
+        say("말씀하세요. 다 말했으면 버튼을 한 번 더 누르세요. 음성은 휴대폰의 음성 인식 서비스가 글자로 바꿔 주고, 숨구멍은 녹음을 남기지 않아요.");
+      } catch { setListening(false); keyboardHint("이 화면에서는 마이크를 쓸 수 없어요."); }
+    });
+    window.addEventListener("hashchange", () => { if (listening) stop(); });
+  })();
 
   // ---------- 가림 처리, 걸러내기 (AI가 없을 때의 대비책) ----------
   function fallbackMask(s) {
