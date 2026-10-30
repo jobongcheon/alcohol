@@ -186,8 +186,10 @@ textarea::placeholder { color: #9a9a9e; }
 .guide[open] .guide-body { animation: fadeUp .5s var(--ease); }
 .guide-body { display: grid; gap: 20px; padding-bottom: 20px; font-size: 1.0625rem; }
 .guide-block { display: grid; gap: 6px; }
-.guide-hook { font-family: var(--display); font-size: 1.125rem; color: var(--ink); border-left: 3px solid var(--heat-2); padding-left: 12px; }
+.hook-summary #write-guide-title { font-size: 1.4rem; color: var(--hk, var(--heat-3)); background: linear-gradient(transparent 60%, color-mix(in srgb, var(--hk, var(--heat-3)) 22%, transparent) 60%); padding: 0 3px; transition: color .5s; }
+.guide-hook { font-family: var(--display); font-size: 1.1875rem; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--hk, var(--heat-3)) 9%, #ffffff); border-left: 4px solid var(--hk, var(--heat-3)); border-radius: 4px 12px 12px 4px; padding: 10px 14px; }
 .guide ol b { color: var(--ink); }
+.hook-in { animation: fadeUp .6s var(--ease) both; }
 .guide-block h3 { font-size: 1.2rem; }
 .guide ul, .guide ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
 .guide ol li::marker { color: var(--mood); font-weight: 700; }
@@ -677,9 +679,9 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
     <details class="guide" open>
-      <summary>열받았죠? 다섯 번이면 다 털고 가요</summary>
+      <summary class="hook-summary"><span id="write-guide-title">열받았죠? 다섯 번이면 다 털고 가요</span></summary>
       <div class="guide-body">
-        <p class="guide-hook">여기선 착한 척 안 해도 돼요. 참는 건 회사에서 충분히 했잖아요.</p>
+        <p class="guide-hook" id="write-guide-hook">여기선 착한 척 안 해도 돼요. 참는 건 회사에서 충분히 했잖아요.</p>
         <ol>
           <li><b>찍어요, 지금 내 상태.</b> 화남? 억울함? 돌려 말하지 말고 딱 하나 눌러요.</li>
           <li><b>쏟아내요, 필터 없이.</b> 욕 써도 돼요. 이름, 회사명 그대로 박아요. 게시판에 올릴 땐 알아서 별표로 가려 줘요. 손 아프면 「말로 입력」으로 그냥 말해요.</li>
@@ -1110,6 +1112,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (!firstRoute) { [...sec.children].forEach((c, i) => c.style.setProperty("--i", i)); void sec.offsetWidth; sec.classList.add("enter"); }
     // 화면을 바꾸면 그 화면의 처음부터 보여 줘요
     if (!firstRoute) { const top = sec.getBoundingClientRect().top + scrollY - 12; if (scrollY > top) scrollTo({ top, behavior: motionOff() ? "auto" : "smooth" }); }
+    if (v === "write" && !firstRoute) pickHook();
     firstRoute = false;
     if (v === "letter") renderLetters();
     if (v !== "shout") { stopMic(); stopRelief(); }
@@ -2921,6 +2924,41 @@ ${text}
       requestAnimationFrame(() => { pending = false; const r = document.documentElement.style; r.setProperty("--px", mx.toFixed(3)); r.setProperty("--py", my.toFixed(3)); });
     });
   }
+
+  // ---------- 들어올 때마다 바뀌는 첫 멘트 ----------
+  const GUIDE_HOOKS = [
+    ["열받았죠? 다섯 번이면 다 털고 가요", "여기선 착한 척 안 해도 돼요. 참는 건 회사에서 충분히 했잖아요."],
+    ["오늘도 참았어요? 여기선 안 참아도 돼요", "웃으면서 「네, 알겠습니다」 한 거, 여기서 다 갚아 줘요."],
+    ["속에서 천불 나죠? 꺼내야 꺼져요", "삼키면 체해요. 뱉어야 풀려요."],
+    ["사표 쓰기 전에 여기부터", "사표는 신중하게, 욕은 여기서 시원하게."],
+    ["그 인간 얼굴 떠올랐죠? 지금이에요", "머릿속에서 열 번 받아친 말, 여기선 진짜로 해요."],
+    ["참을 인 세 번이면 병나요", "오늘 참은 거 전부 여기 쏟고, 가벼워져서 나가요."],
+    ["퇴근길까지 들고 가지 마요", "화는 여기 두고, 집엔 나만 가요."],
+    ["욕 나오죠? 정상이에요", "화나는 내가 이상한 게 아니라, 화나게 한 쪽이 이상한 거예요."],
+    ["오늘 누가 선 넘었어요?", "그 선, 여기서 박박 지워 줄게요."],
+    ["단톡방에 못 쓴 말, 여기 쓰세요", "읽씹당할 걱정도, 캡처당할 걱정도 없어요."],
+    ["이불 킥 대신 여기서 킥", "밤에 혼자 곱씹지 말고 지금 다 털어요."],
+    ["꾹꾹 눌러 담은 거, 오늘 터뜨려요", "여기선 터져도 아무도 안 다쳐요."],
+    ["맞는 말 하고 혼났죠?", "억울한 건 억울하다고 말해야 풀려요."],
+    ["「다 너 잘되라고」 또 들었어요?", "그 말 듣고 잘된 사람 없어요. 여기서 시원하게 받아쳐요."],
+    ["월급에 욕먹는 값은 없었어요", "받은 만큼만 참고, 나머지는 여기 버려요."],
+    ["화 참다 위장 버려요", "위장 대신 숨구멍이 다 받아 줄게요."],
+    ["내 편 하나 없는 날이었죠?", "오늘은 숨구멍이 무조건 당신 편이에요."],
+    ["한마디만 할게요. 그쪽이 이상한 거예요", "자책은 그만. 다 쏟아내고 가요."],
+    ["이 정도면 화낼 만했어요", "여기선 아무도 「예민하다」고 안 해요."],
+    ["5분만 미친 듯이 털고 가요", "다 비우고 나가면, 그 인간도 그냥 지나가는 사람 1이에요."],
+  ];
+  const HOOK_COLORS = ["#d43a22", "#6c5ce7", "#3f6fe0", "#2f8f6f", "#c96a12", "#d9506f"];
+  function pickHook() {
+    const last = store.get("sg.hook", -1);
+    let i; do { i = Math.floor(Math.random() * GUIDE_HOOKS.length); } while (i === last);
+    store.set("sg.hook", i);
+    const t = $("write-guide-title"), h = $("write-guide-hook");
+    t.textContent = GUIDE_HOOKS[i][0]; h.textContent = GUIDE_HOOKS[i][1];
+    t.closest(".guide").style.setProperty("--hk", HOOK_COLORS[i % HOOK_COLORS.length]);
+    [t, h].forEach(el => { el.classList.remove("hook-in"); void el.offsetWidth; el.classList.add("hook-in"); });
+  }
+  pickHook();
 
   // ---------- 시작 ----------
   renderEmos(); updateSend(); route(); renderBoard(); vaultState();
