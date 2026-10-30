@@ -377,8 +377,17 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 /* 말로 입력 */
 .ta-wrap { position: relative; }
 .ta-wrap textarea { padding-bottom: 72px; display: block; }
+.ta-tools { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 8px; align-items: center; }
+.clear-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 46px; padding: 10px 14px 10px 12px; border-radius: 999px;
+  border: 1px solid var(--hair); background: var(--card); color: var(--ink-soft); font-weight: 700; font-size: 1rem;
+  box-shadow: var(--shadow); transition: transform .3s var(--ease), color .3s, border-color .3s;
+}
+.clear-btn:hover { transform: translateY(-2px); color: var(--ink); }
+.clear-btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.clear-btn.undo { color: var(--mood); border-color: color-mix(in srgb, var(--mood) 45%, transparent); animation: fadeUp .35s var(--ease); }
 .mic-btn {
-  position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 8px;
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
   border: 0; border-radius: 999px; padding: 10px 16px 10px 12px; min-height: 46px; font-weight: 700; font-size: 1rem;
   background: var(--mood); color: #ffffff; box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--mood) 80%, transparent);
   transition: transform .3s var(--ease), background-color .4s;
@@ -589,7 +598,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <label class="label" for="text">하고 싶은 말</label>
       <div class="ta-wrap">
         <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
-        <button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button>
+        <div class="ta-tools"><button class="clear-btn" id="clear-btn" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg><span>지우기</span></button><button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button></div>
       </div>
       <p class="note mic-note" id="mic-note" role="status" hidden></p>
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
@@ -852,7 +861,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <div class="tpls"><span class="note">틀 불러오기</span><button class="btn ghost small" type="button" data-tpl="vent">털어놓기</button><button class="btn ghost small" type="button" data-tpl="record">기록해 두기</button><button class="btn ghost small" type="button" data-tpl="letter">못 보낸 편지</button></div>
       <div class="ta-wrap">
         <textarea id="vault-text" maxlength="5000" style="min-height:200px" placeholder="아무에게도 못 한 말을 적어 두세요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
-        <button class="mic-btn" id="vault-mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button>
+        <div class="ta-tools"><button class="clear-btn" id="vault-clear-btn" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg><span>지우기</span></button><button class="mic-btn" id="vault-mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button></div>
       </div>
       <p class="note mic-note" id="vault-mic-note" role="status" hidden></p>
       <div class="row"><button class="btn" id="vault-save">금고에 넣기</button><button class="btn ghost" id="vault-close">잠그기</button></div>
@@ -1021,7 +1030,9 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       $("emos").appendChild(b);
     });
   }
+  let syncMainClear = () => {}, syncVaultClear = () => {};
   function updateSend() {
+    syncMainClear();
     const t = $("text").value.trim();
     $("count").textContent = `${$("text").value.length} / 1000`;
     const ok = !!pickedEmo && t.length > 0;
@@ -1095,7 +1106,28 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     return cancel;
   }
   const cancelMainMic = attachVoice($("mic-btn"), $("text"), $("mic-note"), 1000, () => updateSend());
-  const cancelVaultMic = attachVoice($("vault-mic-btn"), $("vault-text"), $("vault-mic-note"), 5000, () => {});
+  const cancelVaultMic = attachVoice($("vault-mic-btn"), $("vault-text"), $("vault-mic-note"), 5000, () => syncVaultClear());
+
+  // ---------- 지우기 ----------
+  // 쓴 글을 한 번에 지워요. 실수로 지웠으면 5초 안에 「되돌리기」를 누르면 돌아와요.
+  function attachClear(btn, ta, onChange, cancelMic) {
+    const label = btn.querySelector("span");
+    let saved = "", undoTimer = 0;
+    const reset = () => { saved = ""; clearTimeout(undoTimer); label.textContent = "지우기"; btn.classList.remove("undo"); };
+    const sync = () => { if (!saved) btn.hidden = !ta.value; };
+    ta.addEventListener("input", () => { if (saved && ta.value) reset(); sync(); });
+    btn.addEventListener("click", () => {
+      if (saved) { ta.value = saved; reset(); onChange(); sync(); ta.focus(); return; }
+      cancelMic(); saved = ta.value; ta.value = ""; onChange();
+      label.textContent = "되돌리기"; btn.classList.add("undo"); btn.hidden = false;
+      undoTimer = setTimeout(() => { reset(); sync(); }, 5000);
+      ta.focus();
+    });
+    return () => { if (saved && ta.value) reset(); sync(); };
+  }
+  syncMainClear = attachClear($("clear-btn"), $("text"), () => updateSend(), cancelMainMic);
+  syncVaultClear = attachClear($("vault-clear-btn"), $("vault-text"), () => {}, cancelVaultMic);
+  syncMainClear(); syncVaultClear();
 
   // ---------- 가림 처리, 걸러내기 (AI가 없을 때의 대비책) ----------
   function fallbackMask(s) {
@@ -2544,7 +2576,7 @@ ${text}
       if (vaultWhere === "site") { await writePage(page); if (newPage) await writeMeta(); }
       else ok = await sealLocal();
     } catch { ok = false; }
-    if (ok) { $("vault-text").value = ""; $("vault-open-note").textContent = vaultWhere === "site" ? "금고에 넣었어요. 사이트의 내 공간에 암호가 걸린 채로 보관돼요." : "금고에 넣었어요. 이 기기에 저장돼요."; }
+    if (ok) { $("vault-text").value = ""; syncVaultClear(); $("vault-open-note").textContent = vaultWhere === "site" ? "금고에 넣었어요. 사이트의 내 공간에 암호가 걸린 채로 보관돼요." : "금고에 넣었어요. 이 기기에 저장돼요."; }
     else { page.entries.pop(); if (newPage) vaultPages.pop(); $("vault-open-note").textContent = "저장하지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요."; }
     renderVault();
     vaultSaving = false; $("vault-save").disabled = false;
@@ -2557,9 +2589,10 @@ ${text}
   document.querySelectorAll("[data-tpl]").forEach(b => b.addEventListener("click", () => {
     const t = $("vault-text");
     t.value = (t.value.trim() ? t.value.replace(/\s*$/, "\n\n") : "") + TEMPLATES[b.dataset.tpl];
+    syncVaultClear();
     t.focus();
   }));
-  function lockVault() { cancelVaultMic(); vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
+  function lockVault() { cancelVaultMic(); vaultKey = null; vaultPages = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; syncVaultClear(); $("vault-count").textContent = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
   $("vault-close").addEventListener("click", lockVault);
   let resetArmed = false;
   $("vault-reset").addEventListener("click", async () => {
