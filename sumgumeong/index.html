@@ -538,9 +538,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 @media (max-width: 639px) {
   .move-stage { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .relief-grid { gap: 10px; }
-  .rant-row .rant-btn { width: 100%; }
-  .rant-row, .rant-go { width: 100%; }
-  .rant-row .opt-group { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .rant-row { gap: 6px 12px; }
+  .rant-row .seg button { padding: 6px 8px; font-size: .8125rem; }
+  .ta-tools { left: 10px; right: 10px; bottom: 10px; gap: 6px; }
+  .ta-tools .clear-btn span, .ta-tools .mic-label { display: none; }
+  .ta-tools .clear-btn, .ta-tools .mic-btn { padding: 10px 12px; }
+  .ta-tools .mic-btn[aria-pressed="true"] .mic-label { display: inline; }
   .relief-card { padding: 14px 12px; border-radius: 18px; gap: 4px; }
   .relief-card h3 { font-size: 1.125rem; }
   .relief-card p { font-size: .8125rem; }
@@ -552,9 +555,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .bar.rank { grid-template-columns: minmax(0, 11em) 1fr 4.4em; }
 
 /* 같이 욕해 주기 */
-.rant-row { display: grid; gap: 10px; justify-items: start; }
-.rant-go { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
-.rant-opts { display: grid; gap: 8px; justify-items: start; }
+.rant-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; }
+.rant-row .seg button { padding: 6px 12px; font-size: .9375rem; }
 .opt-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .opt-label { font-size: .8125rem; font-weight: 700; letter-spacing: .06em; min-width: 2.6em; }
 .opt-heat .opt-label { color: var(--heat-3); }
@@ -568,7 +570,16 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-say[aria-pressed="true"] svg { animation: pulseSay 1s ease-in-out infinite; }
 .rant-say:disabled { opacity: .4; }
 @keyframes pulseSay { 50% { transform: scale(1.18); } }
-.rant-btn { background: linear-gradient(120deg, var(--heat-2), var(--heat-3)); font-size: 1.125rem; min-height: 50px; padding: 12px 22px; box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--heat-3) 80%, transparent); }
+.rant-btn {
+  display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; min-height: 46px; padding: 10px 16px 10px 12px;
+  font-weight: 700; font-size: 1rem; color: #ffffff; background: linear-gradient(120deg, var(--heat-2), var(--heat-3));
+  box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--heat-3) 80%, transparent); transition: transform .3s var(--ease), opacity .3s;
+}
+.rant-btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.rant-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.rant-btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.main-tools { left: 14px; justify-content: flex-end; }
+.main-tools .rant-btn { margin-right: auto; }
 .rant-box {
   position: relative; overflow: hidden; display: grid; gap: 12px; padding: 18px 20px 16px; border-radius: 22px;
   background: #171313; color: #ffffff; box-shadow: 0 22px 46px -18px rgba(196, 29, 29, .6);
@@ -680,16 +691,13 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <label class="label" for="text">하고 싶은 말</label>
       <div class="ta-wrap">
         <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요. 말로 하고 싶으면 마이크를 누르세요."></textarea>
-        <div class="ta-tools"><button class="clear-btn" id="clear-btn" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg><span>지우기</span></button><button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button></div>
+        <div class="ta-tools main-tools"><button class="rant-btn" id="rant-btn" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.6 2-4.6.3 1.6 1.2 2.6 2.2 2.6C10.8 9 11 6 12 3z"/></svg><span>같이 욕해 줘</span></button><button class="clear-btn" id="clear-btn" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg><span>지우기</span></button><button class="mic-btn" id="mic-btn" type="button" aria-label="말로 입력하기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span class="mic-label">말로 입력</span></button></div>
       </div>
       <p class="note mic-note" id="mic-note" role="status" hidden></p>
       <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
       <div class="rant-row">
           <div class="opt-group opt-heat"><span class="opt-label">세기</span><div class="seg" id="rant-level" role="group" aria-label="욕의 세기"><button type="button" data-lv="1" aria-pressed="false">순한맛</button><button type="button" data-lv="2" aria-pressed="false">매운맛</button><button type="button" data-lv="3" aria-pressed="true">불닭맛</button></div></div>
-        <div class="rant-go">
-            <div class="opt-group opt-tone"><span class="opt-label">말투</span><div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button><button type="button" data-d="en" aria-pressed="false">영어</button></div></div>
-          <button class="btn rant-btn" id="rant-btn" type="button" disabled>같이 욕해 줘</button>
-        </div>
+          <div class="opt-group opt-tone"><span class="opt-label">말투</span><div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button><button type="button" data-d="en" aria-pressed="false">영어</button></div></div>
       </div>
       <div class="rant-box" id="rant-box" hidden aria-live="polite">
         <div class="rant-head"><span class="rant-label" id="rant-label">숨구멍이 대신 욕해 줄게</span><span class="rant-timer" id="rant-timer"></span></div>
@@ -1926,7 +1934,7 @@ ${text}
       clearInterval(tick); clearTimeout(burnT);
       if (box.hidden) return;
       box.classList.add("burn");
-      burnT = setTimeout(() => { out.textContent = ""; trans.textContent = ""; trans.hidden = true; help.hidden = true; hide(box); box.classList.remove("burn"); btn.textContent = "같이 욕해 줘"; }, 700);
+      burnT = setTimeout(() => { out.textContent = ""; trans.textContent = ""; trans.hidden = true; help.hidden = true; hide(box); box.classList.remove("burn"); btn.querySelector("span").textContent = "같이 욕해 줘"; }, 700);
     }
     function countdown() {
       const end = Date.now() + 60000;
@@ -1953,7 +1961,7 @@ ${text}
       clearInterval(tick); clearTimeout(burnT);
       box.classList.remove("burn"); show(box); help.hidden = true;
       out.textContent = ""; trans.textContent = ""; trans.hidden = true; out.classList.add("typing");
-      bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.textContent = "한 번 더 욕해 줘";
+      bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.querySelector("span").textContent = "한 번 더 욕해 줘";
       const lv = level(), d = dialect();
       stopSay(); footNote.textContent = FOOT; sayBtn.disabled = true;
       saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en");
