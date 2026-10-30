@@ -382,7 +382,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .eyebrow { font-size: .75rem; }
   .breath { width: clamp(76px, 22vw, 96px); }
   .orb span { font-size: .72rem; }
-  .motion-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
+  .motion-toggle, .music-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
   .tabs {
     position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 20;
     grid-template-columns: repeat(8, 1fr); gap: 0;
@@ -830,7 +830,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 :root[data-wide="on"] .hero > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 :root[data-wide="on"] .hero .title { order: 1; font-size: 1.75rem; margin: 0; letter-spacing: -0.02em; }
 :root[data-wide="on"] .hero-top { order: 2; }
-:root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .motion-toggle, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
+:root[data-wide="on"] .eyebrow, :root[data-wide="on"] .sub, :root[data-wide="on"] .hero-btns, :root[data-wide="on"] .breath, :root[data-wide="on"] .guide, :root[data-wide="on"] .promises { display: none; }
 :root[data-wide="on"] section.view { padding-block: 16px 4px; gap: 14px; }
 :root[data-wide="on"] .lede h2 { font-size: var(--step-2); }
 :root[data-wide="on"] .wrap { max-width: 1300px; }
@@ -846,6 +846,14 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 :root[data-motion="off"] .atmos { transform: none; }
 :root[data-motion="off"] .orb .out { display: none; }
 .motion-toggle { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .72); border-radius: 999px; padding: 6px 14px; font-size: .9375rem; font-weight: 700; color: var(--ink-soft); }
+.hero-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.music-toggle { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .72); border-radius: 999px; padding: 6px 14px; font-size: .9375rem; font-weight: 700; color: var(--ink-soft); transition: background-color .4s, color .4s; }
+.music-toggle .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.music-toggle .eq i { width: 3px; height: 4px; border-radius: 2px; background: #4b4fb8; }
+.music-toggle[aria-pressed="true"] { background: #1d2550; color: #ffffff; border-color: transparent; }
+.music-toggle[aria-pressed="true"] .eq i { background: #c9ccff; animation: eqBar .9s ease-in-out infinite alternate; }
+.music-toggle[aria-pressed="true"] .eq i:nth-child(2) { animation-delay: -.3s; } .music-toggle[aria-pressed="true"] .eq i:nth-child(3) { animation-delay: -.6s; }
+@keyframes eqBar { from { height: 3px; } to { height: 12px; } }
 .motion-toggle::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mood); }
 :root[data-motion="off"] .motion-toggle { background: var(--ink); color: #ffffff; border-color: transparent; }
 :root[data-motion="off"] .motion-toggle::before { background: #ffffff; }
@@ -863,7 +871,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       </div>
       <h1 class="title" aria-label="숨구멍"><span style="--d:0">숨</span><span style="--d:1">구</span><span style="--d:2">멍</span></h1>
       <p class="sub">참지 말고, 여기 내려놓고 가세요.</p>
-      <button class="motion-toggle" id="motion-toggle" type="button"></button>
+      <div class="hero-btns"><button class="motion-toggle" id="motion-toggle" type="button"></button><button class="music-toggle" id="music-toggle" type="button" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mt-label">수면 음악 틀기</span></button></div>
     </div>
     <div class="breath" aria-hidden="true"><div class="orb"><span class="in">들이쉬고</span><span class="out">내쉬고</span></div></div>
   </header>
@@ -3581,7 +3589,7 @@ ${text}
       $("sleep-left").textContent = txt + (left < 300000 ? " · 소리가 천천히 작아지는 중" : "");
       $("dim-left").textContent = txt;
     }, 1000);
-    $("sleep-play").textContent = "수면 음악 끄기"; $("sleep-play").classList.add("on");
+    $("sleep-play").textContent = "수면 음악 끄기"; $("sleep-play").classList.add("on"); syncMusicBtn();
     $("sleep-left").textContent = "틀었어요. 천천히 커져요.";
     $("dim-left").textContent = leftText(sleepA.end - Date.now());
   }
@@ -3591,7 +3599,7 @@ ${text}
     clearInterval(a.beat); clearInterval(a.tick);
     try { a.master.gain.cancelScheduledValues(a.ac.currentTime); a.master.gain.setTargetAtTime(0, a.ac.currentTime, 0.4); } catch {}
     setTimeout(() => { Object.values(a.layers).forEach(L => L.stop()); a.ac.close().catch(() => {}); }, 1800);
-    $("sleep-play").textContent = "수면 음악 틀기"; $("sleep-play").classList.remove("on");
+    $("sleep-play").textContent = "수면 음악 틀기"; $("sleep-play").classList.remove("on"); syncMusicBtn();
     $("sleep-left").textContent = "껐어요. 좋은 꿈 꾸세요.";
     closeDim();
   }
@@ -3797,6 +3805,14 @@ ${text}
   })();
   function closeDim() { hide($("sleep-dim")); dimScene.stop(); }
   $("sleep-play").addEventListener("click", () => (sleepA ? stopSleep() : startSleep()));
+  // 맨 위 「움직임 줄이기」 옆 버튼: 어느 탭에서든 꿀잠의 수면 음악을 바로 켜고 꺼요(고른 소리·끄기 시간 그대로)
+  function syncMusicBtn() {
+    const b = $("music-toggle"); b.setAttribute("aria-pressed", String(!!sleepA));
+    b.querySelector(".mt-label").textContent = sleepA ? "수면 음악 끄기" : "수면 음악 틀기";
+    b.title = sleepA ? "" : `${sleepSel.map(k => SLEEP_NAME[k]).join(" · ")} · ${segPick("sleep-min", "m") >= 60 ? segPick("sleep-min", "m") / 60 + "시간" : segPick("sleep-min", "m") + "분"} 뒤 꺼져요`;
+  }
+  $("music-toggle").addEventListener("click", () => (sleepA ? stopSleep() : startSleep()));
+  syncMusicBtn();
   $("sleep-vol").addEventListener("input", () => { if (sleepA && sleepA.end - Date.now() > 300000) sleepA.master.gain.setTargetAtTime(sleepVol(), sleepA.ac.currentTime, 0.2); });
   $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? leftText(sleepA.end - Date.now()) : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); dimScene.start(); });
   $("sleep-dim").addEventListener("click", closeDim);
