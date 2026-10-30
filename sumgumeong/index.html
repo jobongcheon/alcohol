@@ -217,40 +217,36 @@ textarea::placeholder { color: #9a9a9e; }
 .emo b { display: inline-flex; color: color-mix(in srgb, var(--c) 80%, var(--ink)); transition: color .4s; }
 .emo b span { display: inline-block; }
 .emo[aria-pressed="true"] b { color: #ffffff; }
-.emo-fx { position: absolute; right: 16px; top: 10px; width: 44px; height: 46px; pointer-events: none; }
-.emo-fx i { position: absolute; display: block; opacity: 0; }
+.emo-fx { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.emo > b, .emo > .cnt { position: relative; z-index: 1; }
+.emo-fx i { position: absolute; display: block; left: var(--x); opacity: 0; }
 .emo[aria-pressed="true"] .emo-fx { --c: #ffffff; }
-/* 화남: 부르르 떨리고, 불꽃이 솟아요 */
+/* 화남: 부르르 떨리고, 카드 아래에서 불씨가 솟아올라요 */
 .emo[data-k="angry"] b span { animation: rage 2.6s ease-in-out infinite; animation-delay: calc(var(--i) * 60ms); }
 @keyframes rage { 0%, 64%, 100% { transform: none; } 68% { transform: translate(-1.5px, 1px) rotate(-3deg); } 72% { transform: translate(1.5px, -1px) rotate(3deg); } 76% { transform: translate(-1px, .5px) rotate(-2deg); } 80% { transform: translate(1px, 0) rotate(1deg); } }
-.emo[data-k="angry"] .emo-fx i { bottom: 0; width: 9px; height: 15px; border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%; background: radial-gradient(circle at 50% 72%, #ffd166 0, var(--c) 70%); animation: flame 1.8s ease-out infinite; }
-.emo[data-k="angry"] .emo-fx i:nth-child(1) { left: 6px; }
-.emo[data-k="angry"] .emo-fx i:nth-child(2) { left: 17px; animation-delay: .6s; height: 18px; }
-.emo[data-k="angry"] .emo-fx i:nth-child(3) { left: 28px; animation-delay: 1.2s; }
-@keyframes flame { 0% { transform: translateY(8px) scale(.5); opacity: 0; } 25% { opacity: .95; } 100% { transform: translateY(-28px) scale(1.1, .7); opacity: 0; } }
-/* 서운함: 고개 숙이듯 가라앉고, 눈물이 떨어져요 */
+.emo[data-k="angry"] .emo-fx i { bottom: -14px; width: calc(8px * var(--s)); height: calc(12px * var(--s)); border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%; background: radial-gradient(circle at 50% 72%, #ffd166 0, var(--c) 72%); animation: emberRise 2.8s ease-out var(--dl) infinite; }
+@keyframes emberRise { 0% { transform: translate(0, 0) scale(.6); opacity: 0; } 15% { opacity: .75; } 55% { transform: translate(7px, -70px) scale(1); opacity: .55; } 100% { transform: translate(-5px, -135px) scale(.35); opacity: 0; } }
+/* 서운함: 고개 숙이듯 가라앉고, 카드 위에서 눈물이 비처럼 내려요 */
 .emo[data-k="hurt"] b span { animation: droop 4.5s ease-in-out infinite; animation-delay: calc(var(--i) * 180ms); }
 @keyframes droop { 0%, 100% { transform: none; opacity: 1; } 45%, 60% { transform: translateY(4px) rotate(calc(var(--i) * 2deg - 2deg)); opacity: .8; } }
-.emo[data-k="hurt"] .emo-fx i:first-child { left: 16px; top: 2px; width: 11px; height: 11px; border-radius: 0 50% 50% 50%; background: var(--c); animation: tear 3.2s ease-in infinite; }
-@keyframes tear { 0%, 28% { transform: translateY(0) rotate(45deg) scale(.3); opacity: 0; } 40% { transform: translateY(0) rotate(45deg) scale(1); opacity: .9; } 85% { transform: translateY(30px) rotate(45deg) scale(1); opacity: .7; } 100% { transform: translateY(34px) rotate(45deg) scale(1.4, .3); opacity: 0; } }
-/* 억울함: 꾹 참다가 부들부들, ?!가 튀어나와요 */
+.emo[data-k="hurt"] .emo-fx i { top: -16px; width: calc(8px * var(--s)); height: calc(8px * var(--s)); border-radius: 0 50% 50% 50%; background: var(--c); animation: tearRain 3.6s ease-in var(--dl) infinite; }
+@keyframes tearRain { 0% { transform: translateY(0) rotate(45deg); opacity: 0; } 12% { opacity: .5; } 85% { transform: translateY(118px) rotate(45deg); opacity: .4; } 100% { transform: translateY(128px) rotate(45deg) scale(1.7, .3); opacity: 0; } }
+/* 억울함: 꾹 참다가 부들부들, 카드 곳곳에서 ?!가 튀어나와요 */
 .emo[data-k="unfair"] b { transform-origin: 30% 85%; animation: hold 3s ease-in-out infinite; }
 @keyframes hold { 0%, 50%, 100% { transform: none; } 58% { transform: scale(1.06, .92); } 62%, 70%, 78% { transform: scale(1.06, .92) translateX(-1.2px); } 66%, 74% { transform: scale(1.06, .92) translateX(1.2px); } 86% { transform: scale(.98, 1.03); } }
-.emo[data-k="unfair"] .emo-fx i:first-child { left: 6px; top: 6px; animation: pop 3s ease-out infinite; }
-.emo[data-k="unfair"] .emo-fx i:first-child::before { content: "?!"; font-family: var(--display); font-weight: 700; font-size: 1.5rem; color: var(--c); }
-@keyframes pop { 0%, 58% { opacity: 0; transform: translateY(8px) scale(.4) rotate(-12deg); } 66% { opacity: 1; transform: translateY(-4px) scale(1.2) rotate(8deg); } 80% { opacity: 1; transform: translateY(-6px) scale(1) rotate(0); } 100% { opacity: 0; transform: translateY(-10px); } }
-/* 지침: 글자가 축 늘어지고, z가 피어올라요 */
+.emo[data-k="unfair"] .emo-fx i { top: var(--y); font-family: var(--display); font-weight: 700; font-size: calc(1.15rem * var(--s)); color: var(--c); animation: markPop 3.4s ease-out var(--dl) infinite; }
+.emo[data-k="unfair"] .emo-fx i::before { content: "?!"; }
+.emo[data-k="unfair"] .emo-fx i:nth-child(3n)::before { content: "!"; }
+.emo[data-k="unfair"] .emo-fx i:nth-child(3n+1)::before { content: "?"; }
+@keyframes markPop { 0%, 55% { opacity: 0; transform: translateY(8px) scale(.4) rotate(-14deg); } 64% { opacity: .7; transform: translateY(-4px) scale(1.2) rotate(8deg); } 80% { opacity: .55; transform: translateY(-7px) scale(1) rotate(0); } 100% { opacity: 0; transform: translateY(-12px); } }
+/* 지침: 글자가 축 늘어지고, z가 카드 전체를 둥둥 떠다녀요 */
 .emo[data-k="tired"] b span { transform-origin: 50% 100%; animation: sag 5s ease-in-out infinite; animation-delay: calc(var(--i) * 260ms); }
 @keyframes sag { 0%, 100% { transform: none; } 40%, 65% { transform: translateY(3px) rotate(calc(8deg - var(--i) * 5deg)) scaleY(.92); } }
-.emo[data-k="tired"] .emo-fx i { left: 2px; bottom: 2px; animation: zzz 3.6s ease-out infinite; }
-.emo[data-k="tired"] .emo-fx i::before { content: "z"; font-family: var(--display); font-weight: 700; color: var(--c); }
-.emo[data-k="tired"] .emo-fx i:nth-child(1) { font-size: .85rem; }
-.emo[data-k="tired"] .emo-fx i:nth-child(2) { font-size: 1.05rem; animation-delay: 1.2s; }
-.emo[data-k="tired"] .emo-fx i:nth-child(3) { font-size: 1.3rem; animation-delay: 2.4s; }
-@keyframes zzz { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: .9; } 100% { transform: translate(24px, -32px) rotate(-12deg); opacity: 0; } }
-/* 마우스를 올리면 더 또렷하게 */
-.emo:hover .emo-fx i { animation-duration: 1.2s; }
-.emo[data-k="hurt"]:hover .emo-fx i:first-child, .emo[data-k="unfair"]:hover .emo-fx i:first-child { animation-duration: 2s; }
+.emo[data-k="tired"] .emo-fx i { bottom: -8px; font-family: var(--display); font-weight: 700; font-size: calc(1rem * var(--s)); color: var(--c); animation: zzz 4.4s ease-out var(--dl) infinite; }
+.emo[data-k="tired"] .emo-fx i::before { content: "z"; }
+@keyframes zzz { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 18% { opacity: .55; } 100% { transform: translate(32px, -125px) rotate(-16deg); opacity: 0; } }
+/* 마우스를 올리면 더 빠르게 */
+.emo:hover .emo-fx i { animation-duration: 1.8s; }
 @keyframes pick { 35% { transform: scale(1.05); } }
 
 /* 게시판 */
@@ -1115,6 +1111,16 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   let justPicked = null;
   // 고른 감정의 색으로 화면 공기를 물들여요
   function setMood(k) { if (k) document.documentElement.dataset.mood = k; }
+  // 감정 카드 전체에 흩어지는 작은 효과들 (자리와 시작 시간은 카드마다 한 번만 정해요)
+  const EMO_FX = {};
+  function emoFx(k) {
+    if (!EMO_FX[k]) EMO_FX[k] = Array.from({ length: 9 }, (_, i) => {
+      const x = (4 + (i / 9) * 88 + Math.random() * 8).toFixed(1), y = (6 + Math.random() * 62).toFixed(1);
+      const dl = (Math.random() * 3.4).toFixed(2), sc = (0.6 + Math.random() * 0.8).toFixed(2);
+      return `<i style="--x:${x}%;--y:${y}%;--dl:${dl}s;--s:${sc}"></i>`;
+    }).join("");
+    return EMO_FX[k];
+  }
   function renderEmos() {
     $("emos").innerHTML = "";
     EMOS.forEach(e => {
@@ -1126,7 +1132,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       const n = moodCounts[e.key] || 0;
       b.dataset.k = e.key;
       b.setAttribute("aria-label", e.name);
-      b.innerHTML = `<b aria-hidden="true">${Array.from(e.name).map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join("")}</b><span class="cnt"></span><i class="emo-fx" aria-hidden="true"><i></i><i></i><i></i></i>`;
+      b.innerHTML = `<b aria-hidden="true">${Array.from(e.name).map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join("")}</b><span class="cnt"></span><i class="emo-fx" aria-hidden="true">${emoFx(e.key)}</i>`;
       b.querySelector(".cnt").textContent = db ? `오늘 ${n}명이 골랐어요` : e.desc;
       b.addEventListener("click", () => { pickedEmo = e.key; justPicked = e.key; setMood(e.key); renderEmos(); justPicked = null; updateSend(); });
       $("emos").appendChild(b);
