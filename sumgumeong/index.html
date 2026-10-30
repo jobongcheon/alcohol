@@ -301,10 +301,19 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 /* 약속 */
 .promises { margin-top: 56px; padding: 24px; border-radius: 24px; display: grid; gap: 10px; background: linear-gradient(135deg, color-mix(in srgb, var(--m1) 32%, #ffffff), color-mix(in srgb, var(--m2) 32%, #ffffff)); border: 1px solid var(--hair); }
 .promises h3 { font-size: var(--step-1); }
-.trust { display: grid; gap: 8px; margin-top: 4px; }
-.trust-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 14px; background: rgba(255, 255, 255, .72); border-radius: 16px; }
-.trust-row b { font-size: 1.0625rem; }
-.trust-row p { grid-column: 1 / -1; font-size: .9375rem; color: var(--ink-soft); line-height: 1.5; }
+.trust-wrap { overflow-x: auto; margin-top: 4px; }
+.trust-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; font-size: .9375rem; }
+.trust-table thead th { text-align: left; font-size: .8125rem; letter-spacing: .06em; color: var(--ink-soft); padding: 0 12px 2px; font-weight: 700; }
+.trust-table tbody th, .trust-table tbody td { background: rgba(255, 255, 255, .78); padding: 11px 12px; text-align: left; vertical-align: middle; line-height: 1.45; }
+.trust-table tbody th { font-weight: 700; border-radius: 14px 0 0 14px; white-space: nowrap; }
+.trust-table tbody td:last-child { border-radius: 0 14px 14px 0; color: var(--ink-soft); }
+.trust-table td:nth-child(2) { white-space: nowrap; }
+@media (max-width: 639px) {
+  .trust-table { font-size: .8125rem; }
+  .trust-table tbody th { white-space: normal; }
+  .trust-table tbody th, .trust-table tbody td { padding: 9px 8px; }
+  .trust-table .pill { font-size: .75rem; padding: 2px 7px; }
+}
 .pill { font-size: .8125rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
 .pill.safe { background: var(--pine-wash); color: #1f6f55; }
 .pill.open { background: color-mix(in srgb, var(--heat-1) 18%, #ffffff); color: #8a5208; }
@@ -861,14 +870,23 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   <footer class="promises">
     <h3>숨구멍의 약속</h3>
-    <p class="note">내가 쓴 것이 어디로 가고, 누가 볼 수 있는지 그대로 알려 드려요.</p>
-    <div class="trust">
-      <div class="trust-row"><b>비밀 금고</b><span class="pill safe">운영자도 못 봐요</span><p>휴대폰에서 암호를 건 뒤, 나만 열 수 있는 공간에 보관해요. 운영자는 암호가 걸린 글조차 볼 수 없어요.</p></div>
-      <div class="trust-row"><b>한 달 편지 · 셀카 · 소리</b><span class="pill safe">운영자도 못 봐요</span><p>이 휴대폰 밖으로 아예 나가지 않아요.</p></div>
-      <div class="trust-row"><b>게시판 글을 쓴 사람</b><span class="pill safe">운영자도 몰라요</span><p>누가 썼는지 저장하지 않아요. 토닥토닥도 누가 눌렀는지 남기지 않아요.</p></div>
-      <div class="trust-row"><b>게시판 글 내용</b><span class="pill open">누구나 읽어요</span><p>공개 게시판이라 운영자를 포함해 누구나 읽을 수 있어요. 이름과 회사명은 별표로 가려지고, 3일 뒤 지워져요.</p></div>
-      <div class="trust-row"><b>보내는 글</b><span class="pill open">AI가 읽어요</span><p>위로 한마디, 이름 가리기, 위험한 글 거르기를 위해 AI(Claude)가 읽어요. 게시판에 올리지 않아도 마찬가지예요.</p></div>
-      <div class="trust-row"><b>말로 입력</b><span class="pill open">음성 인식이 들어요</span><p>목소리는 휴대폰의 음성 인식 서비스(구글, 삼성 등)가 글자로 바꿔 줘요. 숨구멍은 녹음을 남기지 않아요.</p></div>
+    <p class="note">내가 쓴 것이 어디에 남고, 운영자가 볼 수 있는지 그대로 알려 드려요.</p>
+    <div class="trust-wrap">
+      <table class="trust-table">
+        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>휴대폰에서 암호를 건 채로, 나만 여는 사이트 공간</td></tr>
+          <tr><th scope="row">한 달 편지</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">스트레스 점수</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">셀카</th><td><span class="pill safe">못 봐요</span></td><td>어디에도 안 남아요 (휴대폰 안에서 읽고 5초 뒤 삭제)</td></tr>
+          <tr><th scope="row">소리 지르기</th><td><span class="pill safe">못 봐요</span></td><td>어디에도 안 남아요 (크기만 재고 녹음 안 함)</td></tr>
+          <tr><th scope="row">게시판 글을 쓴 사람</th><td><span class="pill safe">몰라요</span></td><td>저장하지 않아요</td></tr>
+          <tr><th scope="row">토닥토닥 누른 사람</th><td><span class="pill safe">몰라요</span></td><td>저장하지 않아요</td></tr>
+          <tr><th scope="row">게시판 글 내용</th><td><span class="pill open">누구나 봐요</span></td><td>공개 게시판. 이름·회사명은 별표, 3일 뒤 삭제</td></tr>
+          <tr><th scope="row">보내는 글</th><td><span class="pill open">게시판에 올린 글만</span></td><td>AI(Claude)가 읽고 위로·이름 가리기·위험한 글 거르기를 해요</td></tr>
+          <tr><th scope="row">말로 입력</th><td><span class="pill safe">못 봐요</span></td><td>휴대폰 음성 인식(구글·삼성 등)이 글자로 바꿔요. 녹음은 안 남겨요</td></tr>
+        </tbody>
+      </table>
     </div>
     <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
   </footer>
