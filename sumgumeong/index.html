@@ -1001,7 +1001,7 @@ ${text}
   }
 
   // ---------- 시작 ----------
-  renderEmos(); updateSend(); route(); renderBoard();
+  renderEmos(); updateSend(); route(); renderBoard(); vaultState();
 
   (async () => {
     const [dbNs, sampleNs, userNs] = await Promise.all([cap("db"), cap("sample"), cap("user")]);
