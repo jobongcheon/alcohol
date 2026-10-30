@@ -633,6 +633,67 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .room-pick { display: grid; gap: 6px; }
 .room-pick .pick { padding: 6px 14px; font-size: .9375rem; --c: #b84fb0; }
 
+/* 분노 몬스터 */
+.monster-card { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; padding: 18px 20px; margin-bottom: 14px; border-radius: 24px; border: 1px solid var(--hair); box-shadow: var(--shadow); background: linear-gradient(135deg, color-mix(in srgb, var(--mc, #e5482f) 13%, #ffffff), #ffffff 72%); }
+.mon-stage { position: relative; width: 150px; aspect-ratio: 140 / 130; border: 0; padding: 0; background: none; cursor: pointer; }
+.mon-stage svg { width: 100%; height: 100%; overflow: visible; }
+.mon-stage svg * { transform-box: view-box; }
+.mon-shadow { fill: rgba(20, 20, 40, .12); }
+.mon-body { fill: var(--mc, #e5482f); }
+.mon-horn { fill: color-mix(in srgb, var(--mc, #e5482f) 55%, #1b1b1b); }
+.mon-belly { fill: rgba(255, 255, 255, .3); }
+.mon-blush { fill: rgba(255, 120, 120, .45); }
+.mon-brow { stroke: #1d1414; stroke-width: 3.5; stroke-linecap: round; }
+.mon-mouth { fill: none; stroke: #1d1414; stroke-width: 3; stroke-linecap: round; }
+.mon-spot { fill: #f1dcc0; }
+.mon-crack { fill: none; stroke: #a88a63; stroke-width: 2; stroke-linejoin: round; }
+.mouth-open { display: none; }
+.chomp .mouth-open { display: inline; }
+.chomp .mouth-shut { display: none; }
+.mon-bob { transform-origin: 70px 120px; animation: monBob 3s ease-in-out infinite; }
+@keyframes monBob { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-4px) scale(1.02, .98); } }
+.mon-eyes { transform-origin: 70px 62px; animation: monBlink 4.5s infinite; }
+@keyframes monBlink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+.mon-egg { transform-origin: 70px 120px; animation: eggWobble 2.4s ease-in-out infinite; }
+@keyframes eggWobble { 0%, 70%, 100% { transform: rotate(0); } 76% { transform: rotate(-6deg); } 82% { transform: rotate(6deg); } 88% { transform: rotate(-3deg); } }
+.mon-aura ellipse { fill: var(--mc, #e5482f); opacity: .18; }
+.mon-aura { transform-origin: 70px 72px; animation: monAura 2.2s ease-in-out infinite; }
+@keyframes monAura { 50% { transform: scale(1.08); opacity: .6; } }
+.chomp .mon-bob { animation: monChomp .9s ease-in-out; }
+@keyframes monChomp { 0%, 100% { transform: none; } 20% { transform: scale(1.08, .92); } 40% { transform: scale(.94, 1.06); } 60% { transform: scale(1.05, .95); } }
+.wiggle .mon-bob, .wiggle .mon-egg { animation: monWiggle .6s ease; }
+@keyframes monWiggle { 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } }
+.mon-stage svg.evolve { animation: monEvolve 1.2s ease; }
+@keyframes monEvolve { 30% { filter: brightness(1.8) drop-shadow(0 0 14px var(--mc, #e5482f)); } }
+.mon-food { position: absolute; left: 50%; top: 6%; font-weight: 700; font-size: 1.25rem; color: var(--mc, #e5482f); opacity: 0; pointer-events: none; transform: translateX(-50%); }
+.mon-food.show { animation: monFood 1s ease forwards; }
+@keyframes monFood { 0% { opacity: 0; transform: translate(-50%, 10px); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -28px); } }
+.mon-info { display: grid; gap: 8px; min-width: 0; }
+.mon-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mon-name-row b { font-family: var(--display); font-size: var(--step-2); }
+.mon-level { font-size: .8125rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: color-mix(in srgb, var(--mc, #e5482f) 14%, #ffffff); color: color-mix(in srgb, var(--mc, #e5482f) 75%, #000000); }
+.mon-rename { border: 0; background: none; padding: 0; font-size: .8125rem; color: var(--ink-soft); text-decoration: underline; }
+.mon-name-input { width: 8em; font-family: var(--display); font-size: var(--step-1); border: 1px solid var(--hair); border-radius: 10px; padding: 2px 8px; }
+.mon-say { background: #ffffff; border: 1px solid var(--hair); border-radius: 14px; padding: 10px 14px; font-family: var(--display); font-size: 1.0625rem; }
+.mon-bar { height: 10px; border-radius: 999px; overflow: hidden; background: var(--wash); }
+.mon-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--mc, #e5482f) 55%, #ffffff), var(--mc, #e5482f)); transition: width .8s var(--ease); }
+.mon-meta { font-size: .875rem; color: var(--ink-soft); }
+/* 접시 깨기, 뽁뽁이 */
+.plate-cv { display: block; width: 100%; height: 320px; border-radius: 22px; cursor: pointer; touch-action: manipulation; background: radial-gradient(ellipse at 50% 110%, #e9dcc8, #f6efe4 60%, #fbf8f2); border: 1px solid var(--hair); }
+.plate-word { max-width: 240px; font-size: 1rem !important; padding: 8px 12px !important; }
+.game-count { font-size: 1rem; }
+.game-count b { font-family: var(--display); font-size: var(--step-1); color: var(--c); font-variant-numeric: tabular-nums; }
+.bubble-grid { display: grid; grid-template-columns: repeat(var(--cols, 8), 1fr); gap: 6px; padding: 14px; border-radius: 22px; touch-action: none; user-select: none; -webkit-user-select: none; background: linear-gradient(135deg, #eaf4fb, #f7fbfe); border: 1px solid var(--hair); }
+.bub { aspect-ratio: 1; border-radius: 50%; cursor: pointer; background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .95) 0 14%, rgba(190, 222, 245, .75) 40%, rgba(120, 175, 215, .45) 100%); box-shadow: inset 0 -3px 6px rgba(60, 120, 170, .25), 0 2px 4px rgba(60, 120, 170, .15); transition: transform .15s ease; }
+.bub:hover { transform: scale(1.05); }
+.bub.popped { background: radial-gradient(circle at 50% 50%, rgba(200, 220, 235, .35), rgba(200, 220, 235, .15)); box-shadow: inset 0 1px 2px rgba(60, 120, 170, .2); transform: scale(.86) rotate(8deg); clip-path: polygon(10% 30%, 30% 8%, 55% 18%, 80% 6%, 94% 34%, 84% 60%, 96% 84%, 66% 94%, 40% 82%, 16% 94%, 6% 66%); }
+@media (max-width: 639px) {
+  .monster-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .mon-stage { width: 128px; }
+  .mon-name-row { justify-content: center; }
+  .plate-cv { height: 280px; }
+}
+
 /* 넓게 보기: 머리 부분을 한 줄로 접고 내용만 넓게 */
 .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .wide-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: rgba(255, 255, 255, .78); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: .9375rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); transition: transform .3s var(--ease), background-color .3s, color .3s; }
@@ -797,11 +858,22 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           <li>화면 안내를 따라 해요. 1~5분이면 끝나요.</li>
           <li>끝나면 다시 점수를 눌러요. 몇 점 내려갔는지 보여 드리고, 기록이 쌓이면 나에게 맞는 순위를 알려 드려요.</li>
         </ol>
+        <p class="note">분노 몬스터는 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이를 할 때마다 내 분노를 먹고 자라요. 몬스터를 누르면 말을 걸어요.</p>
         <p class="note">화가 확 났을 때는 소리를 지르는 것보다 숨쉬기나 근육 풀기처럼 몸을 가라앉히는 방법이 더 효과적이라는 연구가 있어요. 소리를 질렀다면 이어서 숨을 골라 보세요.</p>
       </div>
     </details>
 
     <div class="relief-hub" id="relief-hub">
+    <div class="monster-card" id="monster-card">
+      <button class="mon-stage" id="mon-stage" type="button" aria-label="분노 몬스터 쓰다듬기"><svg id="mon-svg" viewBox="0 0 140 130" aria-hidden="true"></svg><span class="mon-food" id="mon-food"></span></button>
+      <div class="mon-info">
+        <span class="label">내 분노 몬스터</span>
+        <div class="mon-name-row"><b id="mon-name">화르르</b><span class="mon-level" id="mon-level">알</span><button class="mon-rename" id="mon-rename" type="button">이름 바꾸기</button></div>
+        <p class="mon-say" id="mon-say"></p>
+        <div class="mon-bar" aria-hidden="true"><i id="mon-bar"></i></div>
+        <p class="mon-meta" id="mon-meta"></p>
+      </div>
+    </div>
       <div class="relief-grid" id="relief-grid"></div>
       <div class="panel" id="relief-rank" hidden>
         <div class="label">나에게 맞는 방법</div>
@@ -874,6 +946,18 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <div class="row dur-row"><label class="label" for="music-vol">소리 크기</label><input type="range" id="music-vol" min="0" max="100" value="60"></div>
         <p class="big-count" id="music-left"></p>
         <p class="note">느리고 잔잔한 소리를 이 화면에서 직접 만들어 들려 드려요. 이어폰을 쓰면 더 좋아요.</p>
+      </div>
+
+      <div class="ex" id="ex-plate" hidden>
+        <div class="row dur-row"><label class="label" for="plate-word">접시에 적을 말</label><input type="text" class="field plate-word" id="plate-word" maxlength="8" placeholder="예: 부장님 (비우면 랜덤)"></div>
+        <canvas class="plate-cv" id="plate-cv" aria-label="접시를 눌러 깨는 놀이판"></canvas>
+        <p class="game-count">깬 접시 <b id="plate-count">0</b>개 <span class="note">· 접시를 누르면 와장창 깨져요. 소리가 나요.</span></p>
+      </div>
+
+      <div class="ex" id="ex-bubble" hidden>
+        <div class="bubble-grid" id="bubble-grid" aria-label="뽁뽁이 판. 누르거나 문질러서 터뜨려요."></div>
+        <div class="row" style="justify-content:space-between"><p class="game-count">터뜨린 뽁뽁이 <b id="bubble-count">0</b></p><button class="btn ghost small" id="bubble-new" type="button">새 뽁뽁이 깔기</button></div>
+        <p class="note" id="bubble-msg" role="status"></p>
       </div>
 
       <div class="ex" id="ex-move" hidden>
@@ -1058,7 +1142,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
         <tbody>
           <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
-          <tr><th scope="row">한 달 편지 · 스트레스 점수</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
           <tr><th scope="row">셀카 · 소리 · 목소리</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
           <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
           <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
@@ -2044,6 +2128,7 @@ ${text}
       } else {
         const fallback = d === "en" ? RANT_CANNED_EN[lv > 1 ? "hard" : "soft"].join("\n---\n") : (d === "std" ? RANT_CANNED[lv] : RANT_CANNED_D[d][lv > 1 ? "hard" : "soft"]).join(" ");
         showText(clean(text) || fallback);
+        feedMonster(pickedEmo || "angry", 1, "rant");
       }
       sayBtn.disabled = false;
       countdown();
@@ -2170,6 +2255,7 @@ ${text}
     if (db && canWrite) db.collection("moods").add({ emo, day: todayKey(), at: Date.now() }).catch(() => {});
 
     await blowAway(wantPublic ? r.masked : raw);
+    feedMonster(emo, 2, "send");
     $("done-label").textContent = posted ? "게시판에 올리고 바람에 날려 보냈어요" : "바람에 날려 보냈어요";
     $("done-comfort").textContent = r.comfort;
     const notes = [];
@@ -2287,6 +2373,7 @@ ${text}
   }
   function dbVerdict(n) {
     show($("shout-next"));
+    feedMonster("angry", 1, "shout");
     const panel = $("db-val").closest(".panel");
     panel.classList.remove("roar"); void panel.offsetWidth;
     if (n >= 85) panel.classList.add("roar");
@@ -2361,6 +2448,10 @@ ${text}
       ev: '<p>무작위 비교 실험 104개, 9,617명을 모은 분석(de Witte 외, 2020, <i>Health Psychology Review</i>)에서 음악을 들은 사람들의 마음의 스트레스와 심박 같은 몸의 스트레스가 모두 줄었어요.</p><p>느린 박자를 따라 심박과 호흡도 느려져요.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/31167611/" target="_blank" rel="noopener">논문 보기</a></p>' },
     { key: "move", short: "몸 움직이기", name: "가볍게 몸 움직이기", c: "#1b8fa3", time: "2분", tag: "연구로 확인됨", line: "목, 어깨, 기지개, 옆구리, 제자리 걷기를 따라 해요.",
       ev: '<p>리뷰 97개, 12만 8천여 명을 모은 종합 연구(Singh 외, 2023, <i>British Journal of Sports Medicine</i>)에서 몸을 움직이는 활동이 우울, 불안, 심리적 고통을 뚜렷하게 줄였어요.</p><p>다만 화가 확 났을 때 숨이 찰 정도로 뛰면 오히려 흥분이 올라갈 수 있어서(2024년 분석), 여기서는 가벼운 스트레칭과 걷기만 안내해요.</p><p><a href="https://bjsm.bmj.com/content/57/18/1203" target="_blank" rel="noopener">논문 보기</a></p>' },
+    { key: "plate", short: "접시 깨기", name: "접시 깨기", c: "#c0612b", time: "자유롭게", tag: "재미로", line: "화나게 한 것을 접시에 적고 와장창 깨 버려요.",
+      ev: '<p>접시를 깨며 화를 푸는 「분노의 방」이 유행이지만, 연구로 효과가 확인된 방법은 아니에요. 154개 연구를 모은 2024년 분석에서는 흥분을 올리는 활동이 화를 줄이는 효과가 거의 없었어요.</p><p>재미로 깨 보고 점수를 매겨서 나한테 맞는지 직접 확인해 보세요. 깬 다음엔 「한숨 호흡」으로 이어 가면 좋아요.</p>' },
+    { key: "bubble", short: "뽁뽁이", name: "뽁뽁이 터뜨리기", c: "#2f8fc9", time: "자유롭게", tag: "재미로", line: "뽁뽁이를 누르거나 문질러서 마구 터뜨려요.",
+      ev: '<p>뽁뽁이를 터뜨리면 긴장이 풀린다는 사람이 많지만, 제대로 된 연구는 아직 적어요. 손을 단순하게 반복해서 움직이면 잠깐 머리를 쉬게 하는 데 도움이 될 수 있어요.</p><p>점수를 매겨서 나한테 맞는지 직접 확인해 보세요.</p>' },
     { key: "shout", short: "소리 지르기", name: "소리 지르기", c: "#e5482f", time: "3초", tag: "재미로", noScore: true, line: "3초 동안 크게 외치고 분노를 데시벨로 재 봐요.",
       ev: '<p>소리를 지르거나 샌드백을 치는 것처럼 흥분을 올리는 방법은, 154개 연구를 모은 2024년 분석에서 화를 줄이는 효과가 거의 없었고 오히려 화를 키우기도 했어요.</p><p>그래서 재미로 한 번 질러 보고, 이어서 숨을 고르는 걸 추천해요.</p><p><a href="https://news.osu.edu/breathe-dont-vent-turning-down-the-heat-is-key-to-managing-anger/" target="_blank" rel="noopener">2024년 분석 소개</a></p>' },
   ];
@@ -2468,6 +2559,8 @@ ${text}
     else if (key === "label") { setupLabel(); go.textContent = "다 했어요"; go.onclick = () => askScore("after"); }
     else if (key === "music") { setupMusic(); go.textContent = "듣기 시작"; go.onclick = runMusic; }
     else if (key === "move") { setupMove(); go.onclick = runMove; }
+    else if (key === "plate") { setupPlate(); go.textContent = "다 깼어요, 점수 매기기"; go.onclick = () => { stopRelief(); askScore("after"); }; }
+    else if (key === "bubble") { setupBubble(); go.textContent = "다 터뜨렸어요, 점수 매기기"; go.onclick = () => { stopRelief(); askScore("after"); }; }
   }
   function finish(after) {
     stopRelief();
@@ -2477,6 +2570,7 @@ ${text}
     $("res-text").textContent = d > 0 ? `${d}점 내려갔어요. ${d >= 3 ? "효과가 컸네요!" : "조금 가벼워졌어요."}`
       : d === 0 ? "그대로예요. 다른 방법도 한번 해 볼까요?" : `${-d}점 올라갔어요. 지금은 이 방법이 안 맞을 수 있어요. 다른 방법을 해 봐요.`;
     $("res-help").hidden = after < 8;
+    if (d > 0) renderMonster(monLine("calm"));
     show($("relief-result"));
     renderRank();
   }
@@ -2697,6 +2791,224 @@ ${text}
   }
   $("shout-next").addEventListener("click", () => openMethod("sigh"));
   renderHub();
+
+  // ---------- 분노 몬스터 ----------
+  // 털어놓기, 같이 욕해 줘, 소리 지르기, 접시 깨기, 뽁뽁이를 할 때마다 내 분노를 먹고 자라요. 기록은 이 기기에만 남아요.
+  const MON_STAGES = [{ at: 0, n: "알" }, { at: 3, n: "아기 몬스터" }, { at: 10, n: "꼬마 몬스터" }, { at: 25, n: "사춘기 몬스터" }, { at: 50, n: "대왕 몬스터" }, { at: 100, n: "전설의 몬스터" }];
+  const MON_COLOR = { angry: "#e5482f", hurt: "#4a6cf0", unfair: "#8a4fd6", tired: "#2f8f6f" };
+  const MON_SAY = {
+    egg: ["톡… 톡… 안에서 뭔가 꿈틀거려요.", "분노를 먹여 주면 깨어날 것 같아요.", "알이 살짝 따뜻해요. 화난 일 있었죠?"],
+    idle: ["오늘은 누가 맛있는 분노를 줬나…", "크앙! 배고프다!", "화나는 일 있으면 나한테 줘. 내가 다 먹을게.", "꺼억… 아까 그 맛이 아직도 나.", "쓰다듬어 주는 거 좋아. 한 번 더!"],
+    angry: ["크앙! 매콤한 분노 잘 먹었다!", "이 분노 아주 맵다! 더 줘!"],
+    hurt: ["냠… 서운함은 짭짤하네. 괜찮아, 내가 먹었어.", "서운함 한 입. 이제 좀 가벼워졌지?"],
+    unfair: ["억울함은 새콤해! 다 먹어 줄게.", "억울한 맛… 부들부들. 내가 대신 떨어 줄게."],
+    tired: ["지침은 눅눅하지만… 다 먹어 줄게.", "축 처진 맛이네. 오늘은 푹 쉬어."],
+    rant: ["욕 한 바가지 들어간다! 냠냠냠!", "찰진 욕은 별미야. 꺼억!"],
+    shout: ["고함 소리 꿀꺽!", "목청 좋네! 소리째로 먹었다!"],
+    plate: ["접시 조각은 바삭바삭해!", "와장창 소리 맛있다!"],
+    bubble: ["뽁뽁 소리가 간지러워!", "뽁! 뽁! 한 장 더 줘!"],
+    calm: ["후… 너 덕분에 나도 좀 진정됐어.", "숨 쉬니까 나도 졸려… 좋다."],
+    hungry: ["요즘 평화로웠나 봐. 배는 고프지만, 그건 좋은 일이야."],
+  };
+  const mon = Object.assign({ food: 0, by: {}, name: "화르르", last: 0 }, store.get("sg.monster", {}));
+  const monStage = () => MON_STAGES.reduce((s, st, i) => (mon.food >= st.at ? i : s), 0);
+  const monLine = (k) => { const a = MON_SAY[k] || MON_SAY.idle; return a[Math.floor(Math.random() * a.length)]; };
+  function monColor() {
+    const top = Object.entries(mon.by).sort((a, b) => b[1] - a[1])[0];
+    return (top && MON_COLOR[top[0]]) || MON_COLOR.angry;
+  }
+  function monSVG(st) {
+    if (st === 0) {
+      const cracks = Math.min(2, mon.food);
+      return `<ellipse cx="70" cy="124" rx="30" ry="5" class="mon-shadow"/>
+        <g class="mon-egg"><ellipse cx="70" cy="80" rx="31" ry="40" fill="#fff8ee" stroke="#e7d3b3" stroke-width="2.5"/>
+        <circle cx="58" cy="70" r="6" class="mon-spot"/><circle cx="82" cy="92" r="8" class="mon-spot"/><circle cx="79" cy="58" r="4" class="mon-spot"/>
+        ${cracks >= 1 ? '<path d="M46 80 l8 6 l6 -7 l7 8 l6 -6 l7 5" class="mon-crack"/>' : ""}
+        ${cracks >= 2 ? '<path d="M60 50 l5 6 l-4 6 l6 4" class="mon-crack"/>' : ""}</g>`;
+    }
+    const s = [0, 0.62, 0.74, 0.86, 0.96, 1.04][st];
+    return `<ellipse cx="70" cy="124" rx="${(36 * s).toFixed(1)}" ry="5" class="mon-shadow"/>
+      <g transform="translate(70 120) scale(${s}) translate(-70 -120)">
+        ${st >= 5 ? '<g class="mon-aura"><ellipse cx="70" cy="72" rx="60" ry="58"/></g>' : ""}
+        <g class="mon-bob">
+          ${st >= 2 ? '<path d="M46 44 L34 14 L58 36 Z M94 44 L106 14 L82 36 Z" class="mon-horn"/>' : ""}
+          <path d="M70 28 C104 28 118 56 116 86 C114 108 98 120 70 120 C42 120 26 108 24 86 C22 56 36 28 70 28 Z" class="mon-body"/>
+          ${st >= 3 ? '<path d="M56 31 L62 17 L68 29 Z M68 29 L74 14 L80 29 Z M80 31 L86 18 L90 34 Z" class="mon-body"/>' : ""}
+          <ellipse cx="70" cy="94" rx="27" ry="21" class="mon-belly"/>
+          <ellipse cx="25" cy="84" rx="8" ry="12" class="mon-body" transform="rotate(20 25 84)"/>
+          <ellipse cx="115" cy="84" rx="8" ry="12" class="mon-body" transform="rotate(-20 115 84)"/>
+          <g class="mon-eyes"><circle cx="56" cy="62" r="10" fill="#ffffff"/><circle cx="84" cy="62" r="10" fill="#ffffff"/><circle cx="58" cy="64" r="4.6" fill="#1d1414"/><circle cx="86" cy="64" r="4.6" fill="#1d1414"/><circle cx="59.6" cy="62" r="1.5" fill="#ffffff"/><circle cx="87.6" cy="62" r="1.5" fill="#ffffff"/></g>
+          ${st >= 3 ? '<path d="M45 49 L64 54 M95 49 L76 54" class="mon-brow"/>' : ""}
+          <path d="M58 84 Q70 92 82 84" class="mon-mouth mouth-shut"/>
+          <g class="mouth-open"><ellipse cx="70" cy="87" rx="13" ry="10" fill="#3a1414"/>${st >= 3 ? '<path d="M60 79 l3 5 l3 -5 Z M74 79 l3 5 l3 -5 Z" fill="#ffffff"/>' : ""}</g>
+          <circle cx="44" cy="76" r="5" class="mon-blush"/><circle cx="96" cy="76" r="5" class="mon-blush"/>
+          ${st >= 4 ? '<path d="M52 30 L55 13 L63 23 L70 9 L77 23 L85 13 L88 30 Z" fill="#f2b01e" stroke="#c98a00" stroke-width="1.5"/>' : ""}
+        </g>
+      </g>`;
+  }
+  function monAnim(cls) {
+    const svg = $("mon-svg");
+    svg.classList.remove("chomp", "evolve", "wiggle"); svg.getBoundingClientRect(); svg.classList.add(cls);
+    setTimeout(() => svg.classList.remove(cls), 1300);
+  }
+  function renderMonster(say) {
+    const st = monStage(), next = MON_STAGES[st + 1], base = MON_STAGES[st].at;
+    $("monster-card").style.setProperty("--mc", monColor());
+    $("mon-svg").innerHTML = monSVG(st);
+    $("mon-name").textContent = mon.name;
+    $("mon-level").textContent = MON_STAGES[st].n;
+    $("mon-bar").style.width = (next ? Math.max(4, (mon.food - base) / (next.at - base) * 100) : 100) + "%";
+    $("mon-meta").textContent = next ? `먹은 분노 ${mon.food}개 · 「${next.n}」까지 ${next.at - mon.food}개` : `먹은 분노 ${mon.food}개 · 최종 단계까지 키웠어요`;
+    if (say) $("mon-say").textContent = say;
+  }
+  function feedMonster(emo, amount, kind) {
+    const before = monStage();
+    mon.food += amount; mon.by[emo] = (mon.by[emo] || 0) + amount; mon.last = Date.now();
+    store.set("sg.monster", mon);
+    const after = monStage();
+    renderMonster(after > before
+      ? (before === 0 ? "알을 깨고 나왔다! 크앙! 이제 네 분노는 내가 먹을게." : `진화했다! 크아아앙! 이제 「${MON_STAGES[after].n}」이야.`)
+      : monLine(MON_SAY[kind] ? kind : emo));
+    monAnim(after > before ? "evolve" : "chomp");
+    const f = $("mon-food"); f.textContent = "+" + amount; f.classList.remove("show"); void f.offsetWidth; f.classList.add("show");
+  }
+  $("mon-stage").addEventListener("click", () => { monAnim("wiggle"); $("mon-say").textContent = monLine(monStage() === 0 ? "egg" : "idle"); });
+  $("mon-rename").addEventListener("click", () => {
+    const nameEl = $("mon-name"), inp = document.createElement("input");
+    inp.className = "mon-name-input"; inp.maxLength = 8; inp.value = mon.name; inp.setAttribute("aria-label", "몬스터 이름");
+    nameEl.replaceWith(inp); inp.focus(); inp.select();
+    const done = () => { mon.name = inp.value.trim() || mon.name; store.set("sg.monster", mon); inp.replaceWith(nameEl); renderMonster(`${mon.name}! 마음에 들어, 크앙!`); };
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") inp.blur(); });
+    inp.addEventListener("blur", done, { once: true });
+  });
+  renderMonster(mon.food === 0 ? monLine("egg") : (Date.now() - mon.last > 3 * DAY ? monLine("hungry") : monLine("idle")));
+
+  // ---------- 접시 깨기, 뽁뽁이 ----------
+  let gameAC = null;
+  const gac = () => { if (!gameAC) gameAC = new (window.AudioContext || window.webkitAudioContext)(); if (gameAC.state === "suspended") gameAC.resume(); return gameAC; };
+  function noiseBurst(ac, dur, curve) {
+    const len = Math.floor(dur * ac.sampleRate), buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, curve);
+    const src = ac.createBufferSource(); src.buffer = buf; return src;
+  }
+  function crashSound() {
+    try {
+      const ac = gac(), t = ac.currentTime, src = noiseBurst(ac, 0.55, 3), hp = ac.createBiquadFilter(), g = ac.createGain();
+      hp.type = "highpass"; hp.frequency.value = 900; g.gain.value = 0.55;
+      src.connect(hp); hp.connect(g); g.connect(ac.destination); src.start(t);
+      for (let i = 0; i < 5; i++) {
+        const o = ac.createOscillator(), og = ac.createGain(), st = t + Math.random() * 0.12;
+        o.type = "triangle"; o.frequency.value = rnd(2200, 5600);
+        og.gain.setValueAtTime(0.0001, st); og.gain.linearRampToValueAtTime(0.09, st + 0.005); og.gain.exponentialRampToValueAtTime(0.0001, st + 0.3);
+        o.connect(og); og.connect(ac.destination); o.start(st); o.stop(st + 0.32);
+      }
+    } catch {}
+  }
+  function popSound() {
+    try {
+      const ac = gac(), t = ac.currentTime, src = noiseBurst(ac, 0.04, 2), bp = ac.createBiquadFilter(), g = ac.createGain();
+      bp.type = "bandpass"; bp.frequency.value = rnd(1300, 2600); bp.Q.value = 1.4; g.gain.value = 0.7;
+      src.connect(bp); bp.connect(g); g.connect(ac.destination); src.start(t);
+      const o = ac.createOscillator(), og = ac.createGain(); o.frequency.setValueAtTime(220, t); o.frequency.exponentialRampToValueAtTime(90, t + 0.06);
+      og.gain.setValueAtTime(0.22, t); og.gain.exponentialRampToValueAtTime(0.0001, t + 0.07); o.connect(og); og.connect(ac.destination); o.start(t); o.stop(t + 0.08);
+    } catch {}
+  }
+  const buzz = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch {} };
+
+  const PLATE_WORDS = ["야근", "잔소리", "보고서", "갑질", "월요일", "단톡방", "꼰대", "마감", "회의", "카드값"];
+  function setupPlate() {
+    const cv = $("plate-cv"), ctx = cv.getContext("2d"), dpr = Math.min(2, devicePixelRatio || 1);
+    const W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    let plates = [], shards = [], shake = 0, count = 0, last = performance.now();
+    $("plate-count").textContent = "0";
+    const words = () => { const own = $("plate-word").value.trim(); return own ? [own] : PLATE_WORDS; };
+    const spawn = () => {
+      const ws = words(), r = Math.min(H * 0.2, W * 0.13, rnd(52, 66));
+      let x = 0, y = 0;
+      for (let k = 0; k < 20; k++) { // 다른 접시와 겹치지 않는 자리를 찾아요
+        x = rnd(r + 12, W - r - 12); y = rnd(r + 12, H - r - 12);
+        if (plates.every(q => Math.hypot(q.x - x, q.y - y) > q.r + r + 8)) break;
+      }
+      plates.push({ x, y, r, w: ws[Math.floor(Math.random() * ws.length)], born: performance.now() });
+    };
+    for (let i = 0; i < (W < 600 ? 3 : 4); i++) spawn();
+    function drawPlate(p, sc) {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
+      ctx.shadowColor = "rgba(0,0,0,.18)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
+      ctx.fillStyle = "#fbfbf8"; ctx.beginPath(); ctx.arc(0, 0, p.r, 0, 6.283); ctx.fill(); ctx.shadowColor = "transparent";
+      ctx.strokeStyle = "#d7d7cf"; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, p.r * 0.66, 0, 6.283); ctx.stroke();
+      ctx.strokeStyle = "#3f6fe0"; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.arc(0, 0, p.r * 0.84, 0, 6.283); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "#3a3a3a"; ctx.font = `700 ${Math.round(p.r * 0.36)}px "IBM Plex Sans KR", sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(p.w, 0, 1, p.r * 1.2);
+      ctx.restore();
+    }
+    function smash(p) {
+      plates = plates.filter(q => q !== p);
+      const n = 12;
+      for (let i = 0; i < n; i++) {
+        const a0 = (i / n) * 6.283, a1 = ((i + 1) / n) * 6.283, pts = [[rnd(-3, 3), rnd(-3, 3)]];
+        for (let k = 0; k <= 3; k++) { const a = a0 + (a1 - a0) * k / 3; const rr = p.r * rnd(0.82, 1); pts.push([Math.cos(a) * rr, Math.sin(a) * rr]); }
+        const mid = (a0 + a1) / 2, sp = rnd(160, 420);
+        shards.push({ x: p.x, y: p.y, vx: Math.cos(mid) * sp, vy: Math.sin(mid) * sp - rnd(120, 260), rot: 0, vr: rnd(-9, 9), pts, life: 1.4, age: 0 });
+      }
+      for (let i = 0; i < 14; i++) shards.push({ dust: true, x: p.x, y: p.y, vx: rnd(-260, 260), vy: rnd(-320, 40), age: 0, life: 0.8, r: rnd(1, 2.6) });
+      shake = 12; count++; $("plate-count").textContent = count;
+      crashSound(); buzz(30);
+      if (count % 3 === 0) feedMonster("angry", 1, "plate");
+      later(spawn, 500);
+    }
+    cv.onpointerdown = (e) => {
+      const r = cv.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), y = (e.clientY - r.top) * (H / r.height);
+      const hit = plates.slice().reverse().find(p => Math.hypot(p.x - x, p.y - y) <= p.r);
+      if (hit) smash(hit);
+    };
+    const loop = (now) => {
+      const dt = Math.min(0.04, (now - last) / 1000); last = now;
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      if (shake > 0) { ctx.translate(rnd(-shake, shake), rnd(-shake, shake)); shake *= 0.85; if (shake < 0.4) shake = 0; }
+      plates.forEach(p => drawPlate(p, Math.min(1, (now - p.born) / 260) * (motionOff() ? 1 : 1)));
+      shards = shards.filter(s => s.age < s.life);
+      shards.forEach(s => {
+        s.age += dt; s.vy += 900 * dt; s.x += s.vx * dt; s.y += s.vy * dt;
+        const a = 1 - s.age / s.life;
+        if (s.dust) { ctx.globalAlpha = a * 0.7; ctx.fillStyle = "#c9c9c0"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); return; }
+        s.rot += s.vr * dt;
+        ctx.save(); ctx.globalAlpha = a; ctx.translate(s.x, s.y); ctx.rotate(s.rot);
+        ctx.beginPath(); s.pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py))); ctx.closePath();
+        ctx.fillStyle = "#fbfbf8"; ctx.fill(); ctx.strokeStyle = "#c9c9c0"; ctx.lineWidth = 1.2; ctx.stroke();
+        ctx.restore();
+      });
+      ctx.globalAlpha = 1; ctx.restore();
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function setupBubble() {
+    const grid = $("bubble-grid"), cols = innerWidth < 640 ? 6 : 8, rows = 6, total = cols * rows;
+    grid.style.setProperty("--cols", cols);
+    let popped = 0, sheets = 0, down = false;
+    const fill = () => {
+      grid.innerHTML = ""; popped = 0;
+      for (let i = 0; i < total; i++) { const b = document.createElement("span"); b.className = "bub"; grid.appendChild(b); }
+      $("bubble-count").textContent = `0 / ${total}`;
+    };
+    const pop = (b) => {
+      if (!b || !b.classList || !b.classList.contains("bub") || b.classList.contains("popped")) return;
+      b.classList.add("popped"); popped++; popSound(); buzz(8);
+      $("bubble-count").textContent = `${popped} / ${total}`;
+      if (popped === total) { sheets++; feedMonster("tired", 1, "bubble"); $("bubble-msg").textContent = `한 장 다 터뜨렸어요! 지금까지 ${sheets}장. 새 장을 깔아 드릴게요.`; later(fill, 900); }
+    };
+    grid.onpointerdown = (e) => { down = true; grid.setPointerCapture?.(e.pointerId); pop(document.elementFromPoint(e.clientX, e.clientY)); };
+    grid.onpointermove = (e) => { if (down) pop(document.elementFromPoint(e.clientX, e.clientY)); };
+    grid.onpointerup = grid.onpointercancel = () => { down = false; };
+    $("bubble-new").onclick = () => { $("bubble-msg").textContent = ""; fill(); };
+    $("bubble-msg").textContent = "";
+    fill();
+  }
 
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
