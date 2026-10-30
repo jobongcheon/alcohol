@@ -189,6 +189,7 @@ textarea::placeholder { color: #9a9a9e; }
 .hook-summary #write-guide-title { font-size: 1.4rem; color: var(--hk, var(--heat-3)); background: linear-gradient(transparent 60%, color-mix(in srgb, var(--hk, var(--heat-3)) 22%, transparent) 60%); padding: 0 3px; transition: color .5s; }
 .guide-hook { font-family: var(--display); font-size: 1.1875rem; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--hk, var(--heat-3)) 9%, #ffffff); border-left: 4px solid var(--hk, var(--heat-3)); border-radius: 4px 12px 12px 4px; padding: 10px 14px; }
 .guide ol b { color: var(--ink); }
+.guide ol b.step-h { display: inline-block; color: var(--hk, var(--ink)); }
 .hook-in { animation: fadeUp .6s var(--ease) both; }
 .label.text-label { font-family: var(--display); font-size: 1.45rem; letter-spacing: 0; color: var(--hk, var(--heat-3)); }
 .guide-block h3 { font-size: 1.2rem; }
@@ -684,11 +685,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <div class="guide-body">
         <p class="guide-hook" id="write-guide-hook">여기선 착한 척 안 해도 돼요. 참는 건 회사에서 충분히 했잖아요.</p>
         <ol>
-          <li><b>찍어요, 지금 내 상태.</b> 화남? 억울함? 돌려 말하지 말고 딱 하나 눌러요.</li>
-          <li><b>쏟아내요, 필터 없이.</b> 욕 써도 돼요. 이름, 회사명 그대로 박아요. 게시판에 올릴 땐 알아서 별표로 가려 줘요. 손 아프면 「말로 입력」으로 그냥 말해요.</li>
-          <li><b>시켜요, 대신 욕하라고.</b> 「같이 욕해 줘」 누르면 숨구멍이 무조건 내 편 들고 대신 퍼부어 줘요. 불닭맛, 경상도, 영어까지. 「읽어 주기」로 귀로도 들어요. 1분 뒤 흔적 없이 사라지니까 걱정 마요.</li>
-          <li><b>정해요, 남길지 말지.</b> 게시판에 올려 「토닥토닥」 받거나, 한 달 뒤 나한테 편지로 보내요. 둘 다 끄면 증거 제로.</li>
-          <li><b>날려 버려요.</b> 「바람에 날려 보내기」 한 방이면 바람, 종이비행기, 풍선, 빗물, 불꽃 중 하나로 싹 날아가요. 너무 끓으면 딱 30초만 같이 숨 쉬고요.</li>
+          <li><b class="step-h" data-step="0">찍어요, 지금 내 상태.</b> 화남? 억울함? 돌려 말하지 말고 딱 하나 눌러요.</li>
+          <li><b class="step-h" data-step="1">쏟아내요, 필터 없이.</b> 욕 써도 돼요. 이름, 회사명 그대로 박아요. 게시판에 올릴 땐 알아서 별표로 가려 줘요. 손 아프면 「말로 입력」으로 그냥 말해요.</li>
+          <li><b class="step-h" data-step="2">시켜요, 대신 욕하라고.</b> 「같이 욕해 줘」 누르면 숨구멍이 무조건 내 편 들고 대신 퍼부어 줘요. 불닭맛, 경상도, 영어까지. 「읽어 주기」로 귀로도 들어요. 1분 뒤 흔적 없이 사라지니까 걱정 마요.</li>
+          <li><b class="step-h" data-step="3">정해요, 남길지 말지.</b> 게시판에 올려 「토닥토닥」 받거나, 한 달 뒤 나한테 편지로 보내요. 둘 다 끄면 증거 제로.</li>
+          <li><b class="step-h" data-step="4">날려 버려요.</b> 「바람에 날려 보내기」 한 방이면 바람, 종이비행기, 풍선, 빗물, 불꽃 중 하나로 싹 날아가요. 너무 끓으면 딱 30초만 같이 숨 쉬고요.</li>
         </ol>
         <div class="examples">
           <div class="example"><span class="label">예시 · 내가 쓴 글 (화남)</span><p class="quote">“오늘 또 퇴근 10분 전에 일을 떠넘겼다. 왜 맨날 나만 남아야 하는데.”</p></div>
@@ -2949,6 +2950,7 @@ ${text}
     ["이 정도면 화낼 만했어요", "여기선 아무도 「예민하다」고 안 해요."],
     ["5분만 미친 듯이 털고 가요", "다 비우고 나가면, 그 인간도 그냥 지나가는 사람 1이에요."],
   ];
+  const STEP_HEADS = [["찍어요, 지금 내 상태.", "골라요, 오늘의 기분.", "콕 집어요, 지금 내 감정.", "이름 붙여요, 이 열불에.", "재 봐요, 속 온도.", "정해요, 오늘 내 상태.", "털어놔요, 지금 기분.", "눌러요, 딱 하나만.", "찍어요, 오늘 화의 종류.", "먼저 골라요, 내 감정."], ["쏟아내요, 필터 없이.", "뱉어요, 참았던 거 전부.", "써요, 눈치 보지 말고.", "털어요, 속에 있는 거.", "적어요, 그 인간이 한 짓.", "퍼부어요, 생각나는 대로.", "꺼내요, 꾹 눌러 둔 말.", "갈겨요, 맞춤법 따위 신경 끄고.", "풀어요, 한 글자도 아끼지 말고.", "내뱉어요, 입 밖으로 못 한 말."], ["시켜요, 대신 욕하라고.", "맡겨요, 욕은 숨구멍이.", "불러요, 내 편 욕쟁이.", "부탁해요, 시원하게 한 방.", "질러요, 대신 퍼부어 달라고.", "들어요, 내 편의 찰진 욕.", "켜요, 불닭맛 욕 모드.", "받아요, 대리 분노 서비스.", "터뜨려요, 숨구멍 욕 폭탄.", "시켜요, 사투리로 한 바가지."], ["정해요, 남길지 말지.", "골라요, 흔적을 남길지.", "결정해요, 공개냐 비밀이냐.", "선택해요, 보여 줄지 말지.", "정해요, 토닥받을지 묻어 둘지.", "골라요, 지금 버릴지 나중에 볼지.", "따져요, 증거를 남길지.", "정해요, 한 달 뒤 나에게 보낼지.", "골라요, 다 같이 볼지 나만 볼지.", "정해요, 어디까지 남길지."], ["날려 버려요.", "보내 버려요, 미련 없이.", "태워 버려요, 싹 다.", "던져 버려요, 멀리멀리.", "날려요, 한 방에.", "떠나보내요, 오늘 화를.", "끝내요, 시원하게.", "비워요, 속 시원하게.", "털어 버려요, 마지막 한 톨까지.", "띄워 보내요, 바람에."]];
   const TEXT_LABELS = ["쏟아내요, 필터 없이", "그 인간한테 못 한 말", "오늘 삼킨 말, 여기다 뱉어요", "속에 있는 거 전부 다", "욕부터 써도 괜찮아요", "하고 싶었던 그 말, 지금", "아무도 안 봐요, 마음껏", "참았던 만큼 길게", "받아치고 싶었던 한마디", "머릿속 그 장면, 그대로 적어요"];
   const HOOK_COLORS = ["#d43a22", "#6c5ce7", "#3f6fe0", "#2f8f6f", "#c96a12", "#d9506f"];
   function pickHook() {
@@ -2962,6 +2964,12 @@ ${text}
     let j; do { j = Math.floor(Math.random() * TEXT_LABELS.length); } while (j === lastL);
     store.set("sg.tlabel", j);
     const lb = $("text-label"); lb.textContent = TEXT_LABELS[j];
+    document.querySelectorAll("#view-write .step-h").forEach(el => {
+      const k = el.dataset.step, opts = STEP_HEADS[k], prev = store.get("sg.step" + k, -1);
+      let n; do { n = Math.floor(Math.random() * opts.length); } while (n === prev);
+      store.set("sg.step" + k, n); el.textContent = opts[n];
+      el.classList.remove("hook-in"); void el.offsetWidth; el.classList.add("hook-in");
+    });
     lb.classList.remove("hook-in"); void lb.offsetWidth; lb.classList.add("hook-in");
     [t, h].forEach(el => { el.classList.remove("hook-in"); void el.offsetWidth; el.classList.add("hook-in"); });
   }
