@@ -576,7 +576,26 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-say svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .rant-say[aria-pressed="true"] svg { animation: pulseSay 1s ease-in-out infinite; }
 .rant-say:disabled { opacity: .4; }
-.rant-voice { max-width: 200px; font-size: .8125rem; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .28); background: #241c1c; color: #ffffff; }
+.rant-cast { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 10px 12px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); }
+.cast-group { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cast-label { font-size: .8125rem; font-weight: 700; color: rgba(255, 255, 255, .62); white-space: nowrap; }
+.cast-seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.cast-seg button { border: 1px solid rgba(255, 255, 255, .18); background: transparent; color: rgba(255, 255, 255, .86); font-size: .8125rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; transition: background-color .3s, color .3s, border-color .3s; }
+.cast-seg button .g { font-size: .6875rem; margin-right: 3px; opacity: .8; }
+.cast-seg button[data-g="f"] .g { color: #ffb3c7; }
+.cast-seg button[data-g="m"] .g { color: #9fd0ff; }
+.cast-seg button[aria-pressed="true"] { background: #ffffff; color: #241c1c; border-color: #ffffff; }
+.cast-seg button[aria-pressed="true"] .g { color: inherit; }
+.cast-seg .sep { width: 1px; align-self: stretch; margin: 2px 2px; background: rgba(255, 255, 255, .18); }
+@media (max-width: 639px) {
+  .rant-cast { display: grid; gap: 10px; }
+  .cast-group { display: grid; grid-template-columns: 44px 1fr; }
+  .cast-seg { display: grid; gap: 6px; }
+  #cast-who { grid-template-columns: repeat(3, 1fr); }
+  #cast-age { grid-template-columns: repeat(5, 1fr); }
+  .cast-seg .sep { display: none; }
+  .cast-seg button { padding: 6px 4px; }
+}
 @keyframes pulseSay { 50% { transform: scale(1.18); } }
 .rant-btn {
   display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; min-height: 46px; padding: 10px 16px 10px 12px;
@@ -829,7 +848,11 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         <p class="rant-trans" id="rant-trans" hidden></p>
         <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
         <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
-        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><select class="rant-voice" id="rant-voice" aria-label="읽어 주는 목소리" hidden></select><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
+        <div class="rant-cast">
+          <div class="cast-group"><span class="cast-label">목소리</span><div class="cast-seg" id="cast-who" role="group" aria-label="읽어 주는 사람"></div></div>
+          <div class="cast-group"><span class="cast-label">나이</span><div class="cast-seg" id="cast-age" role="group" aria-label="목소리 나이"></div></div>
+        </div>
+        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
       </div>
     </div>
     <div class="panel">
@@ -2138,18 +2161,56 @@ ${text}
     const voicesFor = (lang) => (("speechSynthesis" in window && speechSynthesis.getVoices()) || [])
       .filter(v => (lang === "en" ? /^en/i : /^ko/i).test(v.lang))
       .sort((a, b) => voiceScore(b) - voiceScore(a) || (lang === "en" ? (/en-US/i.test(b.lang) - /en-US/i.test(a.lang)) : 0));
-    const voiceLabel = (v) => v.name.replace(/^(Microsoft|Google)\s*/i, "").replace(/\s*-\s*(Korean|English).*$/i, "").replace(/\s*Online\s*\(Natural\)/i, "").trim() + (isNatural(v) ? " · 자연스러움" : "");
-    const voiceSel = $("rant-voice");
-    function fillVoices() {
-      const lang = saidDialect === "en" ? "en" : "ko", list = voicesFor(lang), saved = store.get("sg.voice." + lang, "");
-      voiceSel.innerHTML = "";
-      list.forEach(v => { const o = document.createElement("option"); o.value = v.name; o.textContent = voiceLabel(v); voiceSel.appendChild(o); });
-      voiceSel.hidden = list.length < 2;
-      if (list.some(v => v.name === saved)) voiceSel.value = saved;
+    // 읽어 주는 사람: 여자 3명, 남자 3명 + 나이(20~60대). 기기 목소리를 성별로 나누고, 높낮이·빠르기로 사람과 나이를 만들어요
+    const CAST = [
+      { id: "f1", g: "f", name: "소희", p: .08, r: .03 },
+      { id: "f2", g: "f", name: "다은", p: .02, r: -.06 },
+      { id: "f3", g: "f", name: "미경", p: -.08, r: .0 },
+      { id: "m1", g: "m", name: "준호", p: .0, r: .0 },
+      { id: "m2", g: "m", name: "태현", p: -.1, r: -.04 },
+      { id: "m3", g: "m", name: "민재", p: .07, r: .05 }
+    ];
+    const AGES = [
+      { id: 20, p: .12, r: .08 }, { id: 30, p: .05, r: .03 }, { id: 40, p: 0, r: 0 },
+      { id: 50, p: -.08, r: -.05 }, { id: 60, p: -.15, r: -.1 }
+    ];
+    const MALE_RE = /(InJoon|Hyunsu|BongJin|GookMin|Minsu|Jun\b|ko-kr-x-(koc|kod|jun)|Guy|Christopher|Eric|Roger|Steffan|Andrew|Brian|Davis|Tony|Daniel|Alex\b|Fred|Aaron|Arthur|Ryan|Thomas|David|Mark|George|James|Male)/i;
+    const genderOf = (v) => (MALE_RE.test(v.name) && !/Female/i.test(v.name) ? "m" : "f");
+    let cast = Object.assign({ who: "f1", age: 30 }, store.get("sg.cast", {}));
+    const whoEl = $("cast-who"), ageEl = $("cast-age");
+    CAST.forEach((c, i) => {
+      if (i === 3) { const s = document.createElement("i"); s.className = "sep"; s.setAttribute("aria-hidden", "true"); whoEl.appendChild(s); }
+      const b = document.createElement("button"); b.type = "button"; b.dataset.who = c.id; b.dataset.g = c.g;
+      b.innerHTML = `<span class="g">${c.g === "f" ? "여" : "남"}</span>${c.name}`; whoEl.appendChild(b);
+    });
+    AGES.forEach(a => { const b = document.createElement("button"); b.type = "button"; b.dataset.age = a.id; b.textContent = a.id + "대"; ageEl.appendChild(b); });
+    function paintCast() {
+      whoEl.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.who === cast.who)));
+      ageEl.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.age === cast.age)));
     }
-    voiceSel.addEventListener("change", () => { store.set("sg.voice." + (saidDialect === "en" ? "en" : "ko"), voiceSel.value); if (speaking) { stopSay(); sayBtn.click(); } });
-    if ("speechSynthesis" in window) { try { speechSynthesis.addEventListener("voiceschanged", fillVoices); } catch {} }
-    const pickVoice = (lang) => { const list = voicesFor(lang); return list.find(v => v.name === voiceSel.value) || list[0] || null; };
+    paintCast();
+    // 고른 사람에 맞는 목소리: 같은 성별 목소리가 여럿이면 사람마다 다른 목소리를, 없으면 다른 성별 목소리를 높낮이로 바꿔 써요
+    function voiceFor(lang) {
+      const c = CAST.find(x => x.id === cast.who) || CAST[0], a = AGES.find(x => x.id === cast.age) || AGES[1];
+      const all = voicesFor(lang), same = all.filter(v => genderOf(v) === c.g);
+      const nth = CAST.filter(x => x.g === c.g).indexOf(c);
+      const v = same.length ? same[nth % same.length] : (all[0] || null);
+      const shift = same.length || !v ? 0 : (c.g === "m" ? -.32 : .28);
+      return { v, c, faked: !same.length && !!v, pitch: Math.min(2, Math.max(.5, 1 + c.p + a.p + shift)), rate: 1 + c.r + a.r };
+    }
+    function preview() {
+      const en = saidDialect === "en", pick = voiceFor(en ? "en" : "ko");
+      const u = new SpeechSynthesisUtterance(en ? "Alright. I'll read it like this." : `${pick.c.name}${(pick.c.name.charCodeAt(pick.c.name.length - 1) - 0xAC00) % 28 ? "이가" : "가"} 읽어 줄게.`);
+      u.lang = en ? "en-US" : "ko-KR"; if (pick.v) u.voice = pick.v; u.pitch = pick.pitch; u.rate = pick.rate;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+    }
+    function onCast() {
+      store.set("sg.cast", cast); paintCast();
+      if (!("speechSynthesis" in window)) return;
+      if (speaking) { stopSay(); sayBtn.click(); } else preview();
+    }
+    whoEl.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; cast.who = b.dataset.who; onCast(); });
+    ageEl.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; cast.age = +b.dataset.age; onCast(); });
     if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", () => {}); } catch {} }
     function stopSay() {
       try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch {}
@@ -2161,14 +2222,14 @@ ${text}
       let text = out.textContent.trim(); if (!text) return;
       const en = saidDialect === "en";
       if (en) text = text.replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase()); // 대문자 낱말을 한 글자씩 읽지 않게
-      const v = pickVoice(en ? "en" : "ko"), u = new SpeechSynthesisUtterance(text);
+      const pick = voiceFor(en ? "en" : "ko"), v = pick.v, u = new SpeechSynthesisUtterance(text);
       u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
-      u.rate = RANT_DIALECT[saidDialect].rate;
-      u.pitch = v && isNatural(v) ? 1 : (saidLevel >= 3 ? (en ? 0.82 : 0.9) : 1); // 자연스러운 목소리는 높낮이를 건드리지 않아야 덜 기계 같아요
+      u.rate = RANT_DIALECT[saidDialect].rate * pick.rate;
+      u.pitch = pick.pitch;
       u.onend = () => stopSay(); u.onerror = () => stopSay();
       speechSynthesis.cancel(); speechSynthesis.speak(u);
       speaking = true; sayLbl.textContent = "멈추기"; sayBtn.setAttribute("aria-pressed", "true");
-      footNote.textContent = v ? "소리가 나요. 사무실이면 이어폰을 끼세요." : `이 기기에 ${en ? "영어" : "한국어"} 목소리가 없으면 읽지 못하거나 어색하게 읽을 수 있어요.`;
+      footNote.textContent = pick.faked ? `이 기기엔 ${pick.c.g === "m" ? "남자" : "여자"} 목소리가 없어서 비슷하게 바꿔 읽어요. Edge로 열면 더 자연스러워요.` : v ? "소리가 나요. 사무실이면 이어폰을 끼세요." : `이 기기에 ${en ? "영어" : "한국어"} 목소리가 없으면 읽지 못하거나 어색하게 읽을 수 있어요.`;
     });
     function wipe() {
       stopSay(); footNote.textContent = FOOT;
@@ -2206,7 +2267,7 @@ ${text}
       bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.querySelector("span").textContent = "한 번 더 욕해 줘";
       const lv = level(), d = dialect();
       stopSay(); footNote.textContent = FOOT; sayBtn.disabled = true;
-      saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en"); fillVoices();
+      saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en");
       $("rant-label").textContent = d === "std" ? "숨구멍이 대신 욕해 줄게" : `숨구멍이 대신 욕해 줄게 · ${RANT_DIALECT[d].name} 버전`;
       let text = "";
       if (SELF.test(raw) || DANGER.test(raw)) text = "[STOP]";
