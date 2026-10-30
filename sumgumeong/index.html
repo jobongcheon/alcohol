@@ -537,6 +537,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-text { font-family: var(--display); font-size: var(--step-1); line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.6em; transition: filter .2s; }
 .rant-text.typing::after { content: "▍"; color: var(--heat-2); animation: blink 1s steps(1) infinite; }
 .rant-help { color: #ffd2c2; font-size: 1rem; }
+.rant-box.en .rant-text { font-family: var(--body); font-weight: 700; letter-spacing: -0.01em; }
+.rant-trans { font-size: .9375rem; color: rgba(255, 255, 255, .66); line-height: 1.6; border-left: 2px solid rgba(255, 176, 138, .5); padding-left: 10px; }
 .rant-bar { height: 5px; border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, .12); }
 .rant-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--heat-1), var(--heat-3)); transition: width .2s linear; }
 .rant-foot { display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: space-between; align-items: center; font-size: .875rem; color: rgba(255, 255, 255, .62); }
@@ -640,13 +642,14 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <div class="rant-row">
         <div class="rant-opts">
           <div class="seg" id="rant-level" role="group" aria-label="욕의 세기"><button type="button" data-lv="1" aria-pressed="false">순한맛</button><button type="button" data-lv="2" aria-pressed="false">매운맛</button><button type="button" data-lv="3" aria-pressed="true">불닭맛</button></div>
-          <div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button></div>
+          <div class="seg" id="rant-dialect" role="group" aria-label="말투"><button type="button" data-d="std" aria-pressed="true">표준어</button><button type="button" data-d="gs" aria-pressed="false">경상도</button><button type="button" data-d="cc" aria-pressed="false">충청도</button><button type="button" data-d="jj" aria-pressed="false">제주도</button><button type="button" data-d="en" aria-pressed="false">영어</button></div>
         </div>
         <button class="btn rant-btn" id="rant-btn" type="button" disabled>같이 욕해 줘</button>
       </div>
       <div class="rant-box" id="rant-box" hidden aria-live="polite">
         <div class="rant-head"><span class="rant-label" id="rant-label">숨구멍이 대신 욕해 줄게</span><span class="rant-timer" id="rant-timer"></span></div>
         <p class="rant-text" id="rant-text"></p>
+        <p class="rant-trans" id="rant-trans" hidden></p>
         <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
         <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
         <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
@@ -1793,12 +1796,17 @@ ${text}
     std: { name: "표준어", rule: "표준어 반말로.", rate: 1.0 },
     gs: { name: "경상도", rule: "경상도 사투리로 찰지게. (예: \"와 이라노\", \"마, 니 미칬나\", \"~하나/~노\", \"아이가\", \"억수로\", \"단디\", \"~카이\", \"쌔리\") 욕도 경상도 말투로 섞어.", rate: 1.1 },
     cc: { name: "충청도", rule: "충청도 사투리로 느긋하지만 뼈 있게. (예: \"~유\", \"~겨\", \"그랴\", \"워쩐대유\", \"냅둬유\", \"~혀\", \"겁나\") 욕도 충청도 말투로 섞어.", rate: 0.82 },
+    en: { name: "영어", lang: "en-US", rate: 1.05, rule: `영어로. 미국 친구가 옆에서 같이 열받아 주듯 짧고 펀치 있게 써. 훅이 되는 짧은 문장, 리듬감 있는 반복("Seriously? SERIOUSLY?"), 핵심 단어는 대문자로 강조하고 느낌표를 써. 매운맛·불닭맛이면 "fuck", "shit", "asshole", "bastard", "piece of shit", "what the hell" 같은 강한 영어 욕을 마음껏 써. 특정 집단을 비하하는 영어 단어(성별, 인종, 장애, 성적 지향 관련 비하어)는 절대 쓰지 마. 영어를 다 쓴 다음 줄을 바꿔 "---"만 있는 줄을 쓰고, 그 아래에 방금 쓴 영어를 자연스러운 한국어 반말로 옮긴 뜻을 써.` },
     jj: { name: "제주도", rule: "제주도 사투리로. (예: \"~수다\", \"~마씸\", \"무사\"(왜), \"하영\"(많이), \"경해도\", \"~우꽈\", \"어수다\"(없어요)) 다른 지역 사람도 대충 알아듣게 너무 어렵지 않게, 욕도 제주 말투로 섞어.", rate: 0.95 },
   };
   const RANT_CANNED_D = {
     gs: { soft: ["와 이라노, 그게 사람한테 할 소리가?", "마, 그 인간 진짜 와 그라노. 니는 하나도 잘못 없다 아이가."], hard: ["와 씨발 이라노, 그 인간 미칬나? 억수로 열받네.", "니한테 그딴 식으로 하믄 안 되제. 개념을 어데 팔아묵었노.", "니는 단디 잘했다. 그 새끼가 이상한 기다."] },
     cc: { soft: ["워쩐대유, 그건 너무혔네유.", "그 양반 참말로 경우가 없구먼유. 냅둬유, 그짝이 이상한 겨."], hard: ["아 씨발, 그 인간 참말로 개념이 없는 겨?", "그딴 식으로 허면 누가 참는댜. 좆같은 짓을 겁나 당당허게 허네유.", "그짝이 이상한 겨. 잘못한 거 하나도 읎어유."] },
     jj: { soft: ["무사 경햄수과, 그건 너무 허우다.", "그 사람 진짜 경우가 어수다게. 하나도 잘못 어신 거 알지예?"], hard: ["아 씨발, 무사 경 햄신고? 그 인간 하영 이상허우다.", "그딴 식으로 허민 누게가 참으쿠과. 개념 어디 팔아먹언?", "느는 하나도 잘못 어수다. 그 새끼가 이상한 거우다."] },
+  };
+  const RANT_CANNED_EN = {
+    soft: ["Are you KIDDING me? Seriously? That's just ridiculous! Who treats people like that? You did NOTHING wrong.", "장난해? 진짜로? 말도 안 돼! 누가 사람을 그렇게 대해? 넌 하나도 잘못 없어."],
+    hard: ["What the FUCK is wrong with them? Seriously? SERIOUSLY? Who the hell treats people like that? Total piece of shit move! You did NOTHING wrong. They're the asshole here. Period!", "도대체 그 인간 뭐가 문제야? 진짜로? 진짜로?? 누가 사람을 그딴 식으로 대해? 완전 쓰레기 같은 짓이야! 넌 하나도 잘못 없어. 나쁜 놈은 그쪽이야. 끝!"],
   };
   const RANT_CANNED = {
     1: ["와, 진짜 너무하네. 그게 사람한테 할 소리야?", "양심이 있으면 그렇게는 못 하지. 어이가 없다 정말.", "너 오늘 진짜 잘 참았어. 이상한 건 그쪽이야."],
@@ -1809,7 +1817,7 @@ ${text}
     return `너는 익명 감정 해소 앱 「숨구멍」의 '같이 욕해 주는 친구'야. 사용자는 성인 직장인이고, 직접 「같이 욕해 줘」 버튼을 눌렀어. 네 말은 사용자 화면에만 1분 동안 보였다가 사라지고, 아무에게도 전달되지 않아.
 할 일: 사용자 편을 확실하게 들고, 사용자를 화나게 한 사람이나 상황을 사용자보다 더 세게 욕해 줘. 친한 친구처럼 반말로.
 세기 — ${RANT_LEVEL[lv]}
-말투 — ${RANT_DIALECT[d].rule}
+말투 — ${RANT_DIALECT[d].rule}${d === "en" ? "\n(한국어로 하라는 위 규칙 중 \"반말로\", \"3~6문장\"은 영어 부분에 맞게 따르고, 사람 이름 대신 \"that jerk\", \"that bastard\"처럼 불러.)" : ""}
 지킬 것:
 - 욕은 사용자를 화나게 한 사람과 상황에게만 해. 사용자에게는 절대 욕하지 말고, 마지막 한 문장은 사용자를 확실히 편들어.
 - 여성·남성, 지역, 장애, 인종, 나이, 성적 지향을 비하하는 말은 쓰지 마. ("병신" 같은 장애 비하 욕도 빼.)
@@ -1835,6 +1843,7 @@ ${text}
     const sayBtn = $("rant-say"), sayLbl = sayBtn.querySelector("span"), footNote = $("rant-foot-note");
     const FOOT = "복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.";
     let speaking = false, saidDialect = "std", saidLevel = 3;
+    const enVoice = () => { const vs = speechSynthesis.getVoices() || []; return vs.find(v => /^en-US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null; };
     const koVoice = () => (speechSynthesis.getVoices() || []).find(v => /^ko/i.test(v.lang)) || null;
     if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", () => {}); } catch {} }
     function stopSay() {
@@ -1844,14 +1853,16 @@ ${text}
     sayBtn.addEventListener("click", () => {
       if (speaking) { stopSay(); return; }
       if (!("speechSynthesis" in window)) { footNote.textContent = "이 기기에서는 읽어 주기를 쓸 수 없어요."; return; }
-      const text = out.textContent.trim(); if (!text) return;
-      const u = new SpeechSynthesisUtterance(text), v = koVoice();
-      u.lang = "ko-KR"; if (v) u.voice = v;
-      u.rate = RANT_DIALECT[saidDialect].rate; u.pitch = saidLevel >= 3 ? 0.9 : 1;
+      let text = out.textContent.trim(); if (!text) return;
+      const en = saidDialect === "en";
+      if (en) text = text.replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase()); // 대문자 낱말을 한 글자씩 읽지 않게
+      const v = en ? enVoice() : koVoice(), u = new SpeechSynthesisUtterance(text);
+      u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
+      u.rate = RANT_DIALECT[saidDialect].rate; u.pitch = saidLevel >= 3 ? (en ? 0.82 : 0.9) : 1;
       u.onend = () => stopSay(); u.onerror = () => stopSay();
       speechSynthesis.cancel(); speechSynthesis.speak(u);
       speaking = true; sayLbl.textContent = "멈추기"; sayBtn.setAttribute("aria-pressed", "true");
-      footNote.textContent = v ? "소리가 나요. 사무실이면 이어폰을 끼세요." : "이 기기에 한국어 목소리가 없으면 읽지 못하거나 어색하게 읽을 수 있어요.";
+      footNote.textContent = v ? "소리가 나요. 사무실이면 이어폰을 끼세요." : `이 기기에 ${en ? "영어" : "한국어"} 목소리가 없으면 읽지 못하거나 어색하게 읽을 수 있어요.`;
     });
     function wipe() {
       stopSay(); footNote.textContent = FOOT;
@@ -1859,7 +1870,7 @@ ${text}
       clearInterval(tick); clearTimeout(burnT);
       if (box.hidden) return;
       box.classList.add("burn");
-      burnT = setTimeout(() => { out.textContent = ""; help.hidden = true; hide(box); box.classList.remove("burn"); btn.textContent = "같이 욕해 줘"; }, 700);
+      burnT = setTimeout(() => { out.textContent = ""; trans.textContent = ""; trans.hidden = true; help.hidden = true; hide(box); box.classList.remove("burn"); btn.textContent = "같이 욕해 줘"; }, 700);
     }
     function countdown() {
       const end = Date.now() + 60000;
@@ -1871,24 +1882,32 @@ ${text}
         if (!left) wipe();
       }, 200);
     }
+    const trans = $("rant-trans");
+    // 영어 버전은 "---" 아래에 한국어 뜻이 와요
+    function showText(t) {
+      const [main, ...rest] = String(t).split(/\n\s*-{3,}\s*(?:\n|$)/);
+      out.textContent = main.trim();
+      const k = rest.join(" ").trim();
+      trans.textContent = k ? `뜻: ${k}` : ""; trans.hidden = !k;
+    }
     const clean = (t) => String(t || "").replace(/^\s*\[STOP\]\s*/, "").trim();
     btn.addEventListener("click", async () => {
       const raw = $("text").value.trim(); if (!raw) return;
       if (ctrl) ctrl.abort();
       clearInterval(tick); clearTimeout(burnT);
       box.classList.remove("burn"); show(box); help.hidden = true;
-      out.textContent = ""; out.classList.add("typing");
+      out.textContent = ""; trans.textContent = ""; trans.hidden = true; out.classList.add("typing");
       bar.style.width = "100%"; timer.textContent = "욕 고르는 중…"; btn.textContent = "한 번 더 욕해 줘";
       const lv = level(), d = dialect();
       stopSay(); footNote.textContent = FOOT; sayBtn.disabled = true;
-      saidDialect = d; saidLevel = lv;
+      saidDialect = d; saidLevel = lv; box.classList.toggle("en", d === "en");
       $("rant-label").textContent = d === "std" ? "숨구멍이 대신 욕해 줄게" : `숨구멍이 대신 욕해 줄게 · ${RANT_DIALECT[d].name} 버전`;
       let text = "";
       if (SELF.test(raw) || DANGER.test(raw)) text = "[STOP]";
       else if (sample) {
         const my = ctrl = new AbortController();
         try {
-          const r = await sample(rantPrompt(fallbackMask(raw), lv, d), { modelTier: "default", cache: false, signal: my.signal, onText: ({ text: t }) => { if (!/^\s*\[S/.test(t)) out.textContent = clean(t); } });
+          const r = await sample(rantPrompt(fallbackMask(raw), lv, d), { modelTier: "default", cache: false, signal: my.signal, onText: ({ text: t }) => { if (!/^\s*\[S/.test(t)) showText(clean(t)); } });
           text = r.text;
         } catch (e) { if (e && e.code === "cancelled") return; text = ""; }
         if (ctrl !== my) return;
@@ -1899,7 +1918,8 @@ ${text}
         out.textContent = clean(text) || "지금 마음이 많이 위태로워 보여. 욕보다 네가 먼저야.";
         help.hidden = false;
       } else {
-        out.textContent = clean(text) || (d === "std" ? RANT_CANNED[lv] : RANT_CANNED_D[d][lv > 1 ? "hard" : "soft"]).join(" ");
+        const fallback = d === "en" ? RANT_CANNED_EN[lv > 1 ? "hard" : "soft"].join("\n---\n") : (d === "std" ? RANT_CANNED[lv] : RANT_CANNED_D[d][lv > 1 ? "hard" : "soft"]).join(" ");
+        showText(clean(text) || fallback);
       }
       sayBtn.disabled = false;
       countdown();
