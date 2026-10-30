@@ -1,0 +1,1038 @@
+<title>숨구멍</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: one calm column on white paper; big black type; tabs for each way to let it out. */
+:root {
+  --paper: #ffffff;
+  --ink: #111111;
+  --ink-soft: #4a4a48;
+  --line: #e4e4e0;
+  --wash: #f5f5f2;
+  --pine: #1b5e4f;        /* 토닥, 숨쉬기 */
+  --pine-wash: #e6f0ec;
+  --heat-1: #e0a100;      /* 게이지 낮음 */
+  --heat-2: #e2591d;
+  --heat-3: #c41d1d;      /* 게이지 높음, 경고 */
+  --display: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --step-0: 1.1875rem;   /* 19px 본문 */
+  --step-1: 1.5rem;
+  --step-2: 2rem;
+  --step-3: 2.75rem;
+  --step-4: clamp(3.25rem, 11vw, 5.5rem);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  word-break: keep-all;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 720px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.2; }
+p { margin: 0; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* 머리 */
+.masthead { padding-block: 40px 20px; display: grid; gap: 10px; }
+.masthead h1 { font-size: var(--step-4); letter-spacing: -0.02em; }
+.masthead p { font-size: var(--step-1); color: var(--ink-soft); font-family: var(--display); }
+
+/* 탭 */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.tabs {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--paper);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  padding-block: 10px; border-bottom: 2px solid var(--ink);
+}
+@media (min-width: 640px) { .tabs { grid-template-columns: repeat(6, 1fr); } }
+.tabs a {
+  display: block; text-align: center; text-decoration: none; color: var(--ink);
+  font-weight: 700; font-size: 1.0625rem; padding: 10px 4px; border-radius: 10px;
+  border: 2px solid transparent;
+}
+.tabs a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.tabs a:hover:not([aria-current="page"]) { border-color: var(--ink); }
+
+section.view { padding-block: 32px 8px; display: grid; gap: 24px; }
+.lede { display: grid; gap: 8px; }
+.lede h2 { font-size: var(--step-3); }
+.lede p { color: var(--ink-soft); }
+
+/* 공용 */
+.btn {
+  border: 2px solid var(--ink); background: var(--ink); color: var(--paper);
+  border-radius: 14px; padding: 16px 22px; font-weight: 700; font-size: var(--step-1);
+  min-height: 60px;
+}
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn.ghost { background: var(--paper); color: var(--ink); }
+.btn.small { font-size: 1rem; padding: 10px 16px; min-height: 44px; border-radius: 10px; }
+.btn.block { width: 100%; }
+.note { font-size: 1rem; color: var(--ink-soft); }
+.panel { border: 2px solid var(--ink); border-radius: 18px; padding: 20px; display: grid; gap: 14px; }
+.soft { background: var(--wash); border-radius: 18px; padding: 18px 20px; display: grid; gap: 8px; }
+.warn { background: #fff3f0; border: 2px solid var(--heat-3); border-radius: 18px; padding: 18px 20px; display: grid; gap: 8px; }
+.warn strong { color: var(--heat-3); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+label.check { display: flex; gap: 12px; align-items: flex-start; font-size: 1.0625rem; cursor: pointer; }
+label.check input { width: 26px; height: 26px; flex: none; accent-color: var(--ink); margin-top: 2px; }
+textarea {
+  width: 100%; min-height: 220px; resize: vertical;
+  border: 2px solid var(--ink); border-radius: 18px; padding: 18px;
+  font-size: var(--step-1); line-height: 1.55; background: var(--paper);
+}
+textarea::placeholder { color: #9a9a96; }
+.label { font-size: .9375rem; font-weight: 700; letter-spacing: .04em; color: var(--ink-soft); }
+
+/* 감정 고르기 */
+.emos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 560px) { .emos { grid-template-columns: repeat(4, 1fr); } }
+.emo {
+  border: 2px solid var(--ink); background: var(--paper); border-radius: 16px;
+  padding: 14px 12px; text-align: left; display: grid; gap: 2px;
+}
+.emo b { font-family: var(--display); font-size: var(--step-2); line-height: 1.1; }
+.emo span { font-size: .9375rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.emo[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.emo[aria-pressed="true"] span { color: #d8d8d4; }
+
+/* 게시판 */
+.board { display: grid; gap: 14px; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; transition: filter .2s; }
+.board.veiled { filter: blur(14px); }
+.post { border-bottom: 2px solid var(--line); padding-block: 18px; display: grid; gap: 12px; }
+.post .meta { display: flex; gap: 10px; align-items: center; font-size: .9375rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.tag { border: 1.5px solid var(--ink); border-radius: 999px; padding: 1px 10px; color: var(--ink); font-weight: 700; }
+.post .text { font-size: var(--step-1); line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pat {
+  justify-self: start; display: inline-flex; gap: 10px; align-items: center;
+  border: 2px solid var(--pine); color: var(--pine); background: var(--paper);
+  border-radius: 999px; padding: 8px 18px; font-weight: 700; font-size: 1.0625rem;
+}
+.pat[aria-pressed="true"] { background: var(--pine); color: var(--paper); }
+.pat .n { font-variant-numeric: tabular-nums; }
+.empty { text-align: center; padding-block: 40px; display: grid; gap: 10px; color: var(--ink-soft); }
+.empty b { font-family: var(--display); font-size: var(--step-2); color: var(--ink); }
+
+/* 소리 지르기 */
+.db-number { font-family: var(--display); font-size: clamp(4.5rem, 22vw, 8rem); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.db-number small { font-size: .3em; letter-spacing: 0; margin-left: 6px; }
+.gauge { position: relative; height: 34px; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--wash); }
+.gauge i { position: absolute; inset: 0 auto 0 0; width: 0%; background: linear-gradient(90deg, var(--heat-1), var(--heat-2) 60%, var(--heat-3)); transition: width .08s linear; }
+.scale { display: flex; justify-content: space-between; font-size: .875rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.verdict { font-family: var(--display); font-size: var(--step-2); }
+.tapzone { min-height: 180px; font-size: var(--step-2); border-radius: 24px; touch-action: manipulation; }
+
+/* 셀카 */
+.shot { position: relative; border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--wash); aspect-ratio: 3 / 4; max-width: 100%; max-height: 60vh; }
+.shot canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
+.shot .count { position: absolute; right: 12px; top: 12px; background: var(--ink); color: var(--paper); border-radius: 999px; padding: 6px 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bars { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: 5.5em 1fr 3.2em; gap: 10px; align-items: center; font-size: 1rem; }
+.bar .track { height: 14px; background: var(--wash); border-radius: 999px; overflow: hidden; }
+.bar .track i { display: block; height: 100%; background: var(--ink); }
+.bar .pct { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 금고 */
+.pattern { position: relative; width: min(300px, 100%); aspect-ratio: 1; margin: 0 auto; touch-action: none; user-select: none; }
+.pattern svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.seg { display: inline-grid; grid-auto-flow: column; border: 2px solid var(--ink); border-radius: 12px; overflow: hidden; }
+.seg button { border: 0; background: var(--paper); padding: 10px 18px; font-weight: 700; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+input[type="password"], input[type="text"].field {
+  width: 100%; border: 2px solid var(--ink); border-radius: 14px; padding: 14px 16px; font-size: var(--step-1); background: var(--paper);
+}
+.entry { border-bottom: 2px solid var(--line); padding-block: 14px; display: grid; gap: 6px; }
+.entry .text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1.125rem; }
+
+/* 편지 */
+.letter { border: 2px solid var(--ink); border-radius: 18px; padding: 20px; display: grid; gap: 10px; }
+.letter .text { font-family: var(--display); font-size: var(--step-1); white-space: pre-wrap; overflow-wrap: anywhere; }
+.sealed { border-style: dashed; color: var(--ink-soft); }
+.dday { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); }
+
+/* 덮개 화면: 숨쉬기, 바람, 위로 */
+.overlay { position: fixed; inset: 0; z-index: 50; background: var(--paper); display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); overflow: hidden; }
+.overlay .inner { width: min(560px, 100%); display: grid; gap: 22px; justify-items: center; text-align: center; }
+.breath-ring { width: min(260px, 70vw); aspect-ratio: 1; border-radius: 50%; background: var(--pine-wash); border: 3px solid var(--pine); display: grid; place-items: center; transform: scale(.55); transition: transform 4s ease-in-out; }
+.breath-ring b { font-family: var(--display); font-size: var(--step-2); color: var(--pine); }
+.big-count { font-family: var(--display); font-size: var(--step-3); font-variant-numeric: tabular-nums; }
+.wind { position: absolute; inset: 0; pointer-events: none; }
+.wind span { position: absolute; font-family: var(--display); font-size: var(--step-1); white-space: pre; will-change: transform, opacity; }
+.comfort { font-family: var(--display); font-size: var(--step-2); line-height: 1.4; }
+.spinner { width: 34px; height: 34px; border: 4px solid var(--line); border-top-color: var(--ink); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.promises { border-top: 2px solid var(--ink); margin-top: 48px; padding-top: 20px; display: grid; gap: 8px; }
+.promises h3 { font-size: var(--step-1); }
+.promises ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; color: var(--ink-soft); font-size: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .breath-ring { transition: none; }
+  .gauge i { transition: none; }
+  .spinner { animation-duration: 3s; }
+}
+@media print { body * { visibility: hidden !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <h1>숨구멍</h1>
+    <p>참지 말고, 여기 내려놓고 가세요.</p>
+  </header>
+
+  <nav class="tabs" aria-label="메뉴">
+    <a href="#write">털어놓기</a>
+    <a href="#board">게시판</a>
+    <a href="#shout">소리 지르기</a>
+    <a href="#face">내 표정</a>
+    <a href="#vault">비밀 금고</a>
+    <a href="#letter">한 달 편지</a>
+  </nav>
+
+  <!-- 털어놓기 -->
+  <section class="view" id="view-write">
+    <div class="lede">
+      <h2>오늘 어떤 마음이에요?</h2>
+      <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
+    </div>
+    <div class="emos" id="emos" role="group" aria-label="감정 고르기"></div>
+    <div style="display:grid;gap:10px">
+      <label class="label" for="text">하고 싶은 말</label>
+      <textarea id="text" maxlength="1000" placeholder="여기에 다 쏟아 놓으세요. 이름이나 회사명은 올릴 때 자동으로 별표 처리돼요."></textarea>
+      <div class="row" style="justify-content:space-between"><span class="note" id="count">0 / 1000</span><span class="note" id="ai-status"></span></div>
+    </div>
+    <div class="panel">
+      <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b><br><span class="note">이름·회사명·부서명은 별표로 바뀌고, 3일 뒤 저절로 지워져요. 끄면 아무 데도 남기지 않고 바람에만 날려요.</span></span></label>
+      <label class="check"><input type="checkbox" id="opt-letter"><span><b>한 달 뒤 나에게 편지로 받기</b><br><span class="note">원문이 이 기기 안에만 저장되고, 한 달 뒤 「한 달 편지」에서 열려요.</span></span></label>
+    </div>
+    <button class="btn block" id="send" disabled>바람에 날려 보내기</button>
+    <p class="note" id="send-hint">감정을 고르고 한 글자 이상 써 주세요.</p>
+  </section>
+
+  <!-- 게시판 -->
+  <section class="view" id="view-board" hidden>
+    <div class="lede">
+      <h2>지금 여기 있는 마음들</h2>
+      <p>댓글은 없어요. 공감되면 「토닥토닥」만 눌러 주세요. 글은 3일이 지나면 사라져요.</p>
+    </div>
+    <div class="board" id="board">
+      <div class="empty" id="board-empty">
+        <b>아직 올라온 글이 없어요</b>
+        <p>「털어놓기」에서 첫 마음을 내려놓아 보세요.</p>
+      </div>
+    </div>
+    <p class="note">이 게시판은 복사와 길게 누르기가 막혀 있어요. 다른 앱으로 넘어가면 글이 흐려져요.</p>
+  </section>
+
+  <!-- 소리 지르기 -->
+  <section class="view" id="view-shout" hidden>
+    <div class="lede">
+      <h2>소리 한번 질러 보세요</h2>
+      <p>마이크로 소리 크기만 재고, 녹음은 하지 않아요. 3초 동안 가장 컸던 순간을 보여 드려요.</p>
+    </div>
+    <div class="panel">
+      <div class="label">오늘 당신의 분노는</div>
+      <div class="db-number"><span id="db-val">0</span><small>데시벨</small></div>
+      <div class="gauge" aria-hidden="true"><i id="db-bar"></i></div>
+      <div class="scale"><span>30</span><span>60 대화</span><span>90 고함</span><span>120</span></div>
+      <p class="verdict" id="db-verdict">버튼을 누르고 3초 동안 크게 외쳐 보세요.</p>
+    </div>
+    <button class="btn block" id="shout-start">소리 지르기 시작</button>
+    <button class="btn ghost block tapzone" id="tapzone" hidden>여기를 마구 두드리세요!</button>
+    <p class="note" id="shout-note">측정이 끝나면 마이크를 바로 꺼요.</p>
+  </section>
+
+  <!-- 셀카 -->
+  <section class="view" id="view-face" hidden>
+    <div class="lede">
+      <h2>지금 내 표정은?</h2>
+      <p>셀카를 찍으면 이 기기 안에서만 표정을 읽어요. 사진은 어디에도 보내지 않고, 결과를 보여 준 뒤 5초 후에 지워요.</p>
+    </div>
+    <input type="file" id="selfie" accept="image/*" capture="user" hidden>
+    <button class="btn block" id="selfie-btn">셀카 찍기</button>
+    <div class="shot" id="shot" hidden>
+      <canvas id="shot-canvas" aria-label="방금 찍은 셀카"></canvas>
+      <div class="count" id="shot-count" hidden>5초 뒤 삭제</div>
+    </div>
+    <div class="panel" id="face-result" hidden>
+      <div class="label">지금 당신은</div>
+      <p class="verdict" id="face-verdict"></p>
+      <div class="bars" id="face-bars"></div>
+      <p class="note">표정은 마음의 일부만 보여 줘요. 재미로 참고해 주세요.</p>
+    </div>
+    <p class="note" id="face-note">처음 한 번은 표정 읽는 도구를 불러오느라 몇 초 걸려요.</p>
+  </section>
+
+  <!-- 비밀 금고 -->
+  <section class="view" id="view-vault" hidden>
+    <div class="lede">
+      <h2>비밀 금고</h2>
+      <p>여기 쓴 글은 이 기기 안에서 암호화해 저장해요. 비밀번호나 패턴을 아는 본인 말고는 운영자도 열 수 없어요.</p>
+    </div>
+    <div class="warn"><strong>비밀번호를 잊으면 복구할 수 없어요.</strong><p>운영자에게도 열쇠가 없어서 되찾아 드릴 방법이 없어요. 꼭 기억할 수 있는 걸로 정해 주세요.</p></div>
+    <div id="vault-lock" class="panel">
+      <div class="row" style="justify-content:space-between">
+        <b id="vault-title">금고 만들기</b>
+        <div class="seg" role="group" aria-label="잠금 방식">
+          <button id="mode-pw" aria-pressed="true">비밀번호</button>
+          <button id="mode-pt" aria-pressed="false">패턴</button>
+        </div>
+      </div>
+      <div id="pw-box" style="display:grid;gap:10px">
+        <input type="password" id="pw" autocomplete="off" placeholder="비밀번호 (4자 이상)">
+        <input type="password" id="pw2" autocomplete="off" placeholder="한 번 더 입력">
+      </div>
+      <div id="pt-box" hidden style="display:grid;gap:10px;justify-items:center">
+        <div class="pattern" id="pattern"><svg id="pattern-svg" viewBox="0 0 300 300"></svg></div>
+        <p class="note" id="pt-hint">점 4개 이상을 이어 그려 주세요.</p>
+      </div>
+      <button class="btn block" id="vault-go">금고 만들기</button>
+      <p class="note" id="vault-msg" role="status"></p>
+    </div>
+    <div id="vault-open" hidden style="display:grid;gap:16px">
+      <textarea id="vault-text" style="min-height:160px" placeholder="아무에게도 못 한 말을 적어 두세요."></textarea>
+      <div class="row"><button class="btn" id="vault-save">금고에 넣기</button><button class="btn ghost" id="vault-close">잠그기</button></div>
+      <div id="vault-list"></div>
+    </div>
+    <div class="row">
+      <button class="btn ghost small" id="vault-reset">금고 통째로 비우기</button>
+      <span class="note" id="vault-reset-msg"></span>
+    </div>
+  </section>
+
+  <!-- 한 달 편지 -->
+  <section class="view" id="view-letter" hidden>
+    <div class="lede">
+      <h2>한 달 뒤의 나에게</h2>
+      <p>털어놓기에서 「한 달 뒤 편지로 받기」를 고른 글이 여기 모여요. 이 기기 안에만 있고, 30일이 지나면 열려요.</p>
+    </div>
+    <div id="letters" style="display:grid;gap:14px"></div>
+  </section>
+
+  <footer class="promises">
+    <h3>숨구멍의 약속</h3>
+    <ul>
+      <li>게시판 글에는 쓴 사람 정보를 저장하지 않아요.</li>
+      <li>게시판 글은 3일이 지나면 지워져요.</li>
+      <li>금고, 편지, 셀카, 소리는 이 기기 밖으로 나가지 않아요.</li>
+      <li>힘들 때는 자살예방상담전화 109, 위급할 때는 112·119에 연락하세요.</li>
+    </ul>
+  </footer>
+</div>
+
+<!-- 덮개 화면 -->
+<div class="overlay" id="ov-busy" hidden><div class="inner"><div class="spinner"></div><p class="comfort" style="font-size:var(--step-1)">글을 살펴보고 있어요…</p></div></div>
+
+<div class="overlay" id="ov-breath" hidden>
+  <div class="inner">
+    <p class="comfort">많이 화가 나셨네요.<br>올리기 전에 30초만 같이 숨 쉬어요.</p>
+    <div class="breath-ring" id="ring"><b id="ring-word">들이마시고</b></div>
+    <div class="big-count" id="breath-left">30</div>
+    <button class="btn ghost small" id="breath-skip">건너뛰기</button>
+  </div>
+</div>
+
+<div class="overlay" id="ov-wind" hidden><div class="wind" id="wind"></div></div>
+
+<div class="overlay" id="ov-done" hidden>
+  <div class="inner">
+    <div class="label" id="done-label">날려 보냈어요</div>
+    <p class="comfort" id="done-comfort"></p>
+    <p class="note" id="done-note"></p>
+    <div class="row" style="justify-content:center"><button class="btn" id="done-ok">고마워요</button><button class="btn ghost" id="done-board">게시판 보기</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="ov-block" hidden>
+  <div class="inner">
+    <div class="label" style="color:var(--heat-3)">게시판에 올리지 않았어요</div>
+    <p class="comfort" id="block-why"></p>
+    <div class="warn" style="text-align:left" id="block-help">
+      <strong>혼자 감당하지 않아도 돼요.</strong>
+      <p>자살예방상담전화 <b>109</b> (24시간) · 위급하면 <b>112</b>, <b>119</b></p>
+    </div>
+    <button class="btn" id="block-ok">알겠어요</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const EMOS = [
+    { key: "angry", name: "화남", desc: "속이 끓어요" },
+    { key: "hurt", name: "서운함", desc: "마음이 아파요" },
+    { key: "unfair", name: "억울함", desc: "말 못 할 사정" },
+    { key: "tired", name: "지침", desc: "다 놓고 싶어요" },
+  ];
+  const EMO_NAME = Object.fromEntries(EMOS.map(e => [e.key, e.name]));
+  const DAY = 86400000;
+  const POST_TTL = 3 * DAY;
+  const LETTER_DELAY = 30 * DAY;
+
+  // ---------- 저장소 도우미 (기기 안) ----------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+  const deviceKey = (() => {
+    let k = store.get("sg.device", null);
+    if (!k) { k = Math.random().toString(36).slice(2, 12); store.set("sg.device", k); }
+    return k;
+  })();
+  const todayKey = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const show = (el) => { el.hidden = false; };
+  const hide = (el) => { el.hidden = true; };
+
+  // ---------- 탭 ----------
+  const VIEWS = ["write", "board", "shout", "face", "vault", "letter"];
+  function route() {
+    const h = location.hash.replace("#", "");
+    const v = VIEWS.includes(h) ? h : "write";
+    VIEWS.forEach(n => { $("view-" + n).hidden = n !== v; });
+    document.querySelectorAll(".tabs a").forEach(a => a.setAttribute("aria-current", a.getAttribute("href") === "#" + v ? "page" : "false"));
+    if (v === "letter") renderLetters();
+    if (v !== "shout") stopMic();
+  }
+  window.addEventListener("hashchange", route);
+
+  // ---------- 플랫폼 기능 ----------
+  let db = null, sample = null, canWrite = true;
+  const cap = (name) => (window.claude && typeof window.claude.use === "function") ? window.claude.use(name).catch(() => null) : Promise.resolve(null);
+
+  // ---------- 감정 고르기 ----------
+  let pickedEmo = null;
+  let moodCounts = {};
+  function renderEmos() {
+    $("emos").innerHTML = "";
+    EMOS.forEach(e => {
+      const b = document.createElement("button");
+      b.className = "emo"; b.type = "button";
+      b.setAttribute("aria-pressed", String(pickedEmo === e.key));
+      const n = moodCounts[e.key] || 0;
+      b.innerHTML = `<b></b><span></span>`;
+      b.querySelector("b").textContent = e.name;
+      b.querySelector("span").textContent = db ? `오늘 ${n}명이 골랐어요` : e.desc;
+      b.addEventListener("click", () => { pickedEmo = e.key; renderEmos(); updateSend(); });
+      $("emos").appendChild(b);
+    });
+  }
+  function updateSend() {
+    const t = $("text").value.trim();
+    $("count").textContent = `${$("text").value.length} / 1000`;
+    const ok = !!pickedEmo && t.length > 0;
+    $("send").disabled = !ok;
+    $("send-hint").hidden = ok;
+  }
+  $("text").addEventListener("input", updateSend);
+
+  // ---------- 가림 처리, 걸러내기 (AI가 없을 때의 대비책) ----------
+  function fallbackMask(s) {
+    const star = (w) => "*".repeat(w.length);
+    return s
+      .replace(/(주식회사|\(주\)|㈜)\s?[가-힣A-Za-z0-9]+/g, m => star(m))
+      .replace(/[가-힣A-Za-z0-9]{1,10}(전자|그룹|은행|건설|물산|상사|증권|보험|카드|제약|화학|통신|엔터|산업)/g, m => star(m))
+      .replace(/[가-힣A-Za-z0-9]{2,8}(팀|본부|사업부|부서|센터|지점)(?=[^가-힣]|$|[은는이가을를의에도])/g, (m, s2) => star(m.slice(0, m.length - s2.length)) + s2)
+      .replace(/([가-힣]{1,3})\s?(부장|과장|차장|대리|팀장|사원|주임|이사|상무|전무|사장|본부장|실장|선배|후배|씨)(님)?/g, (m, n, t, nim) => star(n) + t + (nim || ""));
+  }
+  const DANGER = /(죽여\s?버|죽이(겠|고\s?싶|러)|칼로|찔러|불\s?(질러|지를)|폭탄|패\s?죽|목\s?졸)/;
+  const SELF = /(자살|죽고\s?싶|뛰어내리|사라지고\s?싶|목숨을\s?끊)/;
+  const CANNED = {
+    angry: ["그 화, 여기 다 두고 가셔도 돼요.", "그 정도면 화나는 게 당연해요."],
+    hurt: ["그 마음, 서운할 만했어요.", "많이 아팠겠어요. 여기선 괜찮아요."],
+    unfair: ["말 못 할 억울함, 여기선 다 말해도 돼요.", "당신 잘못이 아니었을 거예요."],
+    tired: ["오늘은 여기까지만 해도 충분해요.", "정말 고생 많았어요. 잠깐 쉬어 가요."],
+  };
+
+  async function review(text, emo) {
+    if (sample) {
+      const prompt = `너는 익명 감정 털어놓기 앱 「숨구멍」의 검토자야. 아래 글을 읽고 JSON 객체 하나로만 답해. 다른 말은 쓰지 마.
+필드:
+- "masked": 원문에서 사람 이름(성만, 이름만, "김부장"·"민수씨" 같은 호칭 속 이름 포함), 회사·기관·가게 이름, 부서·팀 이름을 글자 수만큼 *로 바꾼 글. 나머지는 원문 그대로 둬.
+- "blocked": 특정 사람이나 장소를 해치겠다는 협박, 폭력·살해·방화 계획, 자해·자살 의도, 전화번호·주소 같은 신상 정보가 있으면 true. 단순한 욕설이나 "미치겠다", "죽겠다" 같은 과장 표현은 false.
+- "selfHarm": 자해나 자살 의도가 보이면 true.
+- "reason": blocked가 true면 왜 못 올리는지 부드러운 한국어 한 문장, 아니면 "".
+- "anger": 글에 담긴 화의 세기, 0부터 10까지 정수.
+- "comfort": 글쓴이에게 건넬 따뜻한 위로 한마디. 존댓말, 40자 이내, 충고나 판단 없이.
+고른 감정: ${EMO_NAME[emo]}
+글:
+<<<
+${text}
+>>>`;
+      try {
+        const r = await sample.json(prompt, { modelTier: "default", cache: false });
+        if (r && typeof r.masked === "string") {
+          return {
+            masked: fallbackMask(r.masked),
+            blocked: !!r.blocked || DANGER.test(text),
+            selfHarm: !!r.selfHarm || SELF.test(text),
+            reason: String(r.reason || ""),
+            anger: Math.max(0, Math.min(10, Number(r.anger) || 0)),
+            comfort: String(r.comfort || "").slice(0, 80) || CANNED[emo][0],
+            ai: true,
+          };
+        }
+      } catch (e) { /* 아래 대비책으로 */ }
+    }
+    const angerWords = (text.match(/(짜증|열받|빡치|화나|미치겠|개같|씨[발빨]|ㅅㅂ|빡쳐|어이없|!{2,})/g) || []).length;
+    const selfHarm = SELF.test(text);
+    return {
+      masked: fallbackMask(text),
+      blocked: DANGER.test(text) || selfHarm,
+      selfHarm,
+      reason: selfHarm ? "마음이 많이 위태로워 보여서 게시판 대신 도움받을 곳을 먼저 알려 드릴게요." : "다른 사람을 해치는 내용이 있어서 게시판에는 올리지 않았어요.",
+      anger: Math.min(10, (emo === "angry" ? 5 : 2) + angerWords * 2),
+      comfort: CANNED[emo][Math.floor(Math.random() * CANNED[emo].length)],
+      ai: false,
+    };
+  }
+
+  // ---------- 심호흡 ----------
+  function breathe() {
+    return new Promise(resolve => {
+      const ov = $("ov-breath"), ring = $("ring"), word = $("ring-word"), left = $("breath-left");
+      show(ov);
+      let t = 30, inhale = true, done = false;
+      const flip = () => { ring.style.transform = inhale ? "scale(1)" : "scale(.55)"; word.textContent = inhale ? "들이마시고" : "내쉬고"; inhale = !inhale; };
+      requestAnimationFrame(flip);
+      const flipper = setInterval(flip, 4000);
+      const tick = setInterval(() => { t--; left.textContent = t; if (t <= 0) finish(); }, 1000);
+      function finish() { if (done) return; done = true; clearInterval(flipper); clearInterval(tick); hide(ov); ring.style.transform = ""; left.textContent = "30"; resolve(); }
+      $("breath-skip").onclick = finish;
+    });
+  }
+
+  // ---------- 바람 애니메이션 ----------
+  function blowAway(text) {
+    return new Promise(resolve => {
+      const ov = $("ov-wind"), box = $("wind");
+      box.innerHTML = "";
+      show(ov);
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const chars = Array.from(text.replace(/\s+/g, " ").slice(0, 140));
+      const W = innerWidth, H = innerHeight;
+      const cols = Math.max(8, Math.floor(Math.min(W - 40, 560) / 22));
+      const x0 = (W - cols * 22) / 2, y0 = H * 0.32;
+      const anims = [];
+      chars.forEach((c, i) => {
+        const s = document.createElement("span");
+        s.textContent = c;
+        s.style.left = (x0 + (i % cols) * 22) + "px";
+        s.style.top = (y0 + Math.floor(i / cols) * 34) + "px";
+        box.appendChild(s);
+        if (reduce) { anims.push(s.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, delay: 300, fill: "forwards" })); return; }
+        const dx = W * (0.6 + Math.random() * 0.7), dy = -(80 + Math.random() * 260), rot = (Math.random() * 2 - 1) * 540;
+        anims.push(s.animate([
+          { transform: "translate(0,0) rotate(0)", opacity: 1 },
+          { transform: `translate(${dx * 0.3}px, ${dy * 0.2}px) rotate(${rot * 0.3}deg)`, opacity: 1, offset: 0.35 },
+          { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity: 0 },
+        ], { duration: 1600 + Math.random() * 900, delay: 400 + (i % cols) * 25 + Math.random() * 300, easing: "cubic-bezier(.4,0,.8,.6)", fill: "forwards" }));
+      });
+      Promise.all(anims.map(a => a.finished.catch(() => {}))).then(() => { hide(ov); box.innerHTML = ""; resolve(); });
+    });
+  }
+
+  // ---------- 보내기 ----------
+  let sending = false;
+  $("send").addEventListener("click", async () => {
+    if (sending) return;
+    const raw = $("text").value.trim();
+    if (!pickedEmo || !raw) return;
+    sending = true; $("send").disabled = true;
+    const emo = pickedEmo, wantPublic = $("opt-public").checked, wantLetter = $("opt-letter").checked;
+    show($("ov-busy"));
+    const r = await review(raw, emo);
+    hide($("ov-busy"));
+
+    if (wantLetter) {
+      const letters = store.get("sg.letters", []);
+      letters.push({ id: Date.now().toString(36), text: raw, emo, at: Date.now(), openAt: Date.now() + LETTER_DELAY });
+      store.set("sg.letters", letters);
+    }
+
+    if ((r.blocked && wantPublic) || r.selfHarm) {
+      $("block-why").textContent = r.reason || (r.selfHarm ? "마음이 많이 힘들어 보여서 도움받을 곳을 먼저 알려 드릴게요." : "이 글은 게시판에 올릴 수 없어요.");
+      $("block-help").hidden = false;
+      show($("ov-block"));
+      $("block-ok").onclick = () => { hide($("ov-block")); sending = false; updateSend(); };
+      return;
+    }
+
+    if (r.anger >= 7 || (emo === "angry" && r.anger >= 6)) await breathe();
+
+    let posted = false, postErr = "";
+    if (wantPublic) {
+      if (!db) postErr = "지금은 게시판에 연결되지 않아서 바람에만 날렸어요.";
+      else if (!canWrite) postErr = "이 링크에서는 글을 올릴 권한이 없어서 바람에만 날렸어요.";
+      else {
+        try {
+          await db.collection("posts").add({ text: r.masked, emo, at: Date.now() });
+          posted = true;
+        } catch (e) {
+          postErr = e && e.code === "quota_exceeded" ? "게시판이 가득 차서 올리지 못했어요. 조금 뒤에 다시 해 주세요." : "게시판에 올리지 못했어요. 잠시 뒤 다시 해 주세요.";
+        }
+      }
+    }
+    if (db && canWrite) db.collection("moods").add({ emo, day: todayKey(), at: Date.now() }).catch(() => {});
+
+    await blowAway(wantPublic ? r.masked : raw);
+    $("done-label").textContent = posted ? "게시판에 올리고 바람에 날려 보냈어요" : "바람에 날려 보냈어요";
+    $("done-comfort").textContent = r.comfort;
+    const notes = [];
+    if (postErr) notes.push(postErr);
+    if (posted && r.masked !== raw) notes.push("이름이나 회사명으로 보이는 부분은 별표로 바꿔 올렸어요.");
+    if (wantLetter) notes.push("한 달 뒤 「한 달 편지」에서 이 글을 다시 열 수 있어요.");
+    if (!r.ai) notes.push("AI 위로를 쓸 수 없어서 준비된 말로 대신했어요.");
+    $("done-note").textContent = notes.join(" ");
+    $("done-board").hidden = !posted;
+    show($("ov-done"));
+    $("text").value = ""; pickedEmo = null; renderEmos(); updateSend();
+    sending = false;
+  });
+  $("done-ok").onclick = () => hide($("ov-done"));
+  $("done-board").onclick = () => { hide($("ov-done")); location.hash = "board"; };
+
+  // ---------- 게시판 ----------
+  let posts = [], pats = {}, myPats = new Set(store.get("sg.pats", []));
+  const cleaned = new Set();
+  function ago(t) {
+    const m = Math.floor((Date.now() - t) / 60000);
+    if (m < 1) return "방금";
+    if (m < 60) return m + "분 전";
+    const h = Math.floor(m / 60);
+    if (h < 24) return h + "시간 전";
+    return Math.floor(h / 24) + "일 전";
+  }
+  function leftTime(t) {
+    const h = Math.max(0, Math.ceil((t + POST_TTL - Date.now()) / 3600000));
+    return h > 24 ? `${Math.ceil(h / 24)}일 뒤 사라짐` : `${h}시간 뒤 사라짐`;
+  }
+  function renderBoard() {
+    const board = $("board");
+    const live = posts.filter(p => Date.now() - p.at < POST_TTL);
+    board.querySelectorAll(".post").forEach(n => n.remove());
+    $("board-empty").hidden = live.length > 0;
+    if (!db) { $("board-empty").querySelector("b").textContent = "게시판에 연결되지 않았어요"; $("board-empty").querySelector("p").textContent = "claude.ai에서 로그인한 상태로 열면 다른 사람들의 글이 보여요."; }
+    live.forEach(p => {
+      const el = document.createElement("article");
+      el.className = "post";
+      el.innerHTML = `<div class="meta"><span class="tag"></span><span class="when"></span></div><p class="text"></p><button class="pat" type="button"><span>토닥토닥</span><span class="n"></span></button>`;
+      el.querySelector(".tag").textContent = EMO_NAME[p.emo] || "마음";
+      el.querySelector(".when").textContent = `${ago(p.at)} · ${leftTime(p.at)}`;
+      el.querySelector(".text").textContent = p.text;
+      const btn = el.querySelector(".pat");
+      const mine = myPats.has(p.id);
+      btn.setAttribute("aria-pressed", String(mine));
+      btn.querySelector(".n").textContent = pats[p.id] || 0;
+      btn.disabled = !canWrite;
+      btn.addEventListener("click", () => pat(p.id, btn));
+      board.appendChild(el);
+    });
+  }
+  async function pat(postId, btn) {
+    if (myPats.has(postId) || !db) return;
+    myPats.add(postId); store.set("sg.pats", [...myPats]);
+    btn.setAttribute("aria-pressed", "true");
+    btn.querySelector(".n").textContent = (pats[postId] || 0) + 1;
+    try { await db.collection("pats").doc(postId + "--" + deviceKey).set({ post: postId, at: Date.now() }); }
+    catch { myPats.delete(postId); store.set("sg.pats", [...myPats]); renderBoard(); }
+  }
+  async function tidyExpired(list) {
+    if (!canWrite) return;
+    for (const p of list) {
+      if (Date.now() - p.at < POST_TTL || cleaned.has(p.path)) continue;
+      cleaned.add(p.path);
+      try { await db.doc(p.path).delete(); } catch {}
+    }
+  }
+
+  // 복사·캡처 막기 (브라우저에서 할 수 있는 만큼)
+  const boardEl = $("board");
+  ["copy", "cut", "contextmenu", "dragstart", "selectstart"].forEach(ev => boardEl.addEventListener(ev, e => e.preventDefault()));
+  document.addEventListener("keydown", e => {
+    if (location.hash === "#board" && (e.key === "PrintScreen" || ((e.ctrlKey || e.metaKey) && /^[cpsa]$/i.test(e.key)))) { e.preventDefault(); veil(); }
+  });
+  let veilTimer;
+  function veil() { boardEl.classList.add("veiled"); clearTimeout(veilTimer); veilTimer = setTimeout(() => { if (document.hasFocus()) boardEl.classList.remove("veiled"); }, 1500); }
+  window.addEventListener("blur", () => boardEl.classList.add("veiled"));
+  window.addEventListener("focus", () => boardEl.classList.remove("veiled"));
+  document.addEventListener("visibilitychange", () => { if (document.hidden) boardEl.classList.add("veiled"); });
+
+  // ---------- 소리 지르기 ----------
+  let micStream = null, audioCtx = null, raf = 0;
+  function stopMic() {
+    cancelAnimationFrame(raf);
+    if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+    if (audioCtx) { audioCtx.close().catch(() => {}); audioCtx = null; }
+  }
+  function showDb(v) {
+    const n = Math.round(v);
+    $("db-val").textContent = n;
+    $("db-bar").style.width = Math.max(0, Math.min(100, (n - 30) / 90 * 100)) + "%";
+  }
+  function dbVerdict(n) {
+    if (n >= 105) return `오늘 당신의 분노는 ${n}데시벨. 비행기 이륙 소리급이에요. 다 쏟아냈어요!`;
+    if (n >= 90) return `오늘 당신의 분노는 ${n}데시벨. 지하철이 들어오는 소리만큼 컸어요.`;
+    if (n >= 75) return `오늘 당신의 분노는 ${n}데시벨. 꽤 시원하게 질렀어요.`;
+    if (n >= 60) return `오늘 당신의 분노는 ${n}데시벨. 아직 참고 있는 것 같아요. 한 번 더!`;
+    return `오늘 당신의 분노는 ${n}데시벨. 조금 더 크게 질러도 괜찮아요.`;
+  }
+  $("shout-start").addEventListener("click", async () => {
+    $("shout-start").disabled = true;
+    $("db-verdict").textContent = "마이크를 켜는 중…";
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    } catch { micStream = null; }
+    if (!micStream) { $("shout-start").disabled = false; return tapMode(); }
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = audioCtx.createMediaStreamSource(micStream);
+    const an = audioCtx.createAnalyser(); an.fftSize = 2048;
+    src.connect(an);
+    const buf = new Float32Array(an.fftSize);
+    let peak = 30; const end = performance.now() + 3000;
+    const loop = () => {
+      an.getFloatTimeDomainData(buf);
+      let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+      const rms = Math.sqrt(s / buf.length);
+      const v = Math.max(30, Math.min(120, 20 * Math.log10(rms + 1e-8) + 100));
+      peak = Math.max(peak, v); showDb(v);
+      const left = Math.ceil((end - performance.now()) / 1000);
+      $("db-verdict").textContent = left > 0 ? `${left}초 동안 질러요!` : "";
+      if (performance.now() < end) raf = requestAnimationFrame(loop);
+      else { stopMic(); showDb(peak); $("db-verdict").textContent = dbVerdict(Math.round(peak)); $("shout-start").disabled = false; $("shout-start").textContent = "한 번 더 지르기"; $("shout-note").textContent = "측정이 끝나 마이크를 껐어요. 소리는 저장하지 않았어요."; }
+    };
+    loop();
+  });
+  function tapMode() {
+    $("shout-note").textContent = "이 화면에서는 마이크를 쓸 수 없어요. 대신 3초 동안 아래 버튼을 마구 두드려서 분노를 재 볼게요.";
+    $("db-verdict").textContent = "아래 큰 버튼을 누르는 순간 3초가 시작돼요.";
+    hide($("shout-start")); show($("tapzone"));
+    let taps = 0, started = 0, timer = 0;
+    $("tapzone").textContent = "여기를 마구 두드리세요!";
+    $("tapzone").onclick = () => {
+      if (!started) {
+        started = performance.now();
+        timer = setInterval(() => {
+          const left = 3 - Math.floor((performance.now() - started) / 1000);
+          $("db-verdict").textContent = left > 0 ? `${left}초!` : "";
+          if (left <= 0) {
+            clearInterval(timer);
+            const n = Math.round(Math.min(120, 40 + taps * 3.2));
+            showDb(n); $("db-verdict").textContent = dbVerdict(n);
+            $("tapzone").onclick = null; $("tapzone").textContent = `${taps}번 두드렸어요`;
+            setTimeout(() => { $("tapzone").textContent = "다시 하려면 누르세요"; $("tapzone").onclick = () => { showDb(0); tapMode(); }; }, 1200);
+          }
+        }, 100);
+      }
+      taps++;
+      showDb(Math.min(120, 40 + taps * 3.2));
+    };
+  }
+
+  // ---------- 셀카 표정 ----------
+  const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
+  const FACE_LINE = {
+    angry: "지금 꽤 화가 나 있는 얼굴이에요. 「소리 지르기」로 한번 털어 볼까요?",
+    sad: "서운하거나 지친 얼굴이에요. 「털어놓기」에 조금 적어 보세요.",
+    happy: "웃고 있네요! 오늘 그 기분, 오래 가길 바라요.",
+    neutral: "덤덤한 얼굴이에요. 속은 어떤지 한번 들여다봐도 좋아요.",
+    surprised: "놀란 얼굴이에요. 무슨 일 있었어요?",
+    fearful: "조금 불안해 보여요. 천천히 숨 한번 쉬어 봐요.",
+    disgusted: "뭔가 정말 싫은 게 있었나 봐요. 여기 털어놓고 가세요.",
+  };
+  let faceReady = null;
+  // 모델 가중치는 이 페이지와 함께 올라간 파일(base64 글자)이라 사진과 상관없이 받아 와요.
+  async function loadNet(net, name) {
+    const manifest = await (await fetch(`models/${name}-weights_manifest.json`)).json();
+    const b64txt = (await (await fetch(`models/${name}.b64.txt`)).text()).trim();
+    const bytes = Uint8Array.from(atob(b64txt), c => c.charCodeAt(0));
+    const specs = manifest.flatMap(g => g.weights);
+    net.loadFromWeightMap(faceapi.tf.io.decodeWeights(bytes.buffer, specs));
+  }
+  function loadFace() {
+    if (faceReady) return faceReady;
+    faceReady = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js";
+      s.onload = async () => {
+        try {
+          await loadNet(faceapi.nets.tinyFaceDetector, "tiny_face_detector_model");
+          await loadNet(faceapi.nets.faceExpressionNet, "face_expression_model");
+          resolve();
+        } catch (e) { reject(e); }
+      };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    }).catch(e => { faceReady = null; throw e; });
+    return faceReady;
+  }
+  let wipeTimer = 0;
+  function wipePhoto() {
+    clearInterval(wipeTimer);
+    const c = $("shot-canvas"); const ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height); c.width = 1; c.height = 1;
+    $("selfie").value = "";
+    hide($("shot")); hide($("shot-count"));
+  }
+  $("selfie-btn").addEventListener("click", () => $("selfie").click());
+  $("selfie").addEventListener("change", async () => {
+    const file = $("selfie").files && $("selfie").files[0];
+    if (!file) return;
+    wipePhoto(); hide($("face-result"));
+    $("selfie-btn").disabled = true;
+    $("face-note").textContent = "표정을 읽고 있어요…";
+    const url = URL.createObjectURL(file);
+    try {
+      const img = new Image(); img.src = url; await img.decode();
+      const scale = Math.min(1, 720 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = $("shot-canvas");
+      c.width = Math.round(img.naturalWidth * scale); c.height = Math.round(img.naturalHeight * scale);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      show($("shot"));
+      await loadFace();
+      const det = await faceapi.detectSingleFace(c, new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.4 })).withFaceExpressions();
+      if (!det) {
+        $("face-verdict").textContent = "얼굴을 찾지 못했어요. 밝은 곳에서 얼굴이 크게 나오게 다시 찍어 주세요.";
+        $("face-bars").innerHTML = "";
+      } else {
+        const ex = Object.entries(det.expressions).sort((a, b) => b[1] - a[1]);
+        const top = ex[0][0];
+        $("face-verdict").textContent = `${FACE_LABEL[top]} 상태예요. ${FACE_LINE[top]}`;
+        $("face-bars").innerHTML = "";
+        ex.slice(0, 4).forEach(([k, v]) => {
+          const row = document.createElement("div"); row.className = "bar";
+          row.innerHTML = `<span></span><div class="track"><i></i></div><span class="pct"></span>`;
+          row.children[0].textContent = FACE_LABEL[k];
+          row.querySelector("i").style.width = Math.round(v * 100) + "%";
+          row.querySelector(".pct").textContent = Math.round(v * 100) + "%";
+          $("face-bars").appendChild(row);
+        });
+      }
+      show($("face-result"));
+      let left = 5;
+      const cnt = $("shot-count"); show(cnt); cnt.textContent = `${left}초 뒤 삭제`;
+      $("face-note").textContent = "사진은 이 기기 안에서만 읽었고, 곧 지워져요.";
+      wipeTimer = setInterval(() => {
+        left--;
+        if (left > 0) cnt.textContent = `${left}초 뒤 삭제`;
+        else { wipePhoto(); $("face-note").textContent = "사진을 지웠어요. 결과만 남아 있어요."; }
+      }, 1000);
+    } catch (e) {
+      URL.revokeObjectURL(url);
+      wipePhoto();
+      $("face-note").textContent = "표정 읽는 도구를 불러오지 못했어요. 인터넷 연결을 확인하고 다시 찍어 주세요.";
+    } finally {
+      $("selfie-btn").disabled = false;
+    }
+  });
+
+  // ---------- 비밀 금고 (기기 안 암호화) ----------
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const b64 = (u8) => btoa(String.fromCharCode(...u8));
+  const unb64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function deriveKey(secret, salt) {
+    const base = await crypto.subtle.importKey("raw", enc.encode(secret), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 250000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  }
+  async function sealVault(key, salt, mode, entries) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(entries))));
+    return store.set("sg.vault", { v: 1, mode, salt: b64(salt), iv: b64(iv), ct: b64(ct) });
+  }
+  let vaultMode = "pw", vaultKey = null, vaultSalt = null, vaultEntries = [], patternSecret = "";
+  function vaultState() {
+    const v = store.get("sg.vault", null);
+    const exists = !!(v && v.ct);
+    if (exists) setMode(v.mode || "pw", true);
+    $("vault-title").textContent = exists ? "금고 열기" : "금고 만들기";
+    $("vault-go").textContent = exists ? "열기" : "금고 만들기";
+    $("pw2").hidden = exists;
+    $("pw").placeholder = exists ? "비밀번호" : "비밀번호 (4자 이상)";
+    $("pt-hint").textContent = exists ? "패턴을 그려 주세요." : "점 4개 이상을 이어 그려 주세요.";
+    $("vault-reset").hidden = !exists;
+    return { exists, v };
+  }
+  function setMode(m, locked) {
+    vaultMode = m;
+    $("mode-pw").setAttribute("aria-pressed", String(m === "pw"));
+    $("mode-pt").setAttribute("aria-pressed", String(m === "pt"));
+    $("pw-box").hidden = m !== "pw"; $("pt-box").hidden = m !== "pt";
+    $("mode-pw").disabled = !!locked && m !== "pw"; $("mode-pt").disabled = !!locked && m !== "pt";
+  }
+  $("mode-pw").onclick = () => setMode("pw");
+  $("mode-pt").onclick = () => setMode("pt");
+
+  // 패턴 잠금
+  (function pattern() {
+    const svg = $("pattern-svg"), NS = "http://www.w3.org/2000/svg";
+    const pts = []; for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) pts.push({ x: 50 + c * 100, y: 50 + r * 100 });
+    let seq = [], drawing = false, cursor = null;
+    function draw() {
+      svg.innerHTML = "";
+      if (seq.length) {
+        const pl = document.createElementNS(NS, "polyline");
+        const coords = seq.map(i => `${pts[i].x},${pts[i].y}`); if (drawing && cursor) coords.push(`${cursor.x},${cursor.y}`);
+        pl.setAttribute("points", coords.join(" ")); pl.setAttribute("fill", "none"); pl.setAttribute("stroke", "#111111"); pl.setAttribute("stroke-width", "8"); pl.setAttribute("stroke-linecap", "round"); pl.setAttribute("stroke-linejoin", "round");
+        svg.appendChild(pl);
+      }
+      pts.forEach((p, i) => {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", seq.includes(i) ? 18 : 14);
+        c.setAttribute("fill", seq.includes(i) ? "#111111" : "#ffffff"); c.setAttribute("stroke", "#111111"); c.setAttribute("stroke-width", "3");
+        svg.appendChild(c);
+      });
+    }
+    function at(e) { const r = svg.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * 300, y: (e.clientY - r.top) / r.height * 300 }; }
+    function hit(p) { pts.forEach((q, i) => { if (!seq.includes(i) && Math.hypot(q.x - p.x, q.y - p.y) < 34) seq.push(i); }); }
+    const box = $("pattern");
+    box.addEventListener("pointerdown", e => { drawing = true; seq = []; box.setPointerCapture(e.pointerId); cursor = at(e); hit(cursor); draw(); });
+    box.addEventListener("pointermove", e => { if (!drawing) return; cursor = at(e); hit(cursor); draw(); });
+    const end = () => { if (!drawing) return; drawing = false; cursor = null; draw(); patternSecret = seq.length >= 4 ? "pt:" + seq.join("") : ""; $("pt-hint").textContent = seq.length >= 4 ? "패턴을 그렸어요. 아래 버튼을 눌러 주세요." : "점 4개 이상을 이어 그려 주세요."; };
+    box.addEventListener("pointerup", end); box.addEventListener("pointercancel", end);
+    window.__resetPattern = () => { seq = []; patternSecret = ""; draw(); };
+    draw();
+  })();
+
+  $("vault-go").addEventListener("click", async () => {
+    const { exists, v } = vaultState();
+    const msg = $("vault-msg"); msg.textContent = "";
+    let secret = "";
+    if (vaultMode === "pw") {
+      secret = $("pw").value;
+      if (secret.length < 4) { msg.textContent = "비밀번호를 4자 이상 입력해 주세요."; return; }
+      if (!exists && secret !== $("pw2").value) { msg.textContent = "두 비밀번호가 달라요. 다시 확인해 주세요."; return; }
+      secret = "pw:" + secret;
+    } else {
+      secret = patternSecret;
+      if (!secret) { msg.textContent = "점 4개 이상을 이어 그려 주세요."; return; }
+    }
+    $("vault-go").disabled = true; msg.textContent = exists ? "여는 중…" : "만드는 중…";
+    try {
+      if (exists) {
+        vaultSalt = unb64(v.salt);
+        vaultKey = await deriveKey(secret, vaultSalt);
+        const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(v.iv) }, vaultKey, unb64(v.ct));
+        vaultEntries = JSON.parse(dec.decode(pt));
+      } else {
+        vaultSalt = crypto.getRandomValues(new Uint8Array(16));
+        vaultKey = await deriveKey(secret, vaultSalt);
+        vaultEntries = [];
+        if (!(await sealVault(vaultKey, vaultSalt, vaultMode, vaultEntries))) throw new Error("storage");
+      }
+      $("pw").value = ""; $("pw2").value = ""; window.__resetPattern();
+      msg.textContent = "";
+      hide($("vault-lock")); show($("vault-open")); renderVault();
+    } catch (e) {
+      vaultKey = null;
+      msg.textContent = exists ? "비밀번호나 패턴이 맞지 않아요." : "이 브라우저에서는 기기 저장소를 쓸 수 없어서 금고를 만들지 못했어요.";
+      window.__resetPattern();
+    } finally { $("vault-go").disabled = false; }
+  });
+  function renderVault() {
+    const list = $("vault-list"); list.innerHTML = "";
+    if (!vaultEntries.length) { list.innerHTML = `<p class="note">아직 넣어 둔 글이 없어요.</p>`; return; }
+    [...vaultEntries].reverse().forEach(en => {
+      const d = document.createElement("div"); d.className = "entry";
+      d.innerHTML = `<span class="note"></span><p class="text"></p>`;
+      d.querySelector(".note").textContent = new Date(en.at).toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" });
+      d.querySelector(".text").textContent = en.text;
+      list.appendChild(d);
+    });
+  }
+  $("vault-save").addEventListener("click", async () => {
+    const t = $("vault-text").value.trim(); if (!t || !vaultKey) return;
+    vaultEntries.push({ text: t, at: Date.now() });
+    const v = store.get("sg.vault", {});
+    if (await sealVault(vaultKey, vaultSalt, v.mode || vaultMode, vaultEntries)) { $("vault-text").value = ""; renderVault(); }
+  });
+  function lockVault() { vaultKey = null; vaultEntries = []; $("vault-list").innerHTML = ""; $("vault-text").value = ""; hide($("vault-open")); show($("vault-lock")); vaultState(); }
+  $("vault-close").addEventListener("click", lockVault);
+  let resetArmed = false;
+  $("vault-reset").addEventListener("click", () => {
+    if (!resetArmed) { resetArmed = true; $("vault-reset").textContent = "정말 비울게요 (되돌릴 수 없음)"; $("vault-reset-msg").textContent = "한 번 더 누르면 금고 안 글이 모두 지워져요."; setTimeout(() => { resetArmed = false; $("vault-reset").textContent = "금고 통째로 비우기"; $("vault-reset-msg").textContent = ""; }, 5000); return; }
+    store.del("sg.vault"); resetArmed = false; $("vault-reset").textContent = "금고 통째로 비우기"; $("vault-reset-msg").textContent = "금고를 비웠어요.";
+    setMode("pw"); lockVault();
+  });
+
+  // ---------- 한 달 편지 ----------
+  function renderLetters() {
+    const box = $("letters"); box.innerHTML = "";
+    const letters = store.get("sg.letters", []);
+    if (!letters.length) {
+      box.innerHTML = `<div class="empty"><b>기다리는 편지가 없어요</b><p>「털어놓기」에서 「한 달 뒤 편지로 받기」를 켜고 글을 보내 보세요.</p></div>`;
+      return;
+    }
+    letters.slice().sort((a, b) => a.openAt - b.openAt).forEach(l => {
+      const open = Date.now() >= l.openAt;
+      const d = document.createElement("article");
+      d.className = "letter" + (open ? "" : " sealed");
+      const written = new Date(l.at).toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+      if (open) {
+        d.innerHTML = `<span class="label"></span><p class="text"></p><p class="note">그때보다 조금은 괜찮아졌나요?</p><div class="row"><button class="btn ghost small">이제 놓아 주기</button></div>`;
+        d.querySelector(".label").textContent = `${written}의 나 · ${EMO_NAME[l.emo] || ""}`;
+        d.querySelector(".text").textContent = l.text;
+        d.querySelector("button").onclick = () => { store.set("sg.letters", store.get("sg.letters", []).filter(x => x.id !== l.id)); renderLetters(); };
+      } else {
+        const days = Math.ceil((l.openAt - Date.now()) / DAY);
+        d.innerHTML = `<span class="label"></span><p>봉인된 편지 · <span class="dday"></span></p>`;
+        d.querySelector(".label").textContent = `${written}에 쓴 편지`;
+        d.querySelector(".dday").textContent = `D-${days}`;
+      }
+      box.appendChild(d);
+    });
+  }
+
+  // ---------- 시작 ----------
+  renderEmos(); updateSend(); route(); renderBoard();
+
+  (async () => {
+    const [dbNs, sampleNs, userNs] = await Promise.all([cap("db"), cap("sample"), cap("user")]);
+    sample = sampleNs;
+    $("ai-status").textContent = sample ? "AI가 이름을 가리고 위로해 드려요" : "";
+    if (userNs) { try { const w = await userNs.can("data.write"); if (w === false) canWrite = false; } catch {} }
+    if (!dbNs) { renderBoard(); return; }
+    db = dbNs;
+    renderEmos();
+    db.collection("posts").orderBy("at", "desc").limit(300).onSnapshot(snap => {
+      posts = snap.docs.map(d => ({ id: d.id, path: "posts/" + d.id, ...d.data() })).filter(p => typeof p.text === "string" && typeof p.at === "number");
+      renderBoard(); tidyExpired(posts);
+    }, () => renderBoard());
+    db.collection("pats").where("at", ">", Date.now() - POST_TTL).onSnapshot(snap => {
+      pats = {}; snap.docs.forEach(d => { const p = d.data().post; pats[p] = (pats[p] || 0) + 1; });
+      renderBoard();
+    }, () => {});
+    db.collection("moods").where("day", "==", todayKey()).onSnapshot(snap => {
+      moodCounts = {}; snap.docs.forEach(d => { const e = d.data().emo; moodCounts[e] = (moodCounts[e] || 0) + 1; });
+      renderEmos();
+    }, () => {});
+    // 오래된 토닥·감정 기록 정리
+    if (canWrite) {
+      for (const col of ["pats", "moods"]) {
+        try {
+          const old = await db.collection(col).where("at", "<", Date.now() - POST_TTL).limit(50).get();
+          for (const d of old.docs) { try { await db.collection(col).doc(d.id).delete(); } catch {} }
+        } catch {}
+      }
+    }
+  })();
+  setInterval(() => { if (location.hash === "#board") renderBoard(); }, 60000);
+})();
+</script>
