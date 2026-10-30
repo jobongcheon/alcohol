@@ -93,7 +93,19 @@ body::after {
 .eyebrow::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--mood); box-shadow: 0 0 0 0 color-mix(in srgb, var(--mood) 45%, transparent); animation: beacon 2.4s ease-out infinite; }
 @keyframes beacon { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--mood) 45%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
 .title { font-size: clamp(3.6rem, 15vw, 6.6rem); letter-spacing: -0.04em; line-height: 1.02; display: flex; margin-top: 6px; }
-.title span { display: inline-block; animation: rise 1s var(--ease) both; animation-delay: calc(var(--d) * 110ms + 80ms); }
+.title span {
+  display: inline-block;
+  background-image: linear-gradient(105deg, var(--ink) 0%, var(--ink) 38%, color-mix(in srgb, var(--mood) 55%, var(--m2)) 45%, var(--m1) 50%, var(--m3) 55%, var(--ink) 62%, var(--ink) 100%);
+  background-size: 260% 100%; background-position: 115% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  animation: rise 1s var(--ease) both, sheen 8s ease-in-out infinite;
+  animation-delay: calc(var(--d) * 110ms + 80ms), calc(1.6s + var(--d) * 180ms);
+}
+@keyframes sheen { 0%, 50% { background-position: 115% 0; } 85%, 100% { background-position: -15% 0; } }
+/* 제목 뒤를 흐르는 비단 물결 */
+.hero { position: relative; }
+.hero > * { position: relative; z-index: 1; }
+.hero > .silk { position: absolute; z-index: 0; top: -10px; bottom: -6px; left: -8%; width: 116%; height: calc(100% + 16px); pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 48%, #000 45%, transparent 100%); mask-image: radial-gradient(ellipse 58% 52% at 50% 48%, #000 45%, transparent 100%); }
 @keyframes rise { from { transform: translateY(.32em) rotate(4deg); opacity: .15; filter: blur(6px); } to { transform: none; opacity: 1; filter: none; } }
 .sub { font-family: var(--display); font-size: var(--step-1); color: var(--ink-soft); margin-top: 10px; }
 .breath { position: relative; width: clamp(96px, 26vw, 156px); aspect-ratio: 1; display: grid; place-items: center; }
@@ -109,7 +121,7 @@ body::after {
 .orb span { grid-area: 1 / 1; font-family: var(--display); font-weight: 700; font-size: clamp(.8rem, 2.6vw, 1rem); animation: say 8s linear infinite; }
 .orb .out { animation-delay: -4s; }
 @keyframes orb { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1); } }
-@keyframes say { 0%, 44% { opacity: 1; } 50%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes say { 0%, 45% { opacity: 1; } 48%, 97% { opacity: 0; } 100% { opacity: 1; } }
 
 /* 메뉴: 움직이는 알약 표시 */
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
@@ -121,14 +133,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 }
 @media (min-width: 640px) { .tabs { grid-template-columns: repeat(6, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
-.tabs a:hover { color: var(--ink); }
+.tabs a:hover { color: var(--ink); background: color-mix(in srgb, var(--tc, var(--mood)) 8%, transparent); }
 .tabs a:hover .ti { transform: translateY(-2px); }
-.tabs a[aria-current="page"] .ti { transform: scale(1.08); }
+.tabs a[aria-current="page"] .ti { transform: scale(1.08); color: #ffffff; }
 .tabs a { display: grid; justify-items: center; gap: 4px; padding: 10px 4px 9px; line-height: 1.2; }
-.tabs .ti { display: block; width: 24px; height: 24px; transition: transform .4s var(--ease); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs .ti { display: block; width: 24px; height: 24px; color: var(--tc, currentColor); transition: transform .4s var(--ease), color .35s; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .tabs .ts { display: none; }
 .tabs a[aria-current="page"] { color: #ffffff; }
-.tab-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; border-radius: 16px; background: var(--mood); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--mood) 80%, transparent); transition: transform .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.tab-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; border-radius: 16px; background: linear-gradient(135deg, color-mix(in srgb, var(--tab, var(--mood)) 82%, #ffffff), var(--tab, var(--mood))); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--tab, var(--mood)) 85%, transparent); transition: transform .55s var(--ease), width .55s var(--ease), height .55s var(--ease), --tab .55s ease; }
+@property --tab { syntax: "<color>"; inherits: true; initial-value: #6c5ce7; }
 
 section.view { padding-block: 34px 8px; display: grid; gap: 24px; }
 section.view.enter > * { animation: fadeUp .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
@@ -540,12 +553,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   <nav class="tabs" aria-label="메뉴">
     <span class="tab-pill" aria-hidden="true"></span>
-    <a href="#write" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
-    <a href="#board" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
-    <a href="#shout" aria-label="스트레스 풀기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">스트레스 풀기</span><span class="ts">스트레스</span></a>
-    <a href="#face" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
-    <a href="#vault" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
-    <a href="#letter" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
+    <a href="#write" style="--tc:#6c5ce7" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
+    <a href="#board" style="--tc:#3f6fe0" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
+    <a href="#shout" style="--tc:#2f8f6f" aria-label="스트레스 풀기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">스트레스 풀기</span><span class="ts">스트레스</span></a>
+    <a href="#face" style="--tc:#d9821e" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
+    <a href="#vault" style="--tc:#1b8fa3" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
+    <a href="#letter" style="--tc:#d9506f" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
   </nav>
 
   <!-- 털어놓기 -->
@@ -956,6 +969,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (!a) return;
     pill.style.width = a.offsetWidth + "px"; pill.style.height = a.offsetHeight + "px";
     pill.style.transform = `translate(${a.offsetLeft}px, ${a.offsetTop}px)`;
+    pill.style.setProperty("--tab", a.style.getPropertyValue("--tc") || "var(--mood)");
   }
   new ResizeObserver(placePill).observe(document.querySelector(".tabs"));
   let firstRoute = true;
@@ -1183,6 +1197,58 @@ ${text}
 
   // ---------- 바람 애니메이션 ----------
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  // ---------- 제목 뒤 비단 물결 ----------
+  // 고른 감정의 색(배경 공기와 같은 색)으로 가는 실 여러 가닥이 천천히 일렁여요
+  (function heroSilk() {
+    const hero = document.querySelector(".hero"), cv = document.createElement("canvas");
+    cv.className = "silk"; cv.setAttribute("aria-hidden", "true"); hero.prepend(cv);
+    const ctx = cv.getContext("2d");
+    let W = 0, H = 0, cols = [], lastRead = 0, running = false;
+    function size() {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      W = cv.clientWidth; H = cv.clientHeight; if (!W || !H) return;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function draw(t) {
+      if (!W) return;
+      if (performance.now() - lastRead > 500) { cols = ["--m1", "--m2", "--m3", "--mood"].map(css); lastRead = performance.now(); }
+      ctx.clearRect(0, 0, W, H);
+      const ribbons = [
+        { c: cols[0], y: .38, amp: .17, f: .8, sp: .22, n: 20, a: .42 },
+        { c: cols[1], y: .55, amp: .14, f: 1.05, sp: .17, n: 18, a: .38 },
+        { c: cols[2], y: .7, amp: .12, f: .65, sp: .27, n: 16, a: .36 },
+        { c: cols[3], y: .5, amp: .2, f: .9, sp: .13, n: 10, a: .1 },
+      ];
+      ribbons.forEach((r, ri) => {
+        for (let s = 0; s < r.n; s++) {
+          const k = s / (r.n - 1);
+          ctx.beginPath();
+          for (let x = -20; x <= W + 20; x += 10) {
+            const u = x / W;
+            const y = H * r.y
+              + Math.sin(u * Math.PI * 2 * r.f + t * r.sp + ri * 1.7 + k * 0.9) * H * r.amp * (0.7 + 0.3 * Math.sin(t * 0.35 + ri))
+              + (k - 0.5) * H * 0.16 * Math.sin(u * Math.PI * 1.3 + t * 0.28 + ri * 2.1)
+              + Math.sin(u * Math.PI * 6 - t * 0.6 + ri) * 3;
+            x === -20 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.globalAlpha = r.a * (0.25 + 0.75 * Math.sin(k * Math.PI));
+          ctx.strokeStyle = r.c; ctx.lineWidth = 1; ctx.stroke();
+        }
+      });
+      ctx.globalAlpha = 1;
+    }
+    const loop = (now) => {
+      if (motionOff() || document.hidden) { running = false; draw(7); return; }
+      draw(now / 1000); requestAnimationFrame(loop);
+    };
+    function start() { if (running) return; if (motionOff()) { draw(7); return; } running = true; requestAnimationFrame(loop); }
+    new ResizeObserver(() => { size(); if (!running) draw(7); }).observe(hero);
+    size(); start();
+    window.addEventListener("sg-motion", start);
+    document.addEventListener("visibilitychange", start);
+  })();
+
   // 바람 세기: 위치와 시간에 따라 일렁이는 돌풍
   function windAt(x, y, t, W) {
     const gust = 1 + 0.55 * Math.sin(t * 2.1) + 0.3 * Math.sin(t * 5.3 + 1.7);
