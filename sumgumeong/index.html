@@ -64,7 +64,7 @@ body {
   padding-block: 0 72px;
   -webkit-tap-highlight-color: transparent;
 }
-.wrap { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+.wrap { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.2; }
 p { margin: 0; }
 button, input, textarea, select { font: inherit; color: inherit; }
@@ -121,6 +121,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (min-width: 640px) { .tabs { grid-template-columns: repeat(6, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
 .tabs a:hover { color: var(--ink); }
+.tabs .ti { display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs .ts { display: none; }
 .tabs a[aria-current="page"] { color: #ffffff; }
 .tab-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; border-radius: 16px; background: var(--mood); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--mood) 80%, transparent); transition: transform .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
 
@@ -297,6 +299,48 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .promises h3 { font-size: var(--step-1); }
 .promises ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; color: var(--ink-soft); font-size: 1rem; }
 
+/* 휴대폰: 메뉴는 화면 아래 탭 막대로 옮기고, 글자와 여백은 한 단계 작게 해서 화면을 넓게 써요 */
+@media (max-width: 639px) {
+  :root { --step-0: 1.0625rem; --step-1: 1.25rem; --step-2: 1.625rem; --step-3: 2.125rem; }
+  body { padding-block: 0 calc(86px + env(safe-area-inset-bottom, 0px)); }
+  .hero { padding-block: 20px 4px; gap: 12px; }
+  .title { font-size: clamp(2.9rem, 15vw, 4rem); margin-top: 2px; }
+  .sub { font-size: 1.0625rem; margin-top: 6px; }
+  .eyebrow { font-size: .75rem; }
+  .breath { width: clamp(76px, 22vw, 96px); }
+  .orb span { font-size: .72rem; }
+  .motion-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
+  .tabs {
+    position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 20;
+    grid-template-columns: repeat(6, 1fr); gap: 2px;
+    padding: 6px max(6px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
+    border-radius: 20px 20px 0 0; border-width: 1px 0 0; background: rgba(255, 255, 255, .9);
+    box-shadow: 0 -10px 30px -18px rgba(20, 20, 60, .35);
+  }
+  .tabs a { display: grid; justify-items: center; gap: 3px; font-size: .75rem; padding: 8px 1px 7px; line-height: 1.2; border-radius: 14px; }
+  .tabs .ti { display: block; }
+  .tabs .tl { display: none; }
+  .tabs .ts { display: inline; }
+  .tab-pill { border-radius: 14px; }
+  section.view { padding-block: 22px 4px; gap: 18px; }
+  .lede p { font-size: 1rem; }
+  .panel { padding: 16px; border-radius: 20px; gap: 12px; }
+  .guide { padding: 0 16px; border-radius: 18px; }
+  .guide summary { font-size: 1.0625rem; padding-block: 12px; }
+  .guide-body { font-size: 1rem; gap: 16px; padding-bottom: 16px; }
+  .emos { gap: 10px; }
+  .emo { padding: 12px; border-radius: 18px; }
+  .emo::before { width: 10px; height: 10px; margin-bottom: 6px; }
+  .emo span { font-size: .8125rem; }
+  textarea { min-height: 170px; padding: 16px; border-radius: 18px; }
+  .btn { font-size: 1.1875rem; min-height: 56px; padding: 14px 18px; }
+  .post { padding: 16px; border-radius: 20px; }
+  .letter { padding: 18px; }
+  label.check { font-size: 1rem; }
+  .db-number { font-size: clamp(4rem, 20vw, 6rem); }
+  .promises { margin-top: 40px; padding: 18px; }
+}
+
 /* 움직임 줄이기: 기기 설정을 따르되, 화면의 「움직임 켜기」로 바꿀 수 있어요 */
 :root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
 :root[data-motion="off"] .atmos { transform: none; }
@@ -323,12 +367,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   <nav class="tabs" aria-label="메뉴">
     <span class="tab-pill" aria-hidden="true"></span>
-    <a href="#write">털어놓기</a>
-    <a href="#board">게시판</a>
-    <a href="#shout">소리 지르기</a>
-    <a href="#face">내 표정</a>
-    <a href="#vault">비밀 금고</a>
-    <a href="#letter">한 달 편지</a>
+    <a href="#write" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
+    <a href="#board" aria-label="게시판"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl">게시판</span><span class="ts">게시판</span></a>
+    <a href="#shout" aria-label="소리 지르기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="tl">소리 지르기</span><span class="ts">소리</span></a>
+    <a href="#face" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
+    <a href="#vault" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
+    <a href="#letter" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
   </nav>
 
   <!-- 털어놓기 -->
@@ -639,6 +683,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     const sec = $("view-" + v);
     sec.classList.remove("enter");
     if (!firstRoute) { [...sec.children].forEach((c, i) => c.style.setProperty("--i", i)); void sec.offsetWidth; sec.classList.add("enter"); }
+    // 화면을 바꾸면 그 화면의 처음부터 보여 줘요
+    if (!firstRoute) { const top = sec.getBoundingClientRect().top + scrollY - 12; if (scrollY > top) scrollTo({ top, behavior: motionOff() ? "auto" : "smooth" }); }
     firstRoute = false;
     if (v === "letter") renderLetters();
     if (v !== "shout") stopMic();
