@@ -649,6 +649,8 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-link { color: #9fe3c9; font-weight: 700; text-decoration: none; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(159, 227, 201, .35); }
 .rant-close { border: 1px solid rgba(255, 255, 255, .28); background: transparent; color: #ffffff; font-weight: 700; padding: 6px 12px; border-radius: 999px; }
 .rant-box.veiled .rant-text { filter: blur(12px); }
+.rant-box.hit { animation: rantHit .42s var(--ease); }
+@keyframes rantHit { 0% { transform: none; } 25% { transform: translateX(-3px) scale(1.006); } 50% { transform: translateX(3px); } 75% { transform: translateX(-1px); } 100% { transform: none; } }
 .rant-box.burn { animation: burnAway .7s ease forwards; }
 @keyframes burnAway { to { opacity: 0; transform: translateY(-10px) scale(.98); filter: blur(8px); } }
 @keyframes ember { from { transform: translateX(-10%); } to { transform: translateX(10%); } }
@@ -2234,8 +2236,31 @@ ${text}
     whoEl.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; cast.who = b.dataset.who; onCast(); });
     ageEl.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; cast.age = +b.dataset.age; onCast(); });
     if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", () => {}); } catch {} }
+    // 감정 넣어 읽기: 문장·쉼표마다 끊어서, 욕은 세게, 느낌표는 높게, 물음표는 올리고, 끝의 위로는 낮고 느리게
+    const CURSE_RE = /(씨발|씨바|시발|ㅅㅂ|존나|졸라|좆|지랄|새끼|개같|개새|개뿔|미친|미칬|병신|염병|썅|니미|빡치|열받|fuck|shit|asshole|bastard|damn|hell|bullshit|piss)/i;
+    const SOFT_RE = /(잘못 없|잘못 아이|잘못 아니|잘못한 게 없|잘 버티|버티고 있|고생했|괜찮|편이|당연|이상할 게 없|이상한 게 아니|이상한 기|맞다|맞아|대단|not your fault|you did|proud|you're right|got you|on your side)/i;
+    function feelChunks(text, lv) {
+      const sents = text.replace(/\s+/g, " ").match(/[^.!?…]+[.!?…]*/g) || [text], list = [];
+      sents.forEach(snt => {
+        const end = (snt.trim().match(/[.!?…]+$/) || [""])[0], parts = snt.split(/(?<=,)\s*/).map(x => x.trim()).filter(Boolean);
+        parts.forEach((t, i) => list.push({ t, end: i === parts.length - 1 ? end : "," }));
+      });
+      const amp = [0, .55, .8, 1][lv] || 1, n = list.length;
+      return list.map((c, i) => {
+        const at = n > 1 ? i / (n - 1) : 0, curse = CURSE_RE.test(c.t), soft = at >= .55 && SOFT_RE.test(c.t);
+        const excl = c.end.includes("!"), ask = c.end.includes("?");
+        const jitter = (Math.random() - .5) * .06;
+        let p = 1 + jitter + amp * ((excl ? .12 : 0) + (ask ? .1 : 0) + (curse ? .08 : 0) + (soft ? 0 : Math.min(at, .7) * .1));
+        let r = 1 + (excl ? .08 : 0) + (curse ? .05 : 0) + (ask ? .03 : 0);
+        if (soft) { p -= .12; r -= .2; }
+        return { t: c.t, p, r, vol: soft ? .78 : (excl || curse ? 1 : .9), hit: !soft && (excl || curse) };
+      });
+    }
+    let sayGen = 0;
     function stopSay() {
+      sayGen++;
       try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch {}
+      box.classList.remove("hit");
       speaking = false; sayLbl.textContent = "읽어 주기"; sayBtn.setAttribute("aria-pressed", "false");
     }
     sayBtn.addEventListener("click", () => {
@@ -2244,12 +2269,20 @@ ${text}
       let text = out.textContent.trim(); if (!text) return;
       const en = saidDialect === "en";
       if (en) text = text.replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase()); // 대문자 낱말을 한 글자씩 읽지 않게
-      const pick = voiceFor(en ? "en" : "ko"), v = pick.v, u = new SpeechSynthesisUtterance(text);
-      u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
-      u.rate = Math.min(2.5, RANT_DIALECT[saidDialect].rate * pick.rate);
-      u.pitch = pick.pitch;
-      u.onend = () => stopSay(); u.onerror = () => stopSay();
-      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      const pick = voiceFor(en ? "en" : "ko"), v = pick.v, baseRate = RANT_DIALECT[saidDialect].rate * pick.rate;
+      const chunks = feelChunks(text, saidLevel), gen = ++sayGen;
+      speechSynthesis.cancel();
+      chunks.forEach((c, i) => {
+        const u = new SpeechSynthesisUtterance(c.t);
+        u.lang = en ? "en-US" : "ko-KR"; if (v) u.voice = v;
+        u.rate = Math.min(2.6, Math.max(.6, baseRate * c.r));
+        u.pitch = Math.min(2, Math.max(.5, pick.pitch + c.p - 1));
+        u.volume = c.vol;
+        u.onstart = () => { if (gen !== sayGen) return; box.classList.remove("hit"); if (c.hit) { void box.offsetWidth; box.classList.add("hit"); } };
+        if (i === chunks.length - 1) u.onend = () => { if (gen === sayGen) stopSay(); };
+        u.onerror = () => { if (gen === sayGen) stopSay(); };
+        speechSynthesis.speak(u);
+      });
       speaking = true; sayLbl.textContent = "멈추기"; sayBtn.setAttribute("aria-pressed", "true");
       footNote.textContent = pick.faked ? `이 기기엔 ${pick.c.g === "m" ? "남자" : "여자"} 목소리가 없어서 비슷하게 바꿔 읽어요. Edge로 열면 더 자연스러워요.` : v ? "소리가 나요. 사무실이면 이어폰을 끼세요." : `이 기기에 ${en ? "영어" : "한국어"} 목소리가 없으면 읽지 못하거나 어색하게 읽을 수 있어요.`;
     });
