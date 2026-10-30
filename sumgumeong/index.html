@@ -186,6 +186,8 @@ textarea::placeholder { color: #9a9a9e; }
 .guide[open] .guide-body { animation: fadeUp .5s var(--ease); }
 .guide-body { display: grid; gap: 20px; padding-bottom: 20px; font-size: 1.0625rem; }
 .guide-block { display: grid; gap: 6px; }
+.guide-hook { font-family: var(--display); font-size: 1.125rem; color: var(--ink); border-left: 3px solid var(--heat-2); padding-left: 12px; }
+.guide ol b { color: var(--ink); }
 .guide-block h3 { font-size: 1.2rem; }
 .guide ul, .guide ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
 .guide ol li::marker { color: var(--mood); font-weight: 700; }
@@ -675,14 +677,15 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
     <details class="guide" open>
-      <summary>이렇게 쓰세요</summary>
+      <summary>열받았죠? 다섯 번이면 다 털고 가요</summary>
       <div class="guide-body">
+        <p class="guide-hook">여기선 착한 척 안 해도 돼요. 참는 건 회사에서 충분히 했잖아요.</p>
         <ol>
-          <li><b>감정 고르기</b> — 지금 마음에 가장 가까운 감정을 하나 눌러요.</li>
-          <li><b>쓰기</b> — 하고 싶은 말을 다 써요. 「말로 입력」을 누르면 말로 쓸 수 있고, 「지우기」로 한 번에 지울 수 있어요. 이름과 회사명은 그대로 써도 돼요.</li>
-          <li><b>같이 욕하기</b> — 속이 안 풀리면 세기와 말투(사투리·영어)를 고르고 「같이 욕해 줘」를 눌러요. 「읽어 주기」로 소리 내어 들을 수도 있어요. 욕은 1분 뒤 사라지고 복사되지 않아요.</li>
-          <li><b>남길지 고르기</b> — 게시판에 올릴지, 한 달 뒤 편지로 받을지 골라요. 게시판에는 이름이 별표로 가려져 올라가요. 둘 다 끄면 어디에도 남지 않아요.</li>
-          <li><b>날려 보내기</b> — 「바람에 날려 보내기」를 누르면 바람, 종이비행기, 풍선, 빗물, 불꽃 중 하나로 글이 떠나고 위로 한마디가 나와요. 많이 화난 글이면 30초 심호흡을 먼저 해요.</li>
+          <li><b>찍어요, 지금 내 상태.</b> 화남? 억울함? 돌려 말하지 말고 딱 하나 눌러요.</li>
+          <li><b>쏟아내요, 필터 없이.</b> 욕 써도 돼요. 이름, 회사명 그대로 박아요. 게시판에 올릴 땐 알아서 별표로 가려 줘요. 손 아프면 「말로 입력」으로 그냥 말해요.</li>
+          <li><b>시켜요, 대신 욕하라고.</b> 「같이 욕해 줘」 누르면 숨구멍이 무조건 내 편 들고 대신 퍼부어 줘요. 불닭맛, 경상도, 영어까지. 「읽어 주기」로 귀로도 들어요. 1분 뒤 흔적 없이 사라지니까 걱정 마요.</li>
+          <li><b>정해요, 남길지 말지.</b> 게시판에 올려 「토닥토닥」 받거나, 한 달 뒤 나한테 편지로 보내요. 둘 다 끄면 증거 제로.</li>
+          <li><b>날려 버려요.</b> 「바람에 날려 보내기」 한 방이면 바람, 종이비행기, 풍선, 빗물, 불꽃 중 하나로 싹 날아가요. 너무 끓으면 딱 30초만 같이 숨 쉬고요.</li>
         </ol>
         <div class="examples">
           <div class="example"><span class="label">예시 · 내가 쓴 글 (화남)</span><p class="quote">“오늘 또 퇴근 10분 전에 일을 떠넘겼다. 왜 맨날 나만 남아야 하는데.”</p></div>
