@@ -146,38 +146,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 section.view { padding-block: 34px 8px; display: grid; gap: 24px; }
 section.view.enter > * { animation: fadeUp .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-/* 첫 화면 안내 카드: 환영 → 이렇게 써요 → 더 둘러보기 */
-.welcome { position: relative; display: grid; gap: 14px; padding: 22px 24px 20px; border-radius: 28px; background: rgba(255, 255, 255, .92); border: 1px solid var(--hair); box-shadow: 0 24px 50px -28px rgba(30, 30, 60, .35); overflow: hidden; }
-.welcome:focus { outline: none; }
-.welcome::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 60%; height: 120%; background: radial-gradient(closest-side, color-mix(in srgb, var(--m1) 40%, transparent), transparent); opacity: .55; pointer-events: none; }
-.welcome > * { position: relative; }
-.wel-dots { display: flex; justify-content: center; gap: 7px; }
-.wel-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: #d9d9de; transition: width .35s var(--ease), background-color .35s; }
-.wel-dots button[aria-selected="true"] { width: 22px; background: var(--ink); }
-.wel-track { display: grid; }
-.wel-slide { grid-area: 1 / 1; display: grid; gap: 10px; align-content: start; animation: welIn .5s var(--ease) both; }
-.wel-slide.back { animation-name: welInBack; }
-@keyframes welIn { from { opacity: 0; transform: translateX(24px); } }
-@keyframes welInBack { from { opacity: 0; transform: translateX(-24px); } }
-.wel-slide h2 { font-family: var(--display); font-size: var(--step-3); letter-spacing: -0.02em; line-height: 1.25; }
-.wel-slide p, .wel-steps li { color: var(--ink); line-height: 1.75; }
-.wel-steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
-.wel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.wel-grid a { display: grid; gap: 2px; padding: 10px 12px; border-radius: 14px; text-decoration: none; color: var(--ink); background: color-mix(in srgb, var(--m1) 14%, #ffffff); border: 1px solid var(--hair); transition: transform .3s var(--ease), background-color .3s; }
-.wel-grid a:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--m1) 24%, #ffffff); }
-.wel-grid b { font-size: .9375rem; }
-.wel-grid span { font-size: .8125rem; color: var(--ink-soft); line-height: 1.4; }
-.wel-actions { display: flex; justify-content: space-between; gap: 10px; }
-.wel-actions .btn { min-width: 88px; }
-.wel-reopen { justify-self: start; display: inline-flex; align-items: center; gap: 6px; border: 1px dashed var(--hair); background: rgba(255, 255, 255, .7); border-radius: 999px; padding: 6px 14px; min-height: 40px; font-size: .875rem; font-weight: 700; color: var(--ink-soft); }
-.welcome.closing { animation: welOut .4s var(--ease) forwards; }
-@keyframes welOut { to { opacity: 0; transform: translateY(-10px) scale(.98); } }
-:root[data-wide="on"] .welcome, :root[data-wide="on"] .wel-reopen { display: none; }
-@media (max-width: 639px) {
-  .welcome { padding: 18px 16px 16px; border-radius: 24px; }
-  .wel-grid { grid-template-columns: repeat(2, 1fr); }
-  .wel-slide h2 { font-size: var(--step-2); }
-}
 .lede { display: grid; gap: 8px; }
 .lede h2 { font-size: var(--step-3); letter-spacing: -0.02em; }
 .lede p { color: var(--ink-soft); }
@@ -954,7 +922,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .cal-bar i { display: block; height: 14px; border-radius: 999px; background: var(--c); min-width: 4px; }
 .cal-bar .track { background: var(--wash); border-radius: 999px; }
 .cal-bar em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
-.onb-card { width: min(520px, 100%); background: #ffffff; border: 1px solid var(--hair); border-radius: 28px; padding: 28px 24px; box-shadow: var(--shadow); display: grid; gap: 16px; text-align: left; }
+.onb-card { width: min(620px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; background: #ffffff; border: 1px solid var(--hair); border-radius: 28px; padding: 28px 24px; box-shadow: var(--shadow); display: grid; gap: 16px; text-align: left; }
+.onb-card .onb-promises { padding: 2px 14px; }
+.onb-card .onb-promises summary { font-size: 1.0625rem; }
+.onb-card .onb-promises .help-line { font-size: .875rem; }
+.onb-card .onb-promises .trust-table { font-size: .8125rem; }
+@media (max-width: 639px) { .onb-card { padding: 22px 16px; border-radius: 24px; } }
 .onb-card h2 { font-size: var(--step-2); }
 .onb-card p, .onb-card li { font-size: 1.125rem; line-height: 1.65; }
 .onb-card ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
@@ -1007,54 +980,10 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
   <!-- 털어놓기 -->
   <section class="view" id="view-write">
-    <section class="welcome" id="welcome" aria-roledescription="안내" aria-label="숨구멍 안내" tabindex="-1">
-      <div class="wel-dots" role="tablist" aria-label="안내 쪽"></div>
-      <div class="wel-track" id="wel-track">
-        <div class="wel-slide" data-i="0">
-          <h2>숨구멍에 오신 걸 환영해요</h2>
-          <p>이름도, 연락처도 묻지 않아요.<br>화나고 서운하고 억울한 마음을 여기 다 내려놓고 가세요. 쓴 글은 정해진 시간이 지나면 저절로 사라져요.</p>
-        </div>
-        <div class="wel-slide" data-i="1" hidden>
-          <h2>이렇게 써요</h2>
-          <ol class="wel-steps"><li><b>털어놓기</b>에서 지금 감정을 하나 골라요.</li><li>있었던 일을 마음껏 써요. 손이 아프면 말로 입력해도 돼요.</li><li><b>같이 욕해 줘</b>를 누르면 숨구멍이 내 편이 되어 대신 퍼부어 줘요.</li><li>다 쓰면 <b>바람에 날려 보내기</b>로 훌훌 날려 버려요.</li></ol>
-        </div>
-        <div class="wel-slide" data-i="2" hidden>
-          <h2>더 둘러보세요</h2>
-          <div class="wel-grid">
-            <a href="#rooms" data-go="rooms"><b>속풀이방</b><span>직장·시댁·육아… 같은 처지끼리</span></a>
-            <a href="#shout" data-go="shout"><b>스트레스 풀기</b><span>소리 지르기·두더지·뽁뽁이</span></a>
-            <a href="#night" data-go="night"><b>꿀잠</b><span>빗소리·파도·명상 음악</span></a>
-            <a href="#mood" data-go="mood"><b>마음 달력</b><span>내 감정이 날마다 색으로</span></a>
-            <a href="#vault" data-go="vault"><b>비밀 금고</b><span>나만 여는 비밀 공간</span></a>
-            <a href="#letter" data-go="letter"><b>한 달 뒤 편지</b><span>지금의 나에게서 오는 편지</span></a>
-          </div>
-          <p class="note">맨 위 <b>「가」</b> 버튼으로 글씨를 크게 키울 수 있어요.</p>
-        </div>
-      </div>
-      <div class="wel-actions"><button class="btn ghost small" id="wel-skip" type="button">건너뛰기</button><button class="btn small" id="wel-next" type="button">다음</button></div>
-    </section>
-    <button class="wel-reopen" id="wel-reopen" type="button" hidden><span aria-hidden="true">👋</span> 숨구멍 안내 · 약속 다시 보기</button>
     <div class="lede">
       <h2>오늘 어떤 마음이에요?</h2>
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
-    <details class="promises" id="promises" open>
-      <summary>숨구멍의 약속</summary>
-        <div class="trust-wrap">
-      <table class="trust-table">
-        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
-          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
-          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
-          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
-          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
-          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
-    </details>
     <details class="guide" open>
       <summary>내 글은 언제 사라지나요?</summary>
       <div class="guide-body">
@@ -1575,6 +1504,23 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div class="onb-dots" id="onb-dots"><i class="on"></i><i></i><i></i></div>
     <h2 id="onb-title"></h2>
     <div id="onb-body"></div>
+    <details class="promises onb-promises" id="promises" open>
+      <summary>숨구멍의 약속</summary>
+        <div class="trust-wrap">
+      <table class="trust-table">
+        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
+          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
+          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
+          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
+          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
+    </details>
     <div class="onb-btns"><button class="btn ghost small" id="onb-skip" type="button">건너뛰기</button><button class="btn small" id="onb-next" type="button">다음</button></div>
   </div>
 </div>
@@ -4156,40 +4102,6 @@ ${text}
   promisesEl.open = store.get("sg.promises", "open") !== "closed";
   promisesEl.addEventListener("toggle", () => store.set("sg.promises", promisesEl.open ? "open" : "closed"));
 
-  // ---------- 첫 화면 안내 카드 ----------
-  // 첫 화면에 펼쳐 보여 주고, 다 보거나 건너뛰면 작은 버튼으로 접어 둬요. 「사용법」이나 그 버튼으로 언제든 다시 열어요
-  const welCard = $("welcome"), welSlides = [...welCard.querySelectorAll(".wel-slide")], welDots = welCard.querySelector(".wel-dots"), welNext = $("wel-next"), welReopen = $("wel-reopen");
-  let welAt = 0;
-  welSlides.forEach((_, i) => { const d = document.createElement("button"); d.type = "button"; d.setAttribute("role", "tab"); d.setAttribute("aria-label", `${i + 1}쪽`); d.onclick = () => welGo(i); welDots.appendChild(d); });
-  function welGo(i) {
-    if (i < 0 || i >= welSlides.length) return;
-    const back = i < welAt; welAt = i;
-    welSlides.forEach((sl, k) => { sl.hidden = k !== i; sl.classList.toggle("back", back); });
-    welDots.querySelectorAll("button").forEach((d, k) => d.setAttribute("aria-selected", String(k === i)));
-    welNext.textContent = i === welSlides.length - 1 ? "시작하기" : "다음";
-  }
-  function welClose() {
-    store.set("sg.welcome", 1); store.set("sg.onboarded", true);
-    welCard.classList.add("closing");
-    setTimeout(() => { welCard.hidden = true; welCard.classList.remove("closing"); welReopen.hidden = false; }, motionOff() ? 0 : 380);
-  }
-  function openWelcome() {
-    if (location.hash && location.hash !== "#write") location.hash = "write";
-    welReopen.hidden = true; welCard.hidden = false; welGo(0);
-    requestAnimationFrame(() => { welCard.scrollIntoView({ behavior: motionOff() ? "auto" : "smooth", block: "start" }); welCard.focus({ preventScroll: true }); });
-  }
-  welNext.onclick = () => (welAt === welSlides.length - 1 ? welClose() : welGo(welAt + 1));
-  $("wel-skip").onclick = welClose;
-  welReopen.onclick = openWelcome;
-  welCard.querySelectorAll("[data-go]").forEach(a => a.addEventListener("click", welClose));
-  // 휴대폰에서는 옆으로 밀어서 넘겨요
-  let welSx = 0, welSy = 0;
-  welCard.addEventListener("pointerdown", e => { welSx = e.clientX; welSy = e.clientY; });
-  welCard.addEventListener("pointerup", e => { const dx = e.clientX - welSx, dy = e.clientY - welSy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) welGo(welAt + (dx < 0 ? 1 : -1)); });
-  welCard.addEventListener("keydown", e => { if (e.key === "ArrowRight") welGo(welAt + 1); if (e.key === "ArrowLeft") welGo(welAt - 1); });
-  welGo(0);
-  if (store.get("sg.welcome", 0)) { welCard.hidden = true; welReopen.hidden = false; }
-
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
   const FACE_LINE = {
@@ -4705,11 +4617,12 @@ ${text}
     $("onb-dots").querySelectorAll("i").forEach((d, i) => d.classList.toggle("on", i === onbStep));
     $("onb-next").textContent = onbStep === ONB.length - 1 ? "시작하기" : "다음";
   }
-  function openOnb() { onbStep = 0; paintOnb(); show($("ov-onb")); $("onb-next").focus(); }
+  function openOnb() { onbStep = 0; paintOnb(); show($("ov-onb")); const card = document.querySelector(".onb-card"); card.scrollTop = 0; $("onb-next").focus({ preventScroll: true }); } // 휴대폰에서도 맨 위(환영 인사)부터 보이게
   function closeOnb() { hide($("ov-onb")); store.set("sg.onboarded", true); }
   $("onb-next").addEventListener("click", () => { if (onbStep < ONB.length - 1) { onbStep++; paintOnb(); } else closeOnb(); });
   $("onb-skip").addEventListener("click", closeOnb);
-  $("help-btn").addEventListener("click", openWelcome); // 안내는 첫 화면 카드가 맡아요(팝업 대신)
+  $("help-btn").addEventListener("click", openOnb);
+  setTimeout(openOnb, 600); // 들어올 때마다 시작 안내와 숨구멍의 약속을 먼저 보여 줘요
 
   // ---------- 시작 ----------
   renderEmos(); updateSend(); route(); renderBoard(); vaultState();
