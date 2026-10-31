@@ -2640,7 +2640,7 @@ ${text}
     // ---------- 랩으로 불러 줘: AI가 가사를 쓰고, 진짜 악기로 만든 비트 위에서 고른 목소리가 박자에 맞춰 랩을 해요 ----------
     // g1~g5: 회원님이 Gemini로 만든 노래에서 목소리를 빼고(노래방 방식) 8마디를 잘라 만든 진짜 반주예요
     const BEATS = {
-      g1: { name: "내 곡 1", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주" }, g2: { name: "내 곡 2", bpm: 72.8, len: 26.3736, feel: "Gemini 노래 반주" }, g3: { name: "내 곡 3", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주" }, g4: { name: "내 곡 4", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주" }, g5: { name: "내 곡 5", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주" },
+      g1: { name: "내 곡 1", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주(목소리 뺀 것, 시험용)" }, g2: { name: "내 곡 2", bpm: 72.8, len: 26.3736, feel: "Gemini 노래 반주(목소리 뺀 것, 시험용)" }, g3: { name: "내 곡 3", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주(목소리 뺀 것, 시험용)" }, g4: { name: "내 곡 4", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주(목소리 뺀 것, 시험용)" }, g5: { name: "내 곡 5", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주(목소리 뺀 것, 시험용)" },
       rap: { name: "랩", bpm: 100, feel: "흥겨운 힙합, 브라스와 콩가" }, trot: { name: "뽕짝", bpm: 132, feel: "아코디언과 쿵짝, 신나게" }, rock: { name: "록", bpm: 150, feel: "디스토션 기타, 질주" }
     };
     const BEAT_KEYS = Object.keys(BEATS), BEAT_BARS = 8;
@@ -2655,7 +2655,7 @@ ${text}
       rapBeats.appendChild(b);
     });
     function paintBeats(cur) { rapBeats.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === (cur || rapPin)))); }
-    const pickBeat = () => { const pool = BEAT_KEYS.filter(k => k !== lastBeat); return pool[Math.floor(Math.random() * pool.length)]; };
+    const pickBeat = () => { const pool = ["rap", "trot", "rock"].filter(k => k !== lastBeat); return pool[Math.floor(Math.random() * pool.length)]; }; // 무작위는 기본 비트 셋 중에서만. 「내 곡」은 직접 고를 때만
     const sylCount = (t, en) => en ? (t.trim().split(/\s+/).length * 1.5) : t.replace(/[^가-힣a-zA-Z0-9]/g, "").length;
     // 욕을 새로 쓰지 않고 그대로 노래로: 문장·쉼표에서 끊고, 한 줄이 마디 안에 들어가게 글자 수를 맞춰요. 마지막 문장(편들어 주는 말)이 후렴이 돼요
     function lyricsFromText(text, k, en) {
