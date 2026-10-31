@@ -891,7 +891,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 /* ===== 추가: 글씨 크기 · 도구 줄 · 신고 · 마음 달력 · 첫 안내 ===== */
 :root[data-fs="1"] { font-size: 115%; }
 :root[data-fs="2"] { font-size: 130%; }
-.util-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 0 0 12px; }
+.util-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
 .fs-group { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.85); border: 1px solid var(--hair); border-radius: 999px; padding: 4px; box-shadow: var(--shadow); }
 .fs-group .fs-label { font-size: .9375rem; font-weight: 700; color: var(--ink-soft); padding: 0 8px 0 10px; }
 .fs-group button { border: 0; background: transparent; border-radius: 999px; min-width: 48px; min-height: 44px; font-weight: 700; color: var(--ink); }
@@ -899,7 +899,12 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .fs-group button[data-fs="1"] { font-size: 1.2rem; }
 .fs-group button[data-fs="2"] { font-size: 1.4rem; }
 .fs-group button[aria-pressed="true"] { background: var(--ink); color: #ffffff; }
-.util-btns { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+.util-btns { display: inline-flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+.promise-btn .chev { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-1px, -1px); transition: transform .35s var(--ease); margin-left: 2px; }
+.promise-btn[aria-expanded="true"] { background: var(--ink); color: #ffffff; border-color: transparent; }
+.promise-btn[aria-expanded="true"] .chev { transform: rotate(-135deg) translate(-1px, -1px); }
+.promise-panel { margin: 0 0 12px; padding: 10px 14px 4px; animation: fadeUp .45s var(--ease); }
+.promise-panel .help-line { margin: 6px 0 10px; }
 .util-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; border: 1px solid var(--hair); background: rgba(255,255,255,.85); border-radius: 999px; padding: 6px 16px; font-size: 1rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); }
 .util-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .post-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -923,10 +928,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .cal-bar .track { background: var(--wash); border-radius: 999px; }
 .cal-bar em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
 .onb-card { width: min(620px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; background: #ffffff; border: 1px solid var(--hair); border-radius: 28px; padding: 28px 24px; box-shadow: var(--shadow); display: grid; gap: 16px; text-align: left; }
-.onb-card .onb-promises { padding: 2px 14px; }
-.onb-card .onb-promises summary { font-size: 1.0625rem; }
-.onb-card .onb-promises .help-line { font-size: .875rem; }
-.onb-card .onb-promises .trust-table { font-size: .8125rem; }
 @media (max-width: 639px) { .onb-card { padding: 22px 16px; border-radius: 24px; } }
 .onb-card h2 { font-size: var(--step-2); }
 .onb-card p, .onb-card li { font-size: 1.125rem; line-height: 1.65; }
@@ -960,11 +961,28 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <button type="button" data-fs="1" aria-pressed="false" aria-label="글씨 크게">가</button>
       <button type="button" data-fs="2" aria-pressed="false" aria-label="글씨 아주 크게">가</button>
     </div>
+    <button class="util-btn promise-btn" id="promise-btn" type="button" aria-expanded="false" aria-controls="promises"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span>숨구멍의 약속</span><i class="chev" aria-hidden="true"></i></button>
     <div class="util-btns">
       <button class="util-btn" id="share-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg><span>친구에게 알리기</span></button>
       <button class="util-btn" id="help-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5h.01"/></svg><span>사용법</span></button>
     </div>
   </div>
+  <section class="promises promise-panel" id="promises" aria-label="숨구멍의 약속" hidden>
+        <div class="trust-wrap">
+      <table class="trust-table">
+        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
+          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
+          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
+          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
+          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
+  </section>
   <nav class="tabs" aria-label="메뉴">
     <span class="tab-pill" aria-hidden="true"></span>
     <a href="#write" style="--tc:#6c5ce7" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
@@ -1504,23 +1522,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div class="onb-dots" id="onb-dots"><i class="on"></i><i></i><i></i></div>
     <h2 id="onb-title"></h2>
     <div id="onb-body"></div>
-    <details class="promises onb-promises" id="promises" open>
-      <summary>숨구멍의 약속</summary>
-        <div class="trust-wrap">
-      <table class="trust-table">
-        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
-          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
-          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
-          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
-          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
-          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
-    </details>
     <div class="onb-btns"><button class="btn ghost small" id="onb-skip" type="button">건너뛰기</button><button class="btn small" id="onb-next" type="button">다음</button></div>
   </div>
 </div>
@@ -4098,9 +4099,13 @@ ${text}
   $("sleep-dim").addEventListener("click", closeDim);
 
   // 숨구멍의 약속: 처음엔 펼쳐 두고, 사용자가 접으면 다음에 와도 접힌 채로 시작해요(다시 펼치면 다시 펼친 채로)
-  const promisesEl = $("promises");
-  promisesEl.open = store.get("sg.promises", "open") !== "closed";
-  promisesEl.addEventListener("toggle", () => store.set("sg.promises", promisesEl.open ? "open" : "closed"));
+  const promisesEl = $("promises"), promiseBtn = $("promise-btn");
+  function setPromises(open, save) {
+    promisesEl.hidden = !open; promiseBtn.setAttribute("aria-expanded", String(open));
+    if (save) store.set("sg.promises2", open ? "open" : "closed");
+  }
+  setPromises(store.get("sg.promises2", "closed") === "open", false);
+  promiseBtn.addEventListener("click", () => setPromises(promisesEl.hidden, true));
 
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
