@@ -2663,8 +2663,8 @@ ${text}
 말투 — ${RANT_DIALECT[d].rule}
 출력은 JSON 하나만, 설명 없이: {"title":"곡 제목(10자 이내)","verse":["8줄"],"hook":["2줄"]}
 규칙:
-- verse는 8줄, 한 줄은 ${en ? vmin / 1.5 + "~" + vmax / 1.5 + "단어" : vmin + "~" + vmax + "글자(공백·문장부호 빼고)"}. 두 줄씩 끝소리(라임)를 맞춰.
-- hook은 2줄, 한 줄은 ${en ? "3~6단어" : "4~9글자"}. 따라 외치기 좋게 짧고 리듬감 있게, 욕 한 방이 들어가도 좋아.
+- verse는 8줄. 한 줄은 ${en ? vmin / 1.5 + "~" + vmax / 1.5 + "단어" : vmin + "~" + vmax + "글자(공백·문장부호 빼고)"}로 길이를 거의 똑같이 맞춰. 한 줄이 네 박자라서, 뜻이 끊기는 자리가 네 묶음(예: 3-3-3-3글자)으로 떨어지게 써. 두 줄씩 끝소리(라임)를 맞추고, 쉼표는 쓰지 마.
+- hook은 2줄, 한 줄은 ${en ? "3~5단어" : "5~8글자"}. 구호처럼 짧고 똑같은 리듬으로, 두 줄의 끝소리를 맞춰. 욕 한 방이 들어가도 좋아.
 - 욕은 사용자를 화나게 한 사람·상황에게만. 사용자에게는 절대 욕하지 마. verse 마지막 두 줄은 사용자를 확실히 편들어 줘.
 - 여성·남성, 지역, 장애, 인종, 나이, 성적 지향을 비하하는 말 금지. 때리거나 해치라고 부추기지 마. 사람 이름은 "그 인간", "그 새끼"로.
 숨구멍의 욕:
@@ -2690,10 +2690,11 @@ ${raw}
       const seq = [...ly.verse.slice(0, 4).map(t => ({ t, hook: false })), ...hooks.map(t => ({ t, hook: true })), ...hooks.map(t => ({ t, hook: true })), ...ly.verse.slice(4, 8).map(t => ({ t, hook: false })), ...hooks.map(t => ({ t, hook: true })), ...hooks.map(t => ({ t, hook: true }))];
       let bar = 2; return { lines: seq.map(l => { const o = { ...l, bar, bars: l.hook ? Math.max(1, lpb / 2) : lpb }; bar += o.bars; return o; }), total: bar + 2 };
     }
-    async function loadBeat(k) {
-      if (beatBufs[k]) return beatBufs[k];
-      const res = await fetch(`audio/beats/${k}.mp3`); if (!res.ok) throw new Error("beat");
-      const buf = await rapAC.decodeAudioData(await res.arrayBuffer()); beatBufs[k] = buf; return buf;
+    async function loadBeat(k, hook) {
+      const key = hook ? "hook_" + k : k;
+      if (beatBufs[key]) return beatBufs[key];
+      const res = await fetch(`audio/beats/${key}.mp3`); if (!res.ok) throw new Error("beat");
+      const buf = await rapAC.decodeAudioData(await res.arrayBuffer()); beatBufs[key] = buf; return buf;
     }
     function spark(n) {
       if (motionOff()) return;
@@ -2701,7 +2702,7 @@ ${raw}
     }
     function stopRap(keepPanel) {
       const r = rap; rap = null;
-      if (r) { clearTimeout(r.timer); cancelAnimationFrame(r.raf); try { r.src.stop(); } catch {} try { r.gain.gain.setTargetAtTime(0, rapAC.currentTime, 0.15); } catch {} }
+      if (r) { clearTimeout(r.timer); cancelAnimationFrame(r.raf); try { r.src.stop(); } catch {} (r.hookSrcs || []).forEach(h => { try { h.stop(); } catch {} }); try { r.gain.gain.setTargetAtTime(0, rapAC.currentTime, 0.15); } catch {} }
       try { speechSynthesis.cancel(); } catch {}
       box.classList.remove("rap-kick", "rap-hook");
       rapBtn.setAttribute("aria-pressed", "false"); rapBtn.querySelector("span").textContent = "랩으로 불러 줘";
@@ -2716,7 +2717,8 @@ ${raw}
       rapTitle.textContent = (rapLyrics && rapLyrics.title ? rapLyrics.title + " · " : "") + BEATS[k].name; rapStatus.textContent = "비트 받는 중…";
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { rapStatus.textContent = "이 기기에서는 비트를 틀 수 없어요."; return; }
       if (!rapAC) rapAC = new AC(); if (rapAC.state === "suspended") rapAC.resume();
-      let buf; try { buf = await loadBeat(k); } catch { rapStatus.textContent = "비트 파일을 받지 못했어요. 인터넷을 확인해 주세요."; return; }
+      let buf, hookBuf = null; try { buf = await loadBeat(k); } catch { rapStatus.textContent = "비트 파일을 받지 못했어요. 인터넷을 확인해 주세요."; return; }
+      try { hookBuf = await loadBeat(k, true); } catch {}
       if (rap || !rapLyrics) return; // 그새 멈췄거나 가사가 없어졌으면
       const plan = songPlan(k, rapLyrics), bs = barSec(k), loopLen = bs * BEAT_BARS;
       rapLines.innerHTML = ""; plan.lines.forEach(l => { const li = document.createElement("li"); li.textContent = l.t; if (l.hook) li.className = "hook"; rapLines.appendChild(li); });
@@ -2725,18 +2727,38 @@ ${raw}
       gain.gain.setValueAtTime(0.0001, rapAC.currentTime); gain.gain.exponentialRampToValueAtTime(0.55, rapAC.currentTime + 0.4);
       src.connect(gain); gain.connect(rapAC.destination);
       const t0 = rapAC.currentTime + 0.15; src.start(t0);
+      const hookSrcs = [];
       const en = saidDialect === "en", pick = voiceFor(en ? "en" : "ko"), voices = en ? voicesFor("en") : koVoices();
       const feat = voices.find(v => genderOf(v) !== (pick.c ? pick.c.g : "f") && isNeural(v)) || voices.find(v => v !== pick.v) || pick.v; // 후렴은 다른 목소리가 받아요(피처링)
-      const r = rap = { src, gain, t0, k, plan, idx: 0, timer: 0, raf: 0, lat: pick.neural ? 0.35 : 0.08, lastBeat: -1 };
+      // 후렴 4마디마다 진짜 합창(아~) 멜로디 레이어를 얹어요: 목소리가 이 멜로디 위에서 후렴을 외쳐요
+      if (hookBuf) {
+        let i = 0; while (i < plan.lines.length) {
+          if (plan.lines[i].hook) { let j = i; while (j < plan.lines.length && plan.lines[j].hook) j++;
+            const hs = rapAC.createBufferSource(); hs.buffer = hookBuf; hs.connect(gain); hs.start(t0 + plan.lines[i].bar * bs); hookSrcs.push(hs); i = j; } else i++;
+        }
+      }
+      const r = rap = { src, gain, hookSrcs, t0, k, plan, idx: 0, timer: 0, raf: 0, lat: pick.neural ? 0.35 : 0.08, lastBeat: -1, speed: en ? 2.7 : 4.6, measured: false };
       rapStatus.textContent = `${BEATS[k].bpm} BPM · 인트로`;
       const li = [...rapLines.children];
+      // 카운트인: "자, 간다. 원, 투, 쓰리, 포!" — 흥도 돋우고, 이 목소리가 1초에 몇 글자를 말하는지 재서 줄마다 빠르기를 딱 맞춰요
+      {
+        const ci = en ? "Here we go. One, two, three, four!" : "자 간다, 원 투 쓰리 포!";
+        const u = new SpeechSynthesisUtterance(ci); u.lang = en ? "en-US" : "ko-KR"; if (pick.v) u.voice = pick.v; u.rate = 1; u.pitch = pick.neural ? 1 : pick.pitch;
+        let st = 0; u.onstart = () => { st = rapAC.currentTime; if (rap === r) r.lat = Math.min(0.9, Math.max(0.03, st - t0)); };
+        u.onend = () => { const d = rapAC.currentTime - st; if (rap === r && st && d > 0.5) { r.speed = sylCount(ci, en) / d; r.measured = true; } };
+        r.timer = setTimeout(() => { if (rap !== r) return; try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch {} }, Math.max(0, (t0 - rapAC.currentTime) * 1000));
+      }
       function speakLine(i) {
         const l = plan.lines[i], secs = l.bars * bs, syl = sylCount(l.t, en);
         const u = new SpeechSynthesisUtterance(l.t); u.lang = en ? "en-US" : "ko-KR";
         const v = l.hook && feat ? feat : pick.v; if (v) u.voice = v;
-        u.pitch = pick.neural ? 1 : pick.pitch; u.rate = Math.min(2.2, Math.max(0.85, syl / (secs * (en ? 2.6 : 4.4)))); u.volume = 1;
-        const planned = t0 + l.bar * bs;
-        u.onstart = () => { if (rap !== r) return; const late = rapAC.currentTime - planned; r.lat = Math.min(0.9, Math.max(0.03, r.lat + late * 0.6)); li.forEach((x, j) => { x.classList.toggle("now", j === i); if (j < i) x.classList.add("done"); }); box.classList.toggle("rap-hook", l.hook); if (l.hook) spark(10); li[i].scrollIntoView({ block: "nearest" }); rapStatus.textContent = `${BEATS[k].bpm} BPM · ${l.hook ? "후렴" : "벌스"} ${i + 1}/${plan.lines.length}`; };
+        // 줄이 마디의 88%를 채우도록 빠르기를 정해요(잰 말 빠르기 기준). 높낮이는 벌스·후렴마다 살짝 달리해 선율 느낌을 줘요
+        const contour = l.hook ? 1.1 : (i % 4 === 3 ? 0.95 : (i % 2 ? 1.04 : 1.0));
+        u.pitch = Math.min(2, Math.max(0.5, (pick.neural ? 1 : pick.pitch) * contour));
+        u.rate = Math.min(2.4, Math.max(0.8, syl / (secs * 0.88) / r.speed)); u.volume = 1;
+        const planned = t0 + l.bar * bs; let st = 0;
+        u.onend = () => { if (rap !== r || !st) return; const d = rapAC.currentTime - st; if (d > 0.4) r.speed = r.speed * 0.6 + (syl / d / u.rate) * 0.4; }; // 실제 걸린 시간으로 다음 줄 빠르기를 보정
+        u.onstart = () => { if (rap !== r) return; st = rapAC.currentTime; const late = rapAC.currentTime - planned; r.lat = Math.min(0.9, Math.max(0.03, r.lat + late * 0.6)); li.forEach((x, j) => { x.classList.toggle("now", j === i); if (j < i) x.classList.add("done"); }); box.classList.toggle("rap-hook", l.hook); if (l.hook) spark(10); li[i].scrollIntoView({ block: "nearest" }); rapStatus.textContent = `${BEATS[k].bpm} BPM · ${l.hook ? "후렴" : "벌스"} ${i + 1}/${plan.lines.length}`; };
         try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch {}
       }
       function schedule() {
@@ -2771,7 +2793,7 @@ ${raw}
     $("rap-stop").addEventListener("click", () => stopRap(false));
     function wipe() {
       if (rapCtrl) { rapCtrl.abort(); rapCtrl = null; }
-      if (rap) { const r = rap; rap = null; clearTimeout(r.timer); cancelAnimationFrame(r.raf); try { r.src.stop(); } catch {} }
+      if (rap) { const r = rap; rap = null; clearTimeout(r.timer); cancelAnimationFrame(r.raf); try { r.src.stop(); } catch {} (r.hookSrcs || []).forEach(h => { try { h.stop(); } catch {} }); }
       rapLyrics = null; rapEl.hidden = true; rapLines.innerHTML = ""; box.classList.remove("rap-kick", "rap-hook"); rapBtn.setAttribute("aria-pressed", "false"); rapBtn.querySelector("span").textContent = "랩으로 불러 줘";
       stopSay(); footNote.textContent = FOOT;
       if (ctrl) { ctrl.abort(); ctrl = null; }

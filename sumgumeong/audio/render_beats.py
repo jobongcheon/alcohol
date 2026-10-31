@@ -387,3 +387,44 @@ if __name__ == "__main__":
         meta[k] = {"name": name, "bpm": bpm, "bars": 8, "len": round(len(out) / SR, 4)}
     json.dump(meta, open(os.path.join(OUT, "meta.json"), "w"), ensure_ascii=False, indent=1)
     print(json.dumps(meta, ensure_ascii=False))
+
+# ---------- 후렴 레이어: 후렴 4마디 동안 비트 위에 얹히는 '합창(아~)' 멜로디와 크래시 ----------
+# 진짜 사람 합창 샘플(choir_aahs)이 후렴 멜로디를 노래해서, 목소리가 그 멜로디 위에서 가사를 외치면 '후렴' 느낌이 나요
+def hook_layer(k, bpm, melody, chords, inst_names=("choir_aahs",), crash=True, vel=0.5):
+    bars = 4; step = 60 / bpm / 4; L = step * 16 * bars + 2.5
+    t = Track(L, 99); D = drums()
+    def at(bar, beat, six=0): return (bar * 16 + beat * 4 + six) * step
+    for name in inst_names:
+        inst = gm(name, cap=3.5, lp=5200)
+        for n_, bar, beat, six, dur in melody:
+            a = gate(inst.play(N(n_)), dur * step * 4, 0.25); a = fade(a, 0.05, 0)
+            t.put(a, at(bar, beat, six), vel * (0.7 if name != "choir_aahs" else 1.0), pan=0.0)
+            if name == "choir_aahs":  # 3도 아래 화음을 살짝 겹쳐 두터운 합창으로
+                t.put(gate(inst.play(N(n_) - 3 if (N(n_) % 12) in (0, 2, 4, 5, 7, 9, 11) else N(n_) - 4), dur * step * 4, 0.25), at(bar, beat, six), vel * 0.5, pan=-0.3)
+    strings = gm("string_ensemble_1", cap=3.5, lp=4500)
+    for (r, kind), bar in zip(chords, range(bars)):
+        for j, m in enumerate(chord_midis(r, kind)): t.put(gate(strings.play(m + 12), step * 16, 0.4), at(bar, 0, 0), 0.22, pan=(j - 1.5) * 0.3)
+    if crash: t.put(D["crash"], at(0, 0, 0), 0.55); t.put(D["crash"], at(2, 0, 0), 0.35)
+    for bar in range(bars): t.put(D["clap"], at(bar, 1, 0), 0.5, pan=0.3); t.put(D["clap"], at(bar, 3, 0), 0.5, pan=-0.3)
+    t.reverb(HALL, wet=0.5, dry=0.9)
+    out = peak_limit(rms_norm(t.buf, -19), 0.8)
+    return fade(out, 0, 1.0)
+
+HOOKS = {
+    "boombap": ([("E5", 0, 0, 0, 1.5), ("C5", 0, 2, 0, 1), ("D5", 0, 3, 0, 1), ("E5", 1, 0, 0, 2), ("G5", 1, 2, 0, 2), ("E5", 2, 0, 0, 1.5), ("D5", 2, 2, 0, 1), ("C5", 2, 3, 0, 1), ("A4", 3, 0, 0, 3)], [("A3", "m7"), ("D3", "m7"), ("E3", "m7"), ("A3", "m7")]),
+    "trap": ([("F5", 0, 0, 0, 2), ("Ab5", 0, 2, 0, 2), ("G5", 1, 0, 0, 3), ("F5", 2, 0, 0, 2), ("C6", 2, 2, 0, 2), ("Ab5", 3, 0, 0, 3)], [("F3", "m"), ("Ab3", "M"), ("Db3", "M"), ("Eb3", "M")]),
+    "drill": ([("E5", 0, 0, 0, 1), ("G5", 0, 1, 2, 1), ("B5", 0, 3, 0, 1), ("A5", 1, 0, 0, 3), ("G5", 2, 0, 0, 1), ("E5", 2, 1, 2, 1), ("D5", 2, 3, 0, 1), ("E5", 3, 0, 0, 3)], [("E3", "m"), ("G3", "M"), ("C3", "M"), ("D3", "M")]),
+    "trot": ([("G5", 0, 0, 0, 1), ("E5", 0, 1, 0, 1), ("G5", 0, 2, 0, 2), ("A5", 1, 0, 0, 1), ("G5", 1, 1, 0, 1), ("E5", 1, 2, 0, 2), ("F5", 2, 0, 0, 1), ("E5", 2, 1, 0, 1), ("D5", 2, 2, 0, 2), ("C5", 3, 0, 0, 4)], [("C3", "M"), ("A3", "m"), ("F3", "M"), ("G3", "7")]),
+    "gugak": ([("E5", 0, 0, 0, 1.5), ("G5", 0, 2, 0, 1), ("A5", 0, 3, 0, 1), ("B5", 1, 0, 0, 2.5), ("A5", 1, 3, 0, 1), ("G5", 2, 0, 0, 1.5), ("E5", 2, 2, 0, 2), ("D5", 3, 0, 0, 1), ("E5", 3, 1, 0, 3)], [("E3", "m"), ("E3", "m"), ("D3", "M"), ("E3", "m")]),
+    "rock": ([("E5", 0, 0, 0, 2), ("G5", 0, 2, 0, 2), ("A5", 1, 0, 0, 4), ("G5", 2, 0, 0, 2), ("E5", 2, 2, 0, 2), ("D5", 3, 0, 0, 2), ("E5", 3, 2, 0, 2)], [("E3", "5"), ("G3", "5"), ("A3", "5"), ("E3", "5")]),
+    "funk": ([("E5", 0, 0, 0, .5), ("G5", 0, 0, 2, .5), ("A5", 0, 1, 0, 1.5), ("G5", 0, 3, 0, 1), ("E5", 1, 0, 0, 3), ("B5", 2, 0, 0, .5), ("A5", 2, 0, 2, .5), ("G5", 2, 1, 0, 1.5), ("E5", 2, 3, 0, 1), ("D5", 3, 0, 0, 3)], [("E3", "m7"), ("E3", "m7"), ("A3", "m7"), ("E3", "m7")]),
+    "lofi": ([("A5", 0, 0, 0, 2), ("F5", 0, 2, 0, 2), ("G5", 1, 0, 0, 4), ("A5", 2, 0, 0, 2), ("C6", 2, 2, 0, 2), ("A5", 3, 0, 0, 4)], [("D3", "m9"), ("G3", "m9"), ("C3", "maj9"), ("F3", "maj7")]),
+    "edm": ([("A5", 0, 0, 0, 1), ("C6", 0, 1, 0, 1), ("E6", 0, 2, 0, 2), ("D6", 1, 0, 0, 2), ("C6", 1, 2, 0, 2), ("A5", 2, 0, 0, 1), ("C6", 2, 1, 0, 1), ("G5", 2, 2, 0, 2), ("A5", 3, 0, 0, 4)], [("A3", "m"), ("F3", "M"), ("C3", "M"), ("G3", "M")]),
+    "ballad": ([("E5", 0, 0, 0, 3), ("D5", 0, 3, 0, 1), ("C5", 1, 0, 0, 2), ("D5", 1, 2, 0, 2), ("E5", 2, 0, 0, 2), ("G5", 2, 2, 0, 2), ("C5", 3, 0, 0, 4)], [("C3", "M"), ("G2", "M"), ("A2", "m"), ("F2", "M")]),
+}
+HOOK_INST = {"rock": ("choir_aahs", "distortion_guitar"), "trot": ("choir_aahs", "trumpet"), "edm": ("choir_aahs", "lead_2_sawtooth"), "gugak": ("choir_aahs", "koto"), "funk": ("choir_aahs", "brass_section")}
+
+if __name__ == "__main__" and os.environ.get("HOOKS"):
+    for k, (mel, ch) in HOOKS.items():
+        out = hook_layer(k, STYLES[k][2], mel, ch, HOOK_INST.get(k, ("choir_aahs",)))
+        save_mp3(out, os.path.join(OUT, f"hook_{k}.mp3"), 112)
