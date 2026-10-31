@@ -146,7 +146,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 section.view { padding-block: 34px 8px; display: grid; gap: 24px; }
 section.view.enter > * { animation: fadeUp .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-/* 첫 화면 안내 카드: 환영 → 이렇게 써요 → 더 둘러보기 → 약속 */
+/* 첫 화면 안내 카드: 환영 → 이렇게 써요 → 더 둘러보기 */
 .welcome { position: relative; display: grid; gap: 14px; padding: 22px 24px 20px; border-radius: 28px; background: rgba(255, 255, 255, .92); border: 1px solid var(--hair); box-shadow: 0 24px 50px -28px rgba(30, 30, 60, .35); overflow: hidden; }
 .welcome:focus { outline: none; }
 .welcome::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 60%; height: 120%; background: radial-gradient(closest-side, color-mix(in srgb, var(--m1) 40%, transparent), transparent); opacity: .55; pointer-events: none; }
@@ -385,7 +385,13 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 
 /* 약속 */
 .promises { margin-top: 16px; padding: 16px 18px; border-radius: 22px; display: grid; gap: 6px; background: linear-gradient(135deg, color-mix(in srgb, var(--m1) 32%, #ffffff), color-mix(in srgb, var(--m2) 32%, #ffffff)); border: 1px solid var(--hair); }
-.promises h3 { font-size: 1.125rem; }
+.promises { display: block; margin-top: 0; padding: 4px 18px; }
+.promises summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; font-family: var(--display); font-weight: 700; font-size: 1.125rem; padding-block: 12px; }
+.promises summary::-webkit-details-marker { display: none; }
+.promises summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(45deg); transition: transform .4s var(--ease); margin-right: 4px; }
+.promises[open] summary::after { transform: rotate(-135deg); }
+.promises[open] > :not(summary) { animation: fadeUp .5s var(--ease); }
+.promises .help-line { margin: 6px 0 14px; }
 .trust-wrap { overflow-x: auto; margin-top: 4px; }
 .trust-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; font-size: .875rem; }
 .trust-table thead th { text-align: left; font-size: .75rem; letter-spacing: .06em; color: var(--ink-soft); padding: 0 10px 1px; font-weight: 700; }
@@ -443,7 +449,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .letter { padding: 18px; }
   label.check { font-size: 1rem; }
   .db-number { font-size: clamp(4rem, 20vw, 6rem); }
-  .promises { margin-top: 14px; padding: 16px; }
+  .promises { padding: 2px 14px; }
 }
 
 /* 말로 입력 */
@@ -1024,10 +1030,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           </div>
           <p class="note">맨 위 <b>「가」</b> 버튼으로 글씨를 크게 키울 수 있어요.</p>
         </div>
-        <div class="wel-slide" data-i="3" hidden>
-          <h2>숨구멍의 약속</h2>
-          <div class="wel-trust" id="wel-trust"></div>
-        </div>
       </div>
       <div class="wel-actions"><button class="btn ghost small" id="wel-skip" type="button">건너뛰기</button><button class="btn small" id="wel-next" type="button">다음</button></div>
     </section>
@@ -1036,6 +1038,23 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
       <h2>오늘 어떤 마음이에요?</h2>
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
+    <details class="promises" id="promises" open>
+      <summary>숨구멍의 약속</summary>
+        <div class="trust-wrap">
+      <table class="trust-table">
+        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
+          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
+          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
+          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
+          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
+          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
+    </details>
     <details class="guide" open>
       <summary>내 글은 언제 사라지나요?</summary>
       <div class="guide-body">
@@ -1513,23 +1532,6 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <p class="note">마음 달력은 이 휴대폰에만 저장돼요. 다른 사람은 볼 수 없어요. <button class="report" id="cal-clear" type="button">달력 기록 모두 지우기</button></p>
   </section>
 
-  <footer class="promises">
-    <h3>숨구멍의 약속</h3>
-        <div class="trust-wrap">
-      <table class="trust-table">
-        <thead><tr><th scope="col">무엇</th><th scope="col">운영자는?</th><th scope="col">어디에 남나요</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">비밀 금고</th><td><span class="pill safe">못 봐요</span></td><td>암호를 건 채로, 나만 여는 공간</td></tr>
-          <tr><th scope="row">한 달 편지 · 스트레스 점수 · 몬스터 · 내일 할 일</th><td><span class="pill safe">못 봐요</span></td><td>이 휴대폰 안</td></tr>
-          <tr><th scope="row">셀카 · 소리 · 목소리 · 꿀잠 글</th><td><span class="pill safe">못 봐요</span></td><td>남지 않아요 (셀카는 5초 뒤 삭제, 녹음 안 함)</td></tr>
-          <tr><th scope="row">게시판 글쓴이 · 토닥토닥</th><td><span class="pill safe">몰라요</span></td><td>누가 했는지 저장 안 함</td></tr>
-          <tr><th scope="row">게시판 글</th><td><span class="pill open">누구나 봐요</span></td><td>이름·회사명은 별표, 3일 뒤 삭제</td></tr>
-          <tr><th scope="row">보내는 글</th><td><span class="pill open">AI가 읽어요</span></td><td>같이 욕하기, 위로, 이름 가리기, 위험한 글 거르기용</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="help-line">힘들 때는 자살예방상담전화 <b>109</b>, 위급할 때는 <b>112</b>·<b>119</b>에 연락하세요.</p>
-  </footer>
 </div>
 
 <!-- 덮개 화면 -->
@@ -4149,10 +4151,14 @@ ${text}
   $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? leftText(sleepA.end - Date.now()) : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); dimScene.start(); });
   $("sleep-dim").addEventListener("click", closeDim);
 
+  // 숨구멍의 약속: 처음엔 펼쳐 두고, 사용자가 접으면 다음에 와도 접힌 채로 시작해요(다시 펼치면 다시 펼친 채로)
+  const promisesEl = $("promises");
+  promisesEl.open = store.get("sg.promises", "open") !== "closed";
+  promisesEl.addEventListener("toggle", () => store.set("sg.promises", promisesEl.open ? "open" : "closed"));
+
   // ---------- 첫 화면 안내 카드 ----------
   // 첫 화면에 펼쳐 보여 주고, 다 보거나 건너뛰면 작은 버튼으로 접어 둬요. 「사용법」이나 그 버튼으로 언제든 다시 열어요
   const welCard = $("welcome"), welSlides = [...welCard.querySelectorAll(".wel-slide")], welDots = welCard.querySelector(".wel-dots"), welNext = $("wel-next"), welReopen = $("wel-reopen");
-  $("wel-trust").appendChild(document.querySelector(".promises .trust-table").cloneNode(true));
   let welAt = 0;
   welSlides.forEach((_, i) => { const d = document.createElement("button"); d.type = "button"; d.setAttribute("role", "tab"); d.setAttribute("aria-label", `${i + 1}쪽`); d.onclick = () => welGo(i); welDots.appendChild(d); });
   function welGo(i) {
