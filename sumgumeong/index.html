@@ -1115,7 +1115,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         </div>
         <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
         <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
-        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><button class="rant-say rant-rap" id="rant-rap" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span>랩으로 불러 줘</span></button><button class="rant-say rant-gem" id="rant-gem" type="button" title="가사를 복사하고 Gemini 앱을 열어요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>Gemini로 노래 만들기</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
+        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><button class="rant-say rant-rap" id="rant-rap" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span>랩으로 불러 줘</span></button><button class="rant-say rant-gem" id="rant-gem" type="button" title="가사를 복사하고 Gemini 앱을 열어요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>Gemini용 가사 복사</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
       </div>
     </div>
     <div class="panel">
@@ -2794,8 +2794,8 @@ ${text}
       const k = rapPin || lastBeat || "rap", genre = { rap: "신나는 힙합 랩", trot: "흥겨운 뽕짝 트로트", rock: "질주하는 록" }[k] || "신나는 힙합 랩";
       const prompt = `아래 가사로 ${genre} 노래를 만들어 줘. 가사는 한 글자도 바꾸지 말고 그대로 불러 줘. 빠른 템포, 힘 있는 보컬, 후렴 반복 없이.\n\n${rant}`;
       let ok = false; try { await navigator.clipboard.writeText(prompt); ok = true; } catch {}
-      footNote.innerHTML = ok ? "가사와 요청문을 <b>복사했어요</b>. Gemini에서 「음악 만들기」를 누르고 <b>붙여 넣기</b>만 하면 돼요. (이 글은 구글로 전송돼요)" : "복사가 막혀 있어요. 가사를 직접 옮겨 적어 Gemini 「음악 만들기」에 붙여 넣으세요.";
-      window.open("https://gemini.google.com/app", "_blank", "noopener");
+      // 여기서 새 탭을 자동으로 열면 구글이 차단해요(보안 상자 안이라서). 복사만 해 주고, 여는 건 직접
+      footNote.innerHTML = ok ? "가사와 요청문을 <b>복사했어요</b>. 이제 새 탭에 <b>gemini.google.com</b> 을 열고 → 「음악 만들기」 → <b>붙여 넣기</b>(Ctrl+V) → 보내기. (이 글은 구글로 전송돼요)" : "복사가 막혀 있어요. 가사를 직접 옮겨 적어 Gemini 「음악 만들기」에 붙여 넣으세요.";
     });
     $("rap-again").addEventListener("click", () => { if (!rapLyrics) return; startRap(rapPin || pickBeat()); });
     $("rap-stop").addEventListener("click", () => stopRap(false));
