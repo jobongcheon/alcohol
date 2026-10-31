@@ -584,6 +584,20 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .rant-say:disabled { opacity: .4; }
 .rant-rap { background: linear-gradient(120deg, #6c5ce7, #b84fb0); }
 .rant-gem { background: linear-gradient(120deg, #1a73e8, #9334e6); }
+.rant-song { background: linear-gradient(120deg, #0f9d58, #1a73e8); }
+/* 내 노래: Gemini에서 받은 노래를 이 기기에 모아 듣기 */
+.songs { gap: 10px; }
+.songs-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.songs-head b { font-family: var(--display); font-size: 1.125rem; }
+#song-player { width: 100%; }
+.song-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.song-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 14px; background: rgba(255, 255, 255, .7); border: 1px solid var(--hair); }
+.song-list li.now { border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26, 115, 232, .15); }
+.song-list .s-play { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 0; background: linear-gradient(120deg, #0f9d58, #1a73e8); color: #ffffff; display: grid; place-items: center; }
+.song-list .s-play svg { width: 16px; height: 16px; fill: currentColor; }
+.song-list .s-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.song-list .s-meta { font-size: .75rem; color: var(--ink-soft); white-space: nowrap; }
+.song-list .s-del { border: 0; background: transparent; color: var(--ink-soft); font-size: .8125rem; text-decoration: underline; padding: 6px; }
 .rant-rap[aria-pressed="true"] { background: linear-gradient(120deg, #241c1c, #3a2a3a); outline: 1px solid rgba(255, 255, 255, .35); }
 /* 랩 패널: 비트 칩, 노래방 자막, 박자에 맞춰 울리는 상자 */
 .rap { display: grid; gap: 10px; padding: 12px 14px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); }
@@ -1115,9 +1129,16 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
         </div>
         <p class="rant-help" id="rant-help" hidden>혼자 견디지 마. 자살예방상담전화 <b>109</b>(24시간), 위급하면 <b>112</b>·<b>119</b>.</p>
         <div class="rant-bar" aria-hidden="true"><i id="rant-bar"></i></div>
-        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><button class="rant-say rant-rap" id="rant-rap" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span>랩으로 불러 줘</span></button><button class="rant-say rant-gem" id="rant-gem" type="button" title="가사를 복사하고 Gemini 앱을 열어요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>Gemini용 가사 복사</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
+        <div class="rant-foot"><span id="rant-foot-note">복사할 수 없고, 1분 뒤 사라져요. 어디에도 저장하지 않아요.</span><span class="rant-actions"><button class="rant-say" id="rant-say" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span>읽어 주기</span></button><button class="rant-say rant-rap" id="rant-rap" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><span>랩으로 불러 줘</span></button><button class="rant-say rant-gem" id="rant-gem" type="button" title="가사를 복사하고 Gemini 앱을 열어요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>Gemini용 가사 복사</span></button><button class="rant-say rant-song" id="rant-song" type="button" title="Gemini에서 받은 노래 파일을 여기서 틀어요"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span>만든 노래 틀기</span></button><a href="#shout" class="rant-link">이제 숨 고르기</a><button class="rant-close" id="rant-close" type="button">지금 지우기</button></span></div>
       </div>
     </div>
+    <section class="panel songs" id="songs" hidden aria-label="내 노래">
+      <div class="songs-head"><b>🎵 내 노래</b><button class="btn ghost small" id="song-add" type="button">노래 파일 올리기</button></div>
+      <input type="file" id="song-file" accept="audio/*,.mp3,.m4a,.wav" multiple hidden>
+      <audio id="song-player" controls preload="none" hidden></audio>
+      <ol class="song-list" id="song-list"></ol>
+      <p class="note" id="song-note">시험용이에요: 이 기기 안에만 저장되고 다른 사람은 못 봐요. 어디로도 올라가지 않아요.</p>
+    </section>
     <div class="panel">
       <label class="check"><input type="checkbox" id="opt-public" checked><span><b>게시판에 올리기</b></span></label>
       <div class="room-pick"><span class="note">어느 방에 올릴까요?</span><div class="picks" id="write-room"></div></div>
@@ -4360,6 +4381,63 @@ ${text}
   const onbPromises = $("onb-promises");
   onbPromises.open = store.get("sg.promises", "open") !== "closed";
   onbPromises.addEventListener("toggle", () => store.set("sg.promises", onbPromises.open ? "open" : "closed"));
+
+  // ---------- 내 노래 (시험용): Gemini에서 만든 노래 파일을 이 기기 브라우저(IndexedDB)에 모아 두고 들어요 ----------
+  // 나중에 숨구멍 규칙(저장 안 함)에 맞추려면 SONG_KEEP을 false로 바꾸면 "듣기만" 돼요
+  const SONG_KEEP = true;
+  const songs = (function () {
+    const panel = $("songs"), list = $("song-list"), player = $("song-player"), fileIn = $("song-file"), note = $("song-note");
+    let dbp = null, items = [], curUrl = "", curId = null;
+    const openDb = () => dbp || (dbp = new Promise((res, rej) => {
+      try { const r = indexedDB.open("sg-songs", 1); r.onupgradeneeded = () => r.result.createObjectStore("songs", { keyPath: "id", autoIncrement: true }); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); }
+    }));
+    const tx = async (mode, fn) => { const db = await openDb(); return new Promise((res, rej) => { const t = db.transaction("songs", mode), st = t.objectStore("songs"), r = fn(st); t.oncomplete = () => res(r && r.result); t.onerror = () => rej(t.error); }); };
+    const fmtSize = (b) => b > 1e6 ? (b / 1e6).toFixed(1) + "MB" : Math.round(b / 1e3) + "KB";
+    const fmtDate = (t) => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+    function render() {
+      panel.hidden = !items.length && player.hidden;
+      list.innerHTML = "";
+      items.slice().reverse().forEach(it => {
+        const li = document.createElement("li"); if (it.id === curId) li.className = "now";
+        li.innerHTML = `<button class="s-play" type="button" aria-label="재생"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><span class="s-name"></span><span class="s-meta"></span><button class="s-del" type="button">지우기</button>`;
+        li.querySelector(".s-name").textContent = it.name.replace(/\.[^.]+$/, "");
+        li.querySelector(".s-meta").textContent = `${fmtDate(it.at)} · ${fmtSize(it.size)}`;
+        li.querySelector(".s-play").onclick = () => play(it);
+        li.querySelector(".s-del").onclick = async () => { if (!confirm("이 노래를 이 기기에서 지울까요?")) return; try { await tx("readwrite", st => st.delete(it.id)); } catch {} items = items.filter(x => x.id !== it.id); if (curId === it.id) { player.pause(); player.hidden = true; curId = null; } render(); };
+        list.appendChild(li);
+      });
+    }
+    function play(it) {
+      if (curUrl) URL.revokeObjectURL(curUrl);
+      curUrl = URL.createObjectURL(it.blob); curId = it.id;
+      try { speechSynthesis.cancel(); } catch {}
+      player.src = curUrl; player.hidden = false; panel.hidden = false;
+      player.play().catch(() => {}); render();
+      panel.scrollIntoView({ behavior: motionOff() ? "auto" : "smooth", block: "nearest" });
+    }
+    async function load() {
+      if (!SONG_KEEP) return;
+      try { items = (await tx("readonly", st => st.getAll())) || []; } catch { items = []; }
+      render();
+    }
+    async function addFiles(files) {
+      let last = null, failed = false;
+      for (const f of files) {
+        if (!/^audio\//.test(f.type) && !/\.(mp3|m4a|wav|aac|ogg)$/i.test(f.name)) continue;
+        const it = { name: f.name, type: f.type || "audio/mpeg", size: f.size, at: Date.now(), blob: f };
+        if (SONG_KEEP) { try { it.id = await tx("readwrite", st => st.add(it)); items.push(it); } catch { failed = true; it.id = "tmp" + Date.now(); items.push(it); } }
+        else { it.id = "tmp" + Date.now(); items = [it]; }
+        last = it;
+      }
+      note.textContent = failed ? "이 브라우저에서는 저장이 막혀 있어서, 이번에만 들을 수 있어요." : "시험용이에요: 이 기기 안에만 저장되고 다른 사람은 못 봐요. 어디로도 올라가지 않아요.";
+      if (last) play(last);
+    }
+    fileIn.addEventListener("change", () => { addFiles([...fileIn.files]); fileIn.value = ""; });
+    $("song-add").addEventListener("click", () => fileIn.click());
+    $("rant-song").addEventListener("click", () => fileIn.click());
+    load();
+    return { pick: () => fileIn.click() };
+  })();
 
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
