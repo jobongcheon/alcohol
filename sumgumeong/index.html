@@ -940,6 +940,28 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 .onb-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
 .onb-dots i.on { background: var(--ink); }
 .onb-btns { display: flex; gap: 10px; justify-content: space-between; }
+/* 휴대폰 털어놓기 화면: 감정 카드와 버튼은 3분의 1 작게, 글 쓰는 칸은 크게, 게시판 옵션은 촘촘하게 */
+@media (max-width: 639px) {
+  .emos { gap: 8px; }
+  .emo { padding: 8px 10px 8px; border-radius: 14px; gap: 0; }
+  .emo::before { width: 7px; height: 7px; margin-bottom: 4px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 18%, transparent); }
+  .emo b { font-size: 1.125rem; }
+  .emo .cnt { font-size: .6875rem; }
+  .emo::after { width: 72px; height: 72px; right: -20px; bottom: -28px; }
+  #view-write .ta-wrap textarea { min-height: 280px; padding-bottom: 54px; }
+  .main-tools { left: 10px; right: 10px; bottom: 10px; }
+  .main-tools .rant-btn { min-height: 32px; padding: 5px 11px 5px 8px; font-size: .75rem; gap: 4px; }
+  .main-tools .rant-btn svg { width: 13px; height: 13px; }
+  .main-tools .cast-btn { min-height: 32px; padding: 5px 9px; font-size: .75rem; gap: 4px; }
+  .main-tools .cast-btn svg { width: 12px; height: 12px; }
+  #view-write label.check { font-size: .9375rem; gap: 10px; }
+  #view-write label.check .note { font-size: .75rem; line-height: 1.45; }
+  #view-write .room-pick { gap: 4px; }
+  #view-write .room-pick > .note { font-size: .75rem; }
+  #write-room { flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding-bottom: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  #write-room::-webkit-scrollbar { display: none; }
+  #write-room .pick { flex: none; padding: 4px 11px; font-size: .8125rem; }
+}
 </style>
 <script>try { var f = JSON.parse(localStorage.getItem("sg.fs") || "0"); if (f) document.documentElement.dataset.fs = String(f); } catch (e) {}</script>
 <script>try { var m = JSON.parse(localStorage.getItem("sg.motion") || "null"); } catch (e) { m = null; } document.documentElement.dataset.motion = m || (matchMedia("(prefers-reduced-motion: reduce)").matches ? "off" : "on");</script>
