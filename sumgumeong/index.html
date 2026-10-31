@@ -131,7 +131,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: saturate(1.5) blur(16px); backdrop-filter: saturate(1.5) blur(16px);
   border: 1px solid var(--hair); border-radius: 22px; box-shadow: var(--shadow);
 }
-@media (min-width: 640px) { .tabs { grid-template-columns: repeat(8, 1fr); } }
+@media (min-width: 640px) { .tabs { grid-template-columns: repeat(9, 1fr); } }
 .tabs a { position: relative; z-index: 1; display: block; text-align: center; text-decoration: none; color: var(--ink-soft); font-weight: 700; font-size: 1rem; padding: 11px 4px; border-radius: 16px; transition: color .35s; }
 .tabs a:hover { color: var(--ink); background: color-mix(in srgb, var(--tc, var(--mood)) 8%, transparent); }
 .tabs a:hover .ti { transform: translateY(-2px); }
@@ -146,6 +146,38 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 section.view { padding-block: 34px 8px; display: grid; gap: 24px; }
 section.view.enter > * { animation: fadeUp .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+/* 첫 화면 안내 카드: 환영 → 이렇게 써요 → 더 둘러보기 → 약속 */
+.welcome { position: relative; display: grid; gap: 14px; padding: 22px 24px 20px; border-radius: 28px; background: rgba(255, 255, 255, .92); border: 1px solid var(--hair); box-shadow: 0 24px 50px -28px rgba(30, 30, 60, .35); overflow: hidden; }
+.welcome:focus { outline: none; }
+.welcome::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 60%; height: 120%; background: radial-gradient(closest-side, color-mix(in srgb, var(--m1) 40%, transparent), transparent); opacity: .55; pointer-events: none; }
+.welcome > * { position: relative; }
+.wel-dots { display: flex; justify-content: center; gap: 7px; }
+.wel-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: #d9d9de; transition: width .35s var(--ease), background-color .35s; }
+.wel-dots button[aria-selected="true"] { width: 22px; background: var(--ink); }
+.wel-track { display: grid; }
+.wel-slide { grid-area: 1 / 1; display: grid; gap: 10px; align-content: start; animation: welIn .5s var(--ease) both; }
+.wel-slide.back { animation-name: welInBack; }
+@keyframes welIn { from { opacity: 0; transform: translateX(24px); } }
+@keyframes welInBack { from { opacity: 0; transform: translateX(-24px); } }
+.wel-slide h2 { font-family: var(--display); font-size: var(--step-3); letter-spacing: -0.02em; line-height: 1.25; }
+.wel-slide p, .wel-steps li { color: var(--ink); line-height: 1.75; }
+.wel-steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.wel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.wel-grid a { display: grid; gap: 2px; padding: 10px 12px; border-radius: 14px; text-decoration: none; color: var(--ink); background: color-mix(in srgb, var(--m1) 14%, #ffffff); border: 1px solid var(--hair); transition: transform .3s var(--ease), background-color .3s; }
+.wel-grid a:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--m1) 24%, #ffffff); }
+.wel-grid b { font-size: .9375rem; }
+.wel-grid span { font-size: .8125rem; color: var(--ink-soft); line-height: 1.4; }
+.wel-actions { display: flex; justify-content: space-between; gap: 10px; }
+.wel-actions .btn { min-width: 88px; }
+.wel-reopen { justify-self: start; display: inline-flex; align-items: center; gap: 6px; border: 1px dashed var(--hair); background: rgba(255, 255, 255, .7); border-radius: 999px; padding: 6px 14px; min-height: 40px; font-size: .875rem; font-weight: 700; color: var(--ink-soft); }
+.welcome.closing { animation: welOut .4s var(--ease) forwards; }
+@keyframes welOut { to { opacity: 0; transform: translateY(-10px) scale(.98); } }
+:root[data-wide="on"] .welcome, :root[data-wide="on"] .wel-reopen { display: none; }
+@media (max-width: 639px) {
+  .welcome { padding: 18px 16px 16px; border-radius: 24px; }
+  .wel-grid { grid-template-columns: repeat(2, 1fr); }
+  .wel-slide h2 { font-size: var(--step-2); }
+}
 .lede { display: grid; gap: 8px; }
 .lede h2 { font-size: var(--step-3); letter-spacing: -0.02em; }
 .lede p { color: var(--ink-soft); }
@@ -385,7 +417,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   .motion-toggle, .music-toggle { margin-top: 10px; padding: 4px 12px; font-size: .8125rem; }
   .tabs {
     position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 20;
-    grid-template-columns: repeat(8, 1fr); gap: 0;
+    grid-template-columns: repeat(9, 1fr); gap: 0;
     padding: 6px max(6px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
     border-radius: 20px 20px 0 0; border-width: 1px 0 0; background: rgba(255, 255, 255, .9);
     box-shadow: 0 -10px 30px -18px rgba(20, 20, 60, .35);
@@ -881,7 +913,51 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
 :root[data-motion="off"] .motion-toggle { background: var(--ink); color: #ffffff; border-color: transparent; }
 :root[data-motion="off"] .motion-toggle::before { background: #ffffff; }
 @media print { body * { visibility: hidden !important; } }
+
+/* ===== 추가: 글씨 크기 · 도구 줄 · 신고 · 마음 달력 · 첫 안내 ===== */
+:root[data-fs="1"] { font-size: 115%; }
+:root[data-fs="2"] { font-size: 130%; }
+.util-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 0 0 12px; }
+.fs-group { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.85); border: 1px solid var(--hair); border-radius: 999px; padding: 4px; box-shadow: var(--shadow); }
+.fs-group .fs-label { font-size: .9375rem; font-weight: 700; color: var(--ink-soft); padding: 0 8px 0 10px; }
+.fs-group button { border: 0; background: transparent; border-radius: 999px; min-width: 48px; min-height: 44px; font-weight: 700; color: var(--ink); }
+.fs-group button[data-fs="0"] { font-size: 1rem; }
+.fs-group button[data-fs="1"] { font-size: 1.2rem; }
+.fs-group button[data-fs="2"] { font-size: 1.4rem; }
+.fs-group button[aria-pressed="true"] { background: var(--ink); color: #ffffff; }
+.util-btns { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+.util-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; border: 1px solid var(--hair); background: rgba(255,255,255,.85); border-radius: 999px; padding: 6px 16px; font-size: 1rem; font-weight: 700; color: var(--ink); box-shadow: var(--shadow); }
+.util-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.post-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.report { border: 0; background: transparent; color: var(--ink-soft); font-size: .9375rem; font-weight: 700; padding: 10px 6px; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; }
+.report:disabled { opacity: .5; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cal-head b { font-family: var(--display); font-size: var(--step-1); }
+.cal-nav { min-width: 48px; min-height: 48px; border: 1px solid var(--hair); background: var(--card); border-radius: 14px; font-size: 1.25rem; font-weight: 700; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+@media (max-width: 639px) { :root[data-fs] .tabs a { font-size: 11px; } .util-row { margin-top: 4px; } }
+.cal-dow { text-align: center; font-size: .9375rem; font-weight: 700; color: var(--ink-soft); padding: 4px 0; }
+.cal-dow.sun { color: var(--heat-3); }
+.cal-day { aspect-ratio: 1; border-radius: 14px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; align-content: center; gap: 2px; font-size: 1.0625rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cal-day.empty { border: 0; background: transparent; display: block; min-height: 0; padding: 0; margin: 0; }
+.cal-day.today { outline: 3px solid var(--ink); outline-offset: -3px; }
+.cal-day.has { background: var(--c); color: #ffffff; border-color: transparent; }
+.cal-day small { font-size: .6875rem; font-weight: 700; line-height: 1; }
+.cal-sum { display: grid; gap: 10px; }
+.cal-bar { display: grid; grid-template-columns: 4.5em 1fr 3em; align-items: center; gap: 10px; font-weight: 700; }
+.cal-bar i { display: block; height: 14px; border-radius: 999px; background: var(--c); min-width: 4px; }
+.cal-bar .track { background: var(--wash); border-radius: 999px; }
+.cal-bar em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+.onb-card { width: min(520px, 100%); background: #ffffff; border: 1px solid var(--hair); border-radius: 28px; padding: 28px 24px; box-shadow: var(--shadow); display: grid; gap: 16px; text-align: left; }
+.onb-card h2 { font-size: var(--step-2); }
+.onb-card p, .onb-card li { font-size: 1.125rem; line-height: 1.65; }
+.onb-card ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+.onb-dots { display: flex; gap: 8px; justify-content: center; }
+.onb-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.onb-dots i.on { background: var(--ink); }
+.onb-btns { display: flex; gap: 10px; justify-content: space-between; }
 </style>
+<script>try { var f = JSON.parse(localStorage.getItem("sg.fs") || "0"); if (f) document.documentElement.dataset.fs = String(f); } catch (e) {}</script>
 <script>try { var m = JSON.parse(localStorage.getItem("sg.motion") || "null"); } catch (e) { m = null; } document.documentElement.dataset.motion = m || (matchMedia("(prefers-reduced-motion: reduce)").matches ? "off" : "on");</script>
 
 <div class="atmos" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -898,6 +974,18 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div class="breath" aria-hidden="true"><div class="orb"><span class="in">들이쉬고</span><span class="out">내쉬고</span></div></div>
   </header>
 
+  <div class="util-row">
+    <div class="fs-group" role="group" aria-label="글씨 크기">
+      <span class="fs-label">글씨</span>
+      <button type="button" data-fs="0" aria-pressed="true" aria-label="글씨 보통">가</button>
+      <button type="button" data-fs="1" aria-pressed="false" aria-label="글씨 크게">가</button>
+      <button type="button" data-fs="2" aria-pressed="false" aria-label="글씨 아주 크게">가</button>
+    </div>
+    <div class="util-btns">
+      <button class="util-btn" id="share-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg><span>친구에게 알리기</span></button>
+      <button class="util-btn" id="help-btn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5h.01"/></svg><span>사용법</span></button>
+    </div>
+  </div>
   <nav class="tabs" aria-label="메뉴">
     <span class="tab-pill" aria-hidden="true"></span>
     <a href="#write" style="--tc:#6c5ce7" aria-label="털어놓기"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span class="tl">털어놓기</span><span class="ts">털어놓기</span></a>
@@ -908,14 +996,61 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <a href="#face" style="--tc:#d9821e" aria-label="내 표정"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg><span class="tl">내 표정</span><span class="ts">표정</span></a>
     <a href="#vault" style="--tc:#1b8fa3" aria-label="비밀 금고"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></svg><span class="tl">비밀 금고</span><span class="ts">금고</span></a>
     <a href="#letter" style="--tc:#d9506f" aria-label="한 달 편지"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg><span class="tl">한 달 편지</span><span class="ts">편지</span></a>
+    <a href="#mood" style="--tc:#c0592b" aria-label="마음 달력"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><circle cx="9" cy="14.5" r="1"/><circle cx="15" cy="14.5" r="1"/></svg><span class="tl">마음 달력</span><span class="ts">달력</span></a>
   </nav>
 
   <!-- 털어놓기 -->
   <section class="view" id="view-write">
+    <section class="welcome" id="welcome" aria-roledescription="안내" aria-label="숨구멍 안내" tabindex="-1">
+      <div class="wel-dots" role="tablist" aria-label="안내 쪽"></div>
+      <div class="wel-track" id="wel-track">
+        <div class="wel-slide" data-i="0">
+          <h2>숨구멍에 오신 걸 환영해요</h2>
+          <p>이름도, 연락처도 묻지 않아요.<br>화나고 서운하고 억울한 마음을 여기 다 내려놓고 가세요. 쓴 글은 정해진 시간이 지나면 저절로 사라져요.</p>
+        </div>
+        <div class="wel-slide" data-i="1" hidden>
+          <h2>이렇게 써요</h2>
+          <ol class="wel-steps"><li><b>털어놓기</b>에서 지금 감정을 하나 골라요.</li><li>있었던 일을 마음껏 써요. 손이 아프면 말로 입력해도 돼요.</li><li><b>같이 욕해 줘</b>를 누르면 숨구멍이 내 편이 되어 대신 퍼부어 줘요.</li><li>다 쓰면 <b>바람에 날려 보내기</b>로 훌훌 날려 버려요.</li></ol>
+        </div>
+        <div class="wel-slide" data-i="2" hidden>
+          <h2>더 둘러보세요</h2>
+          <div class="wel-grid">
+            <a href="#rooms" data-go="rooms"><b>속풀이방</b><span>직장·시댁·육아… 같은 처지끼리</span></a>
+            <a href="#shout" data-go="shout"><b>스트레스 풀기</b><span>소리 지르기·두더지·뽁뽁이</span></a>
+            <a href="#night" data-go="night"><b>꿀잠</b><span>빗소리·파도·명상 음악</span></a>
+            <a href="#mood" data-go="mood"><b>마음 달력</b><span>내 감정이 날마다 색으로</span></a>
+            <a href="#vault" data-go="vault"><b>비밀 금고</b><span>나만 여는 비밀 공간</span></a>
+            <a href="#letter" data-go="letter"><b>한 달 뒤 편지</b><span>지금의 나에게서 오는 편지</span></a>
+          </div>
+          <p class="note">맨 위 <b>「가」</b> 버튼으로 글씨를 크게 키울 수 있어요.</p>
+        </div>
+        <div class="wel-slide" data-i="3" hidden>
+          <h2>숨구멍의 약속</h2>
+          <div class="wel-trust" id="wel-trust"></div>
+        </div>
+      </div>
+      <div class="wel-actions"><button class="btn ghost small" id="wel-skip" type="button">건너뛰기</button><button class="btn small" id="wel-next" type="button">다음</button></div>
+    </section>
+    <button class="wel-reopen" id="wel-reopen" type="button" hidden><span aria-hidden="true">👋</span> 숨구멍 안내 · 약속 다시 보기</button>
     <div class="lede">
       <h2>오늘 어떤 마음이에요?</h2>
       <p>먼저 감정을 하나 골라 주세요. 같은 마음인 사람이 오늘 몇 명인지 보여 드려요.</p>
     </div>
+    <details class="guide" open>
+      <summary>내 글은 언제 사라지나요?</summary>
+      <div class="guide-body">
+        <ol>
+          <li><b>같이 욕해 준 글</b>은 1분 뒤 저절로 사라져요. 어디에도 저장하지 않아요.</li>
+          <li><b>게시판과 속풀이방에 올린 글</b>은 3일이 지나면 자동으로 지워져요. 토닥토닥 기록도 함께 지워져요.</li>
+          <li><b>셀카</b>는 표정 결과를 보여 준 뒤 5초 만에 지워져요. 사진은 밖으로 보내지 않아요.</li>
+          <li><b>소리 지르기</b>는 소리 크기만 재고 녹음은 하지 않아요.</li>
+          <li><b>꿀잠에서 쓴 걱정</b>은 별로 띄워 보내는 순간 사라져요.</li>
+          <li><b>한 달 뒤의 나에게 쓴 편지</b>는 30일 뒤에 열리고, 내가 지울 때까지 이 휴대폰에 남아요.</li>
+          <li><b>비밀 금고</b>는 자동으로 지워지지 않아요. 내가 지울 때까지 암호가 걸린 채 보관돼요. 비밀번호를 잊으면 아무도 열 수 없어요.</li>
+        </ol>
+        <p class="note">휴대폰 자체의 화면 캡처 기능은 웹에서 완전히 막을 수 없어요. 민감한 글은 캡처되지 않도록 조심해 주세요.</p>
+      </div>
+    </details>
     <details class="guide" open>
       <summary class="hook-summary"><span id="write-guide-title">열받았죠? 다섯 번이면 다 털고 가요</span></summary>
       <div class="guide-body">
@@ -1226,6 +1361,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
           <li>사진은 남은 시간을 보여 준 뒤 5초 만에 지워지고, 결과만 남아요.</li>
         </ol>
         <p class="note">밝은 곳에서 정면으로 찍으면 더 잘 읽어요. 내 얼굴만 찍어 주세요. 다른 사람 얼굴은 허락 없이 찍으면 안 돼요.</p>
+        <p class="note"><b>카메라가 안 열리거나 사진첩만 뜨나요?</b> 카메라 허락을 거절해서 그래요. 아이폰은 <b>설정 → Claude(사파리로 열었다면 Safari) → 카메라 켜기</b>, 갤럭시 같은 안드로이드폰은 <b>설정 → 애플리케이션 → Claude(크롬으로 열었다면 Chrome) → 권한 → 카메라 → 허용</b>을 누른 뒤, 이 화면으로 돌아와 「셀카 찍기」를 다시 누르세요.</p>
       </div>
     </details>
     <input type="file" id="selfie" accept="image/*" capture="user" hidden>
@@ -1349,6 +1485,34 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     <div id="letters" style="display:grid;gap:14px"></div>
   </section>
 
+  <!-- 마음 달력 -->
+  <section class="view" id="view-mood" hidden>
+    <div class="lede">
+      <h2>마음 달력</h2>
+      <p>털어놓을 때 고른 감정이 날마다 색으로 쌓여요. 내 마음이 어떤 날 무거웠는지 한눈에 볼 수 있어요.</p>
+    </div>
+    <div class="panel">
+      <b>오늘 마음만 기록하기</b>
+      <p class="note">글을 쓰지 않아도 돼요. 지금 마음에 가까운 것을 눌러 주세요.</p>
+      <div class="picks" id="cal-picks" role="group" aria-label="오늘 마음 고르기"></div>
+      <p class="note" id="cal-msg" role="status"></p>
+    </div>
+    <div class="panel">
+      <div class="cal-head">
+        <button class="cal-nav" id="cal-prev" type="button" aria-label="지난달">‹</button>
+        <b id="cal-title"></b>
+        <button class="cal-nav" id="cal-next" type="button" aria-label="다음 달">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="panel">
+      <b id="cal-sum-title">이번 달 내 마음</b>
+      <div class="cal-sum" id="cal-sum"></div>
+      <p class="note" id="cal-verdict"></p>
+    </div>
+    <p class="note">마음 달력은 이 휴대폰에만 저장돼요. 다른 사람은 볼 수 없어요. <button class="report" id="cal-clear" type="button">달력 기록 모두 지우기</button></p>
+  </section>
+
   <footer class="promises">
     <h3>숨구멍의 약속</h3>
         <div class="trust-wrap">
@@ -1404,6 +1568,15 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   </div>
 </div>
 
+<div class="overlay" id="ov-onb" hidden role="dialog" aria-modal="true" aria-labelledby="onb-title">
+  <div class="onb-card">
+    <div class="onb-dots" id="onb-dots"><i class="on"></i><i></i><i></i></div>
+    <h2 id="onb-title"></h2>
+    <div id="onb-body"></div>
+    <div class="onb-btns"><button class="btn ghost small" id="onb-skip" type="button">건너뛰기</button><button class="btn small" id="onb-next" type="button">다음</button></div>
+  </div>
+</div>
+
 <script>
 (() => {
   "use strict";
@@ -1432,7 +1605,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
   const hide = (el) => { el.hidden = true; };
 
   // ---------- 탭 ----------
-  const VIEWS = ["write", "board", "rooms", "shout", "night", "face", "vault", "letter"];
+  const VIEWS = ["write", "board", "rooms", "shout", "night", "face", "vault", "letter", "mood"];
   const pill = document.querySelector(".tab-pill");
   function placePill() {
     const a = document.querySelector('.tabs a[aria-current="page"]');
@@ -1457,6 +1630,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (v === "write" && !firstRoute) pickHook();
     firstRoute = false;
     if (v === "letter") renderLetters();
+    if (v === "mood") renderCal();
     if (v === "rooms") renderRooms();
     if (v === "night") { nightSky.start(); renderSavedTodo(); } else if (typeof nightSky !== "undefined") nightSky.stop();
     if (v !== "shout") { stopMic(); stopRelief(); }
@@ -1523,6 +1697,13 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     if (/Windows/i.test(ua)) return `키보드에서 <kbd>Windows 키</kbd> + <kbd>H</kbd>를 함께 누르고 말하면 글자로 들어가요.`;
     return `기기의 음성 입력 기능(키보드의 마이크 버튼)을 쓰면 말로 입력할 수 있어요.`;
   }
+  // 마이크·카메라 허락을 거절했을 때 다시 켜는 방법
+  function permHow(what) {
+    const ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/i.test(ua)) return `아이폰: <b>설정</b> → 아래로 내려 <b>Claude</b>(사파리로 열었다면 <b>Safari</b>) → <b>${what}</b> 켜기. 그다음 이 화면으로 돌아와 다시 눌러 주세요.`;
+    if (/Android/i.test(ua)) return `안드로이드폰: <b>설정</b> → <b>애플리케이션</b> → <b>Claude</b>(크롬으로 열었다면 <b>Chrome</b>) → <b>권한</b> → <b>${what}</b> → <b>허용</b>. 그다음 이 화면으로 돌아와 다시 눌러 주세요.`;
+    return `주소창 왼쪽의 자물쇠 표시를 누르고 <b>${what}</b>를 <b>허용</b>으로 바꾼 뒤, 페이지를 새로고침해 주세요.`;
+  }
   function attachVoice(btn, ta, note, max, onChange) {
     const label = btn.querySelector(".mic-label");
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1530,7 +1711,7 @@ input[type="password"], input[type="text"].field { width: 100%; border: 1px soli
     const say = (html) => { note.classList.remove("mic-help"); note.innerHTML = html; note.hidden = !html; };
     // 이 화면에서 마이크를 못 쓸 때: 기기에 원래 있는 음성 입력을 바로 안내해요
     const keyboardHint = (why) => {
-      say(`<b class="mh-title">${why}</b><span class="mh-how">${dictationHow()}</span><span class="mh-sub">글 쓰는 칸에 커서를 두었어요. 지금 바로 해 보세요.</span>`);
+      say(`<b class="mh-title">${why}</b><span class="mh-how">${dictationHow()}</span><span class="mh-sub">글 쓰는 칸에 커서를 두었어요. 지금 바로 해 보세요.</span><span class="mh-sub">마이크 허락을 거절했다면 다시 켤 수 있어요. ${permHow("마이크")}</span>`);
       note.classList.add("mic-help");
       ta.focus();
     };
@@ -2514,7 +2695,7 @@ ${text}
   let curRoom = ROOM_NAME[store.get("sg.room", "work")] ? store.get("sg.room", "work") : "work";
   let roomEmo = "angry", writeRoom = "";
   function renderRooms() {
-    const live = posts.filter(p => Date.now() - p.at < POST_TTL);
+    const live = posts.filter(p => Date.now() - p.at < POST_TTL && !isHidden(p));
     const chips = $("room-chips"); chips.innerHTML = "";
     ROOMS.forEach(r => {
       const b = document.createElement("button"); b.type = "button"; b.className = "room-chip";
@@ -2553,6 +2734,7 @@ ${text}
         await db.collection("posts").add({ text: r.masked, emo: roomEmo, room: curRoom, at: Date.now() });
         ta.value = ""; $("room-count").textContent = "0 / 500";
         msg.textContent = r.masked !== raw ? "올렸어요. 이름이나 회사명으로 보이는 부분은 별표로 바꿨어요." : "올렸어요.";
+        recordMood(roomEmo);
         if (typeof feedMonster === "function") feedMonster(roomEmo, 1, "send");
       } catch { msg.textContent = "올리지 못했어요. 잠시 뒤 다시 해 주세요."; send.disabled = false; }
     });
@@ -2607,6 +2789,7 @@ ${text}
         }
       }
     }
+    recordMood(emo);
     if (db && canWrite) db.collection("moods").add({ emo, day: todayKey(), at: Date.now() }).catch(() => {});
 
     await blowAway(wantPublic ? r.masked : raw);
@@ -2644,7 +2827,7 @@ ${text}
   }
   function renderBoard() {
     const board = $("board");
-    const live = posts.filter(p => Date.now() - p.at < POST_TTL);
+    const live = posts.filter(p => Date.now() - p.at < POST_TTL && !isHidden(p));
     board.querySelectorAll(".post").forEach(n => n.remove());
     $("board-empty").hidden = live.length > 0;
     if (!db) { $("board-empty").querySelector("b").textContent = "게시판에 연결되지 않았어요"; $("board-empty").querySelector("p").textContent = "claude.ai에서 로그인한 상태로 열면 다른 사람들의 글이 보여요."; }
@@ -2657,7 +2840,7 @@ ${text}
       el.className = "post" + (seenPosts.has(p.id) ? "" : " new");
       seenPosts.add(p.id);
       el.style.setProperty("--c", `var(--c-${EMO_NAME[p.emo] ? p.emo : "tired"})`);
-      el.innerHTML = `<div class="meta"><span class="tag"></span><span class="room-tag" hidden></span><span class="when"></span></div><p class="text"></p><button class="pat" type="button"><span>토닥토닥</span><span class="n"></span></button>`;
+      el.innerHTML = `<div class="meta"><span class="tag"></span><span class="room-tag" hidden></span><span class="when"></span></div><p class="text"></p><div class="post-actions"><button class="pat" type="button"><span>토닥토닥</span><span class="n"></span></button><button class="report" type="button">신고하기</button></div>`;
       el.querySelector(".tag").textContent = EMO_NAME[p.emo] || "마음";
       if (ROOM_NAME[p.room]) { const rt = el.querySelector(".room-tag"); rt.hidden = false; rt.textContent = ROOM_NAME[p.room] + "방"; }
       el.querySelector(".when").textContent = `${ago(p.at)} · ${leftTime(p.at)}`;
@@ -2668,6 +2851,7 @@ ${text}
       btn.querySelector(".n").textContent = pats[p.id] || 0;
       btn.disabled = !canWrite;
       btn.addEventListener("click", () => pat(p.id, btn));
+      el.querySelector(".report").addEventListener("click", () => reportPost(p.id));
       return el;
     }
   }
@@ -2765,7 +2949,7 @@ ${text}
     loop();
   });
   function tapMode() {
-    $("shout-note").textContent = "이 화면에서는 마이크를 쓸 수 없어요. 대신 3초 동안 아래 버튼을 마구 두드려서 분노를 재 볼게요.";
+    $("shout-note").innerHTML = `이 화면에서는 마이크를 쓸 수 없어요. 대신 3초 동안 아래 버튼을 마구 두드려서 분노를 재 볼게요.<br><br><b>마이크 허락을 거절했다면 다시 켤 수 있어요.</b> ${permHow("마이크")}`;
     $("db-verdict").textContent = "아래 큰 버튼을 누르는 순간 3초가 시작돼요.";
     hide($("shout-start")); show($("tapzone"));
     let taps = 0, started = 0, timer = 0;
@@ -3965,6 +4149,41 @@ ${text}
   $("sleep-dim-btn").addEventListener("click", () => { $("dim-left").textContent = sleepA ? leftText(sleepA.end - Date.now()) : "수면 음악이 꺼져 있어요"; show($("sleep-dim")); dimScene.start(); });
   $("sleep-dim").addEventListener("click", closeDim);
 
+  // ---------- 첫 화면 안내 카드 ----------
+  // 첫 화면에 펼쳐 보여 주고, 다 보거나 건너뛰면 작은 버튼으로 접어 둬요. 「사용법」이나 그 버튼으로 언제든 다시 열어요
+  const welCard = $("welcome"), welSlides = [...welCard.querySelectorAll(".wel-slide")], welDots = welCard.querySelector(".wel-dots"), welNext = $("wel-next"), welReopen = $("wel-reopen");
+  $("wel-trust").appendChild(document.querySelector(".promises .trust-table").cloneNode(true));
+  let welAt = 0;
+  welSlides.forEach((_, i) => { const d = document.createElement("button"); d.type = "button"; d.setAttribute("role", "tab"); d.setAttribute("aria-label", `${i + 1}쪽`); d.onclick = () => welGo(i); welDots.appendChild(d); });
+  function welGo(i) {
+    if (i < 0 || i >= welSlides.length) return;
+    const back = i < welAt; welAt = i;
+    welSlides.forEach((sl, k) => { sl.hidden = k !== i; sl.classList.toggle("back", back); });
+    welDots.querySelectorAll("button").forEach((d, k) => d.setAttribute("aria-selected", String(k === i)));
+    welNext.textContent = i === welSlides.length - 1 ? "시작하기" : "다음";
+  }
+  function welClose() {
+    store.set("sg.welcome", 1); store.set("sg.onboarded", true);
+    welCard.classList.add("closing");
+    setTimeout(() => { welCard.hidden = true; welCard.classList.remove("closing"); welReopen.hidden = false; }, motionOff() ? 0 : 380);
+  }
+  function openWelcome() {
+    if (location.hash && location.hash !== "#write") location.hash = "write";
+    welReopen.hidden = true; welCard.hidden = false; welGo(0);
+    requestAnimationFrame(() => { welCard.scrollIntoView({ behavior: motionOff() ? "auto" : "smooth", block: "start" }); welCard.focus({ preventScroll: true }); });
+  }
+  welNext.onclick = () => (welAt === welSlides.length - 1 ? welClose() : welGo(welAt + 1));
+  $("wel-skip").onclick = welClose;
+  welReopen.onclick = openWelcome;
+  welCard.querySelectorAll("[data-go]").forEach(a => a.addEventListener("click", welClose));
+  // 휴대폰에서는 옆으로 밀어서 넘겨요
+  let welSx = 0, welSy = 0;
+  welCard.addEventListener("pointerdown", e => { welSx = e.clientX; welSy = e.clientY; });
+  welCard.addEventListener("pointerup", e => { const dx = e.clientX - welSx, dy = e.clientY - welSy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) welGo(welAt + (dx < 0 ? 1 : -1)); });
+  welCard.addEventListener("keydown", e => { if (e.key === "ArrowRight") welGo(welAt + 1); if (e.key === "ArrowLeft") welGo(welAt - 1); });
+  welGo(0);
+  if (store.get("sg.welcome", 0)) { welCard.hidden = true; welReopen.hidden = false; }
+
   // ---------- 셀카 표정 ----------
   const FACE_LABEL = { angry: "화남", sad: "슬픔", happy: "즐거움", neutral: "덤덤함", surprised: "놀람", fearful: "불안", disgusted: "불쾌함" };
   const FACE_LINE = {
@@ -4364,6 +4583,128 @@ ${text}
   }
   pickHook();
 
+
+  // ---------- 추가: 신고 · 글씨 크기 · 친구에게 알리기 · 마음 달력 · 첫 안내 ----------
+  var reports = {};
+  var myReports = new Set(store.get("sg.reports", []));
+  var REPORT_LIMIT = 3;
+  function isHidden(p) { return myReports.has(p.id) || (reports[p.id] || 0) >= REPORT_LIMIT; }
+  async function reportPost(postId) {
+    if (myReports.has(postId)) return;
+    if (!confirm("이 글을 신고할까요?\n\n내 화면에서는 바로 사라져요. 신고가 3번 쌓이면 모든 사람에게서 숨겨져요.")) return;
+    myReports.add(postId); store.set("sg.reports", [...myReports]);
+    renderBoard();
+    if (db && canWrite) { try { await db.collection("reports").add({ post: postId, at: Date.now() }); } catch {} }
+  }
+
+  // 글씨 크기
+  function setFs(n) {
+    n = Math.max(0, Math.min(2, Number(n) || 0));
+    if (n) document.documentElement.dataset.fs = String(n); else delete document.documentElement.dataset.fs;
+    store.set("sg.fs", n);
+    document.querySelectorAll(".fs-group button").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.fs) === n)));
+    if (typeof placePill === "function") requestAnimationFrame(placePill);
+  }
+  document.querySelectorAll(".fs-group button").forEach(b => b.addEventListener("click", () => setFs(b.dataset.fs)));
+  setFs(store.get("sg.fs", 0));
+
+  // 친구에게 알리기
+  $("share-btn").addEventListener("click", async () => {
+    const url = location.href.split("#")[0];
+    const text = "화나고 서운한 마음, 이름 없이 털어놓고 가는 곳이에요. 숨구멍에서 숨 좀 쉬고 가요.";
+    const lbl = $("share-btn").querySelector("span");
+    if (navigator.share) { try { await navigator.share({ title: "숨구멍", text, url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(text + "\n" + url); lbl.textContent = "주소를 복사했어요. 카톡에 붙여 넣으세요"; }
+    catch { lbl.textContent = url; }
+    setTimeout(() => { lbl.textContent = "친구에게 알리기"; }, 4000);
+  });
+
+  // 마음 달력 (이 기기에만 저장)
+  function recordMood(emo) {
+    if (!EMO_NAME[emo]) return;
+    const all = store.get("sg.mymoods", {});
+    const k = todayKey(); all[k] = all[k] || {}; all[k][emo] = (all[k][emo] || 0) + 1;
+    store.set("sg.mymoods", all);
+  }
+  function topEmo(day) {
+    if (!day) return "";
+    return Object.keys(day).filter(k => EMO_NAME[k]).sort((a, b) => day[b] - day[a])[0] || "";
+  }
+  let calY = new Date().getFullYear(), calM = new Date().getMonth();
+  function renderCal() {
+    const all = store.get("sg.mymoods", {});
+    $("cal-title").textContent = `${calY}년 ${calM + 1}월`;
+    const grid = $("cal-grid"); grid.innerHTML = "";
+    ["일", "월", "화", "수", "목", "금", "토"].forEach((d, i) => { const e = document.createElement("div"); e.className = "cal-dow" + (i === 0 ? " sun" : ""); e.textContent = d; grid.appendChild(e); });
+    const first = new Date(calY, calM, 1).getDay(), last = new Date(calY, calM + 1, 0).getDate();
+    for (let i = 0; i < first; i++) { const e = document.createElement("div"); e.className = "cal-day empty"; grid.appendChild(e); }
+    const tally = {}; let days = 0;
+    const tk = todayKey();
+    for (let d = 1; d <= last; d++) {
+      const key = calY + "-" + String(calM + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+      const t = topEmo(all[key]);
+      const e = document.createElement("div");
+      e.className = "cal-day" + (t ? " has" : "") + (key === tk ? " today" : "");
+      e.innerHTML = "<span></span><small></small>";
+      e.firstChild.textContent = d;
+      if (t) { e.style.setProperty("--c", `var(--c-${t})`); e.lastChild.textContent = EMO_NAME[t]; tally[t] = (tally[t] || 0) + 1; days++; }
+      e.setAttribute("aria-label", `${calM + 1}월 ${d}일${t ? " " + EMO_NAME[t] : " 기록 없음"}`);
+      grid.appendChild(e);
+    }
+    $("cal-sum-title").textContent = `${calM + 1}월 내 마음 · 기록한 날 ${days}일`;
+    const sum = $("cal-sum"); sum.innerHTML = "";
+    if (!days) { sum.innerHTML = `<p class="note">아직 기록이 없어요. 털어놓기에서 글을 쓰거나 위에서 오늘 마음을 눌러 보세요.</p>`; $("cal-verdict").textContent = ""; return; }
+    EMOS.forEach(em => {
+      const n = tally[em.key] || 0;
+      const row = document.createElement("div"); row.className = "cal-bar"; row.style.setProperty("--c", `var(--c-${em.key})`);
+      row.innerHTML = `<span></span><span class="track"><i style="width:${Math.round(n / days * 100)}%"></i></span><em></em>`;
+      row.firstChild.textContent = em.name; row.lastChild.textContent = n + "일";
+      sum.appendChild(row);
+    });
+    const most = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0];
+    const lines = { angry: "화가 많이 쌓인 달이었네요. 소리 지르기나 두더지 잡기로 한 번씩 풀어 주세요.", hurt: "서운한 날이 많았네요. 못 보낸 편지에 마음을 적어 보는 것도 좋아요.", unfair: "억울한 일이 많았네요. 날짜와 있었던 일을 적어 두면 나중에 큰 힘이 돼요.", tired: "많이 지친 달이었네요. 꿀잠에서 푹 쉬어 가세요." };
+    $("cal-verdict").textContent = lines[most] || "";
+  }
+  $("cal-prev").addEventListener("click", () => { calM--; if (calM < 0) { calM = 11; calY--; } renderCal(); });
+  $("cal-next").addEventListener("click", () => { calM++; if (calM > 11) { calM = 0; calY++; } renderCal(); });
+  (function calPicks() {
+    const box = $("cal-picks");
+    EMOS.forEach(em => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "pick"; b.textContent = em.name;
+      b.style.setProperty("--c", `var(--c-${em.key})`); b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        recordMood(em.key);
+        box.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        $("cal-msg").textContent = `오늘 마음을 「${em.name}」으로 기록했어요.`;
+        calY = new Date().getFullYear(); calM = new Date().getMonth(); renderCal();
+      });
+      box.appendChild(b);
+    });
+  })();
+  $("cal-clear").addEventListener("click", () => {
+    if (!confirm("마음 달력 기록을 모두 지울까요? 지우면 되돌릴 수 없어요.")) return;
+    store.del("sg.mymoods"); $("cal-msg").textContent = "달력 기록을 모두 지웠어요."; renderCal();
+  });
+
+  // 처음 온 사람 안내
+  const ONB = [
+    { t: "숨구멍에 오신 걸 환영해요", b: `<p>이름도, 연락처도 묻지 않아요.</p><p>화나고 서운하고 억울한 마음을 여기 다 내려놓고 가세요. 쓴 글은 정해진 시간이 지나면 저절로 사라져요.</p>` },
+    { t: "이렇게 써요", b: `<ol><li><b>털어놓기</b>에서 지금 감정을 하나 골라요.</li><li>있었던 일을 마음껏 써요. 손이 아프면 말로 입력해도 돼요.</li><li><b>같이 욕해 줘</b>를 누르면 숨구멍이 내 편이 되어 대신 퍼부어 줘요.</li><li>다 쓰면 <b>바람에 날려 보내기</b>로 훌훌 날려 버려요.</li></ol>` },
+    { t: "더 둘러보세요", b: `<ol><li><b>스트레스 풀기</b>: 소리 지르기, 두더지 잡기, 뽁뽁이</li><li><b>꿀잠</b>: 빗소리·파도 소리와 수면 음악</li><li><b>마음 달력</b>: 내 감정이 날마다 색으로 쌓여요</li><li><b>비밀 금고</b>: 나만 여는 비밀 공간</li></ol><p>맨 위 <b>「가」</b> 버튼으로 글씨를 크게 키울 수 있어요.</p>` },
+  ];
+  let onbStep = 0;
+  function paintOnb() {
+    $("onb-title").textContent = ONB[onbStep].t;
+    $("onb-body").innerHTML = ONB[onbStep].b;
+    $("onb-dots").querySelectorAll("i").forEach((d, i) => d.classList.toggle("on", i === onbStep));
+    $("onb-next").textContent = onbStep === ONB.length - 1 ? "시작하기" : "다음";
+  }
+  function openOnb() { onbStep = 0; paintOnb(); show($("ov-onb")); $("onb-next").focus(); }
+  function closeOnb() { hide($("ov-onb")); store.set("sg.onboarded", true); }
+  $("onb-next").addEventListener("click", () => { if (onbStep < ONB.length - 1) { onbStep++; paintOnb(); } else closeOnb(); });
+  $("onb-skip").addEventListener("click", closeOnb);
+  $("help-btn").addEventListener("click", openWelcome); // 안내는 첫 화면 카드가 맡아요(팝업 대신)
+
   // ---------- 시작 ----------
   renderEmos(); updateSend(); route(); renderBoard(); vaultState();
 
@@ -4386,13 +4727,17 @@ ${text}
       pats = {}; snap.docs.forEach(d => { const p = d.data().post; pats[p] = (pats[p] || 0) + 1; });
       renderBoard();
     }, () => {});
+    db.collection("reports").where("at", ">", Date.now() - POST_TTL).onSnapshot(snap => {
+      reports = {}; snap.docs.forEach(d => { const p = d.data().post; reports[p] = (reports[p] || 0) + 1; });
+      renderBoard();
+    }, () => {});
     db.collection("moods").where("day", "==", todayKey()).onSnapshot(snap => {
       moodCounts = {}; snap.docs.forEach(d => { const e = d.data().emo; moodCounts[e] = (moodCounts[e] || 0) + 1; });
       renderEmos();
     }, () => {});
     // 오래된 토닥·감정 기록 정리
     if (canWrite) {
-      for (const col of ["pats", "moods"]) {
+      for (const col of ["pats", "moods", "reports"]) {
         try {
           const old = await db.collection(col).where("at", "<", Date.now() - POST_TTL).limit(50).get();
           for (const d of old.docs) { try { await db.collection(col).doc(d.id).delete(); } catch {} }
@@ -4403,3 +4748,4 @@ ${text}
   setInterval(() => { if (location.hash === "#board") renderBoard(); }, 60000);
 })();
 </script>
+
