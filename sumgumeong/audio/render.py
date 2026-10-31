@@ -103,7 +103,7 @@ def midi_of(name):
     return 12 * (int(rest) + 1) + i
 
 class Instrument:
-    def __init__(self, folder, ext, cap_s=None, fade_out=2.5, lp=None, gain=1.0):
+    def __init__(self, folder, ext, cap_s=None, fade_out=2.5, lp=None, gain=1.0, norm=False):
         self.notes = {}
         for f in sorted(os.listdir(folder)):
             if not f.endswith(ext) or " " in f: continue
@@ -114,6 +114,8 @@ class Instrument:
             if cap_s and len(a) > sec(cap_s): a = a[:sec(cap_s)]
             a = fade(a, 0.0, min(fade_out, len(a) / SR * 0.5))
             if lp: a = lowpass_fast(a, lp)
+            pk = float(np.max(np.abs(a))) + 1e-9
+            if norm: a = a * (0.7 / pk)  # 악기마다 녹음 크기가 달라서 같은 크기로 맞춰요
             self.notes[m] = a * gain
         self.keys = np.array(sorted(self.notes))
         print(f"  {os.path.basename(folder)}: {len(self.notes)} samples")
