@@ -181,15 +181,20 @@ PLATE = reverb_ir(1.8, 2.4, 6000, 0.005)
 
 # ---------- 스타일 10종 ----------
 def boom_bap():
-    b = Beat("boombap", 92, swing=0.22, seed=11); D = drums(); bars = range(8)
-    ep = gm("electric_piano_1", lp=3800); bass = gm("acoustic_bass", cap=1.5)
+    b = Beat("rap", 100, swing=0.26, seed=11); D = drums(); bars = range(8)
+    ep = gm("electric_piano_1", lp=3800); bass = gm("acoustic_bass", cap=1.5); brass = gm("brass_section")
     b.every(D["kick_a"], bars, "x..o..x...x..o..", bus="drum")
     b.every(D["k808"], bars, "x.....x...x.....", vel=0.6, bus="drum")
     b.every(D["snare_full"], bars, "....x.......x...", bus="snare")
     b.every(D["hat_c"], bars, "o.o.o.o.o.o.o.o.", vel=0.55, bus="hat", velf=lambda br, i: 1.25 if i % 4 == 0 else 1)
     b.every(D["hat_o"], bars, "..........o.....", vel=0.35, bus="hat")
     b.every(D["scratch"], [3, 7], "..............x.", vel=0.5, bus="fx")
+    b.every(D["cowbell"], bars, "..x...x...x...x.", vel=0.35, bus="hat"); b.every(D["conga1"], bars, "...x.....x..x...", vel=0.45, bus="hat", pan=0.3); b.every(D["conga2"], bars, ".....x.......x..", vel=0.4, bus="hat", pan=-0.3)
+    b.every(D["hat_o"], bars, "......o.......o.", vel=0.35, bus="hat")
     CH = [("A3", "m7"), ("D3", "m7"), ("E3", "m7"), ("A3", "m7"), ("F3", "maj7"), ("G3", "7"), ("A3", "m7"), ("A3", "m7")]
+    for i in (1, 3, 5, 7):  # 둘째 마디마다 브라스 한 방
+        m = [x + 12 for x in chord_midis(CH[i][0], CH[i][1])]
+        b.chord(brass, m, i, 2, 2, 0.35, vel=0.4, spread=0.3, bus="brass", rel=0.05); b.chord(brass, m, i, 3, 0, 0.6, vel=0.45, spread=0.3, bus="brass", rel=0.08)
     for i, (r, k) in enumerate(CH):
         m = chord_midis(r, k)
         b.chord(ep, m, i, 1, 2, 1.5, vel=0.55, spread=0.25, bus="keys"); b.chord(ep, m, i, 3, 2, 1.2, vel=0.45, spread=0.25, bus="keys")
@@ -197,7 +202,7 @@ def boom_bap():
         for bt, six, mm, dur in [(0, 0, root, 1.5), (1, 2, root + 7, 1), (2, 0, root, 1.5), (3, 0, root + 10 if k != "maj7" else root + 11, 0.5), (3, 2, root + 7, 0.5)]:
             b.note(bass, mm, i, bt, six, dur, vel=0.85, bus="bass")
     b.t.buf += crackle(b.len_s, 22, 0.35)
-    return b.mix({"drum": {"gain": 1.0}, "snare": {"rev": (ROOM, 0.3), "gain": 0.95}, "hat": {"hp": 5000, "gain": 0.6}, "keys": {"rev": (PLATE, 0.3), "gain": 1.1}, "bass": {"lp": 900, "gain": 0.85}, "fx": {"gain": .7}})
+    return b.mix({"drum": {"gain": 1.0}, "snare": {"rev": (ROOM, 0.3), "gain": 0.95}, "hat": {"hp": 1500, "gain": 0.7}, "keys": {"rev": (PLATE, 0.3), "gain": 1.1}, "bass": {"lp": 900, "gain": 0.85}, "brass": {"rev": (ROOM, 0.3), "gain": 0.9}, "fx": {"gain": .7}})
 
 def trap():
     b = Beat("trap", 140, swing=0.0, seed=12); D = drums(); bars = range(8)
@@ -246,7 +251,7 @@ def drill():
     return b.mix({"drum": {}, "snare": {"rev": (PLATE, 0.3)}, "hat": {"hp": 6500, "gain": 0.65}, "sub": {"lp": 170, "gain": 0.4}, "keys": {"rev": (HALL, 0.5), "gain": 1.3}, "pad": {"rev": (HALL, 0.5), "gain": 0.9}})
 
 def trot():
-    b = Beat("trot", 128, seed=14); D = drums(); bars = range(8)
+    b = Beat("trot", 132, seed=14); D = drums(); bars = range(8)
     acc = gm("accordion", lp=5000); brass = gm("brass_section"); bass = gm("electric_bass_finger", cap=1.2); bell = gm("tinkle_bell")
     b.every(D["kick_a"], bars, "x...x...x...x...", bus="drum")
     b.every(D["snare_full"], bars, "..x...x...x...x.", vel=0.85, bus="snare")  # 쿵짝쿵짝
@@ -372,7 +377,7 @@ def ballad():
     return b.mix({"drum": {"lp": 4000}, "snare": {"rev": (HALL, 0.45)}, "hat": {"hp": 5000}, "keys": {"rev": (HALL, 0.5), "gain": 0.9}, "pad": {"rev": (HALL, 0.6), "gain": 0.8}, "bass": {"lp": 800, "gain": 1.0}}, rms_db=-17)
 
 STYLES = {
-    "boombap": (boom_bap, "붐뱁", 92), "trap": (trap, "트랩", 140), "drill": (drill, "드릴", 142), "trot": (trot, "뽕짝", 128), "gugak": (gugak, "국악 힙합", 96),
+    "rap": (boom_bap, "랩", 100), "boombap": (boom_bap, "붐뱁", 100), "trap": (trap, "트랩", 140), "drill": (drill, "드릴", 142), "trot": (trot, "뽕짝", 132), "gugak": (gugak, "국악 힙합", 96),
     "rock": (rock, "록", 150), "funk": (funk, "펑크", 112), "lofi": (lofi, "로파이", 82), "edm": (edm, "EDM", 128), "ballad": (ballad, "발라드", 72),
 }
 

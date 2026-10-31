@@ -2638,11 +2638,7 @@ ${text}
     });
     // ---------- 랩으로 불러 줘: AI가 가사를 쓰고, 진짜 악기로 만든 비트 위에서 고른 목소리가 박자에 맞춰 랩을 해요 ----------
     const BEATS = {
-      boombap: { name: "붐뱁", bpm: 92, feel: "90년대 뉴욕 힙합, 먼지 낀 드럼과 재즈 피아노" }, trap: { name: "트랩", bpm: 140, feel: "묵직한 808, 어두운 스트링, 하프타임" },
-      drill: { name: "드릴", bpm: 142, feel: "미끄러지는 808과 어두운 피아노, 차가운 분노" }, trot: { name: "뽕짝", bpm: 128, feel: "아코디언과 쿵짝 리듬, 웃기면서 신나게" },
-      gugak: { name: "국악 힙합", bpm: 96, feel: "북·장구·가야금 느낌의 흥, 한풀이" }, rock: { name: "록", bpm: 150, feel: "디스토션 기타 파워코드, 질주하는 분노" },
-      funk: { name: "펑크", bpm: 112, feel: "슬랩 베이스와 클라비넷, 비웃듯 경쾌하게" }, lofi: { name: "로파이", bpm: 82, feel: "나른한 로즈 피아노, 혼잣말처럼 중얼중얼" },
-      edm: { name: "EDM", bpm: 128, feel: "네 박자 킥과 슈퍼소, 떼창하듯" }, ballad: { name: "발라드", bpm: 72, feel: "피아노 아르페지오, 서운함을 꾹꾹 눌러 담아" }
+      rap: { name: "랩", bpm: 100, feel: "흥겨운 힙합, 브라스와 콩가" }, trot: { name: "뽕짝", bpm: 132, feel: "아코디언과 쿵짝, 신나게" }, rock: { name: "록", bpm: 150, feel: "디스토션 기타, 질주" }
     };
     const BEAT_KEYS = Object.keys(BEATS), BEAT_BARS = 8;
     const barSec = (k) => 60 / BEATS[k].bpm * 4;
@@ -2734,24 +2730,25 @@ ${text}
       const PART_RE = /[은는이가을를도의에서로과와고면서지만니까라서면]$/; // 조사·연결어미로 끝나는 낱말 뒤에서 끊어요
       function phrasesOf(t) {
         let ps = t.split(/(?<=,)\s*/).map(x => x.trim()).filter(Boolean);
-        if (ps.length === 1 && sylCount(t, en) >= 9) { // 쉼표가 없으면 조사·어미 뒤에서 가운데에 가깝게 한 번 나눠요
-          const ws = t.split(" "); if (ws.length >= 3) { let best = -1, bd = Infinity; for (let i = 1; i < ws.length; i++) { if (!PART_RE.test(ws[i - 1].replace(/[,.!?~…]+$/, ""))) continue; const d = Math.abs(i - ws.length / 2); if (d < bd) { bd = d; best = i; } } if (best < 0) best = Math.ceil(ws.length / 2); ps = [ws.slice(0, best).join(" "), ws.slice(best).join(" ")]; }
-        }
-        return ps.slice(0, 3).map((x, j, arr) => (j < arr.length - 1 && x.length + (arr[j + 1] || "").length < 6 ? x + " " + arr[j + 1] : x)).filter((x, j, arr) => !(j > 0 && arr[j - 1].endsWith(x)));
+        const halve = (x) => { const ws = x.split(" "); if (ws.length < 3 || sylCount(x, en) < 8) return [x]; let best = -1, bd = Infinity; for (let i = 1; i < ws.length; i++) { if (!PART_RE.test(ws[i - 1].replace(/[,.!?~…]+$/, ""))) continue; const d = Math.abs(i - ws.length / 2); if (d < bd) { bd = d; best = i; } } if (best < 0) best = Math.ceil(ws.length / 2); return [ws.slice(0, best).join(" "), ws.slice(best).join(" ")]; };
+        ps = ps.flatMap(halve); if (ps.length <= 2) ps = ps.flatMap(x => sylCount(x, en) >= 12 ? halve(x) : [x]); // 노래처럼 짧은 호흡으로
+        return ps.slice(0, 4);
       }
-      function styleLine(i, l) { // 줄의 성격에 따라 구절별 표현을 정해요
+      // 노래 선율 윤곽: 줄마다 다른 모양의 높낮이 곡선을 돌려 써요(묻고 → 올리고 → 절정 → 내려놓기)
+      const CONTOURS = [[1.0, 1.08, 1.14, 1.02], [1.1, 1.04, 0.96, 0.9], [1.02, 1.16, 1.1, 1.2], [0.96, 1.06, 1.12, 0.98]];
+      function styleLine(i, l) {
         const t = l.t, ps = phrasesOf(t), n = ps.length, last = i === plan.lines.length - 1;
-        const curse = CURSE_RE.test(t), soft = SOFT_RE.test(t) || last, ask = /\?\s*$/.test(t), bang = /!\s*$/.test(t), lift = i % 2 === 1;
+        const curse = CURSE_RE.test(t), soft = SOFT_RE.test(t) || last, ask = /\?\s*$/.test(t), bang = /!\s*$/.test(t);
+        const ct = CONTOURS[i % CONTOURS.length];
         return ps.map((p, j) => {
-          const end = j === n - 1, pc = CURSE_RE.test(p);
-          let pitch = 1 + (lift ? .03 : 0), rate = 1, vol = .96, cut = false;
-          if (soft) { pitch -= .05; rate = end ? .86 : .92; vol = .9; cut = end; }           // 위로: 낮고 느리게, 마지막 구절은 한 박 쉬고
-          else if (pc) { pitch -= .04; rate = .93; vol = 1; cut = true; }                     // 욕 구절: 무겁게 눌러서, 끊어서
-          else if (ask && end) { pitch += .08; rate = 1.06; vol = 1; }                        // 되물음: 끝을 올려서
-          else if (bang && end) { pitch += .05; rate = 1.1; vol = 1; cut = true; }            // 느낌표: 세게 때리듯
-          else if (end) { pitch -= .02; rate = .97; }                                         // 보통 줄 끝: 살짝 내려 마무리
-          else { pitch += .02; rate = 1.04; }                                                 // 앞 구절: 조금 밀어붙이듯
-          return { p, pitch: Math.min(1.15, Math.max(.88, pitch)), rate: Math.min(1.15, Math.max(.84, rate)), vol, cut, hit: pc || (bang && end) };
+          const end = j === n - 1, pc = CURSE_RE.test(p), x = n > 1 ? j / (n - 1) : 0;
+          let pitch = ct[Math.round(x * (ct.length - 1))], rate = 1 + (x < .5 ? .06 : -.02), vol = .92 + .08 * x, cut = j % 2 === 0;
+          if (soft) { pitch = 0.98 - .1 * x; rate = end ? .82 : .9; vol = .88; cut = end; }     // 위로: 점점 낮고 느리게, 마지막은 한 박 쉬고 속삭이듯
+          else if (pc) { pitch = Math.min(pitch, .92); rate = .9; vol = 1; cut = true; }        // 욕: 무겁게 눌러 끊어서 때리기
+          else if (ask && end) { pitch = Math.max(pitch, 1.18); rate = 1.08; vol = 1; }         // 되물음: 확 올려서
+          else if (bang && end) { pitch = Math.max(pitch, 1.14); rate = 1.12; vol = 1; cut = true; } // 느낌표: 세게
+          else if (end) { pitch *= .96; rate = .94; }                                            // 줄 끝: 살짝 내려놓기
+          return { p, pitch: Math.min(1.25, Math.max(.82, pitch)), rate: Math.min(1.22, Math.max(.8, rate)), vol, cut, hit: pc || (bang && end) || (!soft && pitch >= 1.14) };
         });
       }
       function speakLine(i, planned) {
@@ -2763,7 +2760,7 @@ ${text}
           u.pitch = (pick.neural ? 1 : pick.pitch) * ph.pitch; u.rate = (pick.neural ? 1 : 1.05) * ph.rate; u.volume = ph.vol;
           u.onstart = () => { if (rap !== r) return; const now = rapAC.currentTime; if (j === 0) { st = now; r.lat = Math.min(0.9, Math.max(0.03, r.lat + (now - planned) * 0.6)); mark(); } try { gain.gain.setTargetAtTime(vol() * 0.6, now, 0.06); } catch {} if (ph.hit && !motionOff()) { box.classList.remove("hit"); void box.offsetWidth; box.classList.add("hit"); } };
           const next = () => { if (rap !== r) return; if (j + 1 >= parts.length) { done(); return; }
-            if (parts[j + 1].cut) { const t = rapAC.currentTime, beat = bs / 4, nb = t0 + Math.ceil((t + r.lat - t0) / beat + 0.05) * beat; r.timer = setTimeout(() => { if (rap === r) say(j + 1, nb); }, Math.max(0, (nb - r.lat - t) * 1000)); } // 끊어서: 다음 박에
+            if (parts[j + 1].cut) { const t = rapAC.currentTime, beat = bs / 8, nb = t0 + Math.ceil((t + r.lat - t0) / beat + 0.05) * beat; r.timer = setTimeout(() => { if (rap === r) say(j + 1, nb); }, Math.max(0, (nb - r.lat - t) * 1000)); } // 끊어서: 다음 박에
             else say(j + 1, 0); }; // 붙여서: 바로 이어
           u.onend = next; u.onerror = next;
           try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch {}

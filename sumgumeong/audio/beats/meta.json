@@ -1,62 +1,20 @@
 {
- "boombap": {
-  "name": "붐뱁",
-  "bpm": 92,
+ "rap": {
+  "name": "랩",
+  "bpm": 100,
   "bars": 8,
-  "len": 20.8696
- },
- "trap": {
-  "name": "트랩",
-  "bpm": 140,
-  "bars": 8,
-  "len": 13.7143
- },
- "drill": {
-  "name": "드릴",
-  "bpm": 142,
-  "bars": 8,
-  "len": 13.5211
+  "len": 19.2
  },
  "trot": {
   "name": "뽕짝",
-  "bpm": 128,
+  "bpm": 132,
   "bars": 8,
-  "len": 15.0
- },
- "gugak": {
-  "name": "국악 힙합",
-  "bpm": 96,
-  "bars": 8,
-  "len": 20.0
+  "len": 14.5455
  },
  "rock": {
   "name": "록",
   "bpm": 150,
   "bars": 8,
   "len": 12.8
- },
- "funk": {
-  "name": "펑크",
-  "bpm": 112,
-  "bars": 8,
-  "len": 17.1429
- },
- "lofi": {
-  "name": "로파이",
-  "bpm": 82,
-  "bars": 8,
-  "len": 23.4146
- },
- "edm": {
-  "name": "EDM",
-  "bpm": 128,
-  "bars": 8,
-  "len": 15.0
- },
- "ballad": {
-  "name": "발라드",
-  "bpm": 72,
-  "bars": 8,
-  "len": 26.6667
  }
 }
