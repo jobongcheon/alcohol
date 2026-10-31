@@ -2638,7 +2638,9 @@ ${text}
         : (/Windows/.test(navigator.userAgent) && !/Edg\//.test(navigator.userAgent) ? "지금은 기계 목소리예요. Edge 브라우저로 열면 진짜 사람 같은 목소리로 읽어요." : "지금은 기기 기본 목소리예요. 목소리 고르기에서 더 자연스럽게 만드는 법을 봐 주세요.");
     });
     // ---------- 랩으로 불러 줘: AI가 가사를 쓰고, 진짜 악기로 만든 비트 위에서 고른 목소리가 박자에 맞춰 랩을 해요 ----------
+    // g1~g5: 회원님이 Gemini로 만든 노래에서 목소리를 빼고(노래방 방식) 8마디를 잘라 만든 진짜 반주예요
     const BEATS = {
+      g1: { name: "내 곡 1", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주" }, g2: { name: "내 곡 2", bpm: 72.8, len: 26.3736, feel: "Gemini 노래 반주" }, g3: { name: "내 곡 3", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주" }, g4: { name: "내 곡 4", bpm: 69.8, len: 27.5072, feel: "Gemini 노래 반주" }, g5: { name: "내 곡 5", bpm: 74.9, len: 25.6342, feel: "Gemini 노래 반주" },
       rap: { name: "랩", bpm: 100, feel: "흥겨운 힙합, 브라스와 콩가" }, trot: { name: "뽕짝", bpm: 132, feel: "아코디언과 쿵짝, 신나게" }, rock: { name: "록", bpm: 150, feel: "디스토션 기타, 질주" }
     };
     const BEAT_KEYS = Object.keys(BEATS), BEAT_BARS = 8;
@@ -2648,7 +2650,7 @@ ${text}
     let rap = null, rapPin = "", lastBeat = "", rapLyrics = null, rapCtrl = null, beatBufs = {}, rapAC = null;
     BEAT_KEYS.concat([""]).forEach(k => {
       const b = document.createElement("button"); b.type = "button"; b.dataset.k = k;
-      b.innerHTML = k ? `${BEATS[k].name}<span class="bpm">${BEATS[k].bpm}</span>` : "무작위"; b.setAttribute("aria-pressed", String(k === rapPin));
+      b.innerHTML = k ? `${BEATS[k].name}<span class="bpm">${Math.round(BEATS[k].bpm)}</span>` : "무작위"; b.setAttribute("aria-pressed", String(k === rapPin));
       b.addEventListener("click", () => { rapPin = k; paintBeats(); if (rap) startRap(k || pickBeat()); });
       rapBeats.appendChild(b);
     });
@@ -2710,7 +2712,7 @@ ${text}
       if (!rapAC) rapAC = new AC(); if (rapAC.state === "suspended") rapAC.resume();
       let buf; try { buf = await loadBeat(k); } catch { rapStatus.textContent = "비트 파일을 받지 못했어요. 인터넷을 확인해 주세요."; return; }
       if (rap || !rapLyrics) return; // 그새 멈췄거나 가사가 없어졌으면
-      const en = saidDialect === "en", plan = songPlan(k, lyricsFromText(rapLyrics.text, k, en)), bs = barSec(k), loopLen = bs * BEAT_BARS;
+      const en = saidDialect === "en", plan = songPlan(k, lyricsFromText(rapLyrics.text, k, en)), bs = BEATS[k].len ? BEATS[k].len / BEAT_BARS : barSec(k), loopLen = bs * BEAT_BARS;
       rapLines.innerHTML = ""; plan.lines.forEach(l => { const li = document.createElement("li"); li.textContent = l.t; rapLines.appendChild(li); });
       const src = rapAC.createBufferSource(), gain = rapAC.createGain(), eq = rapAC.createBiquadFilter(), shelf = rapAC.createBiquadFilter();
       src.buffer = buf; src.loop = true; src.loopStart = 0; src.loopEnd = Math.min(buf.duration, loopLen);
