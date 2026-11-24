@@ -82,12 +82,12 @@ def merge_en(p,a,titles):
     # 남는 팁(가이드에 없는 것만)
     if tips:
         STOP={'the','a','an','and','or','of','to','in','on','for','is','are','be','it','that','this','with','your','you','as','at','by','if','not','so','do','can','will','than','from','its','use','many','people','before','after'}
-        gw=words(''.join(s['body'] for s in body_secs)+g_lead+(gfaq['body'] if gfaq else ''))
+        gw=words(''.join(s['body'] for s in body_secs)+g_lead+(gfaq['body'] if gfaq else '')+''.join(x['html'] for x in sec)+''.join(x['body'] for x in S if x is not tips))
         def covered(li):
             cw={w for w in words(li) if len(w)>=4 and w not in STOP}
             return len(cw&gw)/max(1,len(cw))
-        keep=[li for li in re.findall(r'<li>.*?</li>',tips['body'],re.S) if covered(li)<0.6]
-        if keep: out.append(h3(pick(['Small details that change the result','Before you rely on the number','Two things to double-check','Worth knowing'],p['id']))+'<ul>'+''.join(keep)+'</ul>')
+        keep=[li for li in re.findall(r'<li>.*?</li>',tips['body'],re.S) if covered(li)<0.5]
+        if keep: out.append(h3(pick(['Small details that change the result','Before you rely on the number','Quick reminders','Worth knowing'],p['id']))+'<ul>'+''.join(keep)+'</ul>')
     out.append(h3(html.escape(sec[1]['h']))+wrap_tables(sec[1]['html']))
     gq,grest=qas(gfaq['body'] if gfaq else ''); sq,srest=qas(sfaq['body'] if sfaq else '')
     out.append(h3(html.escape(a['faq_heading']))+''.join(dedupe_qas([gq,sq])))
