@@ -56,6 +56,11 @@ button.b:focus-visible,.tab:focus-visible{outline:3px solid var(--accent);outlin
 .det summary{cursor:pointer;color:var(--accent);font-weight:500}
 .det ul{margin:6px 0 0;padding-left:18px}
 .det code{font-family:var(--mono);font-size:12.5px;background:var(--bg);padding:1px 5px;border-radius:4px}
+table.side{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:14px}
+table.side caption{text-align:left;font-weight:700;margin-bottom:6px}
+table.side th,table.side td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.side th{background:var(--soft)}
+table.side td:first-child{white-space:nowrap;font-weight:500}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;font-weight:500}
 .toast.on{opacity:1;transform:translateX(-50%)}
 h2{font-size:18px;margin:28px 0 10px}
@@ -79,9 +84,20 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
     <ol>
       <li>아래 목록에서 <b>제목을 누르면 복사</b>돼요. Blogger 글 검색창에 붙여넣고 Enter → 나온 글을 눌러 편집기를 열어요.</li>
       <li>편집기가 코드 화면(HTML 보기)이면 그대로 돼요. 글자가 알록달록한 코드로 보이면 맞아요. 아니면 왼쪽 위 연필 아이콘 → 「HTML 보기」.</li>
-      <li>코드 화면을 클릭 → <b>Ctrl+A</b> → <b>Delete</b> → 여기서 <b>「HTML 복사」</b> → <b>Ctrl+V</b> → 오른쪽 위 <b>「업데이트」</b>. 끝나면 여기서 체크.</li>
+      <li>코드 화면을 클릭 → <b>Ctrl+A</b> → <b>Delete</b> → 여기서 <b>「HTML 복사」</b> → <b>Ctrl+V</b> 까지 하고, 업데이트 전에 오른쪽 「글 설정」으로 가요.</li>
+      <li>오른쪽 <b>「검색 설명」</b>을 열고 → 안의 글을 전부 지우고 → 여기서 <b>「검색 설명 복사」</b> → 붙여넣기.</li>
+      <li>오른쪽 위 <b>「업데이트」</b>. 끝나면 여기서 체크.</li>
     </ol>
-    <div class="tip">사진은 그대로 두면 돼요. 새 HTML에 원래 사진 주소가 들어 있고, 비어 있던 사진 설명(alt)만 채웠어요. 업데이트 후 글을 한 번 열어 계산기 버튼이 눌리는지 확인하세요.</div>
+    <table class="side"><caption>오른쪽 「글 설정」 칸 정리</caption>
+      <tr><th>칸</th><th>할 일</th></tr>
+      <tr><td>라벨</td><td>그대로 두세요. 지금 라벨이 글 내용과 맞아요.</td></tr>
+      <tr><td>게시 날짜</td><td>그대로 두세요. 바꾸면 새 글처럼 보여 목록 순서가 흔들려요.</td></tr>
+      <tr><td>퍼머링크</td><td><b>절대 바꾸지 마세요.</b> 주소가 바뀌면 다른 글의 링크와 검색 기록이 끊겨요.</td></tr>
+      <tr><td>위치</td><td>비워 두세요.</td></tr>
+      <tr><td>검색 설명</td><td><b>바꿔요.</b> 지금은 영어는 모두 "Free ... calculator:"로 시작하고 일본어는 모두 "…無料の計算ツールです"로 끝나는 같은 틀이라, 글마다 다른 새 설명으로 교체해요.</td></tr>
+      <tr><td>옵션</td><td>그대로 두세요. 독자 댓글 허용 그대로.</td></tr>
+    </table>
+    <div class="tip"><b>붙여넣기 전에 코드 화면이 완전히 비었는지 확인하세요.</b> 첫 줄(옛날 사진 줄)이 남으면 사진이 두 장 나와요. 사진은 그대로 두면 돼요. 새 HTML에 원래 사진 주소가 들어 있고, 비어 있던 사진 설명(alt)만 채웠어요. 업데이트 후 글을 한 번 열어 계산기 버튼이 눌리는지 확인하세요.</div>
   </details>
 
   <div class="tools" role="group" aria-label="필터">
@@ -138,7 +154,7 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
       d.innerHTML=`<div class="top">
         <input type="checkbox" ${done[it.id]?'checked':''} aria-label="완료">
         <button class="tcopy" data-a="title" title="눌러서 제목 복사">${esc(it.title)}</button>
-        <div class="btns"><button class="b" data-a="html">HTML 복사</button></div>
+        <div class="btns"><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}</div>
       </div>`;
       d.querySelector('input').addEventListener('change',e=>{ if(e.target.checked)done[it.id]=1; else delete done[it.id]; save(KEY,done); d.classList.toggle('done',!!e.target.checked); count(); if(filter==='todo')render(); });
       d.querySelectorAll('button.b,button.tcopy').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.a; copy(a==='html'?it.html:a==='meta'?it.meta:it.title, a==='html'?'HTML':a==='meta'?'검색 설명':'제목');}));
