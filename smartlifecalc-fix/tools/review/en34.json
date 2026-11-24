@@ -1,0 +1,159 @@
+{
+ "5521367658296701315": [
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "Unrounded payments are $2,022.62 and $1,970.30, so the saving is $52.32 (rounds to $52, not $53) and the break-even is 61 months; the $53 only appears because both payments were rounded first.",
+   "old": "<b>Monthly saving:</b> about $53. Break-even: $3,200 ÷ $53 ≈ 60 months, or five years.",
+   "new": "<b>Monthly saving:</b> about $52 (the unrounded payments are $2,022.62 and $1,970.30). Break-even: $3,200 ÷ $52 ≈ 61 months, or about five years."
+  }
+ ],
+ "5526570178152473365": [
+  {
+   "where": "sections[1].html",
+   "severity": "warn",
+   "problem": "'Multiplied by itself six times' literally describes seven factors (1.05^7); the intended quantity is 1.05 to the sixth power.",
+   "old": "1.05 multiplied by itself six times is 1.34",
+   "new": "1.05 raised to the sixth power is 1.34"
+  }
+ ],
+ "6281691036303104718": [
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "The calculator on this page has a 'property tax + insurance' field but no HOA field, so it does not count 'dues'; attribute the rule to lenders instead.",
+   "old": "and the calculator counts every dollar of tax and dues against the same 28% ceiling.",
+   "new": "and lenders count every dollar of tax and dues against the same 28% ceiling."
+  },
+  {
+   "where": "sections[0].html",
+   "severity": "error",
+   "problem": "Contradicts the tool: readers are told to enter HOA figures, but the calculator has no HOA input (only tax + insurance as a percent of price).",
+   "old": "then enter those real figures rather than a national average.",
+   "new": "then use the real tax rate here rather than a national average; the calculator has no HOA field, so subtract any dues from your monthly housing budget by hand."
+  },
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "$300 ÷ $6.32 = $47,463, which rounds to about $47,500; $47,000 is slightly low given the other figure is quoted to the nearest $500.",
+   "old": "trims about $47,000 from the loan",
+   "new": "trims about $47,500 from the loan"
+  }
+ ],
+ "6292984614266320007": [
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "'Before any mixer' makes no sense for a glass of wine; mixers belong to cocktails.",
+   "old": "so a 5-ounce glass of wine is around 120 calories before any mixer.",
+   "new": "so a 5-ounce glass of wine is around 120 calories, and a cocktail adds the mixer on top."
+  }
+ ],
+ "7125518018589196586": [
+  {
+   "where": "sections[1].html",
+   "severity": "error",
+   "problem": "Arithmetic: 1d18+2 runs from 3 to 20, not 3 to 18. A die with 16 faces (1d16+2) is what spans 3 to 18, and each of its totals has a 1/16 = 6.25% chance, not 5.6%.",
+   "old": "3d6 and 1d18+2 are the same because both run from 3 to 18",
+   "new": "3d6 and 1d16+2 are the same because both run from 3 to 18"
+  },
+  {
+   "where": "sections[1].html",
+   "severity": "error",
+   "problem": "Follows from the fix above: a 16-sided die gives each total 1/16 = 6.25%; 5.6% is 1/18.",
+   "old": "A single d18 would give every total the same 5.6%.",
+   "new": "A single d16 would give every total the same 6.25%."
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; every existing heading on the site and in the en3 batch is sentence case, so this will look inconsistent on the page.",
+   "old": "Three Dice Give a Bell Curve, One Die Does Not",
+   "new": "Three dice give a bell curve, one die does not"
+  }
+ ],
+ "7306748485844616831": [
+  {
+   "where": "sections[1].html",
+   "severity": "error",
+   "problem": "ANSI Z765 counts stair treads and landings on the floor from which the stairs descend (the upper floor), not the floor they rise from.",
+   "old": "Stairs are counted on the floor they rise from.",
+   "new": "Stairs are counted on the floor they descend from, not on the floor below."
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "Buying Flooring by the Carton Changes the Math",
+   "new": "Buying flooring by the carton changes the math"
+  }
+ ],
+ "7749865125508405493": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "Can You Read a Tape Measure Without Guessing?",
+   "new": "Can you read a tape measure without guessing?"
+  }
+ ],
+ "7780808152091289692": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "The Payoff Warning Printed on Every Card Statement",
+   "new": "The payoff warning printed on every card statement"
+  }
+ ],
+ "8794301064947462475": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "A 9% Loan With a 5% Fee Is Really 11.2%",
+   "new": "A 9% loan with a 5% fee is really 11.2%"
+  }
+ ],
+ "8977819856225624171": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "Not All Inflation Numbers Move Your Money the Same Way",
+   "new": "Not all inflation numbers move your money the same way"
+  },
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "1 − (1/1.003)^30 = 8.6%, so 'about 9%' is a touch high; 'about 8.5%' matches the arithmetic.",
+   "old": "ends about 9% lower",
+   "new": "ends about 8.5% lower"
+  }
+ ],
+ "8995861747180861481": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case. The sections are about holidays stretching business-day counts and 90 days vs 3 months, so name that directly.",
+   "old": "When a Deadline Lands on a Holiday Weekend",
+   "new": "When a holiday stretches your deadline"
+  }
+ ],
+ "9197564624935001999": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case heading; site and en3 headings are sentence case.",
+   "old": "Starting at 25 Instead of 35 More Than Doubles the Result",
+   "new": "Starting at 25 instead of 35 more than doubles the result"
+  },
+  {
+   "where": "alt",
+   "severity": "warn",
+   "problem": "The post text describes a yearly table, not a chart; 'chart' may not match the actual image. Keep the alt generic.",
+   "old": "Compound interest calculator chart of savings growth with monthly deposits",
+   "new": "Compound interest calculator showing savings growth with monthly deposits"
+  }
+ ]
+}

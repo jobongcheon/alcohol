@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # 기존 글(짧은 블록 + 긴 가이드)을 하나로 합치고, 작가 에이전트가 쓴 고유 섹션·출처·alt·관련글을 끼워 넣어요.
-import sys, re, json, html, os, hashlib
+import sys, re, json, html as _html, os, hashlib
+class html:
+    escape=staticmethod(lambda s,quote=False:_html.escape(s,quote=quote))
+    unescape=staticmethod(_html.unescape)
 WORK=sys.argv[1]; OUT=sys.argv[2]; DRY='--dry' in sys.argv
 os.makedirs(OUT+'/en',exist_ok=True); os.makedirs(OUT+'/jp',exist_ok=True)
 H=re.compile(r'(<h([23])[^>]*>(.*?)</h\2>)',re.S)
@@ -30,6 +33,8 @@ def dedupe_qas(lists):
             if k in seen: continue
             seen.add(k); out.append(p)
     return out
+def wrap_tables(h):
+    h=re.sub(r'<table','<div style="overflow-x:auto"><table',h); return re.sub(r'</table>','</table></div>',h)
 def h3(t): return f'<h3 style="font-size:22px;margin-top:28px">{t}</h3>'
 def srcs(items,lang):
     li=''.join(f'<li><a href="{s["url"]}" rel="noopener" target="_blank">{html.escape(s["name"])}</a></li>' for s in items)
@@ -55,7 +60,8 @@ def merge_en(p,a,titles):
     howto=find(S,lambda h:h.startswith('how to use')); formula=find(S,lambda h:'formula' in h)
     tips=find(S,lambda h:h=='tips'); sfaq=find(S,lambda h:'frequently' in h or 'question' in h)
     gfaq=find(g_h3,lambda h:'frequently' in h or 'question' in h); grel=find(g_h3,lambda h:'related' in h)
-    body_secs=[s for s in g_h3 if s not in (gfaq,grel)]
+    used={(howto['h'] if howto else '').lower(),(formula['h'] if formula else '').lower()}
+    body_secs=[s for s in g_h3 if s not in (gfaq,grel) and s['h'].lower() not in used]  # 짧은 블록과 같은 제목(예: The formula)은 가이드 쪽을 버려요
     out=[]
     out.append(f'<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">')
     out.append(s_intro.strip())
@@ -71,8 +77,8 @@ def merge_en(p,a,titles):
     sec=a['sections']
     for i,s in enumerate(body_secs):
         out.append(h3(s['h'])+s['body'])
-        if i==0: out.append(h3(html.escape(sec[0]['h']))+sec[0]['html'])
-    if len(body_secs)==0: out.append(h3(html.escape(sec[0]['h']))+sec[0]['html'])
+        if i==0: out.append(h3(html.escape(sec[0]['h']))+wrap_tables(sec[0]['html']))
+    if len(body_secs)==0: out.append(h3(html.escape(sec[0]['h']))+wrap_tables(sec[0]['html']))
     # 남는 팁(가이드에 없는 것만)
     if tips:
         STOP={'the','a','an','and','or','of','to','in','on','for','is','are','be','it','that','this','with','your','you','as','at','by','if','not','so','do','can','will','than','from','its','use','many','people','before','after'}
@@ -82,7 +88,7 @@ def merge_en(p,a,titles):
             return len(cw&gw)/max(1,len(cw))
         keep=[li for li in re.findall(r'<li>.*?</li>',tips['body'],re.S) if covered(li)<0.6]
         if keep: out.append(h3(pick(['Small details that change the result','Before you rely on the number','Two things to double-check','Worth knowing'],p['id']))+'<ul>'+''.join(keep)+'</ul>')
-    out.append(h3(html.escape(sec[1]['h']))+sec[1]['html'])
+    out.append(h3(html.escape(sec[1]['h']))+wrap_tables(sec[1]['html']))
     gq,grest=qas(gfaq['body'] if gfaq else ''); sq,srest=qas(sfaq['body'] if sfaq else '')
     out.append(h3(html.escape(a['faq_heading']))+''.join(dedupe_qas([gq,sq])))
     if grel: out.append(h3(grel['h'])+re.sub(r'<p style="font-size:15px;color:#555">.*?</p>','',grel['body'],flags=re.S))
@@ -99,7 +105,8 @@ def merge_en(p,a,titles):
          f'<span style="font-size:17px">{links}</span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>')
     tail=re.sub(r'<div style="margin-top:30px;border:2px solid.*?</div>',lambda m:box,tail,count=1,flags=re.S)
     prefix=prefix.replace('alt=""',f'alt="{html.escape(a["alt"],quote=True)}"',1)
-    return prefix+'\n'.join(out)+'\n'+tail
+    art=re.sub(r'&(?!amp;|lt;|gt;|quot;|nbsp;|#\\d+;|[a-zA-Z]+;)','&amp;','\n'.join(out))
+    return prefix+art+'\n'+tail
 
 def merge_jp(p,a,titles):
     b=p['html']
@@ -128,9 +135,9 @@ def merge_jp(p,a,titles):
     last_ex=max([i for i,s in enumerate(body_secs) if s['h'].startswith('計算例')],default=0)
     for i,s in enumerate(body_secs):
         out.append(h3(s['h'])+s['body'])
-        if i==last_ex: out.append(h3(html.escape(sec[0]['h']))+sec[0]['html'])
-    if not body_secs: out.append(h3(html.escape(sec[0]['h']))+sec[0]['html'])
-    out.append(h3(html.escape(sec[1]['h']))+sec[1]['html'])
+        if i==last_ex: out.append(h3(html.escape(sec[0]['h']))+wrap_tables(sec[0]['html']))
+    if not body_secs: out.append(h3(html.escape(sec[0]['h']))+wrap_tables(sec[0]['html']))
+    out.append(h3(html.escape(sec[1]['h']))+wrap_tables(sec[1]['html']))
     allq=[qas(sfaq['body'])[0] if sfaq else []]+[qas(s['body'])[0] for s in gfaqs]
     out.append(h3(html.escape(a['faq_heading']))+''.join(dedupe_qas(allq)))
     chk=re.search(r'<p[^>]*><b>このページの確認方法[：:]</b>(.*?)</p>',guide,re.S)
@@ -147,7 +154,8 @@ def merge_jp(p,a,titles):
          f'<span style="font-size:16px">{links}</span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>')
     tail=tail[:m.start()]+box+tail[m.end():] if m else tail
     prefix=prefix.replace('alt=""',f'alt="{html.escape(a["alt"],quote=True)}"',1)
-    return prefix+'\n'.join(out)+'\n'+tail
+    art=re.sub(r'&(?!amp;|lt;|gt;|quot;|nbsp;|#\\d+;|[a-zA-Z]+;)','&amp;','\n'.join(out))
+    return prefix+art+'\n'+tail
 
 def dummy(p,lang):
     return dict(alt='ALT',meta='META',article_h2='H2 '+p['title'][:20],faq_heading='FAQH',sections=[dict(h='S1',html='<p>s1</p>'),dict(h='S2',html='<p>s2</p>')],

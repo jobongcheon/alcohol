@@ -72,7 +72,7 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
   <details class="guide" open>
     <summary>붙여넣는 방법 (글 하나에 1분)</summary>
     <ol>
-      <li>아래 목록에서 <b>「글 열기」</b>는 확인용이고, 수정은 <b>Blogger 관리 화면</b>에서 해요: blogger.com → 「글」 → 해당 글 제목에 마우스 → 연필(수정).</li>
+      <li>여기서 <b>「제목 복사」</b> → blogger.com 「글」 화면 위의 <b>글 검색</b>창에 붙여넣기(Ctrl+V) → Enter → 나온 글의 제목을 눌러 편집기를 열어요. (「글 열기」는 확인용이에요.)</li>
       <li>편집기 왼쪽 위의 연필 아이콘을 눌러 <b>「HTML 보기」</b>로 바꿔요. (글쓰기 보기에 붙이면 계산기가 깨져요.)</li>
       <li>HTML 창 안을 클릭 → <b>Ctrl+A</b> 전체 선택 → <b>Delete</b> → 여기서 <b>「HTML 복사」</b> 누른 뒤 <b>Ctrl+V</b>.</li>
       <li>오른쪽 「글 설정」 → <b>「검색 설명」</b>을 열고, 여기서 <b>「검색 설명 복사」</b> 한 내용을 붙여넣어요.</li>
@@ -136,7 +136,7 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
         <input type="checkbox" id="c${i}" ${done[it.id]?'checked':''} aria-label="완료">
         <div class="ttl"><label class="t" for="c${i}">${esc(it.title)}</label>
           <div class="m">${chip}<a href="${esc(it.url)}" target="_blank" rel="noopener">글 열기</a><span>${meta}</span></div></div>
-        <div class="btns"><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}</div>
+        <div class="btns"><button class="b s" data-a="title">제목 복사</button><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}</div>
       </div>
       ${it.kind==='post'?`<details class="det"><summary>무엇이 바뀌었나</summary><ul>
         <li>중복된 FAQ·표·팁을 하나로 합쳤어요. FAQ 제목: 「${esc(it.faq)}」</li>
@@ -145,7 +145,8 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
         <li>사진 설명(alt): ${esc(it.alt)}</li>
         <li>검색 설명: ${esc(it.meta)}</li></ul></details>`:''}`;
       d.querySelector('input').addEventListener('change',e=>{ if(e.target.checked)done[it.id]=1; else delete done[it.id]; save(KEY,done); d.classList.toggle('done',!!e.target.checked); count(); if(filter==='todo')render(); });
-      d.querySelectorAll('button.b').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.a==='html'?it.html:it.meta,b.dataset.a==='html'?'HTML':'검색 설명')));
+      const shortTitle=it.title.split(/\s[-–]\s/)[0].trim();
+      d.querySelectorAll('button.b').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.a; copy(a==='html'?it.html:a==='meta'?it.meta:shortTitle, a==='html'?'HTML':a==='meta'?'검색 설명':'제목');}));
       list.appendChild(d);
     });
     count();

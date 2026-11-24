@@ -1,0 +1,198 @@
+{
+ "517355354641876299": [
+  {
+   "where": "sections[0].html",
+   "severity": "error",
+   "problem": "Month-by-month simulation (same convention as the site's own tables, which count a final partial payment as a month) gives 56 months for $4,000 at 24% paid at $120, not 55.",
+   "old": "takes roughly <b>55 months</b>",
+   "new": "takes roughly <b>56 months</b>"
+  },
+  {
+   "where": "sections[0].html",
+   "severity": "error",
+   "problem": "Follows from the 56-month figure: 56 - 36 = 20 months saved, not 19.",
+   "old": "cuts 19 months off the payoff",
+   "new": "cuts 20 months off the payoff"
+  },
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "Over-certain: Regulation Z does not require the 36-month line when the minimum payment already clears the balance within 36 months, so 'every statement' is too strong.",
+   "old": "every statement must show how long payoff takes at the minimum and the monthly amount that clears the balance in 36 months",
+   "new": "nearly every statement must show how long payoff takes at the minimum and, unless that is already under three years, the monthly amount that clears the balance in 36 months"
+  }
+ ],
+ "571879699430983884": [
+  {
+   "where": "sections[1].html",
+   "severity": "warn",
+   "problem": "Awkward sentence; 'for part of every year' reads as if the people are born for part of a year.",
+   "old": "The same thing happens for anyone born on the 29th, 30th or 31st for part of every year.",
+   "new": "The same thing happens, in some months of every year, to anyone born on the 29th, 30th or 31st."
+  }
+ ],
+ "929187770840987282": [
+  {
+   "where": "alt",
+   "severity": "warn",
+   "problem": "The image is a generic calculator graphic; the alt claims it displays a specific result (500 ml = 16.9 oz) that is not in the picture.",
+   "old": "ML to oz converter showing 500 milliliters equals 16.9 US fluid ounces",
+   "new": "ML to oz converter graphic for milliliters and US or UK fluid ounces"
+  }
+ ],
+ "951327496336787624": [
+  {
+   "where": "alt",
+   "severity": "warn",
+   "problem": "Generic calculator graphic; alt should not claim a specific displayed value (170 cm = 5 ft 6.9 in).",
+   "old": "CM to inches converter showing 170 centimeters as 5 feet 6.9 inches",
+   "new": "CM to inches converter graphic for centimeters, inches and feet"
+  },
+  {
+   "where": "faq_heading",
+   "severity": "warn",
+   "problem": "Implies the site receives reader mail, which it may not; promises something the site cannot back up.",
+   "old": "Questions readers send about cm and inches",
+   "new": "Common questions about cm and inches"
+  }
+ ],
+ "1299645904545436244": [
+  {
+   "where": "sections[1].html",
+   "severity": "error",
+   "problem": "Amortization of $26,450 at 7.5% over 72 months ($457.32 payment) leaves $10,163 after 48 payments, not $10,170; the other three rows in that column match exactly.",
+   "old": "$10,170",
+   "new": "$10,163"
+  },
+  {
+   "where": "sections[1].html",
+   "severity": "warn",
+   "problem": "Clunky repetition 'coverage covers'.",
+   "old": "GAP coverage covers that first-three-years gap",
+   "new": "GAP coverage protects you during that first-three-years gap"
+  }
+ ],
+ "1314005552810963716": [
+  {
+   "where": "sections[0].html",
+   "severity": "error",
+   "problem": "At 4% price growth the home sells for $486,661; after 6% selling costs and the $299,555 balance the owner nets $157,906, so net cost of owning is $104,451 versus $121,114 for renting: buying wins by about $16,700, not $21,600 (the $21,600 is the extra equity alone, ignoring renting's existing $4,900 lead).",
+   "old": "buying wins by about $21,600",
+   "new": "buying wins by about $16,700"
+  },
+  {
+   "where": "sections[1].html",
+   "severity": "warn",
+   "problem": "'national-style figure' is vague/AI-sounding; the existing post calls the defaults national averages.",
+   "old": "The default 1.1% is a national-style figure",
+   "new": "The default 1.1% is roughly a national average"
+  }
+ ],
+ "2247531282238495734": [
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "Muddled explanation of the ISO rule: December 25-27 also fall after the 52nd Thursday yet are week 52. The reason is that the week containing December 31 has its Thursday in 2026.",
+   "old": "December 28 through 31 fall after the year's 52nd Thursday, so they belong to week 53 rather than to week 1 of 2027",
+   "new": "the week of December 28 to January 3 has its Thursday (December 31) in 2026, so it counts as week 53 of 2026 rather than week 1 of 2027"
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "Why 2026 Is a 53-Week Year and Who Notices",
+   "new": "Why 2026 is a 53-week year and who notices"
+  }
+ ],
+ "2483839318289008117": [
+  {
+   "where": "faq_heading",
+   "severity": "warn",
+   "problem": "Claims readers send the site questions, which it may not be able to back up.",
+   "old": "Tipping questions readers send us",
+   "new": "Common tipping questions"
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "The $2.13 Wage Behind America's Tipping Habit",
+   "new": "The $2.13 wage behind America's tipping habit"
+  }
+ ],
+ "3102477667481099361": [
+  {
+   "where": "meta",
+   "severity": "warn",
+   "problem": "'plus difference and percent difference' is awkward and unclear.",
+   "old": "plus difference and percent difference",
+   "new": "plus percent difference"
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "Five Percentage Myths That Cost People Real Money",
+   "new": "Five percentage myths that cost people real money"
+  }
+ ],
+ "4151274042830238534": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "When Your Syllabus Counts Points Instead of Percentages",
+   "new": "When your syllabus counts points instead of percentages"
+  }
+ ],
+ "4480966174923973352": [
+  {
+   "where": "sections[0].html",
+   "severity": "warn",
+   "problem": "Over-stated: most European recipes are written in grams and milliliters, not cups; the 250 ml cup applies when a European recipe does use cups.",
+   "old": "Australia, New Zealand, Canada and most European recipes",
+   "new": "Australia, New Zealand, Canada and European recipes that use cups"
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "Not Every Cup Is 237 ml: A Country-by-Country Guide",
+   "new": "Not every cup is 237 ml: a country-by-country guide"
+  }
+ ],
+ "4650211648119497449": [
+  {
+   "where": "alt",
+   "severity": "warn",
+   "problem": "Generic calculator graphic; alt should not claim it displays a specific conversion (0.625 to 5/8).",
+   "old": "Decimal to fraction converter turning 0.625 into the simplified fraction 5/8",
+   "new": "Decimal to fraction converter graphic for decimals and simplified fractions"
+  },
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "Is a 13 mm Wrench the Same as 1/2 Inch?",
+   "new": "Is a 13 mm wrench the same as 1/2 inch?"
+  }
+ ],
+ "4829947400865171763": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "Which Consumer Deadlines Are Really Counted in Days",
+   "new": "Which consumer deadlines are really counted in days"
+  }
+ ],
+ "5352498473255539213": [
+  {
+   "where": "article_h2",
+   "severity": "warn",
+   "problem": "Title Case; the existing post and the en1 batch use sentence-case headings.",
+   "old": "A $62,000 Salary Can Pay Less Than $31 an Hour",
+   "new": "A $62,000 salary can pay less than $31 an hour"
+  }
+ ]
+}
