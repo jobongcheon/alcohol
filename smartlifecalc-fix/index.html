@@ -36,6 +36,8 @@ details.guide li{margin:6px 0}
 .list{display:flex;flex-direction:column;gap:8px}
 .row{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .row.done{background:var(--done)}
+.row .b.url{display:none}
+.row.done .b.url{display:inline-block}
 .top{display:flex;gap:10px;align-items:flex-start}
 .top input[type=checkbox]{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex:none}
 .ttl{flex:1;min-width:0}
@@ -87,6 +89,7 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
       <li>코드 화면을 클릭 → <b>Ctrl+A</b> → <b>Delete</b> → 여기서 <b>「HTML 복사」</b> → <b>Ctrl+V</b> 까지 하고, 업데이트 전에 오른쪽 「글 설정」으로 가요.</li>
       <li>오른쪽 <b>「검색 설명」</b>을 열고 → 안의 글을 전부 지우고 → 여기서 <b>「검색 설명 복사」</b> → 붙여넣기.</li>
       <li>오른쪽 위 <b>「업데이트」</b>. 끝나면 여기서 체크.</li>
+      <li><b>색인 요청 (하루 10개 안팎)</b>: 체크한 글에 생기는 <b>「주소 복사 (색인 요청)」</b> → Search Console 맨 위 검색창에 붙여넣고 Enter → <b>「색인 생성 요청」</b>. 영어 글은 smartlifecalc.com 속성, 일본어 글은 daily-glow-up 속성에서 해요.</li>
     </ol>
     <table class="side"><caption>오른쪽 「글 설정」 칸 정리</caption>
       <tr><th>칸</th><th>할 일</th></tr>
@@ -154,10 +157,10 @@ textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
       d.innerHTML=`<div class="top">
         <input type="checkbox" ${done[it.id]?'checked':''} aria-label="완료">
         <button class="tcopy" data-a="title" title="눌러서 제목 복사">${esc(it.title)}</button>
-        <div class="btns"><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}</div>
+        <div class="btns"><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}<button class="b s url" data-a="url">주소 복사 (색인 요청)</button></div>
       </div>`;
       d.querySelector('input').addEventListener('change',e=>{ if(e.target.checked)done[it.id]=1; else delete done[it.id]; save(KEY,done); d.classList.toggle('done',!!e.target.checked); count(); if(filter==='todo')render(); });
-      d.querySelectorAll('button.b,button.tcopy').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.a; copy(a==='html'?it.html:a==='meta'?it.meta:it.title, a==='html'?'HTML':a==='meta'?'검색 설명':'제목');}));
+      d.querySelectorAll('button.b,button.tcopy').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.a; copy(a==='html'?it.html:a==='meta'?it.meta:a==='url'?it.url:it.title, a==='html'?'HTML':a==='meta'?'검색 설명':a==='url'?'주소':'제목');}));
       list.appendChild(d);
     });
     count();
