@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjg5JIbOuFItqa3xBmGFKSD7zO9DI5sLmt6VKYOc405RMsqiG-7XUydHQjZ8UDsGFqLZF51lqmV-VsZCQUb01ipq9zLKOqqoPp9D-IlHnCkNU7_8celD2_zaSfy6zuYq2PzNDQmSdBmqhwjTFbW2KkcwEmpKOqBZyptFFlHoJ1IYQVfRsy6V2EaPqiMXyU/s300/E19.tip-calculator%20%28%ED%8C%81%28%EB%B4%89%EC%82%AC%EB%A3%8C%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Tip calculator splitting a restaurant bill with 15, 18 and 20 percent options" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjg5JIbOuFItqa3xBmGFKSD7zO9DI5sLmt6VKYOc405RMsqiG-7XUydHQjZ8UDsGFqLZF51lqmV-VsZCQUb01ipq9zLKOqqoPp9D-IlHnCkNU7_8celD2_zaSfy6zuYq2PzNDQmSdBmqhwjTFbW2KkcwEmpKOqBZyptFFlHoJ1IYQVfRsy6V2EaPqiMXyU/s320/E19.tip-calculator%20%28%ED%8C%81%28%EB%B4%89%EC%82%AC%EB%A3%8C%29.png"/></a></div>
+
+
+<!-- ===== Tip Calculator (paste in Blogger HTML view) ===== -->
+<div id="eq-calc">
+<style>
+#eq-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#eq-calc .eq-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#eq-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#eq-calc .eq-lbl{display:block;font-weight:bold;margin-top:14px}
+#eq-calc .eq-hint{font-size:15px;color:#555;font-weight:normal}
+#eq-calc .eq-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#eq-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eq-calc input.eq-s{flex:0 0 5.5em}
+#eq-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eq-calc .eq-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#eq-calc .eq-opts{display:grid;gap:8px;margin-top:8px}
+#eq-calc .eq-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#eq-calc .eq-opts input{width:22px;height:22px;flex:none}
+#eq-calc .eq-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#eq-calc .eq-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#eq-calc .eq-grid select{font-size:17px;width:100%}
+#eq-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#eq-calc .eq-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#eq-calc .eq-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#eq-calc .eq-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#eq-calc .eq-err{color:#c00;font-weight:bold;text-align:center}
+#eq-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#eq-calc th,#eq-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#eq-calc th{background:#f2f4f8}
+#eq-calc .eq-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="eq-box"><h2>Tip Calculator</h2>
+<span class="eq-lbl">Bill amount</span><div class="eq-line"><span class="eq-unit">$</span><input type="text" inputmode="decimal" id="eq-bill" placeholder="e.g. 86.40"><span class="eq-unit"></span></div><span class="eq-lbl">Tip</span><div class="eq-opts"><label><input type="radio" name="eq-tp" value="15"> 15% — okay service</label><label><input type="radio" name="eq-tp" value="18"> 18% — good service</label><label><input type="radio" name="eq-tp" value="20" checked> 20% — great service</label><label><input type="radio" name="eq-tp" value="25"> 25% — outstanding</label><label><input type="radio" name="eq-tp" value="x"> Custom</label></div><span class="eq-lbl">Custom tip</span><div class="eq-line"><input type="text" inputmode="decimal" id="eq-cx" placeholder="e.g. 22"><span class="eq-unit">%</span></div><span class="eq-lbl">Split between</span><div class="eq-line"><input type="text" inputmode="decimal" id="eq-ppl" placeholder="1" value="1"><span class="eq-unit">people</span></div><div class="eq-opts"><label><input type="checkbox" id="eq-up"> Round each person’s share up to the next dollar</label></div>
+<button type="button" id="eq-btn">Calculate Tip</button>
+<div class="eq-result" id="eq-res"></div>
+<p class="eq-note">In the US, tipping 15–20% of the pre-tax bill is common at sit-down restaurants.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="eq-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('eq-bill'));
+$('eq-btn').addEventListener('click',function(){var box=$('eq-res');box.style.display='block';function err(t){box.innerHTML='<p class="eq-err">'+t+'</p>';}
+  var B=num($('eq-bill').value),t=pick('eq-tp'),pc=t==='x'?num($('eq-cx').value):+t,n=Math.max(1,Math.round(num($('eq-ppl').value)));
+  if(!B)return err('Please enter the bill amount.');
+  var tip=B*pc/100,tot=B+tip,each=tot/n;if($('eq-up').checked){each=Math.ceil(each);tot=each*n;tip=tot-B;}
+  box.innerHTML='<div style="text-align:center">Tip ('+(Math.round(tip/B*1000)/10)+'%)</div><div class="eq-big">'+usd(tip)+'</div>'+row('Total with tip',usd(tot))+(n>1?row('Each person pays',usd(each)):'')+row('Tip at 15% / 18% / 20%',usd(B*.15)+' / '+usd(B*.18)+' / '+usd(B*.2));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Figure out the tip and split the check in seconds — no mental math at the table. Choose a tip percentage, enter how many people are paying, and you are done.</p>
+<h2 style="font-size:26px;margin-top:10px">How much to tip — and how to split it fairly</h2>
+<p>Tipping customs in the United States are generous by world standards, because many service workers depend on tips for most of their income. This calculator works out the tip, the total and each person's share, and lets you round up so nobody has to deal with cents.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the tip calculator</h3><ol><li>Enter the bill amount.</li><li>Choose a tip percentage or enter your own.</li><li>Enter how many people are splitting the bill.</li><li>Press <b>Calculate Tip</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Tip = bill × tip % &nbsp;|&nbsp; each person = (bill + tip) ÷ people</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>A dinner bill of $86.00 with an 18% tip: the tip is $15.48 and the total is $101.48. Split four ways, that's <b>$25.37 each</b>. Rounded up to $26 each, the table pays $104, which is a tip of about 21%.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Why the law lets restaurants pay servers $2.13 an hour</h3><p>U.S. tipping feels mandatory because, for many servers, it is most of their pay. Under the federal Fair Labor Standards Act an employer may pay a tipped employee a cash wage of <b>$2.13 an hour</b> and count up to $5.12 in tips toward the $7.25 federal minimum wage. If tips fall short in a pay period, the employer must make up the difference, but the baseline the law guarantees is still $7.25.</p><p>States differ. Many set a higher cash wage for tipped workers, and several, including California, Oregon and Washington, do not allow a tip credit at all, so servers there earn the full state minimum before tips. Your 20% means something different in each place, but it is still customary everywhere.</p><p>One more legal wrinkle: a mandatory <b>service charge</b> printed on the bill is not a tip under federal rules. It belongs to the business unless the business chooses to pass it on. If you want to be sure the server gets something, ask whether the charge is shared, or leave a small extra amount in cash.</p>
+<h3 style="font-size:22px;margin-top:28px">Typical U.S. tipping guide</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Service</th><th style="border:1px solid #ccc;padding:6px">Common tip</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Sit-down restaurant</td><td style="border:1px solid #ccc;padding:6px">15–20% (18–20% is common today)</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Bartender</td><td style="border:1px solid #ccc;padding:6px">$1–2 per drink or 15–20% of the tab</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Food delivery</td><td style="border:1px solid #ccc;padding:6px">15–20%, at least $3–5</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Taxi or rideshare</td><td style="border:1px solid #ccc;padding:6px">10–20%</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Hair salon / barber</td><td style="border:1px solid #ccc;padding:6px">15–20%</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Hotel housekeeping</td><td style="border:1px solid #ccc;padding:6px">$2–5 per night</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Before or after tax?</h3>
+<p>Etiquette guides usually say to tip on the pre-tax amount, though many people tip on the total for simplicity. On an $86 bill with 8% tax, the difference at 18% is only about $1.24.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Splitting when people ordered differently</h3>
+<p>An even split is simplest for friends. If one person had a much larger order, add up each person's items, apply the same tip percentage to each, and divide tax proportionally. Check the receipt for an automatic service charge — many restaurants add 18% for large groups, so you don't tip twice.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Same $64 check, four tipping choices side by side</h3><p>Arguments at the table are usually about two or three percentage points. Here is what they are worth on a $64 dinner for two:</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Choice</th><th style="border:1px solid #ccc;padding:6px">Tip</th><th style="border:1px solid #ccc;padding:6px">Total</th><th style="border:1px solid #ccc;padding:6px">Each of two</th></tr><tr><td style="border:1px solid #ccc;padding:6px">15% (okay service)</td><td style="border:1px solid #ccc;padding:6px">$9.60</td><td style="border:1px solid #ccc;padding:6px">$73.60</td><td style="border:1px solid #ccc;padding:6px">$36.80</td></tr><tr><td style="border:1px solid #ccc;padding:6px">18% (good)</td><td style="border:1px solid #ccc;padding:6px">$11.52</td><td style="border:1px solid #ccc;padding:6px">$75.52</td><td style="border:1px solid #ccc;padding:6px">$37.76</td></tr><tr><td style="border:1px solid #ccc;padding:6px">20% (great)</td><td style="border:1px solid #ccc;padding:6px">$12.80</td><td style="border:1px solid #ccc;padding:6px">$76.80</td><td style="border:1px solid #ccc;padding:6px">$38.40</td></tr><tr><td style="border:1px solid #ccc;padding:6px">25% (outstanding)</td><td style="border:1px solid #ccc;padding:6px">$16.00</td><td style="border:1px solid #ccc;padding:6px">$80.00</td><td style="border:1px solid #ccc;padding:6px">$40.00</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Round the total to $80</td><td style="border:1px solid #ccc;padding:6px">$16.00</td><td style="border:1px solid #ccc;padding:6px">$80.00</td><td style="border:1px solid #ccc;padding:6px">$40.00</td></tr></table><p>Going from 18% to 20% costs $1.28 on this bill, or 64 cents a person. The decisions that move the total more are the ones people forget: tipping on the full price of a discounted meal, and checking whether an 18% service charge was already added for your group.</p>
+<h3 style="font-size:22px;margin-top:28px">Tipping questions readers send us</h3><p><b>Do I tip on a discounted meal?</b><br>It's considered polite to tip on the original price before the discount or coupon.</p><p><b>What about tipping abroad?</b><br>Customs vary widely: in Japan tipping is generally not expected, while in much of Europe a small round-up is common. Check local custom before you go.</p><p><b>Should I tip on the total or before tax?</b><br>Either is acceptable; tipping on the pre-tax subtotal is the traditional rule.</p><p><b>How much should I tip for takeout?</b><br>Tipping is optional for takeout; 10% is a kind gesture for large or complicated orders.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.dol.gov/agencies/whd/minimum-wage" rel="noopener" target="_blank">U.S. Department of Labor – Minimum wage (federal rate and tipped employees)</a></li><li><a href="https://www.emilypost.com/advice/general-tipping-guide" rel="noopener" target="_blank">Emily Post Institute – General tipping guide</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> example amounts checked by hand; tipping ranges reflect common U.S. etiquette guides. Last reviewed November 2026. Tip amounts shown are suggestions based on common U.S. custom, not rules, and the wage figures are background information only.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hourly-to-salary-calculator.html" style="color:#1a56db">Hourly to Salary Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percent-change-calculator.html" style="color:#1a56db">Percent Change Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Tip Calculator end ===== -->

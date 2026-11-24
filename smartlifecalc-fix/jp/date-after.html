@@ -1,0 +1,98 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDxRxESsmKKYnWGBhyphenhyphen2QbJ3Ye1aXyWneDb48kVAZWZ9HpVuS_Qu7RU_uhIx6QpRKX8tMY7ltwyD0GdFXcF2g5LjXBW4SAyfTzcz814bSDe2dbsXoNv9RE2Psu8jo6mfY_nOaaY72HXBG5J0D_MVV_kj-Z_DrFXZZRPPDbRRrWmxXN_rjROKZPNAKkrEaM/s300/J05.date-after.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="日付計算ツールの画面：○日後・○日前の日付と曜日" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDxRxESsmKKYnWGBhyphenhyphen2QbJ3Ye1aXyWneDb48kVAZWZ9HpVuS_Qu7RU_uhIx6QpRKX8tMY7ltwyD0GdFXcF2g5LjXBW4SAyfTzcz814bSDe2dbsXoNv9RE2Psu8jo6mfY_nOaaY72HXBG5J0D_MVV_kj-Z_DrFXZZRPPDbRRrWmxXN_rjROKZPNAKkrEaM/s320/J05.date-after.png"/></a></div>
+
+<!-- ===== J05 日付計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc05">
+<style>
+#jc05{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc05 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc05 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc05 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc05 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc05 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc05 input[type=text],#jc05 input[type=date],#jc05 input[type=time],#jc05 select,#jc05 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc05 textarea{width:100%;min-height:180px;font-size:17px}
+#jc05 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc05 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc05 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc05 .jc-opts input{width:20px;height:20px}
+#jc05 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc05 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc05 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc05 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc05 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc05 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc05 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc05 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc05 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc05 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc05 .jc-art th,#jc05 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc05 .jc-art th{background:#f2f4f8}
+#jc05 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">基準日から○日後・○日前の日付と曜日を計算。100日後、1000日記念日、期限の確認に便利な無料の日付計算ツールです。</p>
+<div class="jc-box"><h2>日付計算</h2>
+<span class="jc-lbl">基準日</span><div class="jc-line"><input type="date" id="jc05-a"></div>
+<span class="jc-lbl">日数</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc05-n" placeholder="例：100" value="100"><span class="jc-unit">日</span></div>
+<div class="jc-opts"><label><input type="radio" name="jc05-d" value="1" checked>後</label><label><input type="radio" name="jc05-d" value="-1">前</label></div>
+<button type="button" id="jc05-btn">計算する</button>
+<div class="jc-result" id="jc05-res"></div>
+<p class="jc-note">基準日の翌日を1日目として数えています（例：1月1日の1日後は1月2日）。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc05-',box=document.getElementById('jc05-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  (function(){var e=$('a'),d=new Date();e.value=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);})();
+  $('btn').addEventListener('click',function(){
+var a=D('a'),n=N('n');if(!a)return err('基準日を選んでください。');if(!n&&n!==0)return err('日数を入れてください。');
+var r=new Date(a.getTime());r.setDate(r.getDate()+n*(+R('d')));
+show(fd(r),[['和暦',wareki(r.getFullYear())+' '+(r.getMonth()+1)+'月'+r.getDate()+'日'],['基準日',fd(a)]]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>「今日から100日後は？」「支払期限の30日前は？」といった日付をカレンダーを数えずにすぐ調べられるツールです。曜日も表示されるので、予定を立てるときに便利です。</p>
+
+<h2 style="font-size:24px;margin-top:10px">期限が祝日に当たったら、いつまでに出せばいい？</h2>
+<h3 style="font-size:22px;margin-top:28px">使い方</h3><ul><li>基準日を選びます（最初は今日）。</li><li>日数を入れ、「後」か「前」を選びます。</li><li>「計算する」で日付と曜日が表示されます。</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">よく使われる日数</h3><p>お食い初め（生後100日）、交際100日・1000日記念日、クーリング・オフ（8日間）、各種申請の期限など、日数で決まる予定はたくさんあります。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例（基準日：2026年11月14日・土曜日）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">日数</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">日付</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">曜日</th></tr><tr><td style="border:1px solid #bbb;padding:6px">30日後</td><td style="border:1px solid #bbb;padding:6px">2026年12月14日</td><td style="border:1px solid #bbb;padding:6px">月曜日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">100日後</td><td style="border:1px solid #bbb;padding:6px">2027年2月22日</td><td style="border:1px solid #bbb;padding:6px">月曜日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">180日後</td><td style="border:1px solid #bbb;padding:6px">2027年5月13日</td><td style="border:1px solid #bbb;padding:6px">木曜日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1000日後</td><td style="border:1px solid #bbb;padding:6px">2029年8月10日</td><td style="border:1px solid #bbb;padding:6px">金曜日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">30日前</td><td style="border:1px solid #bbb;padding:6px">2026年10月15日</td><td style="border:1px solid #bbb;padding:6px">木曜日</td></tr></table><p>このツールは「基準日の翌日を1日後」として数えます。日数で決まる予定は、<b>基準日を1日目と数えるのか、翌日から数えるのか</b>で1日ずれるので注意が必要です。</p>
+<h3 style="font-size:22px;margin-top:28px">最終日が土日祝のとき：民法と行政手続きの違い</h3><p>期限の日が土日や祝日のとき、自動的に延びるかどうかはルールで違います。</p><ul><li><b>民法第142条</b>：期間の最後の日が日曜日や祝日などの休日で、その日に取引をしない慣習がある場合に限って、翌日に満了します。慣習がなければ延びません。</li><li><b>国の行政機関への申請</b>：「行政機関の休日に関する法律」により、期限の最終日が土日・祝日・年末年始（12月29日〜1月3日）に当たるときは、翌開庁日が期限になります。</li><li><b>民間の契約・支払い</b>：契約書に「翌営業日」などの定めがあればそれに従います。定めがなければ前倒しが安全です。</li></ul><p>たとえば2026年11月14日（土）に受け取った書類の提出期限が「9日後」なら、計算上は11月23日（月・勤労感謝の日）です。役所なら翌開庁日の11月24日（火）が期限になりますが、相手が民間会社なら前の金曜日に出すのが確実です。</p>
+<h3 style="font-size:22px;margin-top:28px">数え方が違う代表的な例</h3><ul><li><b>お食い初め（生後100日）</b>：昔からの数え方では生まれた日を1日目とするため、「100日目」は誕生日の99日後です。2026年11月14日生まれなら2027年2月21日になります。地域や家庭で考え方が違うこともあります。</li><li><b>クーリング・オフ（訪問販売など8日間）</b>：契約書面を受け取った日を1日目として数えます。11月14日に受け取ったら、11月21日までに通知を出せば間に合います。このツールで調べるときは「7日後」と入れてください。</li><li><b>支払期限「30日以内」</b>：契約書に起算日の決まりがあればそれに従います。迷ったら早めの日付で準備しましょう。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">「1か月後」と「30日後」は違う</h3><p>1月31日の「1か月後」は2月28日（うるう年は29日）とするのが一般的ですが、「30日後」は3月2日です。月単位の期限と日数の期限は、別のものとして扱いましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">よく使われる日数の目安</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">日数</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">使われる場面</th></tr><tr><td style="border:1px solid #bbb;padding:6px">7日</td><td style="border:1px solid #bbb;padding:6px">初七日、1週間後の予定</td></tr><tr><td style="border:1px solid #bbb;padding:6px">49日</td><td style="border:1px solid #bbb;padding:6px">四十九日（亡くなった日を1日目と数えるのが一般的）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">100日</td><td style="border:1px solid #bbb;padding:6px">お食い初め、交際100日記念</td></tr><tr><td style="border:1px solid #bbb;padding:6px">180日</td><td style="border:1px solid #bbb;padding:6px">約半年。保証期間など</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1000日</td><td style="border:1px solid #bbb;padding:6px">交際1000日、記念日</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>当日を1日目にするかどうかを確かめない</b>：法律の期限と行事では数え方が違います。</li><li><b>曜日を確認しない</b>：期限が土日祝日の場合の扱いは、手続き先によって異なります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>支払いや申し込みの期限が「受付から14日以内」のように日数で決まっているとき、期限の日付と曜日をすぐに確かめられます。期限が週末に当たる場合は、早めに準備しておくと安心です。</p><p>赤ちゃんの行事（お七夜・お宮参り・お食い初め）や、記念日（交際100日・結婚1000日）など、日数で決まる日付を調べるのにも使えます。行事は地域によって数え方が違うので、家族の習わしも確かめてください。</p><p>過去の日付を調べるときは「前」を選びます。「90日前に何があったか」「申請期限の30日前はいつか」などを逆算できます。</p>
+<h3 style="font-size:22px;margin-top:28px">「3か月後」の満了日を民法の数え方で求める</h3><p>月や年で決めた期間は、日数に直さずに暦で数えます（民法第143条）。初日を数えない場合、翌日が起算日となり、最後の月の起算日に当たる日（応当日）の前日に期間が終わります。</p><ol><li>2026年11月14日に契約し「3か月」と決めた場合、起算日は11月15日です。</li><li>3か月後の応当日は2027年2月15日なので、その前日の<b>2月14日（日）</b>が満了日になります。</li><li>応当日がない月は、その月の末日で終わります。1月30日契約（起算日1月31日）の「1か月」は、2月31日が存在しないため、2月28日（うるう年は29日）に満了します。</li></ol><p>同じ11月14日から「90日後」をこのツールで計算すると2027年2月12日で、3か月の満了日より2日早くなります。「○か月」と「○日」は別の数え方だと覚えておきましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">日付のずれについて多い質問</h3><p><b>Q. 基準日は1日目に数えますか？</b><br>A. 数えません。基準日の翌日が1日後になります。</p><p><b>Q. マイナスの日数は入れられますか？</b><br>A. 「前」を選べば過去の日付を計算できます。</p><p><b>Q. うるう年も考慮されますか？</b><br>A. はい。2月29日もカレンダー通りに数えます。</p><p><b>Q. 曜日だけ知りたい</b><br>A. 日数に0を入れると、基準日の曜日と和暦が表示されます。</p><p><b>Q. 何年も先の日付も出せますか？</b><br>A. できます。3650日（約10年）後なども計算できます。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 2つの日付の間は何日？</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 結果の年を和暦で確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html">年齢計算</a> – 生年月日から年齢を計算</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://laws.e-gov.go.jp/law/129AC0000000089" rel="noopener" target="_blank">e-Gov法令検索 – 民法（第140条〜第143条 期間の計算）</a></li><li><a href="https://www.kokusen.go.jp/" rel="noopener" target="_blank">国民生活センター – クーリング・オフなど消費者契約の期限</a></li><li><a href="https://eco.mtk.nao.ac.jp/koyomi/" rel="noopener" target="_blank">国立天文台 暦計算室 – 国民の祝日の日付</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>表の日付と曜日はプログラムで別に計算し、ツールの結果と一致することを確かめました。クーリング・オフの期間は消費者庁・国民生活センターの案内をもとにしています。 最終確認：2026年11月。 期限の数え方は契約や手続きごとに異なります。大切な期限は提出先に確認してください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html" style="color:#1a56db">日数計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html" style="color:#1a56db">和暦西暦変換</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html" style="color:#1a56db">年齢計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J05 end ===== -->

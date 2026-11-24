@@ -1,0 +1,98 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzeLhN2ER3P-xCyzXCpGVFcpnq7qyUFCtxw5DLFFf6gyGNl8QIAwCLUtjUiJ23x6ptHL-l_LpRw41neM9YXt3s1ZLWpL5Fdn9GsXRG2PWjWKPw04sbIbvNCbVUNOjuyxKHGcZTmH5QB7hB5I76CL1YfbkKCVa1GFvD0R5Zavtb-f00bD5cwgCoo9Cw9zc/s300/J13.kiso-taisha.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="基礎代謝計算ツールの結果画面と1日の消費カロリーの目安" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzeLhN2ER3P-xCyzXCpGVFcpnq7qyUFCtxw5DLFFf6gyGNl8QIAwCLUtjUiJ23x6ptHL-l_LpRw41neM9YXt3s1ZLWpL5Fdn9GsXRG2PWjWKPw04sbIbvNCbVUNOjuyxKHGcZTmH5QB7hB5I76CL1YfbkKCVa1GFvD0R5Zavtb-f00bD5cwgCoo9Cw9zc/s320/J13.kiso-taisha.png"/></a></div>
+
+
+<!-- ===== J13 基礎代謝計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc13">
+<style>
+#jc13{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc13 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc13 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc13 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc13 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc13 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc13 input[type=text],#jc13 input[type=date],#jc13 input[type=time],#jc13 select,#jc13 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc13 textarea{width:100%;min-height:180px;font-size:17px}
+#jc13 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc13 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc13 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc13 .jc-opts input{width:20px;height:20px}
+#jc13 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc13 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc13 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc13 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc13 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc13 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc13 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc13 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc13 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc13 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc13 .jc-art th,#jc13 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc13 .jc-art th{background:#f2f4f8}
+#jc13 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">性別・年齢・身長・体重から基礎代謝量を計算（国立健康・栄養研究所の式）。活動量に応じた1日の消費カロリーの目安も分かります。</p>
+<div class="jc-box"><h2>基礎代謝計算</h2>
+<span class="jc-lbl">性別</span><div class="jc-opts"><label><input type="radio" name="jc13-s" value="m" checked>男性</label><label><input type="radio" name="jc13-s" value="f">女性</label></div>
+<span class="jc-lbl">年齢</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc13-a" placeholder="例：40"><span class="jc-unit">歳</span></div>
+<span class="jc-lbl">身長</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc13-h" placeholder="例：170"><span class="jc-unit">cm</span></div>
+<span class="jc-lbl">体重</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc13-w" placeholder="例：65"><span class="jc-unit">kg</span></div>
+<span class="jc-lbl">ふだんの活動量</span><div class="jc-line"><select id="jc13-l"><option value="1.5">低い（座り仕事中心）</option><option value="1.75" selected>ふつう（通勤・家事など）</option><option value="2.0">高い（立ち仕事・運動習慣）</option></select></div>
+<button type="button" id="jc13-btn">計算する</button>
+<div class="jc-result" id="jc13-res"></div>
+<p class="jc-note">国立健康・栄養研究所の式（Ganpuleら）で計算した推定値です。持病のある方の食事制限は医師にご相談ください。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc13-',box=document.getElementById('jc13-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var a=N('a'),h=N('h'),w=N('w');if(!a||!h||!w)return err('年齢・身長・体重を入れてください。');
+var k=(0.0481*w+0.0234*h-0.0138*a-(R('s')==='m'?0.4235:0.9708))*1000/4.186,t=k*(+V('l'));
+show(f0(Math.round(k))+' kcal/日',[['1日の消費カロリーの目安',f0(Math.round(t))+' kcal'],['体重を維持する目安',f0(Math.round(t))+' kcal 前後'],['ゆるやかに減量する目安',f0(Math.round(t-300))+' kcal 前後']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>基礎代謝量は、何もしなくても生命を維持するために使われるエネルギーです。1日の消費カロリーの大部分を占めるため、ダイエットや食事管理の目安になります。</p>
+
+<h2 style="font-size:24px;margin-top:10px">年齢だけを変えて比べた基礎代謝の表</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式（国立健康・栄養研究所の式）</h3><p>男性：(0.0481×体重 + 0.0234×身長 − 0.0138×年齢 − 0.4235) × 1000 ÷ 4.186<br>女性：(0.0481×体重 + 0.0234×身長 − 0.0138×年齢 − 0.9708) × 1000 ÷ 4.186</p>
+
+<h3 style="font-size:22px;margin-top:28px">1日の消費カロリー</h3><p>基礎代謝量に活動量の係数（低い1.5・ふつう1.75・高い2.0）をかけると、1日に使うカロリーの目安になります。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>40歳・男性・身長170cm・体重65kgの場合、国立健康・栄養研究所の式で基礎代謝量は<b>約1,464kcal</b>です。活動量が「ふつう（1.75）」なら、1日の消費カロリーの目安は 1,464 × 1.75 ＝ <b>約2,562kcal</b>になります。</p><p>35歳・女性・身長158cm・体重52kgなら、基礎代謝量は<b>約1,133kcal</b>、「ふつう」の活動量で1日<b>約1,984kcal</b>です。</p><p>同じ男性が60歳になると、ほかの条件が同じでも基礎代謝量は約1,398kcalに下がります（年齢の項で約66kcal減）。</p>
+<h3 style="font-size:22px;margin-top:28px">身長158cm・体重52kgの女性、年齢だけ変えると</h3><p>式の年齢の項は「−0.0138×年齢」なので、ほかの条件が同じなら10歳ごとに0.138×1000÷4.186≒33kcal下がります。身長158cm・体重52kgの女性で比べます。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">年齢</th><th style="border:1px solid #ccc;padding:6px">基礎代謝量</th><th style="border:1px solid #ccc;padding:6px">活動量「ふつう（×1.75）」の1日の目安</th></tr><tr><td style="border:1px solid #ccc;padding:6px">25歳</td><td style="border:1px solid #ccc;padding:6px">約1,166kcal</td><td style="border:1px solid #ccc;padding:6px">約2,041kcal</td></tr><tr><td style="border:1px solid #ccc;padding:6px">35歳</td><td style="border:1px solid #ccc;padding:6px">約1,133kcal</td><td style="border:1px solid #ccc;padding:6px">約1,983kcal</td></tr><tr><td style="border:1px solid #ccc;padding:6px">45歳</td><td style="border:1px solid #ccc;padding:6px">約1,100kcal</td><td style="border:1px solid #ccc;padding:6px">約1,925kcal</td></tr><tr><td style="border:1px solid #ccc;padding:6px">55歳</td><td style="border:1px solid #ccc;padding:6px">約1,068kcal</td><td style="border:1px solid #ccc;padding:6px">約1,869kcal</td></tr><tr><td style="border:1px solid #ccc;padding:6px">65歳</td><td style="border:1px solid #ccc;padding:6px">約1,035kcal</td><td style="border:1px solid #ccc;padding:6px">約1,811kcal</td></tr></table><p>25歳と65歳の差は約131kcalで、ごはん茶碗半分ほどです。この差が毎日積み重なるのが「若いころと同じ量で太る」理由です。ただし式は筋肉量を考慮していないため、運動習慣のある人は実際の値がこれより高いことがあります。</p>
+<h3 style="font-size:22px;margin-top:28px">活動量の選び方</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">活動量</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">係数</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">ふだんの生活の例</th></tr><tr><td style="border:1px solid #bbb;padding:6px">低い</td><td style="border:1px solid #bbb;padding:6px">1.5</td><td style="border:1px solid #bbb;padding:6px">一日の大部分を座って過ごす（デスクワーク中心）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">ふつう</td><td style="border:1px solid #bbb;padding:6px">1.75</td><td style="border:1px solid #bbb;padding:6px">座り仕事が中心でも、通勤・買い物・家事で歩く</td></tr><tr><td style="border:1px solid #bbb;padding:6px">高い</td><td style="border:1px solid #bbb;padding:6px">2.0</td><td style="border:1px solid #bbb;padding:6px">立ち仕事・移動の多い仕事、または運動の習慣がある</td></tr></table><p>係数は厚生労働省「日本人の食事摂取基準」の身体活動レベルと同じ考え方です。迷ったら「ふつう」から始め、体重の変化を見ながら調整してください。</p>
+<h3 style="font-size:22px;margin-top:28px">ダイエットに使うときの考え方</h3><ul><li>体脂肪1kgは約7,200kcalとされます。1日300kcal減らすと、約24日で1kgが目安です。</li><li>基礎代謝量を下回る食事は、筋肉が落ちやすく長続きしにくいので避けましょう。</li><li>筋トレなどで筋肉を保つと、年齢とともに下がる基礎代謝の低下をゆるやかにできます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>基礎代謝量＝1日に食べてよい量だと思う</b>：実際に使うカロリーは、基礎代謝量に活動量をかけた値です。</li><li><b>体重計の「基礎代謝」と比べて混乱する</b>：体組成計は筋肉量などから別の式で推定しているため、数値が違うことがあります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">減量が止まったときに計算をやり直す理由</h3><p>体重が減ると基礎代謝も下がります。式の体重の項は「0.0481×体重」なので、1kgにつき0.0481×1000÷4.186≒11.5kcal、5kg減ると約57kcal下がります。</p><p>35歳・158cm・52kgの女性が、1日の目安1,983kcalから300kcal減らした1,683kcalの食事を続けたとします。47kgまで減ると基礎代謝量は約1,076kcal、1日の目安は約1,883kcalになり、同じ食事でも不足分は300kcalから約200kcalに縮みます。1kg減るのにかかる日数は約24日から約36日に延びる計算です。</p><p>体重が3〜5kg変わるごとに計算し直すと、停滞を「失敗」と誤解せずに済みます。食事をさらに削るより、歩く時間を増やして活動量の側を上げる方が続けやすい方法です。</p>
+<h3 style="font-size:22px;margin-top:28px">基礎代謝について読者から届く質問</h3><p><b>Q. 基礎代謝は年齢で下がる？</b><br>A. 一般に筋肉量の減少とともに下がります。筋トレなどで筋肉を保つことが大切です。</p><p><b>Q. ほかの式（ハリス・ベネディクト式）と違うのはなぜ？</b><br>A. ハリス・ベネディクト式は欧米人のデータから作られ、日本人では高めに出やすいといわれます。この計算ツールは日本人のデータで作られた式を使っています。</p><p><b>Q. 持病がある場合は？</b><br>A. 糖尿病や腎臓病などで食事の指示がある方は、主治医や管理栄養士の指示を優先してください。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 体重の減少率を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 目標日まで何日？</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – ○日後の日付</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.nibiohn.go.jp/eiken/" rel="noopener" target="_blank">国立健康・栄養研究所 – 基礎代謝の推定式と栄養情報</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/eiyou/syokuji_kijyun.html" rel="noopener" target="_blank">厚生労働省 – 日本人の食事摂取基準（身体活動レベル）</a></li><li><a href="https://www.e-healthnet.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 e-ヘルスネット – 基礎代謝量の解説</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例はツールと同じ式（Ganpuleら）でプログラム計算し、一致を確かめました。活動係数は「日本人の食事摂取基準」の身体活動レベルをもとにしています。 最終確認：2026年11月。 基礎代謝量は推定式による目安で、医療上の食事指導に代わるものではありません。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/shohi-calorie.html" style="color:#1a56db">消費カロリー計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/bmi.html" style="color:#1a56db">BMI計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J13 end ===== -->

@@ -1,0 +1,95 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAiV9O0Tp-QMHq0tNN1VrZNVfNEY3KYh-pJMpsBwI8qvgD1PVC7ct6me6I6FaL_9GbeOxNjQXCH4a9MOmAVTD_LIwbQTfQ-BEzZ87XxoWMC2tFaksKyahuwGWMhtr9JY-QwddtJy8QqexmKVHDPJPDFvGHDGYGgR8NU-c7WabiNbu6djjwjIKSmvlmOnk/s300/J03.eto-calculator.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="干支計算ツールの画面：生まれ年から十二支と十干を表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAiV9O0Tp-QMHq0tNN1VrZNVfNEY3KYh-pJMpsBwI8qvgD1PVC7ct6me6I6FaL_9GbeOxNjQXCH4a9MOmAVTD_LIwbQTfQ-BEzZ87XxoWMC2tFaksKyahuwGWMhtr9JY-QwddtJy8QqexmKVHDPJPDFvGHDGYGgR8NU-c7WabiNbu6djjwjIKSmvlmOnk/s320/J03.eto-calculator.png"/></a></div>
+
+<!-- ===== J03 干支計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc03">
+<style>
+#jc03{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc03 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc03 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc03 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc03 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc03 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc03 input[type=text],#jc03 input[type=date],#jc03 input[type=time],#jc03 select,#jc03 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc03 textarea{width:100%;min-height:180px;font-size:17px}
+#jc03 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc03 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc03 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc03 .jc-opts input{width:20px;height:20px}
+#jc03 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc03 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc03 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc03 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc03 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc03 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc03 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc03 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc03 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc03 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc03 .jc-art th,#jc03 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc03 .jc-art th{background:#f2f4f8}
+#jc03 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">生まれ年から干支（十二支・十干十二支）をすぐ計算。年女・年男になる年や同じ干支の年齢も分かる無料ツールです。</p>
+<div class="jc-box"><h2>干支計算</h2>
+<span class="jc-lbl">生まれ年（西暦）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc03-y" placeholder="例：1988"><span class="jc-unit">年</span></div>
+<button type="button" id="jc03-btn">計算する</button>
+<div class="jc-result" id="jc03-res"></div>
+<p class="jc-note">干支の切り替わりは1月1日とする考え方が一般的ですが、立春（2月4日ごろ）とする考え方もあります。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc03-',box=document.getElementById('jc03-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var y=N('y');if(!y||y<1800||y>2200)return err('西暦で生まれ年を入れてください。');
+var now=new Date().getFullYear(),nx=y;while(nx<=now)nx+=12;
+show(eto(y)+'（'+jikkan(y)+'）',[['和暦',wareki(y)],['次の年男・年女',nx+'年（満'+(nx-y)+'歳）'],['同じ干支の年',[y-24,y-12,y+12,y+24].join('年・')+'年']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>干支（えと）は十二支（子・丑・寅・卯・辰・巳・午・未・申・酉・戌・亥）で表すのが一般的です。年賀状、年男・年女、お守りなどでよく話題になります。このツールは生まれ年から干支と、次に年男・年女になる年を計算します。</p>
+
+<h2 style="font-size:24px;margin-top:10px">2月生まれの干支が占いと年賀状で違う理由</h2>
+<h3 style="font-size:22px;margin-top:28px">十二支の順番</h3><p>子（ね）→丑（うし）→寅（とら）→卯（う）→辰（たつ）→巳（み）→午（うま）→未（ひつじ）→申（さる）→酉（とり）→戌（いぬ）→亥（い）。12年で一周します。</p>
+
+<h3 style="font-size:22px;margin-top:28px">十干十二支とは</h3><p>本来の干支は、十干（甲・乙・丙・丁・戊・己・庚・辛・壬・癸）と十二支を組み合わせた60通りです。60年で一周するため、60歳を「還暦」と呼びます。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算のしくみ</h3><p>十二支は「西暦を12で割った余り」で決まります。西暦4年が子（ね）年にあたるため、<b>(西暦 − 4) ÷ 12 の余り</b>が0なら子、1なら丑、2なら寅…と数えます。十干は同じように <b>(西暦 − 4) ÷ 10 の余り</b>で、0が甲（きのえ）です。</p><p><b>例：2026年</b> → (2026 − 4) ÷ 12 ＝ 168 余り6 → 子から数えて7番目の<b>午（うま）</b>。十干は (2026 − 4) ÷ 10 の余り2 → <b>丙（ひのえ）</b>。つまり2026年は<b>丙午（ひのえうま）</b>の年です。</p>
+<h3 style="font-size:22px;margin-top:28px">2024〜2029年の十干十二支と五行の一覧</h3><p>十干は五行（木・火・土・金・水）をそれぞれ陽（え＝兄）と陰（と＝弟）に分けたものです。甲・乙が木、丙・丁が火、戊・己が土、庚・辛が金、壬・癸が水にあたります。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">西暦</th><th style="border:1px solid #ccc;padding:6px">十干十二支</th><th style="border:1px solid #ccc;padding:6px">読み</th><th style="border:1px solid #ccc;padding:6px">十干の五行</th></tr><tr><td style="border:1px solid #ccc;padding:6px">2024年</td><td style="border:1px solid #ccc;padding:6px">甲辰</td><td style="border:1px solid #ccc;padding:6px">きのえたつ</td><td style="border:1px solid #ccc;padding:6px">木（陽）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2025年</td><td style="border:1px solid #ccc;padding:6px">乙巳</td><td style="border:1px solid #ccc;padding:6px">きのとみ</td><td style="border:1px solid #ccc;padding:6px">木（陰）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2026年</td><td style="border:1px solid #ccc;padding:6px">丙午</td><td style="border:1px solid #ccc;padding:6px">ひのえうま</td><td style="border:1px solid #ccc;padding:6px">火（陽）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2027年</td><td style="border:1px solid #ccc;padding:6px">丁未</td><td style="border:1px solid #ccc;padding:6px">ひのとひつじ</td><td style="border:1px solid #ccc;padding:6px">火（陰）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2028年</td><td style="border:1px solid #ccc;padding:6px">戊申</td><td style="border:1px solid #ccc;padding:6px">つちのえさる</td><td style="border:1px solid #ccc;padding:6px">土（陽）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2029年</td><td style="border:1px solid #ccc;padding:6px">己酉</td><td style="border:1px solid #ccc;padding:6px">つちのととり</td><td style="border:1px solid #ccc;padding:6px">土（陰）</td></tr></table><p>十干と十二支は陽同士・陰同士しか組み合わさらないため、10 × 12 ＝ 120通りではなく60通りになります。「甲丑」や「乙子」は存在しません。672年の壬申の乱、1868年の戊辰戦争、1924年完成の甲子園球場は、いずれもその年の干支にちなむ名前で、(西暦 − 4)を10と12で割った余りで確かめられます。</p>
+<h3 style="font-size:22px;margin-top:28px">年男・年女の年齢（2026年＝午年）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">生まれ年</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">和暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">2026年中の満年齢</th></tr><tr><td style="border:1px solid #bbb;padding:6px">2014年</td><td style="border:1px solid #bbb;padding:6px">平成26年</td><td style="border:1px solid #bbb;padding:6px">12歳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2002年</td><td style="border:1px solid #bbb;padding:6px">平成14年</td><td style="border:1px solid #bbb;padding:6px">24歳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1990年</td><td style="border:1px solid #bbb;padding:6px">平成2年</td><td style="border:1px solid #bbb;padding:6px">36歳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1978年</td><td style="border:1px solid #bbb;padding:6px">昭和53年</td><td style="border:1px solid #bbb;padding:6px">48歳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1966年</td><td style="border:1px solid #bbb;padding:6px">昭和41年</td><td style="border:1px solid #bbb;padding:6px">60歳（還暦）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1954年</td><td style="border:1px solid #bbb;padding:6px">昭和29年</td><td style="border:1px solid #bbb;padding:6px">72歳</td></tr></table><p>年男・年女は12歳・24歳・36歳…と12の倍数の年齢（その年の誕生日を迎えた満年齢）になります。</p>
+<h3 style="font-size:22px;margin-top:28px">十二支の早見表（2020年〜2031年）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">西暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">十二支</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">西暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">十二支</th></tr><tr><td style="border:1px solid #bbb;padding:6px">2020年</td><td style="border:1px solid #bbb;padding:6px">子（ね）</td><td style="border:1px solid #bbb;padding:6px">2026年</td><td style="border:1px solid #bbb;padding:6px">午（うま）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2021年</td><td style="border:1px solid #bbb;padding:6px">丑（うし）</td><td style="border:1px solid #bbb;padding:6px">2027年</td><td style="border:1px solid #bbb;padding:6px">未（ひつじ）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2022年</td><td style="border:1px solid #bbb;padding:6px">寅（とら）</td><td style="border:1px solid #bbb;padding:6px">2028年</td><td style="border:1px solid #bbb;padding:6px">申（さる）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2023年</td><td style="border:1px solid #bbb;padding:6px">卯（う）</td><td style="border:1px solid #bbb;padding:6px">2029年</td><td style="border:1px solid #bbb;padding:6px">酉（とり）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2024年</td><td style="border:1px solid #bbb;padding:6px">辰（たつ）</td><td style="border:1px solid #bbb;padding:6px">2030年</td><td style="border:1px solid #bbb;padding:6px">戌（いぬ）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2025年</td><td style="border:1px solid #bbb;padding:6px">巳（み）</td><td style="border:1px solid #bbb;padding:6px">2031年</td><td style="border:1px solid #bbb;padding:6px">亥（い）</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">丙午（ひのえうま）と還暦の話</h3><p>十干と十二支の組み合わせは60通りで、60年ごとに同じ干支に戻ります。生まれた年と同じ干支に戻ることを「還暦」と呼び、満60歳（数え61歳）で祝います。</p><p>丙午の年には古い迷信がありました。前回の丙午だった1966年は、出生数が前の年より約4分の1も減ったことで知られています。もちろん迷信には根拠がなく、生まれ年で性格や運勢が決まるわけではありません。</p>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>1月・2月生まれの干支</b>：一般的には1月1日で切り替わります。占いや暦の世界では立春（2月4日ごろ）で切り替える考え方もあるため、どちらの基準か確認しましょう。</li><li><b>「干支＝十二支」だと思う</b>：日常では十二支だけを干支と呼びますが、本来は十干と組み合わせた60通りを指します。</li><li><b>国によって動物が違う</b>：ベトナムでは卯の代わりに猫、亥の代わりに豚とする地域もあります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>年賀状のデザインを選ぶとき、来年の干支をすぐに確認できます。2027年は未（ひつじ）年、2028年は申（さる）年です。</p><p>家族や友人の干支を知りたいときは、生まれ年を入れるだけで分かります。「同じ干支の年」も表示されるので、12歳差・24歳差の人が同じ干支だと話題にすることもできます。</p><p>還暦祝いの年を確かめるのにも使えます。生まれ年と同じ干支（十干十二支）がめぐってくる年が還暦で、生まれ年に60を足した年になります。1966年生まれなら2026年が還暦の年です。</p>
+<h3 style="font-size:22px;margin-top:28px">年賀状は元日、占いは立春：1月生まれはどちらの干支？</h3><p>干支の切り替え日は用途によって2通りあります。</p><ul><li><b>元日（1月1日）で切り替える</b>：年賀状、年男・年女、学校や職場の話題など日常の使い方。このツールもこの方式です。</li><li><b>立春（2月4日ごろ）で切り替える</b>：四柱推命や九星気学などの占い、旧暦に基づく暦の考え方。立春の前日までは前の年の干支として扱います。</li></ul><p>たとえば2026年1月20日生まれの赤ちゃんは、年賀状や一般の数え方では午（うま）年ですが、占いの流儀では前年の巳（み）年になります。立春の日付は年によって2月3日か4日に動くため、2月初旬の生まれで占いを見るときは、その年の立春の日を国立天文台の暦で確かめてから干支を決めてください。</p><p>年男・年女の年齢は、どちらの方式でも生まれ年の干支が決まれば同じ計算です。</p>
+<h3 style="font-size:22px;margin-top:28px">干支の数え方で迷うところ</h3><p><b>Q. 1月生まれの干支は前の年？</b><br>A. 一般的には1月1日で切り替わるので、その年の干支です。占いなどでは立春を境にすることもあります。</p><p><b>Q. 年賀状に書く干支は？</b><br>A. 新しい年の十二支です。2027年の年賀状なら未（ひつじ）年です。</p><p><b>Q. 十二支の動物はなぜこの順番？</b><br>A. 昔話では、神様のもとに着いた順番だと語られています。実際には古代中国の暦の考え方から生まれたものです。</p><p><b>Q. 「年男・年女」は何歳？</b><br>A. 自分の生まれ年と同じ十二支の年を迎えた人のことで、12・24・36・48・60歳…の年です。</p><p><b>Q. 2026年の丙午はいつまで？</b><br>A. 一般的な考え方では2026年1月1日から12月31日までです。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 生まれ年を和暦で確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html">年齢計算</a> – 満年齢・数え年を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 記念日までの日数</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://eco.mtk.nao.ac.jp/koyomi/" rel="noopener" target="_blank">国立天文台 暦計算室 – 二十四節気（立春）と暦の情報</a></li><li><a href="https://www.ndl.go.jp/koyomi/" rel="noopener" target="_blank">国立国会図書館 – 日本の暦（干支・暦法の解説）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>十二支・十干の割り当てはプログラムで1800〜2200年分を計算して確かめました。1966年の出生数は厚生労働省の人口動態統計で知られている数字です。 最終確認：2026年11月。 干支の割り当ては一般的な数え方に基づく目安で、占いの判断を示すものではありません。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html" style="color:#1a56db">和暦西暦変換</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html" style="color:#1a56db">年齢計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/chouju-iwai.html" style="color:#1a56db">長寿祝い計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J03 end ===== -->

@@ -1,0 +1,86 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT2R4XBqzdiJ5jAbTCK4e7X6VTgETkL8qQNtxjqnbMZrwwG00Uu71L1KLPjpI23UE8iQ_kKwdK9ZAlInzJYFxDDE8PzfxGWIfPeuB9CtwGe6LIuhDk7hA25nJCTD5MRm06ecyuPTn8WEGbObO82_DuZ-7qXu3rjepU_Ya1urLKBXPfsEG-Oy5ecWIsiCw/s300/E22.fraction-calculator%20%28%EB%B6%84%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Fraction calculator adding two fractions with simplified and decimal result" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT2R4XBqzdiJ5jAbTCK4e7X6VTgETkL8qQNtxjqnbMZrwwG00Uu71L1KLPjpI23UE8iQ_kKwdK9ZAlInzJYFxDDE8PzfxGWIfPeuB9CtwGe6LIuhDk7hA25nJCTD5MRm06ecyuPTn8WEGbObO82_DuZ-7qXu3rjepU_Ya1urLKBXPfsEG-Oy5ecWIsiCw/s320/E22.fraction-calculator%20%28%EB%B6%84%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Fraction Calculator (paste in Blogger HTML view) ===== -->
+<div id="fr-calc">
+<style>
+#fr-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#fr-calc .fr-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#fr-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#fr-calc .fr-lbl{display:block;font-weight:bold;margin-top:14px}
+#fr-calc .fr-hint{font-size:15px;color:#555;font-weight:normal}
+#fr-calc .fr-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#fr-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#fr-calc input.fr-s{flex:0 0 5.5em}
+#fr-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#fr-calc .fr-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#fr-calc .fr-opts{display:grid;gap:8px;margin-top:8px}
+#fr-calc .fr-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#fr-calc .fr-opts input{width:22px;height:22px;flex:none}
+#fr-calc .fr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#fr-calc .fr-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#fr-calc .fr-grid select{font-size:17px;width:100%}
+#fr-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#fr-calc .fr-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#fr-calc .fr-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#fr-calc .fr-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#fr-calc .fr-err{color:#c00;font-weight:bold;text-align:center}
+#fr-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#fr-calc th,#fr-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#fr-calc th{background:#f2f4f8}
+#fr-calc .fr-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="fr-box"><h2>Fraction Calculator</h2>
+<span class="fr-lbl">Enter two fractions</span><div class="fr-line"><input type="text" class="fr-s" inputmode="numeric" id="fr-an" placeholder="1"><span class="fr-unit">/</span><input type="text" class="fr-s" inputmode="numeric" id="fr-ad" placeholder="2"><select id="fr-op"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select><input type="text" class="fr-s" inputmode="numeric" id="fr-bn" placeholder="1"><span class="fr-unit">/</span><input type="text" class="fr-s" inputmode="numeric" id="fr-bd" placeholder="2"></div>
+<button type="button" id="fr-btn">Calculate</button>
+<div class="fr-result" id="fr-res"></div>
+<p class="fr-note">Use negative numbers in the top box for negative fractions. Results are simplified.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="fr-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  function g(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a||1;}
+  function fr(n,d){if(d<0){n=-n;d=-d;}var k=g(n,d);n/=k;d/=k;return [n,d];}
+  function show(n,d){if(d===1)return ''+n;var w=Math.trunc(n/d),r=Math.abs(n%d);return w?w+' '+r+'/'+d:n+'/'+d;}
+$('fr-btn').addEventListener('click',function(){var box=$('fr-res');box.style.display='block';function err(t){box.innerHTML='<p class="fr-err">'+t+'</p>';}
+  var an=num($('fr-an').value),ad=num($('fr-ad').value),bn=num($('fr-bn').value),bd=num($('fr-bd').value),op=$('fr-op').value,n,d;
+  if(!ad||!bd)return err('Denominators (bottom numbers) cannot be zero.');
+  if(op==='+'){n=an*bd+bn*ad;d=ad*bd;}else if(op==='-'){n=an*bd-bn*ad;d=ad*bd;}else if(op==='*'){n=an*bn;d=ad*bd;}else{if(!bn)return err('Cannot divide by zero.');n=an*bd;d=ad*bn;}
+  var r=fr(n,d);
+  box.innerHTML='<div style="text-align:center">'+an+'/'+ad+' '+$('fr-op').options[$('fr-op').selectedIndex].text+' '+bn+'/'+bd+' =</div><div class="fr-big">'+r[0]+(r[1]!==1?'/'+r[1]:'')+'</div>'+row('Mixed number',show(r[0],r[1]))+row('Decimal',(r[0]/r[1]).toFixed(6).replace(/0+$/,'').replace(/\.$/,''));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Fractions show up in homework, recipes and woodworking. Enter two fractions, choose an operation, and get a simplified answer plus the mixed number and decimal.</p>
+<h2 style="font-size:26px;margin-top:10px">Working with fractions, step by step</h2>
+<p>Fractions trip people up because each operation has its own rule. The calculator does the arithmetic and simplifies the answer, but it helps to see why the result is right — especially when you are checking homework or cutting wood.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the fraction calculator</h3><ol><li>Type the top and bottom numbers of each fraction.</li><li>Choose +, −, × or ÷.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">a/b + c/d = (ad + bc) ÷ bd &nbsp;|&nbsp; a/b × c/d = ac ÷ bd &nbsp;|&nbsp; a/b ÷ c/d = ad ÷ bc</p>
+<h3 style="font-size:22px;margin-top:28px">Four worked examples</h3><ul><li><b>Add:</b> 1/2 + 1/3. The common denominator is 6, so 3/6 + 2/6 = <b>5/6</b>.</li><li><b>Subtract:</b> 5/6 − 1/4. Use 12 as the denominator: 10/12 − 3/12 = <b>7/12</b>.</li><li><b>Multiply:</b> 2/3 × 3/5 = 6/15, which simplifies to <b>2/5</b>.</li><li><b>Divide:</b> 3/4 ÷ 1/8 = 3/4 × 8/1 = 24/4 = <b>6</b>. Six one-eighth pieces fit into three quarters.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Sixteenths on a U.S. tape measure</h3><p>A U.S. tape measure splits each inch into 16 parts. The longest marks are inches, then halves, quarters, eighths and finally the short sixteenth marks. To read a length, count the small marks past the last whole inch: five marks past 7 is 7 5/16 in.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Mark</th><th style="border:1px solid #ccc;padding:6px">Decimal inches</th><th style="border:1px solid #ccc;padding:6px">Millimeters</th></tr><tr><td style="border:1px solid #ccc;padding:6px">1/16</td><td style="border:1px solid #ccc;padding:6px">0.0625</td><td style="border:1px solid #ccc;padding:6px">1.59</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1/8</td><td style="border:1px solid #ccc;padding:6px">0.125</td><td style="border:1px solid #ccc;padding:6px">3.18</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3/16</td><td style="border:1px solid #ccc;padding:6px">0.1875</td><td style="border:1px solid #ccc;padding:6px">4.76</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1/4</td><td style="border:1px solid #ccc;padding:6px">0.25</td><td style="border:1px solid #ccc;padding:6px">6.35</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3/8</td><td style="border:1px solid #ccc;padding:6px">0.375</td><td style="border:1px solid #ccc;padding:6px">9.53</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1/2</td><td style="border:1px solid #ccc;padding:6px">0.5</td><td style="border:1px solid #ccc;padding:6px">12.7</td></tr></table><p>Adding two measurements means putting both in sixteenths: 7 5/16 + 3 7/8 = 117/16 + 62/16 = 179/16 = 11 3/16 in. Then remember the saw blade. A typical blade removes about 1/8 in, so cutting a 48 in board into two equal pieces gives 23 15/16 in each, not 24.</p>
+<h3 style="font-size:22px;margin-top:28px">Mixed numbers in real life</h3><p>The calculator takes simple fractions, so turn a mixed number into an improper fraction first: multiply the whole number by the denominator and add the numerator. 2 1/2 becomes 5/2 and 1 3/4 becomes 7/4. Then 5/2 + 7/4 = 10/4 + 7/4 = 17/4, shown as the mixed number <b>4 1/4</b>.</p><p><b>Woodworking:</b> a board is 5 3/8 inches and you cut off 2 7/16 inches. Enter 43/8 − 39/16. The answer is 47/16, or <b>2 15/16 inches</b> left.</p><p><b>Recipes:</b> making a recipe 1.5 times bigger? Multiply 3/4 cup by 3/2 to get 9/8 — that is <b>1 1/8 cups</b>.</p>
+<h3 style="font-size:22px;margin-top:28px">Least common denominators you will meet often</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Fractions</th><th style="border:1px solid #ccc;padding:6px">Common denominator</th><th style="border:1px solid #ccc;padding:6px">Rewritten</th></tr><tr><td style="border:1px solid #ccc;padding:6px">1/2 and 1/3</td><td style="border:1px solid #ccc;padding:6px">6</td><td style="border:1px solid #ccc;padding:6px">3/6 and 2/6</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1/4 and 1/6</td><td style="border:1px solid #ccc;padding:6px">12</td><td style="border:1px solid #ccc;padding:6px">3/12 and 2/12</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3/8 and 5/16</td><td style="border:1px solid #ccc;padding:6px">16</td><td style="border:1px solid #ccc;padding:6px">6/16 and 5/16</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2/3 and 3/4</td><td style="border:1px solid #ccc;padding:6px">12</td><td style="border:1px solid #ccc;padding:6px">8/12 and 9/12</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1/5 and 1/10</td><td style="border:1px solid #ccc;padding:6px">10</td><td style="border:1px solid #ccc;padding:6px">2/10 and 1/10</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Adding the bottoms:</b> 1/2 + 1/3 is not 2/5. Denominators only stay the same, they are never added.</li><li><b>Forgetting to flip when dividing:</b> dividing by 1/8 is the same as multiplying by 8.</li><li><b>Losing the minus sign:</b> put a negative sign on the top number only, such as −3/4.</li><li><b>Not simplifying:</b> 6/15 and 2/5 are equal, but most teachers expect the simplest form.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Two things to double-check</h3><ul><li>Always simplify by dividing top and bottom by their greatest common factor.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Five ways to tell which fraction is bigger</h3><p>Which is larger, 5/8 or 11/16? Work down this list and stop at the first rule that applies.</p><ol><li><b>Same denominator:</b> compare the tops. 7/12 is bigger than 5/12.</li><li><b>Same numerator:</b> the smaller bottom wins, because its pieces are larger. 3/5 is bigger than 3/8.</li><li><b>Benchmark against one half:</b> 7/15 is under a half (half of 15 is 7.5) and 9/17 is over it (half of 17 is 8.5), so 9/17 is bigger.</li><li><b>Cross-multiply:</b> for a/b against c/d, compare a × d with c × b. For 5/8 and 11/16: 5 × 16 = 80 and 11 × 8 = 88, so 11/16 is bigger.</li><li><b>Convert to decimals</b> when the denominators are awkward: 7/12 = 0.583 and 4/7 = 0.571, so 7/12 wins by about 0.012.</li></ol><p>Rule 4 works every time; rules 1 to 3 are faster in your head and a good check on any answer the tool gives you.</p>
+<h3 style="font-size:22px;margin-top:28px">Fraction questions students and DIYers ask</h3><p><b>Why does the calculator show a decimal too?</b><br>Decimals are easier to compare. 5/6 = 0.833333, which is a little more than 4/5 = 0.8.</p><p><b>Can I use the common denominator a × b every time?</b><br>Yes, multiplying the two denominators always works, but the answer then needs more simplifying. The least common denominator keeps the numbers small.</p><p><b>What is an improper fraction?</b><br>A fraction whose top is larger than its bottom, such as 17/4. It equals the mixed number 4 1/4.</p><p><b>How do I simplify a fraction?</b><br>Divide the top and bottom by their greatest common factor. 12/16 ÷ 4 = 3/4.</p><p><b>How do I enter a mixed number?</b><br>Convert it first: 2 1/2 = (2 × 2 + 1)/2 = 5/2.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/grade-calculator.html">Grade Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/gpa-calculator.html">GPA Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic: fractions, decimals and comparing fractions</a></li><li><a href="https://www.nist.gov/pml/owm" rel="noopener" target="_blank">NIST Office of Weights and Measures – inch to millimeter conversion (1 in = 25.4 mm)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> every example was recalculated with exact fraction arithmetic and matched the calculator. Last reviewed November 2026. Fraction results are exact for the numbers entered, but check measurements and cuts against your own tape before committing.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/decimal-to-fraction.html" style="color:#1a56db">Decimal to Fraction Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/cm-to-inches.html" style="color:#1a56db">CM to Inches Converter</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Fraction Calculator end ===== -->

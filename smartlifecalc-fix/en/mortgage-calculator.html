@@ -1,0 +1,114 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg1QY4ykPTORXThRSp2hvYjiD3AWnKS2ocGoU0RLWIa3mH29J2da6kJJdI5s5FMsYGTHGxEM-UZlM6wE0SdxHyG645Qvmmtx3MxzQ7uv0rKmMmIaXa7YTdYNRnmTUKLdN_6UObd1ofAGH4CeqDWskhJgbWhafnVWThU6HlamFOIBTgQZc4kmPYeCx93udk/s300/E01.mortgage-calculator%20%28%EC%A3%BC%ED%83%9D%EB%8B%B4%EB%B3%B4%EB%8C%80%EC%B6%9C%20%EC%9B%94%20%EC%83%81%ED%99%98%EC%95%A1%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="Mortgage payment breakdown showing principal, interest, taxes, insurance and PMI" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg1QY4ykPTORXThRSp2hvYjiD3AWnKS2ocGoU0RLWIa3mH29J2da6kJJdI5s5FMsYGTHGxEM-UZlM6wE0SdxHyG645Qvmmtx3MxzQ7uv0rKmMmIaXa7YTdYNRnmTUKLdN_6UObd1ofAGH4CeqDWskhJgbWhafnVWThU6HlamFOIBTgQZc4kmPYeCx93udk/s320/E01.mortgage-calculator%20%28%EC%A3%BC%ED%83%9D%EB%8B%B4%EB%B3%B4%EB%8C%80%EC%B6%9C%20%EC%9B%94%20%EC%83%81%ED%99%98%EC%95%A1%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg"/></a></div>
+
+
+<!-- ===== Mortgage Calculator (paste in Blogger HTML view) ===== -->
+<div id="em-calc">
+<style>
+#em-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#em-calc .em-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#em-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#em-calc .em-lbl{display:block;font-weight:bold;margin-top:14px}
+#em-calc .em-hint{font-size:15px;color:#555;font-weight:normal}
+#em-calc .em-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#em-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#em-calc input.em-s{flex:0 0 5.5em}
+#em-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#em-calc .em-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#em-calc .em-opts{display:grid;gap:8px;margin-top:8px}
+#em-calc .em-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#em-calc .em-opts input{width:22px;height:22px;flex:none}
+#em-calc .em-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#em-calc .em-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#em-calc .em-grid select{font-size:17px;width:100%}
+#em-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#em-calc .em-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#em-calc .em-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#em-calc .em-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#em-calc .em-err{color:#c00;font-weight:bold;text-align:center}
+#em-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#em-calc th,#em-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#em-calc th{background:#f2f4f8}
+#em-calc .em-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="em-box"><h2>Mortgage Calculator</h2>
+<span class="em-lbl">Home price</span><div class="em-line"><span class="em-unit">$</span><input type="text" inputmode="decimal" id="em-price" placeholder="e.g. 400,000"><span class="em-unit"></span></div><span class="em-lbl">Down payment</span><div class="em-line"><input type="text" inputmode="decimal" id="em-down" placeholder="e.g. 20" value="20"><span class="em-unit">%</span></div><span class="em-lbl">Interest rate</span><div class="em-line"><input type="text" inputmode="decimal" id="em-rate" placeholder="e.g. 6.5"><span class="em-unit">% per year</span></div><span class="em-lbl">Loan term</span><div class="em-line"><select id="em-term"><option value="30" selected>30 years</option><option value="20">20 years</option><option value="15">15 years</option><option value="10">10 years</option></select><span class="em-unit"></span></div><span class="em-lbl">Property tax <span class="em-hint">(US average is about 1%)</span></span><div class="em-line"><input type="text" inputmode="decimal" id="em-tax" placeholder="e.g. 1.1" value="1.1"><span class="em-unit">% per year</span></div><span class="em-lbl">Home insurance</span><div class="em-line"><span class="em-unit">$</span><input type="text" inputmode="decimal" id="em-ins" placeholder="e.g. 1,800" value="1,800"><span class="em-unit">per year</span></div><span class="em-lbl">HOA fees <span class="em-hint">(optional)</span></span><div class="em-line"><span class="em-unit">$</span><input type="text" inputmode="decimal" id="em-hoa" placeholder="0" value="0"><span class="em-unit">per month</span></div>
+<button type="button" id="em-btn">Calculate Payment</button>
+<div class="em-result" id="em-res"></div>
+<p class="em-note">PMI is estimated at 0.5% of the loan per year when the down payment is under 20%. Estimates only — ask your lender for an official quote.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="em-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('em-price'));comma($('em-ins'));comma($('em-hoa'));
+$('em-btn').addEventListener('click',function(){var box=$('em-res');box.style.display='block';function err(t){box.innerHTML='<p class="em-err">'+t+'</p>';}
+  var H=num($('em-price').value),dp=num($('em-down').value)/100,r=num($('em-rate').value)/100/12,n=+$('em-term').value*12;
+  if(!H)return err('Please enter the home price.');
+  if(dp<0||dp>=1)return err('Down payment must be between 0% and 99%.');
+  if(r<0||r>0.25/12)return err('Please enter an interest rate between 0% and 25%.');
+  var L=H*(1-dp),pi=pmt(L,r,n),tx=H*num($('em-tax').value)/100/12,ins=num($('em-ins').value)/12,hoa=num($('em-hoa').value),pmi=dp<0.2?L*0.005/12:0,tot=pi+tx+ins+hoa+pmi;
+  box.innerHTML='<div style="text-align:center">Estimated monthly payment</div><div class="em-big">'+usd(tot)+'</div>'+
+   row('Principal & interest',usd(pi))+row('Property tax',usd(tx))+row('Home insurance',usd(ins))+(pmi?row('PMI (estimate)',usd(pmi)):'')+(hoa?row('HOA',usd(hoa)):'')+
+   row('Loan amount',usd0(L))+row('Down payment',usd0(H*dp))+row('Total interest over the loan',usd0(pi*n-L))+row('Total of all P&I payments',usd0(pi*n));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Buying a home is the biggest purchase most people ever make. This free mortgage calculator shows your full monthly payment — not just principal and interest, but also property tax, homeowners insurance, PMI and HOA fees — so you know what you can really afford.</p>
+<h2 style="font-size:26px;margin-top:10px">A practical guide to your mortgage payment</h2>
+<p>The number most lenders quote first is principal and interest. The number that actually leaves your bank account every month is larger, because it usually also includes property tax, homeowners insurance, private mortgage insurance (PMI) and, in some neighborhoods, HOA dues. People are often surprised that taxes and insurance can add 25–40% on top of the loan payment itself. This calculator shows the full monthly figure so you can compare it with your budget honestly, not with the advertised rate.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the mortgage calculator</h3><ol><li>Enter the home price and your down payment as a percent.</li><li>Enter the interest rate your lender quoted and pick the loan term.</li><li>Adjust property tax, insurance and HOA if you know them.</li><li>Press <b>Calculate Payment</b> to see the monthly total and the full breakdown.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Monthly P&amp;I = L × r ÷ (1 − (1 + r)<sup>−n</sup>)<br><span style="font-weight:normal">L = loan amount, r = monthly rate (annual rate ÷ 12), n = number of monthly payments</span></p>
+<h3 style="font-size:22px;margin-top:28px">What goes into the monthly payment (PITI)</h3>
+<ul>
+<li><b>Principal</b> – the part that pays down what you borrowed. Early in the loan it is small; it grows every month.</li>
+<li><b>Interest</b> – the lender's charge. On a 30-year loan, the first years are mostly interest.</li>
+<li><b>Taxes</b> – your county's property tax, usually collected monthly into an escrow account and paid once or twice a year by the lender.</li>
+<li><b>Insurance</b> – homeowners insurance (required by the lender), also usually paid through escrow.</li>
+<li><b>PMI</b> – required on most conventional loans when the down payment is under 20%. It typically costs about 0.3%–1.5% of the loan per year and can be removed once you reach 20% equity.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Paying one point to cut the rate: a $320,000 break-even</h3><p>A discount point costs 1% of the loan amount and buys a lower rate. Lenders price points differently, but a common quote is roughly 0.25 percentage points off the rate per point. Here is what that trade looks like on a $320,000, 30-year loan.</p><ul><li><b>No points, 6.5%:</b> principal and interest of about $2,023 a month.</li><li><b>One point ($3,200) for 6.25%:</b> about $1,970 a month.</li><li><b>Monthly saving:</b> about $53. Break-even: $3,200 ÷ $53 ≈ 60 months, or five years.</li></ul><p>The decision rule is simple: if you expect to keep this loan longer than the break-even, the point pays for itself; if you might sell or refinance sooner, skip it. On the official Loan Estimate, points appear in Section A of the closing costs, and the APR already includes them, which is why APR, not the rate, is the fair basis for comparing two offers.</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: a $400,000 home</h3>
+<p>Suppose the price is $400,000, you put down 10% ($40,000) and borrow $360,000 at 6.5% for 30 years. The principal-and-interest payment is about <b>$2,275</b>. Add property tax of 1.1% a year ($367/month), insurance of $1,800 a year ($150/month) and PMI of 0.6% of the loan ($180/month). The real payment is roughly <b>$2,972 a month</b> — almost $700 more than the "headline" figure.</p>
+<p>Now change one thing: put down 20% instead. The loan falls to $320,000, principal and interest drop to about $2,023, and PMI disappears. The total is about $2,540 — around $430 a month less. That is why the down payment field matters so much.</p>
+
+<h3 style="font-size:22px;margin-top:28px">15-year vs 30-year: the real trade-off</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">$320,000 loan</th><th style="border:1px solid #ccc;padding:6px">Rate</th><th style="border:1px solid #ccc;padding:6px">Monthly P&amp;I</th><th style="border:1px solid #ccc;padding:6px">Total interest</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">30-year</td><td style="border:1px solid #ccc;padding:6px">6.5%</td><td style="border:1px solid #ccc;padding:6px">≈ $2,023</td><td style="border:1px solid #ccc;padding:6px">≈ $408,000</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">15-year</td><td style="border:1px solid #ccc;padding:6px">5.9%</td><td style="border:1px solid #ccc;padding:6px">≈ $2,683</td><td style="border:1px solid #ccc;padding:6px">≈ $163,000</td></tr>
+</table>
+<p>The 15-year loan costs about $660 more each month but saves roughly $245,000 in interest. A common middle path is to take the 30-year loan for flexibility and make extra principal payments when you can — even $200 extra a month can shorten a 30-year loan by several years.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Common mistakes to avoid</h3>
+<ul>
+<li><b>Using the rate instead of the APR to compare lenders.</b> The APR includes points and fees; compare loans using the same APR basis on the official Loan Estimate.</li>
+<li><b>Leaving out taxes and insurance.</b> They vary widely by state and county. Check the listing or the county assessor's site for the actual tax.</li>
+<li><b>Forgetting PMI ends.</b> On conventional loans you can ask to cancel PMI at 20% equity, and it usually ends automatically at 22%.</li>
+<li><b>Budgeting to the maximum approval.</b> Lenders approve based on debt ratios, not on your savings goals, childcare or repairs. Many planners suggest keeping total housing costs near 28% of gross income.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">What an extra $200 a month does to a 30-year loan</h3><p>The same $320,000 loan at 6.5% requires $2,023 a month. Suppose you pay $2,223 instead and ask the servicer to apply the extra $200 to principal.</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Monthly payment</th><th style="border:1px solid #ccc;padding:6px">Months to pay off</th><th style="border:1px solid #ccc;padding:6px">Total interest</th></tr><tr><td style="border:1px solid #ccc;padding:6px">$2,023 (required)</td><td style="border:1px solid #ccc;padding:6px">360</td><td style="border:1px solid #ccc;padding:6px">about $408,000</td></tr><tr><td style="border:1px solid #ccc;padding:6px">$2,223 (+$200 extra)</td><td style="border:1px solid #ccc;padding:6px">about 280</td><td style="border:1px solid #ccc;padding:6px">about $303,000</td></tr><tr><td style="border:1px solid #ccc;padding:6px">$2,683 (15-year loan at 5.9%)</td><td style="border:1px solid #ccc;padding:6px">180</td><td style="border:1px solid #ccc;padding:6px">about $163,000</td></tr></table><p>The extra $200 ends the loan roughly 6 years 8 months early and saves about $105,000 in interest, with no new contract and no closing costs. You keep the right to stop the extra payment in a tight month, which the 15-year loan does not allow. Before you start, confirm with the servicer that extra money is applied to principal, not held for next month's payment, and check your closing disclosure for a prepayment penalty; most conventional loans have none.</p>
+<h3 style="font-size:22px;margin-top:28px">Mortgage questions readers send us</h3><p><b>Why did my escrow payment change?</b><br>Your lender reviews escrow once a year. If property tax or insurance went up, your monthly payment rises even though your rate is fixed.</p><p><b>Does a bigger down payment always make sense?</b><br>It lowers the payment and can remove PMI, but keep an emergency fund of several months of expenses. Being "house rich, cash poor" is risky if repairs or job changes come up.</p><p><b>How accurate is this calculator?</b><br>It uses the standard amortization formula lenders use for fixed-rate loans. Your official Loan Estimate will differ slightly because of exact tax and insurance quotes, points and rounding.</p><p><b>What about adjustable-rate (ARM) loans?</b><br>This calculator assumes a fixed rate. For an ARM, run it once at the starting rate and again at the maximum rate allowed after adjustment to see the worst case.</p><p><b>What is PITI?</b><br>PITI stands for Principal, Interest, Taxes and Insurance — the four parts of a typical monthly mortgage payment.</p><p><b>When does PMI go away?</b><br>On conventional loans, PMI can usually be removed once you reach 20% equity, and it ends automatically at 22% equity based on the original schedule.</p><p><b>Is the rate the same as APR?</b><br>No. APR includes some fees and closing costs, so it is usually a little higher than the interest rate used here.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3>
+<p><a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/refinance-calculator.html">Refinance Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html">Rent vs Buy Calculator</a></p>
+
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Mortgages: shopping, points and the Loan Estimate</a></li><li><a href="https://www.consumerfinance.gov/owning-a-home/" rel="noopener" target="_blank">CFPB – Owning a Home: step-by-step home-buying guide</a></li><li><a href="https://www.freddiemac.com/pmms" rel="noopener" target="_blank">Freddie Mac – Primary Mortgage Market Survey (weekly average rates)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> results were compared against the standard fixed-rate amortization formula and against sample loan estimates. Background reading: the Consumer Financial Protection Bureau's home-buying guides (consumerfinance.gov). Last reviewed November 2026. This is general information, not financial advice. These figures are estimates for planning; your lender&#x27;s Loan Estimate is the official number, and this is not financial advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html" style="color:#1a56db">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/refinance-calculator.html" style="color:#1a56db">Refinance Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html" style="color:#1a56db">Rent vs Buy Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Mortgage Calculator end ===== -->

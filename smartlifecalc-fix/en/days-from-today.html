@@ -1,0 +1,96 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVaoni-3v8a3pKeaGKaxd4kQer0dFZrXXT4tpCW8_o2lZOc3HDptqo9ai9jE9QfbL7Z76fXnIXY4ZVap1H0yJ66afTZ8Ymao0FKuOQWJOaRNX1ZOf5RPe014TlJKr7CqaNtwjbdRGLZRyhS3snCkznnhPtmCQpAeFYvVX_Cj1N0YEQJf-szzxjFvUYBE4/s300/E26.30-days-from-today%20%28%EC%98%A4%EB%8A%98%EB%B6%80%ED%84%B0%2030%EC%9D%BC%20%EB%92%A4%20%EB%82%A0%EC%A7%9C%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Days from today calculator showing the dates 30, 60, 90 and 180 days ahead" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVaoni-3v8a3pKeaGKaxd4kQer0dFZrXXT4tpCW8_o2lZOc3HDptqo9ai9jE9QfbL7Z76fXnIXY4ZVap1H0yJ66afTZ8Ymao0FKuOQWJOaRNX1ZOf5RPe014TlJKr7CqaNtwjbdRGLZRyhS3snCkznnhPtmCQpAeFYvVX_Cj1N0YEQJf-szzxjFvUYBE4/s320/E26.30-days-from-today%20%28%EC%98%A4%EB%8A%98%EB%B6%80%ED%84%B0%2030%EC%9D%BC%20%EB%92%A4%20%EB%82%A0%EC%A7%9C%29.png"/></a></div>
+
+<!-- ===== Days From Today (paste in Blogger HTML view) ===== -->
+<div id="da-calc">
+<style>
+#da-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#da-calc .da-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#da-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#da-calc .da-lbl{display:block;font-weight:bold;margin-top:14px}
+#da-calc .da-hint{font-size:15px;color:#555;font-weight:normal}
+#da-calc .da-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#da-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#da-calc input.da-s{flex:0 0 5.5em}
+#da-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#da-calc .da-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#da-calc .da-opts{display:grid;gap:8px;margin-top:8px}
+#da-calc .da-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#da-calc .da-opts input{width:22px;height:22px;flex:none}
+#da-calc .da-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#da-calc .da-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#da-calc .da-grid select{font-size:17px;width:100%}
+#da-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#da-calc .da-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#da-calc .da-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#da-calc .da-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#da-calc .da-err{color:#c00;font-weight:bold;text-align:center}
+#da-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#da-calc th,#da-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#da-calc th{background:#f2f4f8}
+#da-calc .da-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="da-box"><h2>Days From Today Calculator</h2>
+<div id="da-live" style="text-align:center;font-size:20px"></div><span class="da-lbl">Start date <span class="da-hint">(today is pre-selected)</span></span><div class="da-line da-date" data-id="da-s" data-today="1"></div><span class="da-lbl">Number of days</span><div class="da-line"><input type="text" inputmode="decimal" id="da-n" placeholder="30" value="30"><span class="da-unit">days</span></div><div class="da-opts"><label><input type="checkbox" id="da-bd"> Count business days only (Mon–Fri)</label></div>
+<button type="button" id="da-btn">Calculate</button>
+<div class="da-result" id="da-res"></div>
+<p class="da-note">Public holidays are not excluded. Today counts as day 0.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="da-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  var now=new Date(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WK=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DAY=86400000;
+  function opts(a,b,sel,rev,lab){var h='<option value="">'+lab+'</option>',i;if(rev){for(i=b;i>=a;i--)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+i+'</option>';}else{for(i=a;i<=b;i++)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(lab==='Month'?MN[i-1]:i)+'</option>';}return h;}
+  Array.prototype.forEach.call(document.querySelectorAll('#da-calc .da-date'),function(d){
+    var id=d.getAttribute('data-id'),t=d.getAttribute('data-today')==='1';
+    d.innerHTML='<select id="'+id+'-m">'+opts(1,12,t?now.getMonth()+1:null,false,'Month')+'</select> '+
+      '<select id="'+id+'-d">'+opts(1,31,t?now.getDate():null,false,'Day')+'</select> '+
+      '<select id="'+id+'-y">'+opts(1920,now.getFullYear()+10,t?now.getFullYear():null,true,'Year')+'</select>';
+  });
+  function getD(id){var y=+$(id+'-y').value,m=+$(id+'-m').value,d=+$(id+'-d').value;if(!y||!m||!d)return null;var x=new Date(Date.UTC(y,m-1,d));if(x.getUTCMonth()!==m-1)return 'bad';return x;}
+  function fmtD(x){return WK[x.getUTCDay()]+', '+MN[x.getUTCMonth()]+' '+x.getUTCDate()+', '+x.getUTCFullYear();}
+
+  function add(s,n,bd){var x=new Date(s.getTime());if(!bd)return new Date(x.getTime()+n*DAY);var k=0,st=n<0?-1:1;while(k<Math.abs(n)){x=new Date(x.getTime()+st*DAY);var w=x.getUTCDay();if(w&&w<6)k++;}return x;}
+  var T0=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));
+  $('da-live').innerHTML='From today ('+fmtD(T0)+'):'+[30,60,90,180].map(function(n){return '<div style="font-size:19px"><b>'+n+' days</b> → <b style="color:#1a56db">'+fmtD(add(T0,n,false))+'</b></div>';}).join('');
+$('da-btn').addEventListener('click',function(){var box=$('da-res');box.style.display='block';function err(t){box.innerHTML='<p class="da-err">'+t+'</p>';}
+  var s=getD('da-s');if(!s)return err('Please choose a start date.');if(s==='bad')return err('That date does not exist.');
+  var n=Math.round(num($('da-n').value)),bd=$('da-bd').checked,r=add(s,n,bd);
+  box.innerHTML='<div style="text-align:center">'+n+(bd?' business':'')+' days after '+fmtD(s)+'</div><div class="da-big" style="font-size:26px">'+fmtD(r)+'</div>'+row(n+' days before',fmtD(add(s,-n,bd)))+row('Weeks',(n/7).toFixed(1)+' weeks')+row('Day of the year',Math.round((r-Date.UTC(r.getUTCFullYear(),0,1))/DAY)+1);
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>What is the date 30, 60, 90 or 180 days from today? The box at the top always shows all four dates for today, and you can pick any start date and any number of days below.</p>
+<h2 style="font-size:26px;margin-top:10px">30, 60, 90 and 180 days from a date</h2>
+<p>Many deadlines are written in days rather than months: a 30-day return window, net-60 invoice terms, a 90-day probation period or a 180-day warranty. This one calculator answers all of them — just change the number of days.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the days from today calculator</h3><ol><li>The answer for today appears automatically at the top.</li><li>To use another start date or number of days, change them below.</li><li>Tick “business days” to skip weekends.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Date = start date + number of days (calendar days include weekends)</p>
+<h3 style="font-size:22px;margin-top:28px">Example: starting Tuesday, December 1, 2026</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Days added</th><th style="border:1px solid #ccc;padding:6px">Calendar days</th><th style="border:1px solid #ccc;padding:6px">Business days (Mon–Fri)</th></tr><tr><td style="border:1px solid #ccc;padding:6px">30</td><td style="border:1px solid #ccc;padding:6px">Thursday, Dec 31, 2026</td><td style="border:1px solid #ccc;padding:6px">Tuesday, Jan 12, 2027</td></tr><tr><td style="border:1px solid #ccc;padding:6px">60</td><td style="border:1px solid #ccc;padding:6px">Saturday, Jan 30, 2027</td><td style="border:1px solid #ccc;padding:6px">Tuesday, Feb 23, 2027</td></tr><tr><td style="border:1px solid #ccc;padding:6px">90</td><td style="border:1px solid #ccc;padding:6px">Monday, Mar 1, 2027</td><td style="border:1px solid #ccc;padding:6px">Tuesday, Apr 6, 2027</td></tr><tr><td style="border:1px solid #ccc;padding:6px">180</td><td style="border:1px solid #ccc;padding:6px">Sunday, May 30, 2027</td><td style="border:1px solid #ccc;padding:6px">Tuesday, Aug 10, 2027</td></tr></table><p>Business days skip Saturdays and Sundays only. Public holidays such as Christmas or New Year’s Day are <b>not</b> removed, so subtract any that fall inside your period.</p>
+<h3 style="font-size:22px;margin-top:28px">Deadlines written into federal consumer law</h3><p>Store return windows and job probation periods are company policy. These periods are set by federal law, and each one counts a little differently:</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Rule</th><th style="border:1px solid #ccc;padding:6px">Period</th><th style="border:1px solid #ccc;padding:6px">How it is counted</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Dispute a credit card billing error (Fair Credit Billing Act)</td><td style="border:1px solid #ccc;padding:6px">60 days</td><td style="border:1px solid #ccc;padding:6px">From the date the statement with the error was sent to you; the dispute must be in writing</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Credit card statement to payment due date (CARD Act)</td><td style="border:1px solid #ccc;padding:6px">21 days</td><td style="border:1px solid #ccc;padding:6px">At least 21 days must pass between the statement being mailed or delivered and the due date</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Cancel a refinance or home equity loan (Truth in Lending)</td><td style="border:1px solid #ccc;padding:6px">3 business days</td><td style="border:1px solid #ccc;padding:6px">After closing; Sundays and federal holidays do not count, Saturdays do</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Dispute a debt after a collector's validation notice (FDCPA)</td><td style="border:1px solid #ccc;padding:6px">30 days</td><td style="border:1px solid #ccc;padding:6px">From the day you receive the notice, in writing</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Grace period on federal Direct Loans</td><td style="border:1px solid #ccc;padding:6px">6 months</td><td style="border:1px solid #ccc;padding:6px">Written in months, not days, after you leave school or drop below half-time</td></tr></table><p>Note that a "business day" is not the same in every law: for the rescission rule a Saturday counts.</p>
+<h3 style="font-size:22px;margin-top:28px">Where these numbers come up</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Period</th><th style="border:1px solid #ccc;padding:6px">Common uses</th></tr><tr><td style="border:1px solid #ccc;padding:6px">30 days</td><td style="border:1px solid #ccc;padding:6px">Return and refund windows, notice periods, free trials, bill due dates</td></tr><tr><td style="border:1px solid #ccc;padding:6px">60 days</td><td style="border:1px solid #ccc;padding:6px">Net-60 invoices, insurance and enrollment windows, two-month goals</td></tr><tr><td style="border:1px solid #ccc;padding:6px">90 days</td><td style="border:1px solid #ccc;padding:6px">Probation periods, quarterly plans, warranty or price-protection windows</td></tr><tr><td style="border:1px solid #ccc;padding:6px">180 days</td><td style="border:1px solid #ccc;padding:6px">Six-month check-ins, longer warranties, half-year savings goals</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Days are not the same as months</h3><p>“30 days” and “1 month” only match in some months. From January 31, 30 days later is March 2, but one month later is usually the end of February. Contracts that say “months” follow calendar months; contracts that say “days” follow this calculator.</p>
+<h3 style="font-size:22px;margin-top:28px">Does the start day count?</h3><p>Here the start date is day 0, so the result is the day the period ends. Some rules count the first day as day 1, which makes the deadline one day earlier. When money or legal rights are involved, read the exact wording or ask the company.</p>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Assuming weekends are skipped</b> — most consumer deadlines use calendar days.</li><li><b>Forgetting holidays</b> when you count business days.</li><li><b>Mixing time zones</b> for online deadlines that end at midnight in a different zone.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Before you rely on the number</h3><ul><li>For legal or official deadlines, check whether the first day counts and whether holidays are excluded.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Holidays that stretch a business-day count in early 2027</h3><p>From Tuesday, December 1, 2026, 30 business days lands on Tuesday, January 12, 2027, skipping only weekends. If the other party also closes for federal holidays, add Christmas (Friday, December 25) and New Year's Day (Friday, January 1): the deadline moves to Thursday, January 14.</p><ul><li>Within the 90-business-day window (April 6, 2027), add Martin Luther King Jr. Day (January 18) and Washington's Birthday (February 15), four holidays in all.</li><li>Within the 180-business-day window (August 10, 2027), add Memorial Day (May 31), Juneteenth observed on Friday, June 18 because the 19th is a Saturday, and Independence Day observed on Monday, July 5 because the 4th is a Sunday: seven holidays.</li></ul><p>Banks and federal agencies follow this list; private companies choose their own. When a deadline lands on a weekend or holiday, many rules, including the federal tax deadline, roll it to the next business day; not every contract does.</p>
+<h3 style="font-size:22px;margin-top:28px">Deadline questions people ask about counting days</h3><p><b>What date is 90 days from today?</b><br>The box at the top always shows today’s answer for 30 days; type 90 in the number field and press Calculate.</p><p><b>Can I count backwards?</b><br>Yes. The result also lists the date the same number of days before your start date.</p><p><b>Is 30 days the same as 1 month?</b><br>Not exactly. Months have 28 to 31 days, so counting days gives a precise date.</p><p><b>Does today count?</b><br>No. Today is day 0, so tomorrow is day 1 and the result is day 30.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html">Days Between Dates</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html">Age Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html">Hours Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/credit-cards/" rel="noopener" target="_blank">CFPB – Credit cards (billing disputes and statement timing)</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/debt-collection/" rel="noopener" target="_blank">CFPB – Debt collection (validation notice and 30-day dispute period)</a></li><li><a href="https://studentaid.gov/" rel="noopener" target="_blank">Federal Student Aid – loan grace periods</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> dates and business-day counts were generated in Python with the same rules as the calculator. Last reviewed November 2026. Date results are a planning aid; legal and contractual deadlines turn on exact wording, so verify with the document or an attorney.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html" style="color:#1a56db">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/weeks-left-in-year.html" style="color:#1a56db">How Many Weeks Left in the Year? Today’s Date, Week Number and Day of Year</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html" style="color:#1a56db">Age Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Days From Today end ===== -->

@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiloXsMH3-x-ULDQQr7IBj99z86WLBhTyn54-8mig6nvLG22OElB4znCGJ3LLYdH26LxStO9SZFXuANf-fqPa4ozkkXcL9w2fSPW6Iw52NLBD3yZbZJqit72Nos-o6pFCCFNtgfgKF_fkfJg-xw5b6JqcAYbGFxwg-F2mMbjhMDAHn49V1mXNlfknZSIck/s300/J17.zangyodai.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="残業代計算ツールで時間外・深夜・休日の割増賃金を計算した例" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiloXsMH3-x-ULDQQr7IBj99z86WLBhTyn54-8mig6nvLG22OElB4znCGJ3LLYdH26LxStO9SZFXuANf-fqPa4ozkkXcL9w2fSPW6Iw52NLBD3yZbZJqit72Nos-o6pFCCFNtgfgKF_fkfJg-xw5b6JqcAYbGFxwg-F2mMbjhMDAHn49V1mXNlfknZSIck/s320/J17.zangyodai.png"/></a></div>
+
+
+<!-- ===== J17 残業代計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc17">
+<style>
+#jc17{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc17 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc17 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc17 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc17 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc17 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc17 input[type=text],#jc17 input[type=date],#jc17 input[type=time],#jc17 select,#jc17 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc17 textarea{width:100%;min-height:180px;font-size:17px}
+#jc17 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc17 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc17 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc17 .jc-opts input{width:20px;height:20px}
+#jc17 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc17 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc17 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc17 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc17 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc17 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc17 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc17 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc17 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc17 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc17 .jc-art th,#jc17 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc17 .jc-art th{background:#f2f4f8}
+#jc17 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">時給と残業時間から残業代（割増賃金）を計算。時間外25％、深夜25％、休日35％、月60時間超50％の割増率に対応した無料ツールです。</p>
+<div class="jc-box"><h2>残業代計算</h2>
+<span class="jc-lbl">月給（基本給＋手当）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc17-m" placeholder="例：280,000"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">月の所定労働時間</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc17-h" placeholder="例：160" value="160"><span class="jc-unit">時間</span></div>
+<span class="jc-lbl">時間外労働（普通残業）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc17-o" placeholder="例：20"><span class="jc-unit">時間</span></div>
+<span class="jc-lbl">うち深夜（22時〜5時）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc17-n" placeholder="例：0" value="0"><span class="jc-unit">時間</span></div>
+<span class="jc-lbl">休日労働（法定休日）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc17-k" placeholder="例：0" value="0"><span class="jc-unit">時間</span></div>
+<button type="button" id="jc17-btn">計算する</button>
+<div class="jc-result" id="jc17-res"></div>
+<p class="jc-note">家族手当・通勤手当・住宅手当などは本来、基礎賃金から除きます。月給には基本給と対象の手当だけを入れてください。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc17-',box=document.getElementById('jc17-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var m=N('m'),h=N('h'),o=N('o'),n=N('n'),k=N('k');if(!m||!h)return err('月給と所定労働時間を入れてください。');if(n>o+k)return err('深夜時間が多すぎます。');
+var b=m/h,o1=Math.min(o,60),o2=Math.max(o-60,0),a1=b*1.25*o1,a2=b*1.5*o2,a3=b*1.35*k,a4=b*0.25*n,t=a1+a2+a3+a4;
+show(yen(Math.round(t)),[['1時間あたりの賃金',yen(Math.round(b))],['時間外（×1.25）',yen(Math.round(a1))],['60時間超（×1.5）',yen(Math.round(a2))],['休日（×1.35）',yen(Math.round(a3))],['深夜の加算（×0.25）',yen(Math.round(a4))]]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>残業代は「1時間あたりの賃金 × 割増率 × 時間」で計算します。労働基準法で決められた割増率は、残業の種類によって違います。</p>
+
+<h2 style="font-size:24px;margin-top:10px">法定休日の深夜残業は60％増になります</h2>
+<h3 style="font-size:22px;margin-top:28px">割増率（労働基準法）</h3><table><tr><th>種類</th><th>割増率</th></tr><tr><td>時間外労働</td><td>25％以上</td></tr><tr><td>月60時間を超える時間外</td><td>50％以上</td></tr><tr><td>深夜労働（22〜5時）</td><td>25％以上（加算）</td></tr><tr><td>法定休日労働</td><td>35％以上</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">1時間あたりの賃金</h3><p>月給制の場合は、月給 ÷ 月の所定労働時間で求めます。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>月給30万円（基本給＋対象の手当）、月の所定労働時間160時間の人が、1か月に普通残業20時間（うち深夜5時間）、法定休日に8時間働いた場合です。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">内訳</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">計算</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">金額</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1時間あたりの賃金</td><td style="border:1px solid #bbb;padding:6px">300,000 ÷ 160</td><td style="border:1px solid #bbb;padding:6px">1,875円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">時間外（×1.25）</td><td style="border:1px solid #bbb;padding:6px">1,875 × 1.25 × 20時間</td><td style="border:1px solid #bbb;padding:6px">46,875円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">深夜の加算（×0.25）</td><td style="border:1px solid #bbb;padding:6px">1,875 × 0.25 × 5時間</td><td style="border:1px solid #bbb;padding:6px">2,344円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">休日（×1.35）</td><td style="border:1px solid #bbb;padding:6px">1,875 × 1.35 × 8時間</td><td style="border:1px solid #bbb;padding:6px">20,250円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">合計</td><td style="border:1px solid #bbb;padding:6px"></td><td style="border:1px solid #bbb;padding:6px"><b>69,469円</b></td></tr></table><p>深夜の時間は「時間外の25％」に「深夜の25％」が上乗せされるので、その5時間は合わせて1.5倍になります。</p>
+<h3 style="font-size:22px;margin-top:28px">残業代の誤解と事実</h3><ul><li><b>誤解：割増は基本給だけで計算する</b>　事実：役職手当や資格手当など毎月決まった手当も基礎賃金に含めます。除外できるのは家族手当・通勤手当などに限られ、名前ではなく実態で判断されます。</li><li><b>誤解：法定休日の深夜は35％だけ</b>　事実：休日の35％に深夜の25％が加わり60％増です。時給換算1,875円なら 1,875 × 1.6 ＝ 3,000円 です。休日労働には時間外の25％は重ねて加算されません。</li><li><b>誤解：15分未満の残業は切り捨てていい</b>　事実：1日ごとの切り捨ては認められません。認められるのは、1か月の合計で30分未満を切り捨て、30分以上を1時間に切り上げる処理だけです。</li><li><b>誤解：36協定があれば何時間でも残業させられる</b>　事実：原則は月45時間・年360時間、特別条項でも年720時間以内、休日労働を含め月100時間未満・2〜6か月平均80時間以内が上限です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">月60時間を超えたら</h3><p>同じ人が1か月に70時間残業すると、60時間までは ×1.25、超えた10時間は ×1.5 で計算します。1,875 × 1.25 × 60 ＋ 1,875 × 1.5 × 10 ＝ <b>168,750円</b>です。2023年4月からは中小企業にもこのルールが適用されています。</p>
+<h3 style="font-size:22px;margin-top:28px">「月の所定労働時間」の出し方</h3><p>月によって労働日数が違うため、1年間の平均を使います。年間休日が120日・1日8時間なら、(365 − 120) × 8 ÷ 12 ＝ <b>約163.3時間</b>です。給与明細や就業規則に書かれていることもあります。</p>
+<h3 style="font-size:22px;margin-top:28px">基礎賃金に入れないもの</h3><ul><li>家族手当・通勤手当・別居手当・子女教育手当・住宅手当（一律支給のものを除く）</li><li>臨時に支払われた賃金、1か月を超える期間ごとに支払われる賃金（賞与など）</li><li>これらを月給に入れると、1時間あたりの賃金が高く出すぎます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>「残業」と「時間外労働」を混同する</b>：会社の所定時間を超えても、法定労働時間（1日8時間・週40時間）以内なら割増は法律上必須ではありません（会社の規定によります）。</li><li><b>固定残業代を見落とす</b>：みなし残業代が含まれている場合、その時間を超えた分だけが追加の支払いになります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">時給1,200円・1日7時間契約のパートが10時間働いた日</h3><p>所定労働時間が8時間より短い人は、「8時間まで」と「8時間超」で残業の単価が変わります。時給1,200円、1日7時間契約のパートが、ある日10時間働いたとします。</p><ul><li>7時間目から8時間目までの1時間：法定内の残業なので割増はなく 1,200円</li><li>8時間を超えた2時間：1,200 × 1.25 × 2 ＝ 3,000円</li><li>3時間分の合計：4,200円（すべてを1.25倍にした4,500円より300円少ない）</li></ul><p>法定内の1時間に割増を付けるかは会社の規定次第で、就業規則に定めがあればそれに従います。1日8時間・週5日の契約で6日目（会社が定める所定休日）に出勤すると、その日は法定休日ではないので35％ではなく、週40時間を超えた分として25％増になります。</p>
+<h3 style="font-size:22px;margin-top:28px">残業代について社員からよく出る質問</h3><p><b>Q. 中小企業も60時間超は50％？</b><br>A. 2023年4月から中小企業も50％になりました。</p><p><b>Q. 残業代の請求はいつまでできる？</b><br>A. 賃金の請求権の時効は、現在は3年です（2020年4月以降に支払日が来るもの）。</p><p><b>Q. 管理職は残業代が出ない？</b><br>A. 労働基準法の「管理監督者」に当たる人は時間外・休日の割増の対象外ですが、深夜の割増は対象です。役職名だけでは決まりません。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 割増率を確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 勤務日数を数える</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – 支払日までの日数</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://laws.e-gov.go.jp/law/322AC0000000049" rel="noopener" target="_blank">e-Gov法令検索 – 労働基準法（第36条・第37条）</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html" rel="noopener" target="_blank">厚生労働省 – 労働基準に関する法制度（割増賃金・時間外労働の上限）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例はツールと同じ式でプログラム計算しました。割増率・基礎賃金の扱い・時効は労働基準法と厚生労働省の案内によります。実際の支給は就業規則・労働基準監督署でご確認ください。 最終確認：2026年11月。 計算結果は法律上の最低基準にもとづく概算で、実際の支給額は就業規則や労働契約により異なります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/jikyu-nenshu.html" style="color:#1a56db">時給・月給・年収換算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/yukyu.html" style="color:#1a56db">有給休暇計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html" style="color:#1a56db">日数計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J17 end ===== -->

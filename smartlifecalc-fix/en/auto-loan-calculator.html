@@ -1,0 +1,107 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8V9MdiukAHKwvw3EjYz0OMuZiY2jeYhbwp-3tQLuPP-xo-OrSsNJmlM9zssziJ0svUbjHQLtXHpwYj3gWvE8-U8fmdyPJGYKaKh7TtAjqD0MDh2oB_mjck9Yog91nzVsH4T3X1MiqqBCNqKKCq4RaCQ7Lqwnu_E5hm2JJOo2V66wcXdpU1B_DwPe8hD0/s300/E03.auto-loan-calculator%20%28%EC%9E%90%EB%8F%99%EC%B0%A8%20%ED%95%A0%EB%B6%80%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="Auto loan calculator showing monthly car payment with sales tax and trade-in" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8V9MdiukAHKwvw3EjYz0OMuZiY2jeYhbwp-3tQLuPP-xo-OrSsNJmlM9zssziJ0svUbjHQLtXHpwYj3gWvE8-U8fmdyPJGYKaKh7TtAjqD0MDh2oB_mjck9Yog91nzVsH4T3X1MiqqBCNqKKCq4RaCQ7Lqwnu_E5hm2JJOo2V66wcXdpU1B_DwPe8hD0/s320/E03.auto-loan-calculator%20%28%EC%9E%90%EB%8F%99%EC%B0%A8%20%ED%95%A0%EB%B6%80%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg"/></a></div>
+
+
+<!-- ===== Auto Loan Calculator (paste in Blogger HTML view) ===== -->
+<div id="ea-calc">
+<style>
+#ea-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ea-calc .ea-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ea-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ea-calc .ea-lbl{display:block;font-weight:bold;margin-top:14px}
+#ea-calc .ea-hint{font-size:15px;color:#555;font-weight:normal}
+#ea-calc .ea-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ea-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ea-calc input.ea-s{flex:0 0 5.5em}
+#ea-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ea-calc .ea-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ea-calc .ea-opts{display:grid;gap:8px;margin-top:8px}
+#ea-calc .ea-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ea-calc .ea-opts input{width:22px;height:22px;flex:none}
+#ea-calc .ea-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ea-calc .ea-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ea-calc .ea-grid select{font-size:17px;width:100%}
+#ea-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ea-calc .ea-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ea-calc .ea-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ea-calc .ea-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ea-calc .ea-err{color:#c00;font-weight:bold;text-align:center}
+#ea-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ea-calc th,#ea-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ea-calc th{background:#f2f4f8}
+#ea-calc .ea-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ea-box"><h2>Auto Loan Calculator</h2>
+<span class="ea-lbl">Car price</span><div class="ea-line"><span class="ea-unit">$</span><input type="text" inputmode="decimal" id="ea-price" placeholder="e.g. 35,000"><span class="ea-unit"></span></div><span class="ea-lbl">Down payment</span><div class="ea-line"><span class="ea-unit">$</span><input type="text" inputmode="decimal" id="ea-down" placeholder="e.g. 5,000" value="0"><span class="ea-unit"></span></div><span class="ea-lbl">Trade-in value</span><div class="ea-line"><span class="ea-unit">$</span><input type="text" inputmode="decimal" id="ea-trade" placeholder="0" value="0"><span class="ea-unit"></span></div><span class="ea-lbl">Sales tax</span><div class="ea-line"><input type="text" inputmode="decimal" id="ea-tax" placeholder="e.g. 7" value="7"><span class="ea-unit">%</span></div><span class="ea-lbl">Interest rate (APR)</span><div class="ea-line"><input type="text" inputmode="decimal" id="ea-rate" placeholder="e.g. 7"><span class="ea-unit">%</span></div><span class="ea-lbl">Loan term</span><div class="ea-line"><select id="ea-term"><option value="36">36 months</option><option value="48">48 months</option><option value="60" selected>60 months</option><option value="72">72 months</option><option value="84">84 months</option></select><span class="ea-unit"></span></div>
+<button type="button" id="ea-btn">Calculate</button>
+<div class="ea-result" id="ea-res"></div>
+<p class="ea-note">Sales tax is applied to the price minus the trade-in (rules vary by state). Fees such as title and registration are not included.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ea-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('ea-price'));comma($('ea-down'));comma($('ea-trade'));
+$('ea-btn').addEventListener('click',function(){var box=$('ea-res');box.style.display='block';function err(t){box.innerHTML='<p class="ea-err">'+t+'</p>';}
+  var Pr=num($('ea-price').value),dn=num($('ea-down').value),tr=num($('ea-trade').value),tx=num($('ea-tax').value)/100,r=num($('ea-rate').value)/100/12,n=+$('ea-term').value;
+  if(!Pr)return err('Please enter the car price.');
+  var tax=Math.max(Pr-tr,0)*tx,L=Pr+tax-dn-tr;
+  if(L<=0)return err('Your down payment and trade-in cover the whole price — no loan needed.');
+  var p=pmt(L,r,n);
+  box.innerHTML='<div style="text-align:center">Monthly payment</div><div class="ea-big">'+usd(p)+'</div>'+row('Amount financed',usd(L))+row('Sales tax',usd(tax))+row('Total interest',usd(p*n-L))+row('Total cost of the car',usd(p*n+dn+tr));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Dealers love to talk about the monthly payment. This auto loan calculator shows you the whole picture — the amount financed, sales tax, total interest and what the car really costs — before you sign.</p>
+<h2 style="font-size:26px;margin-top:10px">Getting the real cost of a car loan</h2>
+<p>Dealers often lead with the monthly payment, because a low number is easy to say yes to. The better way to shop is to settle the out-the-door price first — vehicle price plus sales tax, title, registration and dealer fees, minus your trade-in and down payment — and then decide how to finance that amount. This calculator follows that order so you can see each piece separately.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the auto loan calculator</h3><ol><li>Enter the car price, your down payment and any trade-in value.</li><li>Enter your state sales tax rate.</li><li>Enter the APR and choose a loan term.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Amount financed = price + sales tax − down payment − trade-in</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>A $35,000 car, 7% sales tax, an $8,000 trade-in and $3,000 down at 7.5% APR:</p>
+<ul>
+<li>In states that tax the price after the trade-in, tax is charged on $27,000, and you finance about <b>$25,890</b>. Over 60 months that is about <b>$519 a month</b>.</li>
+<li>In states that tax the full price, tax is charged on $35,000 and you finance about $26,450 — about $530 a month.</li>
+</ul>
+<p>Most states give the trade-in tax credit, but some do not, so check your state's rule. It can make a difference of several hundred dollars.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Case study: 0% APR versus a $2,500 rebate</h3><p>You are financing <b>$30,000</b> over 60 months. The manufacturer offers either 0% APR or a $2,500 cash rebate, not both.</p><ul><li><b>0% APR:</b> $30,000 ÷ 60 = <b>$500 a month</b>, total paid $30,000.</li><li><b>Rebate plus a 6.5% credit union loan:</b> finance $27,500 at 6.5% for 60 months = <b>$538 a month</b>, total paid $32,284. The 0% deal wins by $2,284.</li><li><b>Rebate plus a 4.5% loan:</b> $513 a month, total $30,761. The 0% deal still wins, by $761.</li></ul><p>The rebate only comes out ahead when the interest on the reduced balance is less than the rebate. For these numbers that happens below roughly <b>3.5% APR</b> over 60 months. Run your own quote in the calculator with the price lowered by the rebate, and remember that 0% offers usually require top-tier credit and may be limited to shorter terms.</p>
+<h3 style="font-size:22px;margin-top:28px">60 vs 72 vs 84 months</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">$26,450 at 7.5%</th><th style="border:1px solid #ccc;padding:6px">Monthly</th><th style="border:1px solid #ccc;padding:6px">What to watch</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">60 months</td><td style="border:1px solid #ccc;padding:6px">≈ $530</td><td style="border:1px solid #ccc;padding:6px">Balance usually falls faster than the car's value</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">72 months</td><td style="border:1px solid #ccc;padding:6px">≈ $457</td><td style="border:1px solid #ccc;padding:6px">About $1,100 more interest; higher risk of owing more than the car is worth</td></tr>
+</table>
+<p>Being "upside down" (owing more than the car is worth) matters if the car is totaled or you want to sell early. A larger down payment, a shorter term or GAP insurance reduces that risk.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Ways to lower the cost</h3>
+<ul>
+<li><b>Get pre-approved</b> by a bank or credit union before visiting the dealer, so you have a rate to compare.</li>
+<li><b>Negotiate price, trade-in and financing separately.</b> Combining them makes it easy to give back savings in another place.</li>
+<li><b>Watch add-ons</b> (extended warranties, protection packages). They are often rolled into the loan and charged interest.</li>
+<li><b>Check the APR, not only the rate.</b> Special 0% offers may require giving up a cash rebate — run both options.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Loan balance versus car value over a 72-month term</h3><p>Being upside down depends on how fast the balance falls relative to the car's value. The table assumes a $35,000 car with 7% sales tax at 7.5% APR for 72 months, and an illustrative value drop of 20% in year one and 15% a year after that. Those value figures are assumptions, not forecasts.</p><table style="border-collapse:collapse;border:1px solid #ccc"><tr><th style="border:1px solid #ccc;padding:6px">Month</th><th style="border:1px solid #ccc;padding:6px">Balance, nothing down ($37,450 financed)</th><th style="border:1px solid #ccc;padding:6px">Balance, $8,000 trade-in + $3,000 down ($26,450 financed)</th><th style="border:1px solid #ccc;padding:6px">Illustrative car value</th></tr><tr><td style="border:1px solid #ccc;padding:6px">12</td><td style="border:1px solid #ccc;padding:6px">$32,314</td><td style="border:1px solid #ccc;padding:6px">$22,823</td><td style="border:1px solid #ccc;padding:6px">$28,000</td></tr><tr><td style="border:1px solid #ccc;padding:6px">24</td><td style="border:1px solid #ccc;padding:6px">$26,780</td><td style="border:1px solid #ccc;padding:6px">$18,914</td><td style="border:1px solid #ccc;padding:6px">$23,800</td></tr><tr><td style="border:1px solid #ccc;padding:6px">36</td><td style="border:1px solid #ccc;padding:6px">$20,816</td><td style="border:1px solid #ccc;padding:6px">$14,702</td><td style="border:1px solid #ccc;padding:6px">$20,230</td></tr><tr><td style="border:1px solid #ccc;padding:6px">48</td><td style="border:1px solid #ccc;padding:6px">$14,389</td><td style="border:1px solid #ccc;padding:6px">$10,170</td><td style="border:1px solid #ccc;padding:6px">$17,196</td></tr></table><p>With nothing down, the buyer owes more than the car is worth for about three years, by $4,300 at the one-year mark. With $11,000 of trade-in and cash, the balance stays below the value from the start. If a zero-down loan is the only option, GAP coverage covers that first-three-years gap, and a shorter term closes it faster.</p>
+<h3 style="font-size:22px;margin-top:28px">Car buyers&#x27; questions about loan math</h3><p><b>How much car can I afford?</b><br>A common rule of thumb is to keep total car costs (payment, insurance, fuel) under about 15–20% of take-home pay, and the loan term at 60 months or less.</p><p><b>Are dealer fees included?</b><br>Add documentation, title and registration fees to the price field. They vary by state and dealer.</p><p><b>Is a 0% offer always best?</b><br>Not if it replaces a large rebate. Compare: 0% on the full price versus a rebate plus your own bank's rate.</p><p><b>Is a 72- or 84-month loan a good idea?</b><br>It lowers the payment, but you pay more interest and may be “upside down” for years. 60 months or less is usually safer.</p><p><b>Does the trade-in reduce sales tax?</b><br>In most US states, yes — tax is charged on the price minus the trade-in. A few states do not allow this credit.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3>
+<p><a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html">Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html">Debt Snowball vs Avalanche</a></p>
+
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Auto loans: shopping, negotiating and understanding financing</a></li><li><a href="https://www.mymoney.gov/" rel="noopener" target="_blank">MyMoney.gov – federal financial literacy resources on borrowing</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> payments recomputed with the standard amortization formula. Background reading: Federal Trade Commission guidance on buying and financing a car (consumer.ftc.gov). Last reviewed November 2026. General information only. These payment figures are illustrations only; your lender&#x27;s quote, state tax rules and fees determine the actual cost.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html" style="color:#1a56db">Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html" style="color:#1a56db">Debt Snowball vs Avalanche Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Auto Loan Calculator end ===== -->

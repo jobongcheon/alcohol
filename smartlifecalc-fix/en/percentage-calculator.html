@@ -1,0 +1,104 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgOluv6gyJIB2tktHemQ8StmqzdFRD05nEkYM8bLDIKYbda3Wh735RKbrJTZXo3geUE17xA97Jn8m2hXFx9c5hWWG3MZ7ZQduFhdIiygDj_sz6dNiCwE64RgWraZYbAq4KbN_A_mQoh5ria3_4jBsIyxVa5JMVcjCSNt6j57SfV6F3xiGsQ0fcvkC8dfB8/s300/E11.percentage-calculator%20%28%ED%8D%BC%EC%84%BC%ED%8A%B8%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Percentage calculator showing X percent of Y and percent change results" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgOluv6gyJIB2tktHemQ8StmqzdFRD05nEkYM8bLDIKYbda3Wh735RKbrJTZXo3geUE17xA97Jn8m2hXFx9c5hWWG3MZ7ZQduFhdIiygDj_sz6dNiCwE64RgWraZYbAq4KbN_A_mQoh5ria3_4jBsIyxVa5JMVcjCSNt6j57SfV6F3xiGsQ0fcvkC8dfB8/s320/E11.percentage-calculator%20%28%ED%8D%BC%EC%84%BC%ED%8A%B8%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Percentage Calculator (paste in Blogger HTML view) ===== -->
+<div id="ep-calc">
+<style>
+#ep-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ep-calc .ep-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ep-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ep-calc .ep-lbl{display:block;font-weight:bold;margin-top:14px}
+#ep-calc .ep-hint{font-size:15px;color:#555;font-weight:normal}
+#ep-calc .ep-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ep-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ep-calc input.ep-s{flex:0 0 5.5em}
+#ep-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ep-calc .ep-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ep-calc .ep-opts{display:grid;gap:8px;margin-top:8px}
+#ep-calc .ep-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ep-calc .ep-opts input{width:22px;height:22px;flex:none}
+#ep-calc .ep-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ep-calc .ep-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ep-calc .ep-grid select{font-size:17px;width:100%}
+#ep-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ep-calc .ep-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ep-calc .ep-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ep-calc .ep-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ep-calc .ep-err{color:#c00;font-weight:bold;text-align:center}
+#ep-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ep-calc th,#ep-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ep-calc th{background:#f2f4f8}
+#ep-calc .ep-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ep-box"><h2>Percentage Calculator</h2>
+<span class="ep-lbl">What do you want to find?</span><div class="ep-opts"><label><input type="radio" name="ep-m" value="a" checked> What is X% of Y?</label><label><input type="radio" name="ep-m" value="b"> X is what percent of Y?</label><label><input type="radio" name="ep-m" value="c"> Percent change from X to Y</label></div><span class="ep-lbl">X</span><div class="ep-line"><input type="text" inputmode="decimal" id="ep-a" placeholder="e.g. 15"><span class="ep-unit"></span></div><span class="ep-lbl">Y</span><div class="ep-line"><input type="text" inputmode="decimal" id="ep-b" placeholder="e.g. 200"><span class="ep-unit"></span></div>
+<button type="button" id="ep-btn">Calculate</button>
+<div class="ep-result" id="ep-res"></div>
+<p class="ep-note">Results are rounded to two decimal places.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ep-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+$('ep-btn').addEventListener('click',function(){var box=$('ep-res');box.style.display='block';function err(t){box.innerHTML='<p class="ep-err">'+t+'</p>';}
+  var a=num($('ep-a').value),b=num($('ep-b').value),m=pick('ep-m'),r,t;
+  if(m==='a'){r=a*b/100;t=a+'% of '+b.toLocaleString('en-US')+' is';}
+  else if(m==='b'){if(!b)return err('Y cannot be zero.');r=a/b*100;t=a.toLocaleString('en-US')+' is this percent of '+b.toLocaleString('en-US');}
+  else{if(!a)return err('X cannot be zero.');r=(b-a)/a*100;t='From '+a.toLocaleString('en-US')+' to '+b.toLocaleString('en-US');}
+  var v=Math.round(r*100)/100;
+  box.innerHTML='<div style="text-align:center">'+t+'</div><div class="ep-big">'+(m==='a'?v.toLocaleString('en-US'):v.toLocaleString('en-US')+'%'+(m==='c'?(v>=0?' increase':' decrease'):''))+'</div>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Discounts, tips, raises, test scores, stock moves — percentages are everywhere. Pick the question you have, enter two numbers, and get the answer instantly.</p>
+<h2 style="font-size:26px;margin-top:10px">Three percentage questions, explained simply</h2>
+<p>Almost every percentage problem is one of three questions. Knowing which one you are asking makes the math easy.</p>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Question</th><th style="border:1px solid #ccc;padding:6px">Formula</th><th style="border:1px solid #ccc;padding:6px">Example</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">What is X% of Y?</td><td style="border:1px solid #ccc;padding:6px">Y × X ÷ 100</td><td style="border:1px solid #ccc;padding:6px">15% of 80 = 12</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">X is what % of Y?</td><td style="border:1px solid #ccc;padding:6px">X ÷ Y × 100</td><td style="border:1px solid #ccc;padding:6px">12 is 15% of 80</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">% change from A to B</td><td style="border:1px solid #ccc;padding:6px">(B − A) ÷ A × 100</td><td style="border:1px solid #ccc;padding:6px">80 → 92 = +15%</td></tr>
+</table>
+<h3 style="font-size:22px;margin-top:28px">How to use the percentage calculator</h3><ol><li>Choose the type of question.</li><li>Enter X and Y.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">X% of Y = Y × X ÷ 100 &nbsp;|&nbsp; Percent change = (new − old) ÷ old × 100</p>
+<h3 style="font-size:22px;margin-top:28px">Everyday examples</h3>
+<ul>
+<li><b>Sales:</b> a $120 jacket at 25% off saves $30, so you pay $90.</li>
+<li><b>Raises:</b> going from $52,000 to $54,600 is a 5% raise.</li>
+<li><b>Tips:</b> 18% of a $64 bill is $11.52.</li>
+<li><b>Price increases:</b> a bill that rose from $150 to $165 went up 10%.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Discount today, markup needed to get back to the original price</h3><p>A percentage cut and the percentage rise that undoes it are never the same number, because the second one is measured from a smaller base. The gain needed to recover from a loss of d is d ÷ (1 − d).</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Value falls by</th><th style="border:1px solid #ccc;padding:6px">Gain needed to get back</th></tr><tr><td style="border:1px solid #ccc;padding:6px">10%</td><td style="border:1px solid #ccc;padding:6px">11.1%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">20%</td><td style="border:1px solid #ccc;padding:6px">25%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">25%</td><td style="border:1px solid #ccc;padding:6px">33.3%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">40%</td><td style="border:1px solid #ccc;padding:6px">66.7%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">50%</td><td style="border:1px solid #ccc;padding:6px">100%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">75%</td><td style="border:1px solid #ccc;padding:6px">300%</td></tr></table><p>Example: a stock bought at $80 drops 40% to $48. Getting back to $80 means rising $32 on a $48 base, which is 66.7%, not 40%. The same logic explains why a portfolio that loses 50% and then gains 50% ends at 75% of where it started: $100 → $50 → $75. For a shopper, a store that marks a jacket down 25% and later raises the sale price by 25% is still selling it below the original tag: $120 → $90 → $112.50.</p>
+<h3 style="font-size:22px;margin-top:28px">Mistakes that trip people up</h3>
+<p><b>Up and down are not symmetrical.</b> If a price rises 20% and then falls 20%, you don't return to the start: $100 → $120 → $96. <b>Percent vs percentage points:</b> a rate moving from 4% to 5% is a 1 percentage point increase, but a 25% relative increase. <b>Stacked discounts multiply:</b> 30% off and then another 10% off is 37% off in total, not 40%.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Mental-math shortcuts</h3>
+<ul>
+<li>10% → move the decimal one place (10% of $84 = $8.40).</li>
+<li>5% → half of 10%. 20% → double 10%.</li>
+<li>X% of Y equals Y% of X — 8% of 50 is the same as 50% of 8 = 4.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Small details that change the result</h3><ul><li>A 50% drop needs a 100% gain to recover.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Yearly percent changes compound; they do not simply add</h3><p>When a change repeats, multiply the growth factors instead of adding the percentages.</p><ul><li>Rent rising 5% a year for six years: 1.05 multiplied by itself six times is 1.34, a 34% total increase, not 30%. A $1,500 rent becomes about $2,010.</li><li>Inflation of 3%, 4% and 3% over three years: 1.03 × 1.04 × 1.03 = 1.103, so prices are up 10.3%, not 10%.</li><li>An investment up 50% over five years grew about 8.45% a year, not 10%, because 1.0845 compounded for five years is about 1.50. The Investor.gov compound interest calculator lets you check this kind of figure.</li><li>To undo a 25% increase, divide by 1.25 rather than subtracting 25%: $125 ÷ 1.25 = $100, while $125 × 0.75 = $93.75.</li></ul><p>The percent change option above handles one step at a time. For a multi-year question, run each step on the previous result, or multiply the factors as shown and subtract 1 at the end.</p>
+<h3 style="font-size:22px;margin-top:28px">Percentage puzzles readers ask about</h3><p><b>How do I find the original price before a discount?</b><br>Divide the sale price by (1 − discount). $90 after 25% off: 90 ÷ 0.75 = $120.</p><p><b>How do I add sales tax?</b><br>Multiply by (1 + rate). $50 with 8% tax: 50 × 1.08 = $54.</p><p><b>How do I calculate a discount?</b><br>Use “What is X% of Y?” to get the discount amount, then subtract it from the price.</p><p><b>How do I reverse a percentage?</b><br>If a price after a 20% discount is $80, the original is 80 ÷ (1 − 0.20) = $100.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/tip-calculator.html">Tip Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/inflation-calculator.html">Inflation Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/grade-calculator.html">Grade Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic: percents, decimals and fractions</a></li><li><a href="https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator" rel="noopener" target="_blank">Investor.gov (SEC) – Compound Interest Calculator</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> every example was checked by hand. Last reviewed November 2026. Results are rounded and meant for everyday math; confirm anything that affects money or grades with the original document.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/percent-change-calculator.html" style="color:#1a56db">Percent Change Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/tip-calculator.html" style="color:#1a56db">Tip Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/fraction-calculator.html" style="color:#1a56db">Fraction Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Percentage Calculator end ===== -->

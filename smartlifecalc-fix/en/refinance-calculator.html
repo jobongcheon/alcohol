@@ -1,0 +1,101 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjupkajxW2Eaxm-GcC2dKnqMB3C2opf1s28PpBdi6b76XwjuBeN_XpKZTMxsbuSn8BDTKqMzvzSBrVTtianz2omFhgbIcpp8xSyMgcTgr4FO_wRL04Y2pK6iSZtlAc60GRV9DqD9Y1DGAfyefTeW_x8m6uo6uT3BctWoB3NF2k1RnTVMyzTzoEJUJONzhQ/s300/E08.refinance-calculator%20%28%EC%9E%AC%EC%9C%B5%EC%9E%90%28%EB%8C%80%EC%B6%9C%20%EA%B0%88%EC%95%84%ED%83%80%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Refinance calculator showing monthly savings and break-even months on closing costs" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjupkajxW2Eaxm-GcC2dKnqMB3C2opf1s28PpBdi6b76XwjuBeN_XpKZTMxsbuSn8BDTKqMzvzSBrVTtianz2omFhgbIcpp8xSyMgcTgr4FO_wRL04Y2pK6iSZtlAc60GRV9DqD9Y1DGAfyefTeW_x8m6uo6uT3BctWoB3NF2k1RnTVMyzTzoEJUJONzhQ/s320/E08.refinance-calculator%20%28%EC%9E%AC%EC%9C%B5%EC%9E%90%28%EB%8C%80%EC%B6%9C%20%EA%B0%88%EC%95%84%ED%83%80%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Refinance Calculator (paste in Blogger HTML view) ===== -->
+<div id="ef-calc">
+<style>
+#ef-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ef-calc .ef-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ef-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ef-calc .ef-lbl{display:block;font-weight:bold;margin-top:14px}
+#ef-calc .ef-hint{font-size:15px;color:#555;font-weight:normal}
+#ef-calc .ef-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ef-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ef-calc input.ef-s{flex:0 0 5.5em}
+#ef-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ef-calc .ef-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ef-calc .ef-opts{display:grid;gap:8px;margin-top:8px}
+#ef-calc .ef-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ef-calc .ef-opts input{width:22px;height:22px;flex:none}
+#ef-calc .ef-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ef-calc .ef-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ef-calc .ef-grid select{font-size:17px;width:100%}
+#ef-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ef-calc .ef-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ef-calc .ef-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ef-calc .ef-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ef-calc .ef-err{color:#c00;font-weight:bold;text-align:center}
+#ef-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ef-calc th,#ef-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ef-calc th{background:#f2f4f8}
+#ef-calc .ef-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ef-box"><h2>Mortgage Refinance Calculator</h2>
+<span class="ef-lbl">Current loan balance</span><div class="ef-line"><span class="ef-unit">$</span><input type="text" inputmode="decimal" id="ef-bal" placeholder="e.g. 300,000"><span class="ef-unit"></span></div><span class="ef-lbl">Current interest rate</span><div class="ef-line"><input type="text" inputmode="decimal" id="ef-r1" placeholder="e.g. 7.5"><span class="ef-unit">%</span></div><span class="ef-lbl">Years left on current loan</span><div class="ef-line"><input type="text" inputmode="decimal" id="ef-y1" placeholder="e.g. 27"><span class="ef-unit">years</span></div><span class="ef-lbl">New interest rate</span><div class="ef-line"><input type="text" inputmode="decimal" id="ef-r2" placeholder="e.g. 6.25"><span class="ef-unit">%</span></div><span class="ef-lbl">New loan term</span><div class="ef-line"><select id="ef-y2"><option value="30" selected>30 years</option><option value="20">20 years</option><option value="15">15 years</option></select><span class="ef-unit"></span></div><span class="ef-lbl">Closing costs</span><div class="ef-line"><span class="ef-unit">$</span><input type="text" inputmode="decimal" id="ef-cc" placeholder="e.g. 6,000"><span class="ef-unit"></span></div>
+<button type="button" id="ef-btn">Should I Refinance?</button>
+<div class="ef-result" id="ef-res"></div>
+<p class="ef-note">Compares principal and interest only. Closing costs are assumed to be paid up front, not rolled into the loan.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ef-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('ef-bal'));comma($('ef-cc'));
+$('ef-btn').addEventListener('click',function(){var box=$('ef-res');box.style.display='block';function err(t){box.innerHTML='<p class="ef-err">'+t+'</p>';}
+  var B=num($('ef-bal').value),r1=num($('ef-r1').value)/100/12,n1=Math.round(num($('ef-y1').value)*12),r2=num($('ef-r2').value)/100/12,n2=+$('ef-y2').value*12,cc=num($('ef-cc').value);
+  if(!B||!n1)return err('Please enter your balance and years left.');
+  var p1=pmt(B,r1,n1),p2=pmt(B,r2,n2),sv=p1-p2,i1=p1*n1-B,i2=p2*n2-B,be=sv>0?Math.ceil(cc/sv):0;
+  var verdict=sv>0?('Break-even in '+ym(be)):'The new payment is not lower';
+  box.innerHTML='<div style="text-align:center">Monthly savings</div><div class="ef-big">'+usd(sv)+'</div>'+
+   row('Current payment',usd(p1))+row('New payment',usd(p2))+row('Closing costs',usd0(cc))+row('<b>'+verdict+'</b>','')+
+   row('Interest left on current loan',usd0(i1))+row('Interest on new loan',usd0(i2))+row('Lifetime difference (incl. costs)',usd0(i1-i2-cc));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Refinancing can lower your payment when rates drop, but closing costs mean it only pays off if you stay long enough. This calculator shows your monthly savings and how many months it takes to break even.</p>
+<h2 style="font-size:26px;margin-top:10px">Is refinancing worth it? Look at the break-even point</h2>
+<p>Refinancing replaces your current mortgage with a new one, usually to get a lower rate, change the term or take cash out. It is never free: closing costs commonly run 2–5% of the loan. The key question is how many months of lower payments it takes to earn those costs back. That is the <b>break-even point</b>, and this calculator shows it directly.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the refinance calculator</h3><ol><li>Enter your current balance, rate and years left.</li><li>Enter the new rate and term you were offered.</li><li>Enter the estimated closing costs.</li><li>Press <b>Should I Refinance?</b></li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Break-even months = closing costs ÷ monthly savings</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>You owe $300,000 at 7% with 28 years left; your payment is about $2,039. A new 30-year loan at 6% would be about $1,799 — roughly <b>$240 a month less</b>. With $6,000 in closing costs, break-even is about <b>25 months</b>. If you plan to stay at least three years, the refinance probably pays off.</p>
+<p>Be careful: starting a new 30-year clock adds two years of payments. If you choose a new loan that matches your remaining 28 years, the payment is about $1,845 — still $194 less — and you don't extend your debt.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Case study: refinancing $300,000 into a 15-year loan</h3><p>You owe $300,000 at 7% with 28 years left: $2,039 a month and about <b>$385,000</b> of interest still to pay. Shorter loans usually carry lower rates (Freddie Mac publishes 15-year and 30-year averages weekly), so the illustrative rates below step down with the term.</p><table style="border-collapse:collapse;border:1px solid #ccc"><tr><th style="border:1px solid #ccc;padding:6px">Option</th><th style="border:1px solid #ccc;padding:6px">Monthly P&I</th><th style="border:1px solid #ccc;padding:6px">Remaining interest</th><th style="border:1px solid #ccc;padding:6px">Interest saved</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Keep current loan (28 yrs, 7%)</td><td style="border:1px solid #ccc;padding:6px">$2,039</td><td style="border:1px solid #ccc;padding:6px">$385,045</td><td style="border:1px solid #ccc;padding:6px">-</td></tr><tr><td style="border:1px solid #ccc;padding:6px">New 30-year at 6%</td><td style="border:1px solid #ccc;padding:6px">$1,799</td><td style="border:1px solid #ccc;padding:6px">$347,515</td><td style="border:1px solid #ccc;padding:6px">$37,500, but two extra years</td></tr><tr><td style="border:1px solid #ccc;padding:6px">New 20-year at 6.25%</td><td style="border:1px solid #ccc;padding:6px">$2,193</td><td style="border:1px solid #ccc;padding:6px">$226,268</td><td style="border:1px solid #ccc;padding:6px">$158,800</td></tr><tr><td style="border:1px solid #ccc;padding:6px">New 15-year at 5.75%</td><td style="border:1px solid #ccc;padding:6px">$2,491</td><td style="border:1px solid #ccc;padding:6px">$148,421</td><td style="border:1px solid #ccc;padding:6px">$236,600</td></tr></table><p>The 15-year loan costs $452 more a month and finishes 13 years sooner, saving about $237,000. The break-even formula does not apply when the payment rises, so judge it on total interest and on whether the higher payment fits your budget with room to spare.</p>
+<h3 style="font-size:22px;margin-top:28px">When refinancing usually makes sense</h3>
+<ul>
+<li>The new rate is meaningfully lower (often 0.75–1 point or more) and you'll stay past break-even.</li>
+<li>You want to drop PMI after your home has risen in value.</li>
+<li>You want to move from an adjustable rate to a fixed rate before it resets.</li>
+<li>You want a shorter term to pay the house off sooner.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">When it often doesn't</h3>
+<ul>
+<li>You may sell or move before break-even.</li>
+<li>You're far into the loan and most of each payment already goes to principal.</li>
+<li>The "no-cost" offer simply adds the costs to the rate or balance — compare the APR.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Worth knowing</h3><ul><li>Resetting to a new 30-year term lowers the payment but can increase total interest.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Six numbers to check on every Loan Estimate</h3><p>Lenders must give you a Loan Estimate within three business days of your application, and the form is standardized so offers line up.</p><ol><li><b>Rate and rate lock.</b> Confirm the rate is locked and for how many days; an expired lock can cost you the quoted rate.</li><li><b>Section A, origination charges.</b> This is the lender's own fee and the cleanest line to compare between lenders.</li><li><b>Points.</b> One point is 1% of the loan, $3,000 on $300,000. Divide the cost of the points by the monthly saving they create to get their own break-even.</li><li><b>Rolled-in costs.</b> If $6,000 of costs is added to the 30-year 6% loan above, the payment becomes $1,835 instead of $1,799, and the monthly saving falls from $240 to $204 for the life of the loan.</li><li><b>Prepayment penalty.</b> The yes-or-no box on page one should say No if you plan to pay extra or sell early.</li><li><b>Cash to close.</b> Prepaid interest and the new escrow deposit are not lender fees, but they are real cash due at closing, partly offset later by the refund of your old escrow balance.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">Homeowners&#x27; questions about refinancing</h3><p><b>Should I pay points?</b><br>Points lower the rate in exchange for cash now. Divide the cost of the points by the monthly saving they create to find their own break-even.</p><p><b>Does refinancing hurt my credit?</b><br>The credit check causes a small, temporary dip. Shopping several lenders within a short window is usually treated as one inquiry.</p><p><b>Is cash-out refinancing a good idea?</b><br>It can fund major repairs at a low rate, but it turns home equity into debt secured by your house.</p><p><b>How much does the rate need to drop?</b><br>A common rule of thumb is about 0.75–1 percentage point, but the break-even calculation is more reliable.</p><p><b>What are typical closing costs?</b><br>Often 2–5% of the loan amount, including appraisal, title and lender fees.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html">Home Affordability</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Mortgages: refinancing and the Loan Estimate</a></li><li><a href="https://www.freddiemac.com/pmms" rel="noopener" target="_blank">Freddie Mac – Primary Mortgage Market Survey (15-year and 30-year average rates)</a></li><li><a href="https://www.consumerfinance.gov/owning-a-home/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Owning a Home: comparing loan offers</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> payments recomputed with the amortization formula; break-even = closing costs ÷ monthly saving. Background reading: Consumer Financial Protection Bureau refinancing guidance. Last reviewed November 2026. Refinance savings shown are illustrative; actual rates, fees and tax effects differ, so review a Loan Estimate with your lender before deciding.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html" style="color:#1a56db">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html" style="color:#1a56db">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html" style="color:#1a56db">Rent vs Buy Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Refinance Calculator end ===== -->

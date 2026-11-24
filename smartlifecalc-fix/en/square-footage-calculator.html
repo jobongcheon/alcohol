@@ -1,0 +1,83 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsjJJ9de1_Gyn9jJlq1PWc0SSnj6Odjb1VjEd62HPJi0HukMWGS2hfgxJ_-j0UhF8c7AnOffHncZ8uK8Y_1b3zSPzVc_V3Yd9E7yXJQmKcOa4kgTjHpvt0mGZ5JRWq9qc6gb66KXmtBY7VyKlMYrN4Fd0EFcac8Yd8P2wEB-UzpR3PDk0PsCNBshAk500/s300/E25.square-footage-calculator%20%28%ED%8F%89%EB%B0%A9%ED%94%BC%ED%8A%B8%28%EB%84%93%EC%9D%B4%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Square footage calculator totaling room areas with flooring cost estimate" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsjJJ9de1_Gyn9jJlq1PWc0SSnj6Odjb1VjEd62HPJi0HukMWGS2hfgxJ_-j0UhF8c7AnOffHncZ8uK8Y_1b3zSPzVc_V3Yd9E7yXJQmKcOa4kgTjHpvt0mGZ5JRWq9qc6gb66KXmtBY7VyKlMYrN4Fd0EFcac8Yd8P2wEB-UzpR3PDk0PsCNBshAk500/s320/E25.square-footage-calculator%20%28%ED%8F%89%EB%B0%A9%ED%94%BC%ED%8A%B8%28%EB%84%93%EC%9D%B4%29.png"/></a></div>
+
+
+<!-- ===== Square Footage Calculator (paste in Blogger HTML view) ===== -->
+<div id="sq-calc">
+<style>
+#sq-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#sq-calc .sq-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#sq-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#sq-calc .sq-lbl{display:block;font-weight:bold;margin-top:14px}
+#sq-calc .sq-hint{font-size:15px;color:#555;font-weight:normal}
+#sq-calc .sq-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#sq-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#sq-calc input.sq-s{flex:0 0 5.5em}
+#sq-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#sq-calc .sq-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#sq-calc .sq-opts{display:grid;gap:8px;margin-top:8px}
+#sq-calc .sq-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#sq-calc .sq-opts input{width:22px;height:22px;flex:none}
+#sq-calc .sq-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#sq-calc .sq-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#sq-calc .sq-grid select{font-size:17px;width:100%}
+#sq-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#sq-calc .sq-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#sq-calc .sq-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#sq-calc .sq-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#sq-calc .sq-err{color:#c00;font-weight:bold;text-align:center}
+#sq-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#sq-calc th,#sq-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#sq-calc th{background:#f2f4f8}
+#sq-calc .sq-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="sq-box"><h2>Square Footage Calculator</h2>
+<span class="sq-lbl">Rooms or areas <span class="sq-hint">(length × width in feet; use decimals, 10.5 = 10 ft 6 in)</span></span><div class="sq-grid"><b>Area</b><b>Length ft</b><b>Width ft</b><span></span><input type="text" id="sq-n1" placeholder="Room 1"><input type="text" inputmode="decimal" id="sq-l1" placeholder="12"><input type="text" inputmode="decimal" id="sq-w1" placeholder="14"><span></span><input type="text" id="sq-n2" placeholder="Room 2"><input type="text" inputmode="decimal" id="sq-l2" placeholder="10"><input type="text" inputmode="decimal" id="sq-w2" placeholder="11"><span></span><input type="text" id="sq-n3" placeholder="Room 3"><input type="text" inputmode="decimal" id="sq-l3" placeholder=""><input type="text" inputmode="decimal" id="sq-w3" placeholder=""><span></span><input type="text" id="sq-n4" placeholder="Room 4"><input type="text" inputmode="decimal" id="sq-l4" placeholder=""><input type="text" inputmode="decimal" id="sq-w4" placeholder=""><span></span></div><span class="sq-lbl">Price per square foot <span class="sq-hint">(flooring, paint, etc.)</span></span><div class="sq-line"><span class="sq-unit">$</span><input type="text" inputmode="decimal" id="sq-pr" placeholder="optional, e.g. 4.50"><span class="sq-unit"></span></div><span class="sq-lbl">Extra for waste</span><div class="sq-line"><input type="text" inputmode="decimal" id="sq-ws" placeholder="10" value="10"><span class="sq-unit">%</span></div>
+<button type="button" id="sq-btn">Calculate</button>
+<div class="sq-result" id="sq-res"></div>
+<p class="sq-note">For irregular rooms, split them into rectangles and add each one.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="sq-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+$('sq-btn').addEventListener('click',function(){var box=$('sq-res');box.style.display='block';function err(t){box.innerHTML='<p class="sq-err">'+t+'</p>';}
+  var t=0,h='<table><tr><th>Area</th><th>Sq ft</th></tr>';for(var i=1;i<=4;i++){var l=num($('sq-l'+i).value),w=num($('sq-w'+i).value);if(l>0&&w>0){t+=l*w;h+='<tr><td>'+($('sq-n'+i).value||'Room '+i)+'</td><td>'+(l*w).toFixed(1)+'</td></tr>';}}
+  if(!t)return err('Enter the length and width of at least one area.');
+  var pr=num($('sq-pr').value),ws=num($('sq-ws').value)/100,need=t*(1+ws);
+  box.innerHTML='<div style="text-align:center">Total area</div><div class="sq-big">'+t.toFixed(1)+' sq ft</div>'+row('Square meters',(t*0.09290304).toFixed(2)+' m²')+row('Square yards',(t/9).toFixed(2)+' sq yd')+row('With '+Math.round(ws*100)+'% waste',need.toFixed(1)+' sq ft')+(pr?row('Estimated cost',usd(need*pr)):'')+h+'</table>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Planning new flooring, carpet, paint or tile? Measure each room, enter length and width in feet, and get the total square footage plus an estimated material cost.</p>
+<h2 style="font-size:26px;margin-top:10px">Measuring a room the right way</h2>
+<p>Flooring, carpet, tile and paint are all priced by area, so a careful measurement can save real money. The rule is simple — length times width — but rooms are rarely perfect rectangles, and inches need to be turned into feet first.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the square footage calculator</h3><ol><li>Measure each room’s length and width in feet.</li><li>Enter up to four areas.</li><li>Add the price per square foot and a waste allowance if you like.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Square feet = length (ft) × width (ft) &nbsp;|&nbsp; 1 sq ft = 0.0929 m²</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: two rooms of flooring</h3><p>A 12 × 14 ft bedroom is 168 sq ft and a 10 × 11 ft office is 110 sq ft, for <b>278 sq ft</b> in total. With a 10% waste allowance you should buy about <b>306 sq ft</b>. At $3.49 per sq ft, the material costs about <b>$1,067</b>. The same area is 25.8 m² or 30.9 square yards.</p>
+<h3 style="font-size:22px;margin-top:28px">Case study: 278 square feet, sold 19.63 at a time</h3><p>Flooring is rarely sold by the exact square foot. Laminate, vinyl plank and engineered wood come in cartons, and you can only buy whole ones. Take the two rooms from the example above, 278 sq ft, and a plank whose box label says it covers 19.63 sq ft.</p><ol><li>Add 10% waste: 278 × 1.10 = 305.8 sq ft.</li><li>Divide by the carton coverage: 305.8 ÷ 19.63 = 15.6 cartons.</li><li>Round up, never down: 16 cartons, covering 314.08 sq ft.</li><li>Price it by the carton. At $2.99 per sq ft a carton costs $58.69, so 16 cartons come to about $939.</li></ol><p>You end up with 36 sq ft more than the bare floor, about 13% extra. That is not wasted money: keep one unopened carton for repairs, because dye lots change. If the plank needs separate underlayment, it usually comes in 100 sq ft rolls, so this job takes three rolls.</p>
+<h3 style="font-size:22px;margin-top:28px">Converting inches to feet</h3><p>Divide the inches by 12 and add them to the feet. A wall that measures 11 ft 7 in is 11 + 7/12 = 11.58 ft. A room of 11 ft 7 in × 13 ft 2 in is 11.58 × 13.17 = about <b>152.5 sq ft</b>.</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Inches</th><th style="border:1px solid #ccc;padding:6px">Feet (decimal)</th></tr><tr><td style="border:1px solid #ccc;padding:6px">3 in</td><td style="border:1px solid #ccc;padding:6px">0.25</td></tr><tr><td style="border:1px solid #ccc;padding:6px">4 in</td><td style="border:1px solid #ccc;padding:6px">0.33</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6 in</td><td style="border:1px solid #ccc;padding:6px">0.5</td></tr><tr><td style="border:1px solid #ccc;padding:6px">8 in</td><td style="border:1px solid #ccc;padding:6px">0.67</td></tr><tr><td style="border:1px solid #ccc;padding:6px">9 in</td><td style="border:1px solid #ccc;padding:6px">0.75</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">L-shaped and odd-shaped rooms</h3><p>Split the floor into rectangles that do not overlap, measure each one and add them. The calculator has four rows for this. For a closet or bay window, measure it as its own small rectangle.</p>
+<h3 style="font-size:22px;margin-top:28px">Waste allowance by job</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Material</th><th style="border:1px solid #ccc;padding:6px">Typical extra</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Laminate or vinyl plank, straight layout</td><td style="border:1px solid #ccc;padding:6px">5–10%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Tile, straight layout</td><td style="border:1px solid #ccc;padding:6px">10%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Tile, diagonal or herringbone</td><td style="border:1px solid #ccc;padding:6px">15–20%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Carpet</td><td style="border:1px solid #ccc;padding:6px">5–10% (roll width matters)</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Paint is measured on the walls</h3><p>For paint, use the wall area: room perimeter × ceiling height. A 12 × 14 ft room with 8 ft walls has 2 × (12 + 14) × 8 = <b>416 sq ft</b> of wall. Subtract roughly 20 sq ft for each door and 15 sq ft for each window. A gallon usually covers about 350–400 sq ft per coat, but check the can.</p>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Typing 11.7 for 11 ft 7 in</b> — that is 11 ft 8.4 in. Convert inches first.</li><li><b>Forgetting waste</b> and running short of the same dye lot.</li><li><b>Using square yards and square feet together:</b> 1 square yard = 9 sq ft.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Why a listing&#x27;s square footage is not your flooring number</h3><p>A home listed at 1,500 sq ft will not need 1,500 sq ft of flooring. Listings and mortgage appraisals usually report gross living area under the ANSI Z765 standard, which measures differently from the way you measure a room:</p><ul><li>It is taken from the <b>outside</b> of the exterior walls. A 30 × 50 ft footprint is 1,500 sq ft outside but about 29 × 49 = 1,421 sq ft inside 6-inch walls, before interior walls and closets come off.</li><li>Only finished space <b>above grade</b> counts. A finished basement is listed separately, and garages, porches and unfinished attics are left out.</li><li>Areas with ceilings under about 7 feet are excluded, which trims attic rooms with sloped ceilings.</li><li>Stairs are counted on the floor they rise from.</li></ul><p>Measured room by room, the floor you can actually cover is often 5 to 10% below the listed figure. Property tax records may use yet another method, so none of these numbers replaces a tape measure.</p>
+<h3 style="font-size:22px;margin-top:28px">Reader questions about measuring rooms</h3><p><b>How many square feet is a 12 × 12 room?</b><br>144 sq ft, or about 13.4 m².</p><p><b>Should I measure wall to wall or include the baseboard?</b><br>Measure wall to wall at floor level. The baseboard covers the small gap at the edges.</p><p><b>How do I convert inches to feet?</b><br>Divide inches by 12. For example, 10 ft 9 in = 10.75 ft.</p><p><b>How many square feet are in a square yard?</b><br>Nine. Carpet is often priced per square yard.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html">Rent vs Buy Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html">Mortgage Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.nist.gov/pml/owm" rel="noopener" target="_blank">NIST Office of Weights and Measures – unit conversions (square feet to square meters)</a></li><li><a href="https://www.consumerfinance.gov/owning-a-home/" rel="noopener" target="_blank">CFPB Owning a Home – the home buying and appraisal process</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> areas, conversions and costs were recalculated in Python (1 sq ft = 0.09290304 m²); waste ranges are common installer guidance. Last reviewed November 2026. Area and material figures are planning estimates; confirm carton coverage and waste with your installer before ordering.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html" style="color:#1a56db">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html" style="color:#1a56db">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/cm-to-inches.html" style="color:#1a56db">CM to Inches Converter</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Square Footage Calculator end ===== -->

@@ -1,0 +1,97 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixn85RrCaP-0oG8m1W-CLlf8_N6GcHk3z_DdrUutN4rJSM-51A3IPp2CKqXXec2sBEpsnJTMq-IndITVv1rXyZVdk7wnxmtMJMm5eJUTLkugo-jT3jNdAY51Si4dVY83aCsdHE07EQeKoIp6lkeshOQPcJ88idgaRG4ENqnSFfyJsmmfG9d4kIIxFwZ1E/s300/J10.warikan.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="割り勘計算ツールの画面：合計金額と人数で一人分を計算" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixn85RrCaP-0oG8m1W-CLlf8_N6GcHk3z_DdrUutN4rJSM-51A3IPp2CKqXXec2sBEpsnJTMq-IndITVv1rXyZVdk7wnxmtMJMm5eJUTLkugo-jT3jNdAY51Si4dVY83aCsdHE07EQeKoIp6lkeshOQPcJ88idgaRG4ENqnSFfyJsmmfG9d4kIIxFwZ1E/s320/J10.warikan.png"/></a></div>
+
+<!-- ===== J10 割り勘計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc10">
+<style>
+#jc10{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc10 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc10 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc10 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc10 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc10 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc10 input[type=text],#jc10 input[type=date],#jc10 input[type=time],#jc10 select,#jc10 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc10 textarea{width:100%;min-height:180px;font-size:17px}
+#jc10 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc10 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc10 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc10 .jc-opts input{width:20px;height:20px}
+#jc10 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc10 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc10 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc10 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc10 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc10 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc10 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc10 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc10 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc10 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc10 .jc-art th,#jc10 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc10 .jc-art th{background:#f2f4f8}
+#jc10 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">合計金額と人数で一人あたりの金額を計算。100円単位の切り上げ、多めに払う人の設定もできる無料の割り勘計算ツールです。</p>
+<div class="jc-box"><h2>割り勘計算</h2>
+<span class="jc-lbl">合計金額</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc10-t" placeholder="例：23,800"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">人数</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc10-n" placeholder="例：6"><span class="jc-unit">人</span></div>
+<span class="jc-lbl">多めに払う人数（任意）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc10-m" placeholder="例：1" value="0"><span class="jc-unit">人</span></div>
+<span class="jc-lbl">その人の追加金額（任意）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc10-x" placeholder="例：1,000" value="0"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">切り上げ単位</span><div class="jc-line"><select id="jc10-u"><option value="1">1円</option><option value="10">10円</option><option value="100" selected>100円</option><option value="500">500円</option><option value="1000">1,000円</option></select></div>
+<button type="button" id="jc10-btn">計算する</button>
+<div class="jc-result" id="jc10-res"></div>
+<p class="jc-note">切り上げで出た余りは、次回の会費や幹事の手間代などにどうぞ。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc10-',box=document.getElementById('jc10-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var t=N('t'),n=N('n'),m=N('m'),x=N('x'),u=+V('u');if(!t||!n)return err('合計金額と人数を入れてください。');if(m>n)return err('多めに払う人数が全体の人数より多いです。');
+var base=Math.ceil((t-m*x)/n/u)*u,big=base+x,sum=base*(n-m)+big*m;
+show('一人 '+yen(base),m?[['多めに払う人（'+m+'人）',yen(big)],['集まる合計',yen(sum)],['おつり（余り）',yen(sum-t)]]:[['集まる合計',yen(sum)],['余り',yen(sum-t)]]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>飲み会や旅行の支払いを人数で割るときに便利な割り勘計算ツールです。100円単位で切り上げたり、上司や幹事だけ多めに払う設定もできます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">費目ごとに人数が違う旅行代を公平に割る</h2>
+<h3 style="font-size:22px;margin-top:28px">使い方</h3><ul><li>合計金額と人数を入れます。</li><li>多めに払う人がいる場合は、その人数と追加金額を入れます。</li><li>切り上げ単位を選んで「計算する」を押します。</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">計算例1：7人で38,500円</h3><p>38,500 ÷ 7 ＝ 5,500円なので、100円単位で切り上げても一人<b>5,500円</b>、余りは出ません。</p>
+<h3 style="font-size:22px;margin-top:28px">計算例2：上司2人が3,000円ずつ多めに払う</h3><p>8人で合計52,800円、そのうち2人が3,000円多く払う場合です。</p><ol><li>多めの分を先に引く：52,800 − 3,000 × 2 ＝ 46,800円</li><li>全員で割る：46,800 ÷ 8 ＝ 5,850円 → 100円単位で切り上げて<b>5,900円</b></li><li>多めに払う人：5,900 ＋ 3,000 ＝ <b>8,900円</b></li><li>集まる合計：5,900 × 6 ＋ 8,900 × 2 ＝ 53,200円（余り400円）</li></ol>
+<h3 style="font-size:22px;margin-top:28px">会計前に幹事が決めておく5つのこと</h3><ol><li><b>端数の行き先</b>：100円単位で切り上げた余りを「次回に繰り越す」「幹事の手間代にする」のどちらにするか、集める前に一言伝えます。</li><li><b>傾斜のつけ方</b>：上司や先輩が多めに払う場合は「一人3,000円多め」のように金額で決めます。</li><li><b>途中で帰る人の金額</b>：帰る前に本人の分を受け取っておくと、残った人で割り直すだけで済みます。</li><li><b>飲まない人の扱い</b>：飲み放題の差額がメニューに書いてあれば、その差額だけ引くルールにすると説明しやすくなります。</li><li><b>税込の合計で割ること</b>：レシートの合計は消費税込みです。店内飲食は10％、持ち帰りは軽減税率の8％なので、持ち帰り分を一緒に精算するときは別に計算します。</li></ol>
+<h3 style="font-size:22px;margin-top:28px">切り上げ単位の選び方</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">単位</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">向いている場面</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1円・10円</td><td style="border:1px solid #bbb;padding:6px">キャッシュレスで送金するとき</td></tr><tr><td style="border:1px solid #bbb;padding:6px">100円</td><td style="border:1px solid #bbb;padding:6px">現金で集める飲み会</td></tr><tr><td style="border:1px solid #bbb;padding:6px">500円・1,000円</td><td style="border:1px solid #bbb;padding:6px">おつりを用意したくない幹事</td></tr></table><p>切り上げると少しだけ多めに集まります。余りは次回の会費に回す、幹事の立て替え手数料にするなど、先に決めておくともめません。</p>
+<h3 style="font-size:22px;margin-top:28px">傾斜をつけるときのコツ</h3><ul><li>上司・先輩が多めに払う場合は、「一人いくら多め」と金額で決めると計算しやすくなります。</li><li>お酒を飲まない人がいる場合は、飲み放題の差額だけ減らす方法もあります。</li><li>人数が多いときは、先に幹事が全員の金額を共有しておくと会計がスムーズです。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>切り捨ててしまう</b>：切り捨てると足りなくなり、幹事が損をします。割り勘は切り上げが基本です。</li><li><b>多めの分を引かずに割る</b>：先に全員で割ってから上乗せすると、合計が大きくずれます。</li><li><b>サービス料・税を入れ忘れる</b>：お会計の合計（税・サービス料込み）を入れてください。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>飲み会や歓送迎会の幹事をするとき、お会計の合計と人数を入れるだけで、一人いくら集めればいいかが分かります。100円単位にすると、現金でも集めやすくなります。</p><p>旅行の費用（宿泊・レンタカー・ガソリン代など）をまとめて割るときにも使えます。費目ごとに参加人数が違う場合は、費目ごとに計算してから足すと公平です。</p><p>シェアハウスの光熱費や、友人とのプレゼント代の割り勘にも便利です。</p>
+<h3 style="font-size:22px;margin-top:28px">4人旅行、夕食だけ3人参加のときの計算例</h3><p>旅行では費目ごとに参加人数が違うことがよくあります。レンタカー12,000円と宿泊32,000円は4人全員、夕食16,000円は3人だけが参加した場合を考えます。費目ごとに割ってから足すのがコツです。</p><ul><li>レンタカー：12,000 ÷ 4 ＝ 3,000円</li><li>宿泊：32,000 ÷ 4 ＝ 8,000円</li><li>夕食：16,000 ÷ 3 ＝ 約5,333円</li></ul><p>夕食に参加した3人は 3,000 ＋ 8,000 ＋ 5,333 ＝ 約16,333円、100円単位で切り上げて<b>一人16,400円</b>。参加しなかった1人は 3,000 ＋ 8,000 ＝ <b>11,000円</b>です。集まる合計は 16,400 × 3 ＋ 11,000 ＝ 60,200円で、実費60,000円との差200円が余りになります。</p><p>均等に4人で割ると15,000円で、夕食に行かなかった人が4,000円多く払うことになります。費目別に計算すればこの不公平を防げます。</p>
+<h3 style="font-size:22px;margin-top:28px">割り勘で幹事が困りがちなこと</h3><p><b>Q. 余りが出たらどうする？</b><br>A. 端数の扱いは事前に決めておくとスムーズです。幹事の立て替え手数料にする方法もあります。</p><p><b>Q. 途中で帰った人はどうする？</b><br>A. その人の分を先に決めて合計から引き、残りを残った人数で割ると公平です。</p><p><b>Q. キャッシュレスで割り勘するときは？</b><br>A. 送金アプリなら1円単位で送れるので、切り上げ単位を「1円」にするとぴったりの金額になります。</p><p><b>Q. 子どもは半額にしたい</b><br>A. 大人の人数と子どもの人数で分けて計算します。たとえば子ども1人を大人0.5人と数えて合計人数を決める方法があります。</p><p><b>Q. 幹事の分を無料にしたい</b><br>A. 人数から幹事を除いて計算し、幹事以外で割ります。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a> – お会計の税込金額を確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html">割引計算</a> – クーポン適用後の金額</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – サービス料○％を計算</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6102.htm" rel="noopener" target="_blank">国税庁 タックスアンサー No.6102 – 消費税の税率（10％）</a></li><li><a href="https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/index.htm" rel="noopener" target="_blank">国税庁 – 消費税の軽減税率制度（持ち帰りは8％）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例はツールと同じ式（切り上げ）でプログラム計算し、結果が一致することを確かめました。 最終確認：2026年11月。 計算結果は切り上げを含む目安です。実際の集金額は参加者で確認してください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html" style="color:#1a56db">消費税計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html" style="color:#1a56db">割引計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J10 end ===== -->

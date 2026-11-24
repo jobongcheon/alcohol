@@ -1,0 +1,96 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiNgfz4w72yRm9zIpfq-rE9-egqeimmhwDeVJwN5dUlJwDnMcdI3mUgyfRdyR47dkPgg9L8kM7-1MTes0tifyCa51rkSeRKB2I-4dd-ppMv1nnZULWQdpbCb2ebYyFLxJ-LYilN1hL1LnKqf7aCMSENf0caHBeCiXcqMRkUDP13VS-4guuLQpzhd_1w6Vk/s300/E07.home-affordability-calculator%20%28%EC%82%B4%20%EC%88%98%20%EC%9E%88%EB%8A%94%20%EC%A7%91%EA%B0%92%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Home affordability calculator showing maximum home price from income and debts" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiNgfz4w72yRm9zIpfq-rE9-egqeimmhwDeVJwN5dUlJwDnMcdI3mUgyfRdyR47dkPgg9L8kM7-1MTes0tifyCa51rkSeRKB2I-4dd-ppMv1nnZULWQdpbCb2ebYyFLxJ-LYilN1hL1LnKqf7aCMSENf0caHBeCiXcqMRkUDP13VS-4guuLQpzhd_1w6Vk/s320/E07.home-affordability-calculator%20%28%EC%82%B4%20%EC%88%98%20%EC%9E%88%EB%8A%94%20%EC%A7%91%EA%B0%92%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+
+<!-- ===== Home Affordability Calculator (paste in Blogger HTML view) ===== -->
+<div id="eh-calc">
+<style>
+#eh-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#eh-calc .eh-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#eh-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#eh-calc .eh-lbl{display:block;font-weight:bold;margin-top:14px}
+#eh-calc .eh-hint{font-size:15px;color:#555;font-weight:normal}
+#eh-calc .eh-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#eh-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eh-calc input.eh-s{flex:0 0 5.5em}
+#eh-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eh-calc .eh-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#eh-calc .eh-opts{display:grid;gap:8px;margin-top:8px}
+#eh-calc .eh-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#eh-calc .eh-opts input{width:22px;height:22px;flex:none}
+#eh-calc .eh-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#eh-calc .eh-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#eh-calc .eh-grid select{font-size:17px;width:100%}
+#eh-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#eh-calc .eh-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#eh-calc .eh-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#eh-calc .eh-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#eh-calc .eh-err{color:#c00;font-weight:bold;text-align:center}
+#eh-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#eh-calc th,#eh-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#eh-calc th{background:#f2f4f8}
+#eh-calc .eh-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="eh-box"><h2>How Much House Can I Afford?</h2>
+<span class="eh-lbl">Annual household income (before tax)</span><div class="eh-line"><span class="eh-unit">$</span><input type="text" inputmode="decimal" id="eh-inc" placeholder="e.g. 100,000"><span class="eh-unit"></span></div><span class="eh-lbl">Monthly debt payments <span class="eh-hint">(car, student loan, cards)</span></span><div class="eh-line"><span class="eh-unit">$</span><input type="text" inputmode="decimal" id="eh-debt" placeholder="e.g. 500" value="0"><span class="eh-unit"></span></div><span class="eh-lbl">Down payment saved</span><div class="eh-line"><span class="eh-unit">$</span><input type="text" inputmode="decimal" id="eh-down" placeholder="e.g. 60,000"><span class="eh-unit"></span></div><span class="eh-lbl">Mortgage rate</span><div class="eh-line"><input type="text" inputmode="decimal" id="eh-rate" placeholder="e.g. 6.5"><span class="eh-unit">%</span></div><span class="eh-lbl">Loan term</span><div class="eh-line"><select id="eh-term"><option value="30" selected>30 years</option><option value="15">15 years</option></select><span class="eh-unit"></span></div><span class="eh-lbl">Property tax + insurance</span><div class="eh-line"><input type="text" inputmode="decimal" id="eh-ti" placeholder="e.g. 1.5" value="1.5"><span class="eh-unit">% of price per year</span></div><span class="eh-lbl">Budget style</span><div class="eh-opts"><label><input type="radio" name="eh-dti" value="28" checked> Comfortable (28% / 36% rule)</label><label><input type="radio" name="eh-dti" value="31"> Stretch (31% / 43% rule)</label></div>
+<button type="button" id="eh-btn">Calculate</button>
+<div class="eh-result" id="eh-res"></div>
+<p class="eh-note">Uses the common front-end / back-end debt-to-income rules. Lenders also look at credit score, savings and job history.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="eh-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('eh-inc'));comma($('eh-debt'));comma($('eh-down'));
+$('eh-btn').addEventListener('click',function(){var box=$('eh-res');box.style.display='block';function err(t){box.innerHTML='<p class="eh-err">'+t+'</p>';}
+  var inc=num($('eh-inc').value)/12,dbt=num($('eh-debt').value),dn=num($('eh-down').value),r=num($('eh-rate').value)/100/12,n=+$('eh-term').value*12,t=num($('eh-ti').value)/100/12,s=pick('eh-dti');
+  if(!inc)return err('Please enter your income.');
+  var fe=s==='28'?0.28:0.31,be=s==='28'?0.36:0.43,mx=Math.min(inc*fe,inc*be-dbt);
+  if(mx<=0)return err('Your current debts already use up the recommended budget.');
+  var f=pmt(1,r,n),price=(mx+f*dn)/(f+t);if(price<dn)price=dn;var L=price-dn;
+  box.innerHTML='<div style="text-align:center">You can afford a home of about</div><div class="eh-big">'+usd0(price)+'</div>'+
+   row('Loan amount',usd0(L))+row('Monthly payment (P&I)',usd(pmt(L,r,n)))+row('Tax + insurance / month',usd(price*t))+row('Max housing budget / month',usd(mx))+row('Down payment',usd0(dn)+' ('+(price?Math.round(dn/price*100):0)+'%)');
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Before you fall in love with a house, find out what price fits your budget. This calculator uses the same debt-to-income rules many lenders use to estimate how much house you can afford.</p>
+<h2 style="font-size:26px;margin-top:10px">How much house is comfortable, not just possible</h2>
+<p>Lenders mostly look at two ratios. The <b>front-end ratio</b> is your total housing payment (principal, interest, taxes, insurance, PMI, HOA) divided by gross monthly income; many lenders like it at or below about 28%. The <b>back-end ratio</b> adds all other monthly debt payments — car, student loans, minimum card payments — and is often capped around 36% to 43%. This calculator uses both and reports the lower result, so you see a price that passes both tests.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the home affordability calculator</h3><ol><li>Enter your yearly income before taxes and your monthly debt payments.</li><li>Enter the down payment you have saved and a mortgage rate.</li><li>Pick a comfortable or stretch budget.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Housing cost ≤ 28% of gross monthly income, and housing + other debts ≤ 36%</p><table style="width:100%;border-collapse:collapse;font-size:17px"><tr><th style="border:1px solid #bbb;padding:6px">Income</th><th style="border:1px solid #bbb;padding:6px">Max housing / month (28%)</th><th style="border:1px solid #bbb;padding:6px">Approx. price*</th></tr><tr><td style="border:1px solid #bbb;padding:6px">$60,000</td><td style="border:1px solid #bbb;padding:6px">$1,400</td><td style="border:1px solid #bbb;padding:6px">$222,000</td></tr><tr><td style="border:1px solid #bbb;padding:6px">$100,000</td><td style="border:1px solid #bbb;padding:6px">$2,333</td><td style="border:1px solid #bbb;padding:6px">$370,000</td></tr><tr><td style="border:1px solid #bbb;padding:6px">$150,000</td><td style="border:1px solid #bbb;padding:6px">$3,500</td><td style="border:1px solid #bbb;padding:6px">$555,000</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Worked example: $90,000 income</h3>
+<p>Gross monthly income is $7,500. At 28%, the housing budget is about <b>$2,100</b>. If taxes and insurance run about $500 a month, $1,600 is left for principal and interest. At 6.5% for 30 years, that supports a loan of roughly <b>$253,000</b>. With 10% down, that points to a home price around $280,000. If you also have a $450 car payment, the back-end limit may lower that number further.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Property tax and HOA dues quietly shrink the price you can afford</h3><p>Two $350,000 houses can carry very different monthly costs, and the calculator counts every dollar of tax and dues against the same 28% ceiling.</p><ul><li>At a 0.6% property tax rate, tax is $350,000 × 0.006 ÷ 12 = $175 a month.</li><li>At 2.0%, it is $583 a month, a difference of $408.</li><li>At 6.5% over 30 years, each $1,000 borrowed costs about $6.32 a month, so $408 a month supports about $64,500 of loan.</li></ul><p>In other words, the buyer in the high-tax county qualifies for roughly $64,000 less house on the same income. A $300 monthly HOA fee works the same way and trims about $47,000 from the loan. Before you compare listings, pull the actual tax bill from the county assessor's site and the HOA budget from the seller's disclosures, then enter those real figures rather than a national average.</p>
+<h3 style="font-size:22px;margin-top:28px">What changes the result the most</h3>
+<ul>
+<li><b>Interest rate</b> – each 1 percentage point higher reduces the affordable loan by roughly 10%.</li>
+<li><b>Other debts</b> – paying off a car loan before buying can raise your budget more than a raise would.</li>
+<li><b>Property tax</b> – two homes at the same price can have very different monthly costs in different counties.</li>
+<li><b>Down payment</b> – 20% removes PMI on most conventional loans.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Leave room for real life</h3>
+<p>The ratios don't know about childcare, retirement saving or the roof that will need replacing. A common budgeting rule is to set aside 1–2% of the home's value each year for maintenance, and to keep an emergency fund after closing. Many buyers choose a price below their approval to keep that cushion.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Six checks before you set a price ceiling</h3><ol><li><b>Run both ratios and keep the lower result.</b> A $450 car payment can cap you under the 36% back-end test even when the 28% housing test passes.</li><li><b>Count closing costs and reserves against your savings.</b> With $60,000 saved, 3% closing costs on a $350,000 home ($10,500) and $9,000 of reserves leave $40,500 for the down payment, about 11.6%, so PMI applies.</li><li><b>Test the payment against take-home pay.</b> A $2,100 housing payment is 28% of $7,500 gross but about 37% of a $5,700 paycheck.</li><li><b>Stress-test the rate.</b> Rerun the numbers 1 percentage point higher; if the result no longer fits, you are relying on a rate lock holding.</li><li><b>Budget maintenance.</b> At 1–2% of value a year, a $350,000 home needs $290–$580 a month set aside.</li><li><b>Check the loan program's own limits.</b> FHA and other programs use their own ratio caps and insurance costs, so a lender's quote can differ from the 28/36 estimate here.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">Affordability questions buyers raise</h3><p><b>Gross or take-home pay?</b><br>Lenders use gross (before tax). For your own budget, check the payment against take-home pay too.</p><p><b>Do closing costs matter?</b><br>Yes — they are often 2–5% of the price and are paid in cash on top of the down payment.</p><p><b>Does my credit score change affordability?</b><br>Indirectly: a better score gets a lower rate, which raises the loan you can afford at the same payment.</p><p><b>What is the 28/36 rule?</b><br>Housing costs should be no more than 28% of gross income, and all debt payments no more than 36%.</p><p><b>*How was the table estimated?</b><br>It assumes no other debt, 20% down, a 6.5% 30-year loan and 1.5% yearly tax and insurance.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html">Rent vs Buy</a> · <a href="https://www.smartlifecalc.com/2026/10/refinance-calculator.html">Refinance</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/owning-a-home/" rel="noopener" target="_blank">CFPB – Owning a Home: how much can you afford and closing costs</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Mortgages: debt-to-income and loan basics</a></li><li><a href="https://www.hud.gov/" rel="noopener" target="_blank">U.S. Department of Housing and Urban Development – FHA and home-buying programs</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> loan amounts were recomputed from the payment using the amortization formula. Background reading: Consumer Financial Protection Bureau home-buying guides. Last reviewed November 2026. Affordability figures are rough estimates, not a loan approval or financial advice; a lender&#x27;s quote will differ.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html" style="color:#1a56db">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/rent-vs-buy-calculator.html" style="color:#1a56db">Rent vs Buy Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html" style="color:#1a56db">Loan Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Home Affordability Calculator end ===== -->

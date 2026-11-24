@@ -1,0 +1,102 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEbnFr5kgt8NhnrHbP3KtDtWP4FvOxlD6UnNrjNvvHtbXImd6i2TSj6Syw7bpSDXalg3uXucSmdS90v0w41XJOuIIlZ5U98WLkHLcn_hrmawruMW2aOQs3EyfBx5e_hoIDdvX1yqjVVkDPyiHgWk9AcmfQkeHkNr3zrl6l2uTgXQCADLTOXgcTaGscojE/s300/E16.bmi-calculator%20%28BMI%20%EA%B3%84%EC%82%B0%EA%B8%B0%20%28%EB%AF%B8%EA%B5%AD%20%EB%8B%A8%EC%9C%84%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="BMI calculator result with weight category and healthy weight range for height" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEbnFr5kgt8NhnrHbP3KtDtWP4FvOxlD6UnNrjNvvHtbXImd6i2TSj6Syw7bpSDXalg3uXucSmdS90v0w41XJOuIIlZ5U98WLkHLcn_hrmawruMW2aOQs3EyfBx5e_hoIDdvX1yqjVVkDPyiHgWk9AcmfQkeHkNr3zrl6l2uTgXQCADLTOXgcTaGscojE/s320/E16.bmi-calculator%20%28BMI%20%EA%B3%84%EC%82%B0%EA%B8%B0%20%28%EB%AF%B8%EA%B5%AD%20%EB%8B%A8%EC%9C%84%29.png"/></a></div>
+
+<!-- ===== BMI Calculator (paste in Blogger HTML view) ===== -->
+<div id="ek-calc">
+<style>
+#ek-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ek-calc .ek-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ek-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ek-calc .ek-lbl{display:block;font-weight:bold;margin-top:14px}
+#ek-calc .ek-hint{font-size:15px;color:#555;font-weight:normal}
+#ek-calc .ek-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ek-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ek-calc input.ek-s{flex:0 0 5.5em}
+#ek-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ek-calc .ek-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ek-calc .ek-opts{display:grid;gap:8px;margin-top:8px}
+#ek-calc .ek-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ek-calc .ek-opts input{width:22px;height:22px;flex:none}
+#ek-calc .ek-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ek-calc .ek-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ek-calc .ek-grid select{font-size:17px;width:100%}
+#ek-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ek-calc .ek-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ek-calc .ek-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ek-calc .ek-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ek-calc .ek-err{color:#c00;font-weight:bold;text-align:center}
+#ek-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ek-calc th,#ek-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ek-calc th{background:#f2f4f8}
+#ek-calc .ek-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ek-box"><h2>BMI Calculator</h2>
+<span class="ek-lbl">Units</span><div class="ek-opts"><label><input type="radio" name="ek-u" value="us" checked> US (feet, inches, pounds)</label><label><input type="radio" name="ek-u" value="m"> Metric (cm, kg)</label></div><div id="ek-us"><span class="ek-lbl">Height</span><div class="ek-line"><input type="text" class="ek-s" inputmode="numeric" id="ek-ft" placeholder="5"><span class="ek-unit">ft</span><input type="text" class="ek-s" inputmode="decimal" id="ek-in" placeholder="9"><span class="ek-unit">in</span></div><span class="ek-lbl">Weight</span><div class="ek-line"><input type="text" inputmode="decimal" id="ek-lb" placeholder="e.g. 170"><span class="ek-unit">lb</span></div></div><div id="ek-mt" style="display:none"><span class="ek-lbl">Height</span><div class="ek-line"><input type="text" inputmode="decimal" id="ek-cm" placeholder="e.g. 175"><span class="ek-unit">cm</span></div><span class="ek-lbl">Weight</span><div class="ek-line"><input type="text" inputmode="decimal" id="ek-kg" placeholder="e.g. 70"><span class="ek-unit">kg</span></div></div><table><tr><th>BMI</th><th>Category (adults, WHO / CDC)</th></tr><tr><td>Below 18.5</td><td>Underweight</td></tr><tr><td>18.5 – 24.9</td><td>Healthy weight</td></tr><tr><td>25 – 29.9</td><td>Overweight</td></tr><tr><td>30 and above</td><td>Obesity</td></tr></table>
+<button type="button" id="ek-btn">Calculate BMI</button>
+<div class="ek-result" id="ek-res"></div>
+<p class="ek-note">For adults 20 and older. BMI does not measure body fat directly; talk to a doctor about your health.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ek-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  Array.prototype.forEach.call(document.getElementsByName('ek-u'),function(x){x.addEventListener('change',function(){var a=pick('ek-u')==='us';$('ek-us').style.display=a?'block':'none';$('ek-mt').style.display=a?'none':'block';});});
+$('ek-btn').addEventListener('click',function(){var box=$('ek-res');box.style.display='block';function err(t){box.innerHTML='<p class="ek-err">'+t+'</p>';}
+  var h,w,us=pick('ek-u')==='us';
+  if(us){h=(num($('ek-ft').value)*12+num($('ek-in').value))*0.0254;w=num($('ek-lb').value)*0.45359237;}else{h=num($('ek-cm').value)/100;w=num($('ek-kg').value);}
+  if(h<1||h>2.5)return err('Please enter a valid height.');if(w<20||w>350)return err('Please enter a valid weight.');
+  var b=w/(h*h),g=b<18.5?'Underweight':b<25?'Healthy weight':b<30?'Overweight':'Obesity',lo=18.5*h*h,hi=24.9*h*h;
+  function W(k){return us?(k/0.45359237).toFixed(0)+' lb':k.toFixed(1)+' kg';}
+  box.innerHTML='<div style="text-align:center">Your BMI</div><div class="ek-big">'+b.toFixed(1)+' · '+g+'</div>'+row('Healthy weight for your height',W(lo)+' – '+W(hi))+
+   (w>hi?row('To reach a healthy BMI','lose about '+W(w-hi)):(w<lo?row('To reach a healthy BMI','gain about '+W(lo-w)):row('Status','You are in the healthy range')));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Body Mass Index (BMI) is a quick screening number that compares your weight with your height. Enter your measurements in feet and pounds or centimeters and kilograms to see your BMI and healthy weight range.</p>
+<h2 style="font-size:26px;margin-top:10px">What your BMI does — and doesn't — tell you</h2>
+<p>Body mass index compares weight with height. It is a quick screening number doctors use to spot possible weight-related health risks across large groups of people. It does not measure body fat directly, so it should be read alongside other information such as waist size, blood pressure and blood tests.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the bmi calculator</h3><ol><li>Choose US or metric units.</li><li>Enter your height and weight.</li><li>Press <b>Calculate BMI</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">BMI = 703 × weight (lb) ÷ height (in)² &nbsp;=&nbsp; weight (kg) ÷ height (m)²</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>Height 5 ft 9 in (69 inches), weight 170 lb. BMI = 703 × 170 ÷ 69² = <b>25.1</b>, just inside the "overweight" range. In metric: 77 kg ÷ (1.75 m)² ≈ 25.1.</p>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">BMI (adults)</th><th style="border:1px solid #ccc;padding:6px">Category</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Below 18.5</td><td style="border:1px solid #ccc;padding:6px">Underweight</td></tr><tr><td style="border:1px solid #ccc;padding:6px">18.5–24.9</td><td style="border:1px solid #ccc;padding:6px">Healthy weight</td></tr><tr><td style="border:1px solid #ccc;padding:6px">25.0–29.9</td><td style="border:1px solid #ccc;padding:6px">Overweight</td></tr><tr><td style="border:1px solid #ccc;padding:6px">30 and above</td><td style="border:1px solid #ccc;padding:6px">Obesity</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Pounds per BMI point, by height</h3><p>Because BMI divides weight by height squared, one BMI point is a different number of pounds depending on how tall you are. The conversion is height in inches squared ÷ 703.</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Height</th><th style="border:1px solid #ccc;padding:6px">Pounds per BMI point</th><th style="border:1px solid #ccc;padding:6px">Weight change from 27.0 to 24.9 (2.1 points)</th></tr><tr><td style="border:1px solid #ccc;padding:6px">5 ft 0 in</td><td style="border:1px solid #ccc;padding:6px">5.1 lb</td><td style="border:1px solid #ccc;padding:6px">10.8 lb</td></tr><tr><td style="border:1px solid #ccc;padding:6px">5 ft 4 in</td><td style="border:1px solid #ccc;padding:6px">5.8 lb</td><td style="border:1px solid #ccc;padding:6px">12.2 lb</td></tr><tr><td style="border:1px solid #ccc;padding:6px">5 ft 8 in</td><td style="border:1px solid #ccc;padding:6px">6.6 lb</td><td style="border:1px solid #ccc;padding:6px">13.8 lb</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6 ft 0 in</td><td style="border:1px solid #ccc;padding:6px">7.4 lb</td><td style="border:1px solid #ccc;padding:6px">15.5 lb</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6 ft 4 in</td><td style="border:1px solid #ccc;padding:6px">8.2 lb</td><td style="border:1px solid #ccc;padding:6px">17.3 lb</td></tr></table><p>Worked case: someone 5 ft 4 in and 160 lb has a BMI of 703 × 160 ÷ 4,096 = 27.5. Reaching 24.9 means dropping about 2.6 points × 5.8 lb, roughly 15 lb, to about 145 lb. In metric, one BMI point equals your height in meters squared, in kilograms: at 1.70 m, 2.89 kg.</p>
+<h3 style="font-size:22px;margin-top:28px">Limits of BMI</h3>
+<ul>
+<li><b>Muscle</b> – athletes can have a high BMI with little body fat.</li>
+<li><b>Age</b> – older adults may have more body fat at the same BMI.</li>
+<li><b>Ethnicity</b> – some health bodies use lower cut-offs for people of Asian descent.</li>
+<li><b>Children and teens</b> – BMI is interpreted with age- and sex-specific percentile charts, not the adult table.</li>
+<li><b>Pregnancy</b> – BMI is not used during pregnancy.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">A useful companion: waist size</h3>
+<p>Fat around the abdomen is linked to higher risk. Many guidelines treat a waist over about 40 inches (102 cm) for men or 35 inches (88 cm) for women as a sign to talk with a doctor, even when BMI looks normal.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Worth knowing</h3><ul><li>Muscular people may have a high BMI without extra fat.</li><li>Children and teens use BMI-for-age percentiles instead.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Three cases where the standard cut-offs can mislead</h3><ol><li><b>Asian ancestry.</b> A World Health Organization expert group suggested lower action points for Asian populations, 23 for overweight and 27.5 for obesity, because health risks appear at lower BMIs. The American Diabetes Association recommends diabetes screening for Asian Americans from a BMI of 23 rather than 25.</li><li><b>Height that has changed.</b> Many adults lose height with age but keep the number from an old driver's license. At 170 lb, a height of 69 in gives a BMI of 25.1; the same weight at 68 in gives 25.8. Measure yourself before you enter the number.</li><li><b>Muscle and frame.</b> Someone who lifts weights can read 27 with a 32-inch waist and low body fat. In that case the waist measurement and a blood pressure and cholesterol check say more than the table. The NIH describes BMI as a screening step, not a measure of body fat.</li></ol><p>None of these changes the calculation, only what the number means; if one applies to you, treat the result as a prompt to talk with a clinician.</p>
+<h3 style="font-size:22px;margin-top:28px">What people want to know about BMI</h3><p><b>How much should I lose to change category?</b><br>Use the healthy-weight table on this page for your height; small changes of 5–10% of body weight already improve many health markers.</p><p><b>Is BMI a diagnosis?</b><br>No. It's a screening tool. Talk with a health professional about your own situation.</p><p><b>Is BMI accurate?</b><br>It is a useful screening tool for groups, but it does not separate muscle from fat. Use it alongside waist size and a doctor’s advice.</p><p><b>What BMI is considered obese?</b><br>For adults, a BMI of 30 or higher is classified as obesity by the CDC and WHO.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/calorie-calculator.html">Calorie Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.cdc.gov/bmi/" rel="noopener" target="_blank">CDC – About Body Mass Index (adult categories and limits)</a></li><li><a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmicalc.htm" rel="noopener" target="_blank">NIH NHLBI – BMI calculator and healthy weight guidance</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> formula and categories follow the U.S. Centers for Disease Control and Prevention adult BMI guidance (cdc.gov). This page is not medical advice. Last reviewed November 2026. BMI is a screening estimate, not a diagnosis or medical advice; discuss your results with a healthcare professional.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/calorie-calculator.html" style="color:#1a56db">Calorie Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/cm-to-inches.html" style="color:#1a56db">CM to Inches Converter</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html" style="color:#1a56db">Age Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== BMI Calculator end ===== -->

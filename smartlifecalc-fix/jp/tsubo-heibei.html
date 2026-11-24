@@ -1,0 +1,94 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgx5zZPSwU5BS9aRZsbnQSsmFQvhKe6O5OmS70Ta_DiwSidUUICD53JVcQCl0SrlZaa28L9J67l48y9LnKeBFrwNJo4G1u7WAr4IyniboTFg3Lg9kuSvt06PJrp0wyQXBNgA_iORW8bWKvMd6QBAqS2hjErqpsjbT7WzMAg8N2Do_VsG_2lQjlttleYjQ4/s300/J06.tsubo-heibei.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="坪数計算ツールで坪と平米を変換し畳数の目安も表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgx5zZPSwU5BS9aRZsbnQSsmFQvhKe6O5OmS70Ta_DiwSidUUICD53JVcQCl0SrlZaa28L9J67l48y9LnKeBFrwNJo4G1u7WAr4IyniboTFg3Lg9kuSvt06PJrp0wyQXBNgA_iORW8bWKvMd6QBAqS2hjErqpsjbT7WzMAg8N2Do_VsG_2lQjlttleYjQ4/s320/J06.tsubo-heibei.png"/></a></div>
+
+<!-- ===== J06 坪・平米変換（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc06">
+<style>
+#jc06{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc06 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc06 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc06 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc06 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc06 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc06 input[type=text],#jc06 input[type=date],#jc06 input[type=time],#jc06 select,#jc06 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc06 textarea{width:100%;min-height:180px;font-size:17px}
+#jc06 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc06 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc06 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc06 .jc-opts input{width:20px;height:20px}
+#jc06 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc06 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc06 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc06 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc06 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc06 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc06 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc06 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc06 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc06 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc06 .jc-art th,#jc06 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc06 .jc-art th{background:#f2f4f8}
+#jc06 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">坪と平米（㎡）を相互に変換。1坪＝約3.31㎡。土地や建物の広さ、畳数の目安も分かる無料の坪数計算ツールです。</p>
+<div class="jc-box"><h2>坪・平米変換</h2>
+<span class="jc-lbl">変換の向き</span><div class="jc-opts"><label><input type="radio" name="jc06-m" value="t" checked>坪 → ㎡</label><label><input type="radio" name="jc06-m" value="m">㎡ → 坪</label></div>
+<span class="jc-lbl">数値</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc06-v" placeholder="例：30"></div>
+<button type="button" id="jc06-btn">計算する</button>
+<div class="jc-result" id="jc06-res"></div>
+<p class="jc-note">1坪＝400/121㎡（約3.3058㎡）で計算しています。畳の大きさは地域や物件で異なります。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc06-',box=document.getElementById('jc06-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var v=N('v');if(!v)return err('数値を入れてください。');var T=400/121,m2=R('m')==='t'?v*T:v,tb=m2/T;
+show(R('m')==='t'?f2(m2)+' ㎡':f2(tb)+' 坪',[['坪',f2(tb)+' 坪'],['平米',f2(m2)+' ㎡'],['畳（中京間 1.6562㎡）',f1(m2/1.6562)+' 畳'],['畳（不動産表示 1.62㎡）',f1(m2/1.62)+' 畳']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>日本の不動産では「坪」と「平米（㎡）」の両方がよく使われます。土地の広告は坪単価、間取り図は㎡で書かれていることも多く、比べにくいことがあります。このツールで坪と㎡をすぐに変換できます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">敷地35坪に建てられる家は何坪か</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><p>1坪 ＝ 約3.3058㎡（正確には400/121㎡）、1㎡ ＝ 約0.3025坪です。坪数 ＝ ㎡ × 0.3025 で近い値になります。</p>
+
+<h3 style="font-size:22px;margin-top:28px">早見表</h3><table><tr><th>坪</th><th>㎡</th></tr><tr><td>10坪</td><td>33.06㎡</td></tr><tr><td>20坪</td><td>66.12㎡</td></tr><tr><td>30坪</td><td>99.17㎡</td></tr><tr><td>50坪</td><td>165.29㎡</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><ul><li><b>30坪の土地は？</b> 30 × 400 ÷ 121 ＝ <b>約99.17㎡</b></li><li><b>100㎡の家は？</b> 100 × 0.3025 ＝ <b>30.25坪</b></li><li><b>50坪は？</b> <b>約165.29㎡</b></li></ul><p>1坪は「6尺 × 6尺」の正方形で、正確には400/121㎡（約3.3058㎡）です。逆に1㎡は121/400＝<b>ちょうど0.3025坪</b>なので、㎡から坪への変換は「× 0.3025」で正確に計算できます。</p>
+<h3 style="font-size:22px;margin-top:28px">敷地35坪・建ぺい率60％・容積率200％の計算例</h3><p>土地の広告にある「建ぺい率」と「容積率」は、敷地面積に対する割合です。建ぺい率は建築面積（建物を上から見た面積）の上限、容積率は延床面積（各階の床面積の合計）の上限を示します。敷地35坪で計算してみます。</p><ul><li>敷地面積：35×400÷121＝約115.70㎡</li><li>建築面積の上限：115.70×0.6＝約69.42㎡＝約21.0坪</li><li>延床面積の上限：115.70×2.0＝約231.40㎡＝約70.0坪</li></ul><p>この条件で2階建てにすると、各階を21坪以内に収めるため延床は42坪前後が現実的な上限で、容積率の70坪には届きません。つまり狭い敷地では容積率より建ぺい率の方が先に効いてきます。実際の上限は前面道路の幅による制限や斜線制限、角地の緩和などで変わるので、自治体や設計者に確認してください。</p>
+<h3 style="font-size:22px;margin-top:28px">坪単価と㎡単価の換算</h3><p>土地の広告では「坪単価」がよく使われます。㎡単価に直すには坪単価に0.3025を掛けます。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">坪単価</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">㎡単価</th></tr><tr><td style="border:1px solid #bbb;padding:6px">50万円</td><td style="border:1px solid #bbb;padding:6px">151,250円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">100万円</td><td style="border:1px solid #bbb;padding:6px">302,500円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">200万円</td><td style="border:1px solid #bbb;padding:6px">605,000円</td></tr></table><p>反対に、㎡単価を坪単価にするには約3.3058を掛けます。公示地価など公的な価格は㎡単価で発表されるので、比べるときは単位をそろえましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">よく使う広さの早見表</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">坪</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">㎡</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">畳の目安（1.62㎡）</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1坪</td><td style="border:1px solid #bbb;padding:6px">3.31㎡</td><td style="border:1px solid #bbb;padding:6px">約2.0畳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">10坪</td><td style="border:1px solid #bbb;padding:6px">33.06㎡</td><td style="border:1px solid #bbb;padding:6px">約20.4畳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">20坪</td><td style="border:1px solid #bbb;padding:6px">66.12㎡</td><td style="border:1px solid #bbb;padding:6px">約40.8畳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">30坪</td><td style="border:1px solid #bbb;padding:6px">99.17㎡</td><td style="border:1px solid #bbb;padding:6px">約61.2畳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">40坪</td><td style="border:1px solid #bbb;padding:6px">132.23㎡</td><td style="border:1px solid #bbb;padding:6px">約81.6畳</td></tr><tr><td style="border:1px solid #bbb;padding:6px">50坪</td><td style="border:1px solid #bbb;padding:6px">165.29㎡</td><td style="border:1px solid #bbb;padding:6px">約102.0畳</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>1坪＝3.3㎡で計算して誤差が出る</b>：100坪だと3.3㎡では330㎡、正確には330.58㎡で、約0.6㎡の差が出ます。</li><li><b>延床面積と敷地面積を取り違える</b>：家の広さ（延床面積）と土地の広さ（敷地面積）は別の数字です。</li><li><b>壁の内側か中心か</b>：マンションのパンフレットは壁の中心で測る「壁芯面積」、登記簿は内側で測る「内法面積」で、登記の方が少し小さくなります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>家づくりや土地探しで、ハウスメーカーの資料は「延床○坪」、不動産サイトは「○㎡」と書かれていることがよくあります。単位をそろえて比べると、どちらが広いかがすぐ分かります。</p><p>坪単価で見積もりを比べるときにも便利です。延床35坪で本体価格2,800万円なら、坪単価は80万円です。ただし坪単価に含まれる費用（付帯工事や設備）は会社ごとに違うので、総額で比べることが大切です。</p><p>駐車場や庭の広さを考えるときの目安にもなります。普通車1台分の駐車スペース（2.5m × 5m ＝ 12.5㎡）はおよそ3.8坪です。</p>
+<h3 style="font-size:22px;margin-top:28px">「1坪は畳2枚」が成り立つのは中京間だけ</h3><p>「1坪＝2畳」は、6尺×3尺の畳（中京間、三六間）を2枚並べると6尺×6尺＝1坪になることから来ています。畳の大きさは地域で異なるため、1坪が何畳になるかも変わります。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">畳の種類</th><th style="border:1px solid #ccc;padding:6px">1枚の大きさ</th><th style="border:1px solid #ccc;padding:6px">1枚の面積</th><th style="border:1px solid #ccc;padding:6px">1坪あたり</th></tr><tr><td style="border:1px solid #ccc;padding:6px">京間（本間）</td><td style="border:1px solid #ccc;padding:6px">191cm×95.5cm</td><td style="border:1px solid #ccc;padding:6px">約1.82㎡</td><td style="border:1px solid #ccc;padding:6px">約1.81畳</td></tr><tr><td style="border:1px solid #ccc;padding:6px">中京間（三六間）</td><td style="border:1px solid #ccc;padding:6px">182cm×91cm</td><td style="border:1px solid #ccc;padding:6px">約1.66㎡</td><td style="border:1px solid #ccc;padding:6px">2.00畳</td></tr><tr><td style="border:1px solid #ccc;padding:6px">江戸間（五八間）</td><td style="border:1px solid #ccc;padding:6px">176cm×87.8cm</td><td style="border:1px solid #ccc;padding:6px">約1.55㎡</td><td style="border:1px solid #ccc;padding:6px">約2.14畳</td></tr><tr><td style="border:1px solid #ccc;padding:6px">団地間</td><td style="border:1px solid #ccc;padding:6px">170cm×85cm</td><td style="border:1px solid #ccc;padding:6px">約1.45㎡</td><td style="border:1px solid #ccc;padding:6px">約2.29畳</td></tr><tr><td style="border:1px solid #ccc;padding:6px">不動産広告の基準</td><td style="border:1px solid #ccc;padding:6px">―</td><td style="border:1px solid #ccc;padding:6px">1.62㎡</td><td style="border:1px solid #ccc;padding:6px">約2.04畳</td></tr></table><p>不動産広告では、不動産公正取引協議会連合会の表示規約により畳1枚を1.62㎡以上として換算するため、このツールの畳数も1.62㎡で計算しています。京間の部屋で育った人が江戸間の「6畳」を狭く感じるのは、同じ6畳でも面積が約1.7㎡違うからです。</p>
+<h3 style="font-size:22px;margin-top:28px">坪と㎡の変換で迷いやすいところ</h3><p><b>Q. 1坪は畳何枚？</b><br>A. 約2畳です。</p><p><b>Q. 契約書に坪で書いてもいい？</b><br>A. 法律上の取引や証明では㎡を使います。坪は参考として書き添えるのが一般的です。</p><p><b>Q. 1㎡はどのくらいの広さ？</b><br>A. 縦横1mの正方形です。新聞紙を広げた大きさの2枚分ほどです。</p><p><b>Q. 「坪」はどこから来た単位？</b><br>A. 尺貫法の面積の単位で、1辺6尺（約1.818m）の正方形の広さです。</p><p><b>Q. マンションの専有面積を坪にしたい</b><br>A. ㎡ × 0.3025 で計算できます。70㎡なら約21.2坪です。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/jo-heibei.html">畳数計算</a> – 畳と㎡を京間・江戸間ごとに変換</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 価格の増減率を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a> – 税込・税抜をすぐ計算</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.rftc.jp/" rel="noopener" target="_blank">不動産公正取引協議会連合会 – 表示規約（畳1枚＝1.62㎡の換算）</a></li><li><a href="https://www.mlit.go.jp/" rel="noopener" target="_blank">国土交通省 – 建ぺい率・容積率など建築基準の案内</a></li><li><a href="https://laws.e-gov.go.jp/" rel="noopener" target="_blank">e-Gov法令検索 – 建築基準法</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>換算値は1坪＝400/121㎡としてプログラムで計算し、早見表をすべて確かめました。 最終確認：2026年11月。 面積の換算は目安で、建築の可否や登記の数値は専門家・自治体にご確認ください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/jo-heibei.html" style="color:#1a56db">畳数計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html" style="color:#1a56db">消費税計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J06 end ===== -->

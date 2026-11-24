@@ -1,0 +1,95 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgPgzczFTxczQ1mbQ9bRCUxFOsEBDUmqDggr5J7junDDhu0Lmy_uPGnQuIwVVFnHOZqzkVwIQWscYigadH95UHxgqptgxS4eX0BrGTRKPGaFpDqohnuaMyDcmNDWqK6Go1kA1erJdqPrHk8SkJ7QSFxGpUjrjwhjqwWCuSwJ_hkYEqH6usifyhHFqDemjM/s300/J21.chouju-iwai.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="長寿祝い計算ツールで生まれ年から還暦・米寿の年を一覧表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgPgzczFTxczQ1mbQ9bRCUxFOsEBDUmqDggr5J7junDDhu0Lmy_uPGnQuIwVVFnHOZqzkVwIQWscYigadH95UHxgqptgxS4eX0BrGTRKPGaFpDqohnuaMyDcmNDWqK6Go1kA1erJdqPrHk8SkJ7QSFxGpUjrjwhjqwWCuSwJ_hkYEqH6usifyhHFqDemjM/s320/J21.chouju-iwai.png"/></a></div>
+
+
+<!-- ===== J21 長寿祝い計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc21">
+<style>
+#jc21{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc21 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc21 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc21 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc21 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc21 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc21 input[type=text],#jc21 input[type=date],#jc21 input[type=time],#jc21 select,#jc21 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc21 textarea{width:100%;min-height:180px;font-size:17px}
+#jc21 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc21 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc21 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc21 .jc-opts input{width:20px;height:20px}
+#jc21 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc21 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc21 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc21 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc21 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc21 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc21 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc21 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc21 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc21 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc21 .jc-art th,#jc21 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc21 .jc-art th{background:#f2f4f8}
+#jc21 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">生まれ年から還暦・古希・喜寿・傘寿・米寿・卒寿・白寿などの長寿祝いの年を一覧で表示。数え年と満年齢の両方に対応しています。</p>
+<div class="jc-box"><h2>長寿祝い計算</h2>
+<span class="jc-lbl">生まれ年（西暦）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc21-y" placeholder="例：1960"><span class="jc-unit">年</span></div>
+<span class="jc-lbl">数え方</span><div class="jc-opts"><label><input type="radio" name="jc21-k" value="m" checked>満年齢で祝う</label><label><input type="radio" name="jc21-k" value="k">数え年で祝う</label></div>
+<button type="button" id="jc21-btn">計算する</button>
+<div class="jc-result" id="jc21-res"></div>
+<p class="jc-note">還暦は満60歳（数え61歳）で祝うのが一般的です。それ以外は数え年で祝う地域もありますが、最近は満年齢が多くなっています。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc21-',box=document.getElementById('jc21-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var y=N('y');if(!y||y<1900||y>2100)return err('西暦で生まれ年を入れてください。');var L=[['還暦',60],['古希',70],['喜寿',77],['傘寿',80],['米寿',88],['卒寿',90],['白寿',99],['百寿',100]],rows=[],now=new Date().getFullYear(),nx='';
+L.forEach(function(x){var yr=R('k')==='m'?y+x[1]:y+x[1]-1;if(x[0]==='還暦')yr=y+60;rows.push([x[0]+'（'+x[1]+'歳）',yr+'年'+(yr===now?' ← 今年':'')]);if(!nx&&yr>=now)nx=x[0]+'は '+yr+'年';});
+show(nx||'すべてのお祝いを過ぎています',rows);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>長寿祝いは、家族で節目の年齢を祝う日本の習慣です。還暦・古希・喜寿・米寿など、それぞれに由来と色があります。このツールは生まれ年からお祝いの年を一覧で表示します。</p>
+
+<h2 style="font-size:24px;margin-top:10px">誕生日が12月の父の古希、敬老の日に祝ってよい？</h2>
+<h3 style="font-size:22px;margin-top:28px">長寿祝いの一覧</h3><table><tr><th>名前</th><th>年齢</th><th>色</th></tr><tr><td>還暦</td><td>60歳</td><td>赤</td></tr><tr><td>古希</td><td>70歳</td><td>紫</td></tr><tr><td>喜寿</td><td>77歳</td><td>紫</td></tr><tr><td>傘寿</td><td>80歳</td><td>黄・金</td></tr><tr><td>米寿</td><td>88歳</td><td>黄・金</td></tr><tr><td>卒寿</td><td>90歳</td><td>紫</td></tr><tr><td>白寿</td><td>99歳</td><td>白</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>1956年（昭和31年）生まれの人の古希（70歳）は、満年齢で祝うなら<b>2026年</b>、数え年で祝うなら<b>2025年</b>です。1966年（昭和41年）生まれの人は、2026年が還暦（満60歳）です。</p>
+<h3 style="font-size:22px;margin-top:28px">2026年に数え年でお祝いを迎える生まれ年</h3><p>数え年は「西暦の年 − 生まれ年 ＋ 1」で求めるので、数え年で祝う家庭では該当する生まれ年が満年齢の表より1年あとにずれます。</p><table style="border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">お祝い</th><th style="border:1px solid #ccc;padding:6px">数え年</th><th style="border:1px solid #ccc;padding:6px">2026年に該当する生まれ年</th></tr><tr><td style="border:1px solid #ccc;padding:6px">古希</td><td style="border:1px solid #ccc;padding:6px">70歳</td><td style="border:1px solid #ccc;padding:6px">1957年（昭和32年）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">喜寿</td><td style="border:1px solid #ccc;padding:6px">77歳</td><td style="border:1px solid #ccc;padding:6px">1950年（昭和25年）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">傘寿</td><td style="border:1px solid #ccc;padding:6px">80歳</td><td style="border:1px solid #ccc;padding:6px">1947年（昭和22年）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">米寿</td><td style="border:1px solid #ccc;padding:6px">88歳</td><td style="border:1px solid #ccc;padding:6px">1939年（昭和14年）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">卒寿</td><td style="border:1px solid #ccc;padding:6px">90歳</td><td style="border:1px solid #ccc;padding:6px">1937年（昭和12年）</td></tr><tr><td style="border:1px solid #ccc;padding:6px">白寿</td><td style="border:1px solid #ccc;padding:6px">99歳</td><td style="border:1px solid #ccc;padding:6px">1928年（昭和3年）</td></tr></table><p>還暦だけは数え61歳＝満60歳なので、どちらでも1966年（昭和41年）生まれです。また、その年度に100歳を迎える人には、老人福祉法にもとづく「老人の日」の記念事業として内閣総理大臣から祝状と記念品が贈られます。市区町村独自の祝い金や記念品もあるので、該当する年は役所の案内を確かめてください。</p>
+<h3 style="font-size:22px;margin-top:28px">2026年にお祝いを迎える人（満年齢）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">お祝い</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">年齢</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">生まれ年</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">祝いの色</th></tr><tr><td style="border:1px solid #bbb;padding:6px">還暦</td><td style="border:1px solid #bbb;padding:6px">60歳</td><td style="border:1px solid #bbb;padding:6px">1966年（昭和41年）</td><td style="border:1px solid #bbb;padding:6px">赤</td></tr><tr><td style="border:1px solid #bbb;padding:6px">古希</td><td style="border:1px solid #bbb;padding:6px">70歳</td><td style="border:1px solid #bbb;padding:6px">1956年（昭和31年）</td><td style="border:1px solid #bbb;padding:6px">紫</td></tr><tr><td style="border:1px solid #bbb;padding:6px">喜寿</td><td style="border:1px solid #bbb;padding:6px">77歳</td><td style="border:1px solid #bbb;padding:6px">1949年（昭和24年）</td><td style="border:1px solid #bbb;padding:6px">紫</td></tr><tr><td style="border:1px solid #bbb;padding:6px">傘寿</td><td style="border:1px solid #bbb;padding:6px">80歳</td><td style="border:1px solid #bbb;padding:6px">1946年（昭和21年）</td><td style="border:1px solid #bbb;padding:6px">黄・金</td></tr><tr><td style="border:1px solid #bbb;padding:6px">米寿</td><td style="border:1px solid #bbb;padding:6px">88歳</td><td style="border:1px solid #bbb;padding:6px">1938年（昭和13年）</td><td style="border:1px solid #bbb;padding:6px">黄・金</td></tr><tr><td style="border:1px solid #bbb;padding:6px">卒寿</td><td style="border:1px solid #bbb;padding:6px">90歳</td><td style="border:1px solid #bbb;padding:6px">1936年（昭和11年）</td><td style="border:1px solid #bbb;padding:6px">紫</td></tr><tr><td style="border:1px solid #bbb;padding:6px">白寿</td><td style="border:1px solid #bbb;padding:6px">99歳</td><td style="border:1px solid #bbb;padding:6px">1927年（昭和2年）</td><td style="border:1px solid #bbb;padding:6px">白</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">名前の由来</h3><ul><li><b>古希</b>：唐の詩人・杜甫の「人生七十古来稀なり」から。</li><li><b>喜寿</b>：「喜」の草書体が「七十七」に見えることから。</li><li><b>米寿</b>：「米」の字を分けると「八十八」になることから。</li><li><b>卒寿</b>：「卒」の略字「卆」が「九十」に見えることから。</li><li><b>白寿</b>：「百」から「一」を引くと「白」になることから（99歳）。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">満年齢と数え年、どちらで祝う？</h3><p>昔は数え年で祝うのが一般的でしたが、今は満年齢で祝う家庭が多くなっています。還暦だけは生まれた年の干支に戻る満60歳（数え61歳）で祝うのが一般的です。家族が集まりやすい年や、誕生日の近くに合わせて決めても問題ありません。</p>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>還暦を数え年60歳で祝う</b>：還暦は満60歳、数えでは61歳です。</li><li><b>お祝いの色を決まりと考えすぎる</b>：色は一般的な目安で、本人の好きな色を選ぶ人も増えています。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>親や祖父母のお祝いの年を、家族で前もって確認するのに便利です。生まれ年を入れるだけで、還暦から百寿まで一度に分かります。</p><p>兄弟姉妹が多い家庭では、誰の年にどのお祝いが重なるかを一覧にしておくと、食事会や旅行の計画が立てやすくなります。</p><p>お祝いの方法に決まりはありません。本人の体調や希望に合わせて、気軽に集まれる形を選びましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">12月生まれの古希、どの日に祝う？3つの決め方</h3><p>1956年12月20日生まれの父の古希を、満年齢で祝うとします。満70歳になるのは2026年12月20日なので、2026年9月21日の敬老の日に集まると、まだ満69歳です。誕生日が年の後半の人には必ず起きるずれです。決め方は3つあります。</p><ol><li><b>誕生日を基準にする</b>：誕生日当日か直後の週末に祝います。年齢と祝いが一致しますが、年末は集まりにくいことがあります。</li><li><b>「その年に70歳になる人」として年初から祝う</b>：数え年の考え方に近く、正月や敬老の日に合わせやすい方法です。この例なら2026年のどの日でも「古希の年」として扱えます。</li><li><b>数え年で祝う</b>：数え年の古希は2025年でした。過ぎていれば満年齢で改めて祝えば問題ありません。</li></ol><p>敬老の日は2003年から9月の第3月曜日になり、15日から21日の間で動きます。2026年は9月21日です。</p>
+<h3 style="font-size:22px;margin-top:28px">長寿のお祝いでよくある疑問</h3><p><b>Q. 還暦はなぜ60歳？</b><br>A. 生まれた年の干支（60通り）が一回りして元に戻るためです。</p><p><b>Q. 百寿（100歳）の後は？</b><br>A. 108歳の茶寿、111歳の皇寿などがあります。</p><p><b>Q. プレゼントの定番は？</b><br>A. 祝いの色の小物や、家族の写真、食事会などが人気です。</p><p><b>Q. お祝いは誕生日に合わせる？</b><br>A. 誕生日の前後や、敬老の日、お正月など家族が集まりやすい日に行うことが多いです。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html">干支計算</a> – 還暦の干支を確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 生まれ年を和暦で</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 誕生日まであと何日</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.cao.go.jp/" rel="noopener" target="_blank">内閣府 – 国民の祝日について（敬老の日）</a></li><li><a href="https://eco.mtk.nao.ac.jp/koyomi/" rel="noopener" target="_blank">国立天文台 暦計算室 – 祝日・暦要項</a></li><li><a href="https://www.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 – 百歳高齢者表彰（老人の日の記念事業）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>早見表はツールと同じ計算でプログラム作成し、和暦は和暦西暦変換で確かめました。 最終確認：2026年11月。 お祝いの年齢や色は一般的な慣習にもとづく目安で、地域や家庭によって異なります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html" style="color:#1a56db">年齢計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html" style="color:#1a56db">干支計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html" style="color:#1a56db">和暦西暦変換</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J21 end ===== -->

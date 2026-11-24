@@ -1,0 +1,93 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitqso-ZbdE9KnkZV62B-GieYbEbXtR1L1TTHRU2N-qDPLoW30CvQXz7cbh1G9ObjbK_lNsI0n9SDyCOnnRV7yEhY8l1h5m-rCvGzPlnMHYNHRHpxDLkmkDPFWeQQ20Rt-UsNXoXPcRf8JmhRkMV3yNiXM6VX2gqKmyECRhB239NoLlO9UpO8I7-RYUZag/s300/J07.jo-heibei.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="畳数計算ツールの画面：畳と平米を規格別に変換" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitqso-ZbdE9KnkZV62B-GieYbEbXtR1L1TTHRU2N-qDPLoW30CvQXz7cbh1G9ObjbK_lNsI0n9SDyCOnnRV7yEhY8l1h5m-rCvGzPlnMHYNHRHpxDLkmkDPFWeQQ20Rt-UsNXoXPcRf8JmhRkMV3yNiXM6VX2gqKmyECRhB239NoLlO9UpO8I7-RYUZag/s320/J07.jo-heibei.png"/></a></div>
+
+<!-- ===== J07 畳・平米変換（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc07">
+<style>
+#jc07{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc07 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc07 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc07 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc07 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc07 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc07 input[type=text],#jc07 input[type=date],#jc07 input[type=time],#jc07 select,#jc07 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc07 textarea{width:100%;min-height:180px;font-size:17px}
+#jc07 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc07 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc07 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc07 .jc-opts input{width:20px;height:20px}
+#jc07 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc07 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc07 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc07 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc07 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc07 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc07 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc07 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc07 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc07 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc07 .jc-art th,#jc07 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc07 .jc-art th{background:#f2f4f8}
+#jc07 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">部屋の畳数と平米（㎡）を相互に変換。京間・中京間・江戸間・団地間の違いも一度に比べられる無料の畳数計算ツールです。</p>
+<div class="jc-box"><h2>畳・平米変換</h2>
+<span class="jc-lbl">変換の向き</span><div class="jc-opts"><label><input type="radio" name="jc07-m" value="j" checked>畳 → ㎡</label><label><input type="radio" name="jc07-m" value="m">㎡ → 畳</label></div>
+<span class="jc-lbl">数値</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc07-v" placeholder="例：6"></div>
+<button type="button" id="jc07-btn">計算する</button>
+<div class="jc-result" id="jc07-res"></div>
+<p class="jc-note">不動産広告では「1畳＝1.62㎡以上」で表示するルールがあります（不動産の表示に関する公正競争規約）。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc07-',box=document.getElementById('jc07-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var v=N('v');if(!v)return err('数値を入れてください。');var t=[['京間',1.824],['中京間',1.6562],['江戸間',1.5488],['団地間',1.445],['不動産表示',1.62]],rows=[];
+t.forEach(function(x){rows.push([x[0]+'（1畳 '+x[1]+'㎡）',R('m')==='j'?f2(v*x[1])+' ㎡':f1(v/x[1])+' 畳']);});
+show(R('m')==='j'?v+'畳 ≒ '+f2(v*1.62)+' ㎡':v+'㎡ ≒ '+f1(v/1.62)+' 畳',rows);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>同じ「6畳」でも、地域や建物によって実際の広さは違います。この計算ツールは、京間・中京間・江戸間・団地間などの畳の大きさごとに平米を一度に表示します。</p>
+
+<h2 style="font-size:24px;margin-top:10px">同じ「6畳」でもラグが入らない理由</h2>
+<h3 style="font-size:22px;margin-top:28px">畳の種類</h3><table><tr><th>種類</th><th>1畳の広さ</th><th>主な地域</th></tr><tr><td>京間</td><td>約1.82㎡</td><td>関西・西日本</td></tr><tr><td>中京間</td><td>約1.66㎡</td><td>中部</td></tr><tr><td>江戸間</td><td>約1.55㎡</td><td>関東・全国</td></tr><tr><td>団地間</td><td>約1.45㎡</td><td>団地・マンション</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">6畳・8畳・4.5畳は何㎡？</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">畳の種類（1畳の大きさ）</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">4.5畳</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">6畳</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">8畳</th></tr><tr><td style="border:1px solid #bbb;padding:6px">京間（1.824㎡）</td><td style="border:1px solid #bbb;padding:6px">8.21㎡</td><td style="border:1px solid #bbb;padding:6px">10.94㎡</td><td style="border:1px solid #bbb;padding:6px">14.59㎡</td></tr><tr><td style="border:1px solid #bbb;padding:6px">中京間（1.6562㎡）</td><td style="border:1px solid #bbb;padding:6px">7.45㎡</td><td style="border:1px solid #bbb;padding:6px">9.94㎡</td><td style="border:1px solid #bbb;padding:6px">13.25㎡</td></tr><tr><td style="border:1px solid #bbb;padding:6px">江戸間（1.5488㎡）</td><td style="border:1px solid #bbb;padding:6px">6.97㎡</td><td style="border:1px solid #bbb;padding:6px">9.29㎡</td><td style="border:1px solid #bbb;padding:6px">12.39㎡</td></tr><tr><td style="border:1px solid #bbb;padding:6px">団地間（1.445㎡）</td><td style="border:1px solid #bbb;padding:6px">6.50㎡</td><td style="border:1px solid #bbb;padding:6px">8.67㎡</td><td style="border:1px solid #bbb;padding:6px">11.56㎡</td></tr><tr><td style="border:1px solid #bbb;padding:6px">不動産表示（1.62㎡）</td><td style="border:1px solid #bbb;padding:6px">7.29㎡</td><td style="border:1px solid #bbb;padding:6px">9.72㎡</td><td style="border:1px solid #bbb;padding:6px">12.96㎡</td></tr></table><p>同じ6畳でも、京間と団地間では<b>約2.3㎡</b>、畳1枚半ほどの差があります。家具を買うときや引っ越し先を比べるときは、何間の畳かを確認しましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">6畳の部屋の実寸は何cm？規格別の縦横一覧</h3><p>6畳の和室は、畳の長辺2枚分×短辺3枚分で並べるのが基本の形です。畳1枚の寸法に2と3をかけるだけで、部屋の内寸の目安が出ます。ラグは「6畳用」の表示だけで選ばず、この縦横と商品の寸法を比べてください。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">規格</th><th style="border:1px solid #ccc;padding:6px">部屋の縦×横（目安）</th><th style="border:1px solid #ccc;padding:6px">面積</th></tr><tr><td style="border:1px solid #ccc;padding:6px">京間（191×95.5cm）</td><td style="border:1px solid #ccc;padding:6px">382cm × 286.5cm</td><td style="border:1px solid #ccc;padding:6px">約10.94㎡</td></tr><tr><td style="border:1px solid #ccc;padding:6px">中京間（182×91cm）</td><td style="border:1px solid #ccc;padding:6px">364cm × 273cm</td><td style="border:1px solid #ccc;padding:6px">約9.94㎡</td></tr><tr><td style="border:1px solid #ccc;padding:6px">江戸間（176×88cm）</td><td style="border:1px solid #ccc;padding:6px">352cm × 264cm</td><td style="border:1px solid #ccc;padding:6px">約9.29㎡</td></tr><tr><td style="border:1px solid #ccc;padding:6px">団地間（170×85cm）</td><td style="border:1px solid #ccc;padding:6px">340cm × 255cm</td><td style="border:1px solid #ccc;padding:6px">約8.67㎡</td></tr></table><p>京間と団地間では、長辺で42cm、短辺で31.5cmも違います。江戸間用の6畳ラグ（長辺約350cm）を京間の部屋に敷くと、周囲に合計30cm前後のすき間ができる計算です。逆に本間用を団地間に敷くと壁に当たって入りません。</p>
+<h3 style="font-size:22px;margin-top:28px">畳1枚の大きさ</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">種類</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">縦 × 横</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">主な地域・建物</th></tr><tr><td style="border:1px solid #bbb;padding:6px">京間（本間）</td><td style="border:1px solid #bbb;padding:6px">191cm × 95.5cm</td><td style="border:1px solid #bbb;padding:6px">関西・中国・九州</td></tr><tr><td style="border:1px solid #bbb;padding:6px">中京間</td><td style="border:1px solid #bbb;padding:6px">182cm × 91cm</td><td style="border:1px solid #bbb;padding:6px">中部（愛知など）・東北の一部</td></tr><tr><td style="border:1px solid #bbb;padding:6px">江戸間（関東間）</td><td style="border:1px solid #bbb;padding:6px">176cm × 88cm</td><td style="border:1px solid #bbb;padding:6px">関東をはじめ全国</td></tr><tr><td style="border:1px solid #bbb;padding:6px">団地間</td><td style="border:1px solid #bbb;padding:6px">170cm × 85cm</td><td style="border:1px solid #bbb;padding:6px">団地・アパート・マンション</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">不動産広告の「1畳＝1.62㎡」ルール</h3><p>不動産広告では、居室の広さを畳数で書くときは<b>1畳あたり1.62㎡以上</b>で計算するという決まりがあります（不動産の表示に関する公正競争規約）。たとえば「洋室6畳」と書かれていれば、その部屋は少なくとも9.72㎡ある、という意味です。</p>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>実家の6畳と同じ広さだと思い込む</b>：関西の京間で育った人が関東の団地間の部屋を見ると、かなり狭く感じます。</li><li><b>洋室の畳数を畳の枚数だと思う</b>：洋室の「6畳」は面積の目安で、畳が敷いてあるわけではありません。</li><li><b>カーペットのサイズを畳数だけで選ぶ</b>：「6畳用」カーペットも江戸間用と本間用でサイズが違います。部屋の実寸を測るのが確実です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>引っ越し先の部屋の広さを、いま住んでいる部屋と比べるときに便利です。今の部屋が江戸間の6畳（約9.29㎡）で、新しい部屋が「洋室7.5畳」（1.62㎡基準で約12.15㎡）なら、約2.9㎡広くなります。</p><p>ラグやカーペット、ベッドを選ぶときは、畳数よりも実際の寸法で考えるのが確実です。部屋の㎡が分かれば、家具を置いたあとに残るスペースも計算しやすくなります。</p><p>和室の畳を新しくするときは、畳の種類（京間・江戸間など）によって1枚の大きさが違うため、枚数だけでなくサイズを確認して注文します。</p>
+<h3 style="font-size:22px;margin-top:28px">ダブルベッドを置いたら、残りは何畳分？</h3><p>家具の置き場所を考えるときは、畳数ではなく㎡で引き算すると分かりやすくなります。一般的なマットレスの寸法は、シングルが約97×195cm（約1.89㎡）、ダブルが約140×195cm（約2.73㎡）です。</p><ul><li><b>不動産表示の「洋室6帖」（9.72㎡）</b>にダブルベッド：9.72 − 2.73 ＝ 残り約6.99㎡</li><li><b>江戸間6畳</b>（9.29㎡）にダブルベッド：9.29 − 2.73 ＝ 残り約6.56㎡（江戸間の畳で約4.2枚分）</li><li><b>団地間6畳</b>（8.67㎡）にダブルベッド：8.67 − 2.73 ＝ 残り約5.94㎡</li></ul><p>同じ「6畳」と書かれていても、団地間の部屋ではベッドを置いた後の床が洋室6帖より1㎡以上狭くなります。内見のときは壁から壁までの内寸を測り、㎡で計算してから家具を選ぶのが確実です。</p>
+<h3 style="font-size:22px;margin-top:28px">畳と平米の変換で迷いやすい点</h3><p><b>Q. 6畳は何㎡？</b><br>A. 不動産表示の基準（1.62㎡）で約9.72㎡です。江戸間なら約9.29㎡になります。</p><p><b>Q. 1坪は何畳？</b><br>A. 約2畳です。1坪（約3.31㎡）は1.62㎡の畳でちょうど2畳強になります。</p><p><b>Q. 洋室と和室で畳の基準は違う？</b><br>A. 不動産広告ではどちらも1畳1.62㎡以上で表示します。実際の和室の畳は地域の規格によります。</p><p><b>Q. 「帖」と「畳」は違う？</b><br>A. 同じ意味です。洋室では「帖」と書くことも多いです。</p><p><b>Q. 10畳は何坪？</b><br>A. 1.62㎡基準で16.2㎡、約4.9坪です。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/tsubo-heibei.html">坪数計算</a> – 坪と㎡を変換</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 広さの差を％で</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html">割引計算</a> – 家具セールの値段を計算</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.rftc.jp/" rel="noopener" target="_blank">不動産公正取引協議会連合会 – 不動産の表示に関する公正競争規約（1畳＝1.62㎡の基準）</a></li><li><a href="https://www.mlit.go.jp/" rel="noopener" target="_blank">国土交通省 – 住宅・不動産に関する情報</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>畳の寸法は一般的な規格の値で、各数値はプログラムで計算して確かめました。1.62㎡の基準は不動産公正取引協議会の公正競争規約施行規則によります。 最終確認：2026年11月。 畳の寸法は一般的な規格の目安で、実際の部屋の広さは物件ごとに異なります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/tsubo-heibei.html" style="color:#1a56db">坪数計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html" style="color:#1a56db">割引計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J07 end ===== -->

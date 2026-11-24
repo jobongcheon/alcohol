@@ -1,0 +1,113 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhm-Z134bW0wKdSy1WDKnLYIht4gXJMX2mS5DK40fGuWzVWlPbsTXjfFhacrn_Sv8eXxEX5pR3yYK8h1svUKhPWlKLaRycJpfUpp5GRVOdpctXyfgBX_LE-loBaolX8tjMvBA-Qk5TLExkmMrVUaEaDJ2jeCadRCf6AMuSOQcIzlBV876thmMTRzSmspSo/s300/E14.age-calculator%20%28%EB%82%98%EC%9D%B4%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Age calculator result showing years, months, days and total days lived" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhm-Z134bW0wKdSy1WDKnLYIht4gXJMX2mS5DK40fGuWzVWlPbsTXjfFhacrn_Sv8eXxEX5pR3yYK8h1svUKhPWlKLaRycJpfUpp5GRVOdpctXyfgBX_LE-loBaolX8tjMvBA-Qk5TLExkmMrVUaEaDJ2jeCadRCf6AMuSOQcIzlBV876thmMTRzSmspSo/s320/E14.age-calculator%20%28%EB%82%98%EC%9D%B4%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+
+<!-- ===== Age Calculator (paste in Blogger HTML view) ===== -->
+<div id="ey-calc">
+<style>
+#ey-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ey-calc .ey-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ey-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ey-calc .ey-lbl{display:block;font-weight:bold;margin-top:14px}
+#ey-calc .ey-hint{font-size:15px;color:#555;font-weight:normal}
+#ey-calc .ey-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ey-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ey-calc input.ey-s{flex:0 0 5.5em}
+#ey-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ey-calc .ey-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ey-calc .ey-opts{display:grid;gap:8px;margin-top:8px}
+#ey-calc .ey-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ey-calc .ey-opts input{width:22px;height:22px;flex:none}
+#ey-calc .ey-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ey-calc .ey-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ey-calc .ey-grid select{font-size:17px;width:100%}
+#ey-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ey-calc .ey-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ey-calc .ey-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ey-calc .ey-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ey-calc .ey-err{color:#c00;font-weight:bold;text-align:center}
+#ey-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ey-calc th,#ey-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ey-calc th{background:#f2f4f8}
+#ey-calc .ey-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ey-box"><h2>Age Calculator</h2>
+<span class="ey-lbl">Date of birth</span><div class="ey-line ey-date" data-id="ey-b"></div><span class="ey-lbl">Age on this date <span class="ey-hint">(today is pre-selected)</span></span><div class="ey-line ey-date" data-id="ey-t" data-today="1"></div>
+<button type="button" id="ey-btn">Calculate Age</button>
+<div class="ey-result" id="ey-res"></div>
+<p class="ey-note">Counts calendar years, months and days.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ey-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  var now=new Date(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WK=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DAY=86400000;
+  function opts(a,b,sel,rev,lab){var h='<option value="">'+lab+'</option>',i;if(rev){for(i=b;i>=a;i--)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+i+'</option>';}else{for(i=a;i<=b;i++)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(lab==='Month'?MN[i-1]:i)+'</option>';}return h;}
+  Array.prototype.forEach.call(document.querySelectorAll('#ey-calc .ey-date'),function(d){
+    var id=d.getAttribute('data-id'),t=d.getAttribute('data-today')==='1';
+    d.innerHTML='<select id="'+id+'-m">'+opts(1,12,t?now.getMonth()+1:null,false,'Month')+'</select> '+
+      '<select id="'+id+'-d">'+opts(1,31,t?now.getDate():null,false,'Day')+'</select> '+
+      '<select id="'+id+'-y">'+opts(1920,now.getFullYear()+10,t?now.getFullYear():null,true,'Year')+'</select>';
+  });
+  function getD(id){var y=+$(id+'-y').value,m=+$(id+'-m').value,d=+$(id+'-d').value;if(!y||!m||!d)return null;var x=new Date(Date.UTC(y,m-1,d));if(x.getUTCMonth()!==m-1)return 'bad';return x;}
+  function fmtD(x){return WK[x.getUTCDay()]+', '+MN[x.getUTCMonth()]+' '+x.getUTCDate()+', '+x.getUTCFullYear();}
+$('ey-btn').addEventListener('click',function(){var box=$('ey-res');box.style.display='block';function err(t){box.innerHTML='<p class="ey-err">'+t+'</p>';}
+  var b=getD('ey-b'),t=getD('ey-t');if(!b||!t)return err('Please choose both dates.');if(b==='bad'||t==='bad')return err('That date does not exist.');if(t<b)return err('The second date must be after the birth date.');
+  var y=t.getUTCFullYear()-b.getUTCFullYear(),m=t.getUTCMonth()-b.getUTCMonth(),d=t.getUTCDate()-b.getUTCDate();
+  if(d<0){m--;d+=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),0)).getUTCDate();}if(m<0){y--;m+=12;}
+  var days=Math.round((t-b)/DAY),nb=new Date(Date.UTC(t.getUTCFullYear(),b.getUTCMonth(),b.getUTCDate()));if(nb<t)nb=new Date(Date.UTC(t.getUTCFullYear()+1,b.getUTCMonth(),b.getUTCDate()));
+  var left=Math.round((nb-t)/DAY);
+  box.innerHTML='<div style="text-align:center">Age</div><div class="ey-big">'+y+' years</div><div style="text-align:center">'+y+' years, '+m+' months, '+d+' days</div>'+
+   row('Total months',y*12+m)+row('Total weeks',Math.floor(days/7).toLocaleString('en-US'))+row('Total days',days.toLocaleString('en-US'))+row('Born on a',WK[b.getUTCDay()])+row('Next birthday',left===0?'Today! Happy birthday':'in '+left+' days ('+fmtD(nb)+')');
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>How old are you exactly — to the day? This calculator shows your age in years, months and days, how many days you have lived, the day of the week you were born, and how long until your next birthday.</p>
+<h2 style="font-size:26px;margin-top:10px">How exact age is counted</h2>
+<p>Your age in years changes on your birthday, but age in months and days needs a rule, because months have different lengths. This calculator counts complete years first, then complete months, then the remaining days — the same way most forms and official documents do.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the age calculator</h3><ol><li>Choose your date of birth.</li><li>Leave the second date as today, or choose any other date.</li><li>Press <b>Calculate Age</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Age = years and months between the dates, then the remaining days</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>Someone born on June 15, 1990 is, on November 14, 2026: 36 complete years (June 15, 2026 was the 36th birthday), plus 4 complete months (to October 15), plus 30 days (October 15 to November 14). Result: <b>36 years, 4 months, 30 days</b>.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Milestone birthdays measured in days, weeks and hours</h3><p>The table uses the average calendar year of 365.2425 days. Your own count may differ by a day or two depending on how many February 29ths fall inside your lifetime, which is exactly what the calculator above works out for your real dates.</p><table style="border-collapse:collapse;border:1px solid #ccc"><tr><th style="border:1px solid #ccc;padding:6px">Birthday</th><th style="border:1px solid #ccc;padding:6px">Days (approx.)</th><th style="border:1px solid #ccc;padding:6px">Weeks</th><th style="border:1px solid #ccc;padding:6px">Hours</th></tr><tr><td style="border:1px solid #ccc;padding:6px">18</td><td style="border:1px solid #ccc;padding:6px">6,574</td><td style="border:1px solid #ccc;padding:6px">939</td><td style="border:1px solid #ccc;padding:6px">157,785</td></tr><tr><td style="border:1px solid #ccc;padding:6px">21</td><td style="border:1px solid #ccc;padding:6px">7,670</td><td style="border:1px solid #ccc;padding:6px">1,096</td><td style="border:1px solid #ccc;padding:6px">184,082</td></tr><tr><td style="border:1px solid #ccc;padding:6px">30</td><td style="border:1px solid #ccc;padding:6px">10,957</td><td style="border:1px solid #ccc;padding:6px">1,565</td><td style="border:1px solid #ccc;padding:6px">262,975</td></tr><tr><td style="border:1px solid #ccc;padding:6px">40</td><td style="border:1px solid #ccc;padding:6px">14,610</td><td style="border:1px solid #ccc;padding:6px">2,087</td><td style="border:1px solid #ccc;padding:6px">350,633</td></tr><tr><td style="border:1px solid #ccc;padding:6px">50</td><td style="border:1px solid #ccc;padding:6px">18,262</td><td style="border:1px solid #ccc;padding:6px">2,609</td><td style="border:1px solid #ccc;padding:6px">438,291</td></tr><tr><td style="border:1px solid #ccc;padding:6px">65</td><td style="border:1px solid #ccc;padding:6px">23,741</td><td style="border:1px solid #ccc;padding:6px">3,392</td><td style="border:1px solid #ccc;padding:6px">569,778</td></tr></table><p>Two round-number days worth marking: your 20,000th day arrives at about 54 years and 9 months, and your 25,000th at about 68 years and 5 months.</p>
+<h3 style="font-size:22px;margin-top:28px">Where exact age matters</h3>
+<ul>
+<li><b>Benefits and retirement</b> – Social Security full retirement age is 67 for people born in 1960 or later; you can claim from 62 with a reduced benefit.</li>
+<li><b>Medicare</b> – eligibility generally begins at 65.</li>
+<li><b>School enrollment</b> – many districts set a cut-off date for kindergarten age.</li>
+<li><b>Insurance and licenses</b> – driver's licenses, car insurance rates and some travel rules depend on exact age.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Leap-year birthdays</h3>
+<p>If you were born on February 29, your birthday falls on that date only every four years. For legal purposes, many U.S. states treat March 1 as the birthday in common years, while some other countries use February 28. The calculator follows the calendar strictly and shows both the years and the days.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Fun facts you can check</h3>
+<ul>
+<li>You reach 10,000 days old at about 27 years and 4 months.</li>
+<li>1 billion seconds is about 31.7 years.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Worth knowing</h3><ul><li>Use a future date to find how old you will be at an event.</li><li>People born on February 29 usually celebrate on February 28 or March 1 in non-leap years.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">The month-end problem: August 31 to September 30</h3><p>Imagine someone born on August 31, 2000. On September 30, 2026 they have clearly lived 26 complete years. But how many months since August 31? September has no 31st, so one tool reports <b>26 years, 1 month, 0 days</b> (treating the 30th as the matching day) while another reports <b>26 years, 0 months, 30 days</b>. Both are defensible. The same thing happens for anyone born on the 29th, 30th or 31st for part of every year.</p><p>This is why documents that depend on age almost always use whole years, and why total days lived is the one number every calculator agrees on. If you need a months figure for a form, check how that agency counts.</p><p>One rule catches people out: for Social Security, you are treated as reaching an age on the <b>day before</b> your birthday. Someone born on the 1st of a month is therefore considered to attain age 62 in the previous month, which can move their earliest eligible month of benefits earlier.</p>
+<h3 style="font-size:22px;margin-top:28px">Things readers ask about counting their age</h3><p><b>Does time zone matter?</b><br>For age in days, no. Age changes at midnight local time on your birthday.</p><p><b>Why do different calculators disagree by a day?</b><br>Some count the end date as a full day and some don't. This calculator does not count the start date, which is the usual convention.</p><p><b>How many days old am I?</b><br>The result shows total days lived — a fun number to celebrate, like your 10,000th day (about 27.4 years).</p><p><b>Why does age by year differ in some countries?</b><br>Some countries traditionally counted age differently, but international age is counted from birth as shown here.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html">Retirement Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.ssa.gov/benefits/retirement/" rel="noopener" target="_blank">Social Security Administration – Retirement benefits and age rules</a></li><li><a href="https://aa.usno.navy.mil/" rel="noopener" target="_blank">U.S. Naval Observatory – Astronomical Applications (calendar and date data)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> the example was counted on a calendar. Background reading: Social Security Administration retirement age information (ssa.gov). Last reviewed November 2026. Age results depend on the counting convention described above and should be confirmed against official records for legal or benefits purposes.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html" style="color:#1a56db">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/days-from-today.html" style="color:#1a56db">Days From Today Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/weeks-left-in-year.html" style="color:#1a56db">How Many Weeks Left in the Year? Today’s Date, Week Number and Day of Year</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Age Calculator end ===== -->

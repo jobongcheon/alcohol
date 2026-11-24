@@ -1,0 +1,159 @@
+<title>Smart Life Calc 수정본</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 레이아웃: 좁은 작업용 목록. 한 줄 = 글 하나, 복사 버튼은 항상 오른쪽 같은 자리 */
+:root{
+  --bg:#f6f7f4; --panel:#ffffff; --fg:#1b2420; --mute:#5d6b63; --line:#d9ded8;
+  --accent:#0f6e56; --accent-fg:#ffffff; --soft:#e4f1ec; --warn:#b35c00; --warn-soft:#fff1e0; --done:#cfe8dc;
+  --font:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --panel:#1d2421; --fg:#e8ece9; --mute:#9fada6; --line:#303935;
+  --accent:#4fc39e; --accent-fg:#0d1512; --soft:#1f3a31; --warn:#f2a65a; --warn-soft:#3a2a16; --done:#1f3a31; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --panel:#1d2421; --fg:#e8ece9; --mute:#9fada6; --line:#303935;
+  --accent:#4fc39e; --accent-fg:#0d1512; --soft:#1f3a31; --warn:#f2a65a; --warn-soft:#3a2a16; --done:#1f3a31; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:24px;margin:0 0 4px;text-wrap:balance}
+.sub{color:var(--mute);margin:0 0 16px}
+.prog{display:flex;align-items:center;gap:12px;margin:0 0 18px}
+.bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prog b{font-variant-numeric:tabular-nums;white-space:nowrap}
+details.guide{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:0 0 16px}
+details.guide summary{cursor:pointer;font-weight:700}
+details.guide ol{margin:10px 0 4px;padding-left:22px}
+details.guide li{margin:6px 0}
+.tip{background:var(--warn-soft);color:var(--fg);border-left:4px solid var(--warn);padding:8px 12px;border-radius:6px;margin:10px 0 4px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.tab{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:5px 12px;cursor:pointer;font:inherit;font-size:14px}
+.tab[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.tools input{flex:1;min-width:160px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;background:var(--panel);color:var(--fg)}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.row.done{background:var(--done)}
+.top{display:flex;gap:10px;align-items:flex-start}
+.top input[type=checkbox]{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex:none}
+.ttl{flex:1;min-width:0}
+.ttl .t{font-weight:500;overflow-wrap:anywhere}
+.ttl .m{color:var(--mute);font-size:13px;margin-top:2px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.chip{display:inline-block;border-radius:5px;padding:0 6px;font-size:12px;font-weight:700;letter-spacing:.02em;background:var(--soft);color:var(--accent)}
+.chip.jp{background:var(--warn-soft);color:var(--warn)}
+.btns{display:flex;gap:6px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+button.b{border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);border-radius:8px;padding:7px 11px;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+button.b.s{background:var(--panel);color:var(--accent)}
+button.b:focus-visible,.tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.det{margin:8px 0 0 30px;font-size:13.5px;color:var(--mute)}
+.det summary{cursor:pointer;color:var(--accent);font-weight:500}
+.det ul{margin:6px 0 0;padding-left:18px}
+.det code{font-family:var(--mono);font-size:12.5px;background:var(--bg);padding:1px 5px;border-radius:4px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;font-weight:500}
+.toast.on{opacity:1;transform:translateX(-50%)}
+h2{font-size:18px;margin:28px 0 10px}
+.todo{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 14px}
+.todo label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.todo label:last-child{border-bottom:0}
+.todo input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent);flex:none}
+.todo small{display:block;color:var(--mute)}
+textarea.hid{position:fixed;left:-9999px;top:0;width:10px;height:10px;opacity:0}
+@media (max-width:560px){.top{flex-wrap:wrap}.btns{width:100%;margin-left:30px;justify-content:flex-start}}
+@media (prefers-reduced-motion:reduce){.bar i,.toast{transition:none}}
+</style>
+
+<div class="wrap">
+  <h1>Smart Life Calc 수정본</h1>
+  <p class="sub">영어 블로그 32개 · 일본어 블로그 22개 · 개인정보 페이지 2개. 한 글씩 「HTML 복사」 → Blogger에 붙여넣기 → 완료 체크.</p>
+  <div class="prog"><div class="bar"><i id="bar"></i></div><b id="cnt">0 / 0 완료</b></div>
+
+  <details class="guide" open>
+    <summary>붙여넣는 방법 (글 하나에 1분)</summary>
+    <ol>
+      <li>아래 목록에서 <b>「글 열기」</b>는 확인용이고, 수정은 <b>Blogger 관리 화면</b>에서 해요: blogger.com → 「글」 → 해당 글 제목에 마우스 → 연필(수정).</li>
+      <li>편집기 왼쪽 위의 연필 아이콘을 눌러 <b>「HTML 보기」</b>로 바꿔요. (글쓰기 보기에 붙이면 계산기가 깨져요.)</li>
+      <li>HTML 창 안을 클릭 → <b>Ctrl+A</b> 전체 선택 → <b>Delete</b> → 여기서 <b>「HTML 복사」</b> 누른 뒤 <b>Ctrl+V</b>.</li>
+      <li>오른쪽 「글 설정」 → <b>「검색 설명」</b>을 열고, 여기서 <b>「검색 설명 복사」</b> 한 내용을 붙여넣어요.</li>
+      <li>오른쪽 위 <b>「업데이트」</b>. 글 주소(퍼머링크)는 건드리지 마세요. 끝나면 여기서 체크 ✓.</li>
+    </ol>
+    <div class="tip">사진은 그대로 두면 돼요. 새 HTML에 원래 사진 주소가 들어 있고, 비어 있던 사진 설명(alt)만 채웠어요. 업데이트 후 글을 한 번 열어 계산기 버튼이 눌리는지 확인하세요.</div>
+  </details>
+
+  <div class="tools" role="group" aria-label="필터">
+    <button class="tab" data-f="all" aria-pressed="true">전체</button>
+    <button class="tab" data-f="en" aria-pressed="false">영어</button>
+    <button class="tab" data-f="jp" aria-pressed="false">일본어</button>
+    <button class="tab" data-f="page" aria-pressed="false">페이지</button>
+    <button class="tab" data-f="todo" aria-pressed="false">남은 것만</button>
+    <input id="q" type="search" placeholder="제목 검색" aria-label="제목 검색">
+  </div>
+  <div class="list" id="list"><div class="row">불러오는 중…</div></div>
+
+  <h2>글 붙여넣기 말고 따로 해야 할 일</h2>
+  <div class="todo" id="todo">
+    <label><input type="checkbox" data-k="t1"><span>일본어 블로그 「페이지」 → 휴지통에 있는 <b>about</b> 페이지 영구 삭제<small>살아 있는 「くらしの計算ツールについて」와 내용이 똑같아서 중복이에요.</small></span></label>
+    <label><input type="checkbox" data-k="t2"><span>영어·일본어 <b>개인정보 페이지</b>를 아래 목록의 「페이지」 항목으로 교체<small>Amazon 제휴 문단만 뺐어요. 나머지는 그대로예요.</small></span></label>
+    <label><input type="checkbox" data-k="t3"><span>Google Search Console에 두 블로그 등록 → 사이트맵 제출<small>영어: <code>https://www.smartlifecalc.com/sitemap.xml</code> · 일본어: <code>https://daily-glow-up.blogspot.com/sitemap.xml</code></small></span></label>
+    <label><input type="checkbox" data-k="t4"><span>Search Console 「URL 검사」로 글 10개쯤 <b>색인 생성 요청</b><small>구글에서 <code>site:smartlifecalc.com</code> 을 검색해 몇 개가 나오는지 먼저 확인하세요. 심사관은 색인된 페이지를 봐요.</small></span></label>
+    <label><input type="checkbox" data-k="t5"><span>새 글은 <b>경쟁이 적은 주제</b>로, 주 2~3개 이하<small>영어: 계산기 없는 설명형 글(예: "Why your mortgage payment went up this year"). 일본어: 지금 방향 유지(厄年·長寿祝い처럼 일본에만 있는 계산).</small></span></label>
+    <label><input type="checkbox" data-k="t6"><span><b>재신청은 12월 말 이후</b>, 두 블로그를 2주 이상 간격을 두고 따로<small>하루 방문자가 꾸준히 생기고, 색인된 글이 20개 넘은 뒤에 넣는 게 안전해요.</small></span></label>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<textarea class="hid" id="hid" aria-hidden="true" tabindex="-1"></textarea>
+
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const KEY='slc.done.v1', TKEY='slc.todo.v1';
+  const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}};
+  const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+  let done=load(KEY), todo=load(TKEY), items=[], filter='all', q='';
+  const toast=(m)=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1600)};
+  async function copy(text,label){
+    try{ await navigator.clipboard.writeText(text); toast(label+' 복사했어요'); return; }catch(e){}
+    try{ const h=$('#hid'); h.value=text; h.focus(); h.select(); const ok=document.execCommand('copy'); h.blur(); toast(ok?label+' 복사했어요':'복사가 막혔어요. 아래 상자에서 직접 복사하세요'); }catch(e){ toast('복사가 막혔어요'); }
+  }
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function render(){
+    const list=$('#list'); list.innerHTML='';
+    const vis=items.filter(it=>{
+      if(filter==='en'&&!(it.kind==='post'&&it.lang==='en'))return false;
+      if(filter==='jp'&&!(it.kind==='post'&&it.lang==='jp'))return false;
+      if(filter==='page'&&it.kind!=='page')return false;
+      if(filter==='todo'&&done[it.id])return false;
+      if(q&&!it.title.toLowerCase().includes(q))return false;
+      return true;
+    });
+    if(!vis.length){list.innerHTML='<div class="row">해당하는 글이 없어요.</div>';}
+    vis.forEach((it,i)=>{
+      const d=document.createElement('div'); d.className='row'+(done[it.id]?' done':'');
+      const chip=it.kind==='page'?'<span class="chip">페이지</span>':(it.lang==='en'?'<span class="chip">영어</span>':'<span class="chip jp">일본어</span>');
+      const meta=it.kind==='page'?esc(it.note||''):`${it.old_chars.toLocaleString()}자 → ${it.new_chars.toLocaleString()}자 · 출처 ${it.sources.length}개`;
+      d.innerHTML=`<div class="top">
+        <input type="checkbox" id="c${i}" ${done[it.id]?'checked':''} aria-label="완료">
+        <div class="ttl"><label class="t" for="c${i}">${esc(it.title)}</label>
+          <div class="m">${chip}<a href="${esc(it.url)}" target="_blank" rel="noopener">글 열기</a><span>${meta}</span></div></div>
+        <div class="btns"><button class="b" data-a="html">HTML 복사</button>${it.meta?'<button class="b s" data-a="meta">검색 설명 복사</button>':''}</div>
+      </div>
+      ${it.kind==='post'?`<details class="det"><summary>무엇이 바뀌었나</summary><ul>
+        <li>중복된 FAQ·표·팁을 하나로 합쳤어요. FAQ 제목: 「${esc(it.faq)}」</li>
+        <li>새 섹션: ${it.new_sections.map(s=>'「'+esc(s)+'」').join(', ')}</li>
+        <li>출처: ${it.sources.map(esc).join(' · ')}</li>
+        <li>사진 설명(alt): ${esc(it.alt)}</li>
+        <li>검색 설명: ${esc(it.meta)}</li></ul></details>`:''}`;
+      d.querySelector('input').addEventListener('change',e=>{ if(e.target.checked)done[it.id]=1; else delete done[it.id]; save(KEY,done); d.classList.toggle('done',!!e.target.checked); count(); if(filter==='todo')render(); });
+      d.querySelectorAll('button.b').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.a==='html'?it.html:it.meta,b.dataset.a==='html'?'HTML':'검색 설명')));
+      list.appendChild(d);
+    });
+    count();
+  }
+  function count(){ const n=items.filter(it=>done[it.id]).length; $('#cnt').textContent=`${n} / ${items.length} 완료`; $('#bar').style.width=(items.length?100*n/items.length:0)+'%'; }
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{filter=t.dataset.f;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x===t));render();}));
+  $('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
+  document.querySelectorAll('#todo input').forEach(c=>{c.checked=!!todo[c.dataset.k];c.addEventListener('change',()=>{if(c.checked)todo[c.dataset.k]=1;else delete todo[c.dataset.k];save(TKEY,todo);});});
+  fetch('posts.json').then(r=>r.json()).then(d=>{items=d;render();}).catch(()=>{$('#list').innerHTML='<div class="row">목록을 불러오지 못했어요. 새로고침해 주세요.</div>';});
+})();
+</script>

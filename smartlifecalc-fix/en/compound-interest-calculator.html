@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXgyyCsNHswL9-c0opj5cgd76StKvYEl-BNN0QEISsw55IL2P3C2djUOWHVeyBiY7NHj8i_Y4-nGr6j-ezD7Mzb3L_G_8MA4YAGIl4403zlkQAhOGFOiLa79mTnVF2vJ8xuBu6Z07MW_L63YsGY6JSEE9A86kIZUyfnHyCWE0hyphenhyphen9xmLCofBPMSja6WbpA/s300/E06.compound-interest-calculator%20%28%EB%B3%B5%EB%A6%AC%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Compound interest calculator chart of savings growth with monthly deposits" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXgyyCsNHswL9-c0opj5cgd76StKvYEl-BNN0QEISsw55IL2P3C2djUOWHVeyBiY7NHj8i_Y4-nGr6j-ezD7Mzb3L_G_8MA4YAGIl4403zlkQAhOGFOiLa79mTnVF2vJ8xuBu6Z07MW_L63YsGY6JSEE9A86kIZUyfnHyCWE0hyphenhyphen9xmLCofBPMSja6WbpA/s320/E06.compound-interest-calculator%20%28%EB%B3%B5%EB%A6%AC%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+
+<!-- ===== Compound Interest Calculator (paste in Blogger HTML view) ===== -->
+<div id="ei-calc">
+<style>
+#ei-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ei-calc .ei-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ei-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ei-calc .ei-lbl{display:block;font-weight:bold;margin-top:14px}
+#ei-calc .ei-hint{font-size:15px;color:#555;font-weight:normal}
+#ei-calc .ei-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ei-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ei-calc input.ei-s{flex:0 0 5.5em}
+#ei-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ei-calc .ei-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ei-calc .ei-opts{display:grid;gap:8px;margin-top:8px}
+#ei-calc .ei-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ei-calc .ei-opts input{width:22px;height:22px;flex:none}
+#ei-calc .ei-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ei-calc .ei-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ei-calc .ei-grid select{font-size:17px;width:100%}
+#ei-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ei-calc .ei-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ei-calc .ei-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ei-calc .ei-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ei-calc .ei-err{color:#c00;font-weight:bold;text-align:center}
+#ei-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ei-calc th,#ei-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ei-calc th{background:#f2f4f8}
+#ei-calc .ei-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ei-box"><h2>Compound Interest Calculator</h2>
+<span class="ei-lbl">Initial deposit</span><div class="ei-line"><span class="ei-unit">$</span><input type="text" inputmode="decimal" id="ei-p" placeholder="e.g. 10,000"><span class="ei-unit"></span></div><span class="ei-lbl">Monthly contribution</span><div class="ei-line"><span class="ei-unit">$</span><input type="text" inputmode="decimal" id="ei-c" placeholder="e.g. 500" value="0"><span class="ei-unit"></span></div><span class="ei-lbl">Annual interest rate</span><div class="ei-line"><input type="text" inputmode="decimal" id="ei-r" placeholder="e.g. 7"><span class="ei-unit">%</span></div><span class="ei-lbl">Years</span><div class="ei-line"><input type="text" inputmode="decimal" id="ei-y" placeholder="e.g. 20"><span class="ei-unit">years</span></div><span class="ei-lbl">Compounding</span><div class="ei-line"><select id="ei-k"><option value="12" selected>Monthly</option><option value="4">Quarterly</option><option value="1">Annually</option><option value="365">Daily</option></select><span class="ei-unit"></span></div>
+<button type="button" id="ei-btn">Calculate</button>
+<div class="ei-result" id="ei-res"></div>
+<p class="ei-note">Contributions are added at the end of each month. Taxes and fees are not included.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ei-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('ei-p'));comma($('ei-c'));
+$('ei-btn').addEventListener('click',function(){var box=$('ei-res');box.style.display='block';function err(t){box.innerHTML='<p class="ei-err">'+t+'</p>';}
+  var P=num($('ei-p').value),c=num($('ei-c').value),R=num($('ei-r').value)/100,Y=Math.round(num($('ei-y').value)),k=+$('ei-k').value;
+  if(!Y||(!P&&!c))return err('Please enter an amount and the number of years.');
+  if(R<0||R>0.5)return err('Please enter a rate between 0% and 50%.');
+  var mr=Math.pow(1+R/k,k/12)-1,b=P,dep=P,h='<table><tr><th>Year</th><th>Deposits</th><th>Interest</th><th>Balance</th></tr>';
+  for(var m=1;m<=Y*12;m++){b=b*(1+mr)+c;dep+=c;if(m%12===0&&(Y<=15||m/12%5===0||m/12===1))h+='<tr><td>'+(m/12)+'</td><td>'+usd0(dep)+'</td><td>'+usd0(b-dep)+'</td><td>'+usd0(b)+'</td></tr>';}
+  box.innerHTML='<div style="text-align:center">Future value after '+Y+' years</div><div class="ei-big">'+usd(b)+'</div>'+row('Total deposits',usd(dep))+row('Total interest earned',usd(b-dep))+h+'</table>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Compound interest means you earn interest on your interest. Given enough time, it turns small regular savings into a large balance. See how your money can grow with this calculator.</p>
+<h2 style="font-size:26px;margin-top:10px">How compound interest really works</h2>
+<p>With simple interest you earn only on what you deposited. With compound interest, the interest you earned is added to the balance and starts earning interest too. The effect is small in the first years and very large later — which is why time matters more than almost anything else in saving.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the compound interest calculator</h3><ol><li>Enter what you start with and what you will add each month.</li><li>Enter the expected annual return or interest rate.</li><li>Enter the number of years and choose how often interest compounds.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">A = P × (1 + r/k)<sup>k×t</sup> + monthly contributions growing the same way</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: $10,000 plus $300 a month at 7%</h3>
+<p>After 20 years, monthly compounding grows the account to about <b>$196,700</b>. You put in $82,000 yourself ($10,000 plus $300 × 240 months); the other <b>$114,700</b> is growth. In the last few years, the account earns more each year than you contribute.</p>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Annual rate</th><th style="border:1px solid #ccc;padding:6px">Years to double (Rule of 72)</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">3%</td><td style="border:1px solid #ccc;padding:6px">≈ 24</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6%</td><td style="border:1px solid #ccc;padding:6px">≈ 12</td></tr><tr><td style="border:1px solid #ccc;padding:6px">8%</td><td style="border:1px solid #ccc;padding:6px">≈ 9</td></tr><tr><td style="border:1px solid #ccc;padding:6px">10%</td><td style="border:1px solid #ccc;padding:6px">≈ 7.2</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Case study: $300 a month from age 25 versus age 35</h3><p>Two savers each put $300 a month into an account earning 7% compounded monthly and stop at 65. The only difference is when they start.</p><ul><li><b>Starts at 35</b> (30 years, $108,000 deposited): about $366,000 at 65.</li><li><b>Starts at 25</b> (40 years, $144,000 deposited): about $787,000 at 65.</li></ul><p>The early saver deposits $36,000 more but ends with roughly $421,000 more. For the late starter to catch up by 65, the monthly deposit would have to be about $645, more than double. The reason is that the earliest deposits spend 30 to 40 years compounding: at 7% with monthly compounding, a dollar left alone for 40 years grows to about $16, while a dollar given 30 years grows to about $8. Try the same comparison at 5%; the gap narrows, but the early start still wins by a wide margin.</p>
+<h3 style="font-size:22px;margin-top:28px">Three levers you control</h3>
+<ul>
+<li><b>Start earlier</b> – ten extra years can matter more than a higher contribution.</li>
+<li><b>Contribute regularly</b> – automatic monthly deposits remove the need to decide each month.</li>
+<li><b>Keep costs low</b> – a 1% yearly fee can take a large share of long-term growth.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Be realistic about the rate</h3>
+<p>Savings accounts and CDs pay a known rate. Stock and bond returns are not guaranteed and vary year to year; long-run averages are only a guide. Try a lower rate too, and remember inflation: a 7% return with 3% inflation is about 4% in real purchasing power.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Two things to double-check</h3><ul><li>Fees and taxes reduce real returns; low-cost index funds keep more working for you.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Five things to check before chasing a higher rate</h3><ol><li><b>Is the account insured?</b> FDIC coverage at banks and NCUA coverage at credit unions each protect up to $250,000 per depositor, per institution, per ownership category. Money market mutual funds, stocks and bonds are not insured.</li><li><b>Is the number an APY?</b> Compare APY with APY. A 5% rate compounded daily is 5.13% APY; compounded monthly it is 5.12%.</li><li><b>Is it a promotional rate?</b> Note the end date and the rate it drops to, and plan to move the money if the new rate is weak.</li><li><b>Do fees eat the interest?</b> A $5 monthly fee on a $2,000 balance at 4% APY takes $60 of the $80 earned, leaving a net return of 1%.</li><li><b>What is left after tax?</b> Interest in an ordinary account is reported on Form 1099-INT and taxed as income. In the 22% bracket, 4.5% becomes about 3.5% after tax, which is why retirement accounts feature in long-term examples.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">Savings growth questions, answered</h3><p><b>Does compounding frequency matter?</b><br>A little. Daily versus monthly compounding changes results only slightly; the rate and the number of years matter far more.</p><p><b>What about taxes?</b><br>Interest in a regular account is usually taxed each year, which slows growth. Retirement accounts can defer or avoid that tax.</p><p><b>Is the Rule of 72 exact?</b><br>It's a quick estimate that is most accurate between about 6% and 10%.</p><p><b>What is APY?</b><br>APY is the yearly return including compounding. A 5% rate compounded monthly equals about 5.12% APY.</p><p><b>Is 7% a realistic return?</b><br>Over long periods the US stock market has averaged roughly 7% after inflation, but returns vary a lot year to year and are not guaranteed.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html">Retirement Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/inflation-calculator.html">Inflation Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.fdic.gov/" rel="noopener" target="_blank">FDIC – deposit insurance coverage limits</a></li><li><a href="https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator" rel="noopener" target="_blank">Investor.gov (SEC) – Compound Interest Calculator</a></li><li><a href="https://www.irs.gov/" rel="noopener" target="_blank">IRS – reporting interest income (Form 1099-INT)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> example recomputed with the future-value formula for monthly compounding with deposits. Background reading: Investor.gov compound interest resources (U.S. SEC). Last reviewed November 2026. Growth figures assume a steady rate with no taxes or fees; actual returns vary, and this is not personalized investment advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html" style="color:#1a56db">Retirement Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/inflation-calculator.html" style="color:#1a56db">Inflation Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/credit-card-payoff-calculator.html" style="color:#1a56db">Credit Card Payoff Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Compound Interest Calculator end ===== -->

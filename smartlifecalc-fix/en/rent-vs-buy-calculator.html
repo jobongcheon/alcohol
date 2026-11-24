@@ -1,0 +1,98 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEif0JCRgJeg9U1t-UHEK88KVjroe8dgi6D7GbXHjuBKyRNAl4cL4b67dmqhNLO_9Dle4m8vFAW4bVeUkr6hEgo6b1_BMLNuvB7pKe55BzvzLVuWn9WVt4zbirQ8Wqswk2O90xCRnv4pxKT67457T9brJESvvudj5WrDXR0fnUzWqNPRO_KK_Z_dAn4DfVA/s300/E10.rent-vs-buy-calculator%20%28%EC%9B%94%EC%84%B8%20vs%20%EC%A7%91%20%EC%82%AC%EA%B8%B0%20%EB%B9%84%EA%B5%90%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Rent vs buy calculator comparing five-year net cost of owning and renting" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEif0JCRgJeg9U1t-UHEK88KVjroe8dgi6D7GbXHjuBKyRNAl4cL4b67dmqhNLO_9Dle4m8vFAW4bVeUkr6hEgo6b1_BMLNuvB7pKe55BzvzLVuWn9WVt4zbirQ8Wqswk2O90xCRnv4pxKT67457T9brJESvvudj5WrDXR0fnUzWqNPRO_KK_Z_dAn4DfVA/s320/E10.rent-vs-buy-calculator%20%28%EC%9B%94%EC%84%B8%20vs%20%EC%A7%91%20%EC%82%AC%EA%B8%B0%20%EB%B9%84%EA%B5%90%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+
+<!-- ===== Rent vs Buy Calculator (paste in Blogger HTML view) ===== -->
+<div id="eb-calc">
+<style>
+#eb-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#eb-calc .eb-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#eb-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#eb-calc .eb-lbl{display:block;font-weight:bold;margin-top:14px}
+#eb-calc .eb-hint{font-size:15px;color:#555;font-weight:normal}
+#eb-calc .eb-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#eb-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eb-calc input.eb-s{flex:0 0 5.5em}
+#eb-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eb-calc .eb-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#eb-calc .eb-opts{display:grid;gap:8px;margin-top:8px}
+#eb-calc .eb-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#eb-calc .eb-opts input{width:22px;height:22px;flex:none}
+#eb-calc .eb-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#eb-calc .eb-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#eb-calc .eb-grid select{font-size:17px;width:100%}
+#eb-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#eb-calc .eb-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#eb-calc .eb-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#eb-calc .eb-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#eb-calc .eb-err{color:#c00;font-weight:bold;text-align:center}
+#eb-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#eb-calc th,#eb-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#eb-calc th{background:#f2f4f8}
+#eb-calc .eb-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="eb-box"><h2>Rent vs Buy Calculator</h2>
+<span class="eb-lbl">Home price</span><div class="eb-line"><span class="eb-unit">$</span><input type="text" inputmode="decimal" id="eb-h" placeholder="e.g. 400,000"><span class="eb-unit"></span></div><span class="eb-lbl">Down payment</span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-dp" placeholder="20" value="20"><span class="eb-unit">%</span></div><span class="eb-lbl">Mortgage rate</span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-r" placeholder="e.g. 6.5"><span class="eb-unit">%</span></div><span class="eb-lbl">Monthly rent for a similar home</span><div class="eb-line"><span class="eb-unit">$</span><input type="text" inputmode="decimal" id="eb-rent" placeholder="e.g. 2,200"><span class="eb-unit"></span></div><span class="eb-lbl">Years you plan to stay</span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-y" placeholder="e.g. 7" value="7"><span class="eb-unit">years</span></div><span class="eb-lbl">Home price growth</span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-g" placeholder="3" value="3"><span class="eb-unit">% per year</span></div><span class="eb-lbl">Rent increase</span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-ri" placeholder="3" value="3"><span class="eb-unit">% per year</span></div><span class="eb-lbl">Investment return on cash <span class="eb-hint">(what the down payment could earn)</span></span><div class="eb-line"><input type="text" inputmode="decimal" id="eb-inv" placeholder="5" value="5"><span class="eb-unit">% per year</span></div>
+<button type="button" id="eb-btn">Compare</button>
+<div class="eb-result" id="eb-res"></div>
+<p class="eb-note">Assumes a 30-year loan, 1.1% property tax, 0.35% insurance, 1% maintenance per year, 3% buying and 6% selling costs.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="eb-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('eb-h'));comma($('eb-rent'));
+$('eb-btn').addEventListener('click',function(){var box=$('eb-res');box.style.display='block';function err(t){box.innerHTML='<p class="eb-err">'+t+'</p>';}
+  var H=num($('eb-h').value),dp=num($('eb-dp').value)/100,r=num($('eb-r').value)/100/12,R0=num($('eb-rent').value),Y=Math.round(num($('eb-y').value)),g=num($('eb-g').value)/100,ri=num($('eb-ri').value)/100,iv=num($('eb-inv').value)/100;
+  if(!H||!R0||!Y)return err('Please enter the home price, rent and years.');
+  var L=H*(1-dp),p=pmt(L,r,360),b=L,buy=H*dp+H*0.03,rent=0,cash=H*dp+H*0.03,mi=Math.pow(1+iv,1/12)-1;
+  for(var m=1;m<=Y*12;m++){var yr=Math.floor((m-1)/12),val=H*Math.pow(1+g,yr);b=b-(p-b*r);buy+=p+val*(0.011+0.0035+0.01)/12;rent+=R0*Math.pow(1+ri,yr);cash*=1+mi;}
+  var sale=H*Math.pow(1+g,Y),eq=sale*0.94-Math.max(b,0),buyNet=buy-eq,rentNet=rent-(cash-(H*dp+H*0.03));
+  var win=buyNet<rentNet?'Buying':'Renting';
+  box.innerHTML='<div style="text-align:center">Over '+Y+' years, cheaper option</div><div class="eb-big">'+win+' saves '+usd0(Math.abs(buyNet-rentNet))+'</div>'+
+   row('Net cost of buying',usd0(buyNet))+row('Net cost of renting',usd0(rentNet))+row('Monthly mortgage (P&I)',usd(p))+row('Home equity when you sell',usd0(eq))+row('Total rent paid',usd0(rent));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Is buying always better than renting? Not necessarily. It depends on prices, interest rates and especially how long you stay. This calculator compares the net cost of both choices over your own timeline.</p>
+<h2 style="font-size:26px;margin-top:10px">Renting vs buying: compare total cost, not monthly payment</h2>
+<p>A mortgage payment and a rent check look similar, but they buy different things. Part of a mortgage payment builds equity; rent does not. On the other hand, owners pay costs renters never see: property tax, insurance, maintenance, closing costs and the money tied up in the down payment, which could have been invested. This calculator adds all of these over the years you expect to stay, then compares them with the total cost of renting.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the rent vs buy calculator</h3><ol><li>Enter the home price, down payment and mortgage rate.</li><li>Enter the rent for a similar home and how many years you will stay.</li><li>Adjust price growth, rent growth and investment return.</li><li>Press <b>Compare</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Net cost of buying = all payments + taxes + upkeep + buying costs − equity when you sell</p>
+<h3 style="font-size:22px;margin-top:28px">The costs people forget</h3>
+<ul>
+<li><b>Opportunity cost</b> – a $60,000 down payment invested at 5% would earn about $3,000 a year.</li>
+<li><b>Maintenance</b> – budget about 1–2% of the home's value per year.</li>
+<li><b>Buying and selling costs</b> – closing costs to buy (2–5%) and agent and transfer costs to sell (often 5–8%).</li>
+<li><b>Rent increases</b> – rent tends to rise each year, while a fixed-rate mortgage payment doesn't.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Case study: $400,000 purchase against $2,300 rent</h3><p>Using the default assumptions: 20% down ($80,000), a $320,000 loan at 6.5% for 30 years, a five-year stay, 3% home price growth, 3% rent growth and a 5% return on cash.</p><p><b>Buying.</b> Principal and interest are $2,023 a month, $121,357 over five years. Property tax, insurance and maintenance (1.1% + 0.35% + 1%) add $9,800 a year, $49,000 in total. Buying costs at 3% are $12,000. Cash out: <b>$262,357</b>. The home grows to $463,710; after 6% selling costs and the $299,555 still owed, you walk away with $136,332. Net cost of owning: about <b>$126,000</b>.</p><p><b>Renting.</b> Rent starts at $2,300 and rises 3% a year: $146,532 over five years. The $92,000 not spent on the down payment and closing earns 5%, growing by $25,418. Net cost of renting: about <b>$121,100</b>.</p><p>Renting wins by roughly $5,000, about $80 a month, a tie in practice. Raise price growth to 4% and buying wins by about $21,600; raise the rent to $2,500 and buying wins by about $7,800. Small inputs decide this one.</p>
+<h3 style="font-size:22px;margin-top:28px">Why the time you stay matters most</h3>
+<p>Because buying and selling are expensive, buying usually loses over short periods. As the years go by, equity builds, rent keeps rising and the one-time costs are spread out. Many comparisons find a break-even somewhere around five years, but it varies widely with prices, rents and rates in your area. Run the calculator with your own numbers and try a few different "years you'll stay".</p>
+
+<h3 style="font-size:22px;margin-top:28px">Non-financial factors</h3>
+<p>Owning gives control and stability — you can renovate and won't be asked to move. Renting gives flexibility, lower upfront cash and no surprise repair bills. Both are reasonable choices; the numbers just show the price of each.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Worth knowing</h3><ul><li>The longer you stay, the better buying usually looks.</li><li>Run the numbers again when mortgage rates change.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Property tax: the input that varies most by state</h3><p>The default 1.1% is a national-style figure, but effective property tax rates run from roughly 0.3% in Hawaii to more than 2% in New Jersey and Illinois. Texas sits well above average, while California's effective rate is below 1% because assessed values are capped until a sale.</p><p>On a $400,000 home that spread is large: 0.3% is $1,200 a year ($100 a month), 1.1% is $4,400 ($367 a month) and 2.0% is $8,000 ($667 a month). Over five years the gap between the low and high case is about $34,000, more than enough to flip the result above.</p><p>Two cautions. In many states the home is reassessed at your purchase price, so the seller's current bill understates yours. Homeowners insurance varies the same way, with coastal and wildfire areas costing far more than 0.35%. Check the county assessor's site and a real quote before trusting the defaults.</p>
+<h3 style="font-size:22px;margin-top:28px">Renters and buyers ask</h3><p><b>What home price growth should I use?</b><br>Use a modest long-run figure such as 2–4% a year, and test a lower one. Local markets can fall as well as rise.</p><p><b>Is rent "throwing money away"?</b><br>No. Rent buys housing and flexibility; interest, taxes and maintenance are the owner's equivalent "unrecoverable" costs.</p><p><b>Are tax deductions included?</b><br>Mortgage interest only helps if you itemize, which fewer households do since the standard deduction rose. The comparison is more reliable without assuming a deduction.</p><p><b>Why include investment return?</b><br>Money used for a down payment could otherwise be invested. Counting that lost growth makes the comparison fair.</p><p><b>Are the assumptions right for my area?</b><br>Property tax and insurance vary a lot by state. The defaults are national averages; your result is an estimate.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html">Home Affordability</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/owning-a-home/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Owning a Home: costs of buying and loan comparison</a></li><li><a href="https://www.hud.gov/" rel="noopener" target="_blank">U.S. Department of Housing and Urban Development – homeownership and renting resources</a></li><li><a href="https://www.freddiemac.com/pmms" rel="noopener" target="_blank">Freddie Mac – Primary Mortgage Market Survey (weekly average mortgage rates)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> cost categories follow standard rent-versus-buy analyses. Background reading: Consumer Financial Protection Bureau home-buying resources. Last reviewed November 2026. The comparison relies on assumptions about growth, rent and returns that may not hold; treat the output as a planning estimate, not advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/mortgage-calculator.html" style="color:#1a56db">Mortgage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/home-affordability-calculator.html" style="color:#1a56db">Home Affordability Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/refinance-calculator.html" style="color:#1a56db">Refinance Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Rent vs Buy Calculator end ===== -->

@@ -1,0 +1,95 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnRCpwRL2AoVLh0uwDosSZOHRGN14r7dD4jO0fmcwsHdvGg0CXrdmQ8IoTOt5UBsHAi8iAztKIScwRO5vsOTteYB8mZNi9yDPQKtF95HAukicCdC6rInBfiJlZfkmNcbJIOoiVSHa2G7I7OPJQ6Ua6KngMsF4-enPztAIZ9QIedQ2rSDqXyV7-aa5NiTM/s300/J12.bmi.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="BMI計算ツールの画面：身長と体重から肥満度を判定" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnRCpwRL2AoVLh0uwDosSZOHRGN14r7dD4jO0fmcwsHdvGg0CXrdmQ8IoTOt5UBsHAi8iAztKIScwRO5vsOTteYB8mZNi9yDPQKtF95HAukicCdC6rInBfiJlZfkmNcbJIOoiVSHa2G7I7OPJQ6Ua6KngMsF4-enPztAIZ9QIedQ2rSDqXyV7-aa5NiTM/s320/J12.bmi.png"/></a></div>
+
+<!-- ===== J12 BMI計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc12">
+<style>
+#jc12{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc12 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc12 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc12 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc12 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc12 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc12 input[type=text],#jc12 input[type=date],#jc12 input[type=time],#jc12 select,#jc12 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc12 textarea{width:100%;min-height:180px;font-size:17px}
+#jc12 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc12 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc12 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc12 .jc-opts input{width:20px;height:20px}
+#jc12 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc12 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc12 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc12 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc12 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc12 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc12 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc12 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc12 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc12 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc12 .jc-art th,#jc12 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc12 .jc-art th{background:#f2f4f8}
+#jc12 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">身長と体重からBMIを計算し、日本肥満学会の基準で判定。標準体重（BMI22）や美容体重の目安も表示する無料ツールです。</p>
+<div class="jc-box"><h2>BMI計算</h2>
+<span class="jc-lbl">身長</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc12-h" placeholder="例：165"><span class="jc-unit">cm</span></div>
+<span class="jc-lbl">体重</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc12-w" placeholder="例：60"><span class="jc-unit">kg</span></div>
+<button type="button" id="jc12-btn">計算する</button>
+<div class="jc-result" id="jc12-res"></div>
+<p class="jc-note">判定は日本肥満学会の基準です。BMIは目安で、筋肉量などは考慮していません。健康上の判断は医師にご相談ください。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc12-',box=document.getElementById('jc12-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var h=N('h')/100,w=N('w');if(!h||!w)return err('身長と体重を入れてください。');if(h<0.5||h>2.5)return err('身長はcmで入れてください。');
+var b=w/h/h,j=b<18.5?'低体重（やせ）':b<25?'普通体重':b<30?'肥満（1度）':b<35?'肥満（2度）':b<40?'肥満（3度）':'肥満（4度）';
+show('BMI '+f1(b),[['判定',j],['標準体重（BMI22）',f1(22*h*h)+' kg'],['美容体重の目安（BMI20）',f1(20*h*h)+' kg'],['普通体重の範囲',f1(18.5*h*h)+'〜'+f1(25*h*h)+' kg 未満']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>BMI（Body Mass Index）は、身長と体重から計算する体格の指数です。健康診断でもよく使われます。日本では日本肥満学会の基準で、BMI25以上を「肥満」と判定します。</p>
+
+<h2 style="font-size:24px;margin-top:10px">BMIが1変わるのは体重何kg分なのか</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><p>BMI ＝ 体重（kg）÷ 身長（m）÷ 身長（m）<br>例：身長165cm・体重60kg → 60 ÷ 1.65 ÷ 1.65 ≒ 22.0</p>
+
+<h3 style="font-size:22px;margin-top:28px">判定基準（日本肥満学会）</h3><table><tr><th>BMI</th><th>判定</th></tr><tr><td>18.5未満</td><td>低体重</td></tr><tr><td>18.5〜25未満</td><td>普通体重</td></tr><tr><td>25〜30未満</td><td>肥満（1度）</td></tr><tr><td>30〜35未満</td><td>肥満（2度）</td></tr><tr><td>35〜40未満</td><td>肥満（3度）</td></tr><tr><td>40以上</td><td>肥満（4度）</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>身長165cm・体重60kgなら、60 ÷ 1.65 ÷ 1.65 ＝ <b>BMI 22.0</b>（普通体重）です。標準体重（BMI22）は 22 × 1.65 × 1.65 ＝ 約59.9kg なので、ほぼ標準体重です。</p><p>身長170cm・体重75kgなら BMI は約26.0 で、日本の基準では<b>肥満（1度）</b>になります。WHO（世界保健機関）の基準では30以上が肥満なので、海外の情報と判定が違うことがあります。</p>
+<h3 style="font-size:22px;margin-top:28px">BMIの思い込みと実際：4つの誤解</h3><ul><li><b>誤解：BMI25を超えたら「肥満症」という病気。</b> 実際：日本肥満学会は、BMI25以上を「肥満」、そのうち肥満に関連する健康障害があるか内臓脂肪の蓄積がある場合を「肥満症」として区別しています。</li><li><b>誤解：体重が1kg減ればBMIも1下がる。</b> 実際：BMIを1動かす体重は身長の2乗に比例します。150cmなら約2.3kg、170cmなら約2.9kg、180cmなら約3.2kgです。</li><li><b>誤解：BMI22が全員の理想体重。</b> 実際：22は統計的に病気が少ない値の目安で、厚生労働省の食事摂取基準では年齢別に目標の範囲が示され、65歳以上は21.5〜24.9です。</li><li><b>誤解：子どもも同じ表で判定できる。</b> 実際：成長期は身長が伸びるため、学校健診では年齢・性別ごとの基準や肥満度（％）で見ます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">身長別：標準体重と普通体重の範囲</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">身長</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">標準体重（BMI22）</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">普通体重（BMI18.5〜25未満）</th></tr><tr><td style="border:1px solid #bbb;padding:6px">150cm</td><td style="border:1px solid #bbb;padding:6px">49.5kg</td><td style="border:1px solid #bbb;padding:6px">41.6〜56.3kg</td></tr><tr><td style="border:1px solid #bbb;padding:6px">160cm</td><td style="border:1px solid #bbb;padding:6px">56.3kg</td><td style="border:1px solid #bbb;padding:6px">47.4〜64.0kg</td></tr><tr><td style="border:1px solid #bbb;padding:6px">170cm</td><td style="border:1px solid #bbb;padding:6px">63.6kg</td><td style="border:1px solid #bbb;padding:6px">53.5〜72.3kg</td></tr><tr><td style="border:1px solid #bbb;padding:6px">180cm</td><td style="border:1px solid #bbb;padding:6px">71.3kg</td><td style="border:1px solid #bbb;padding:6px">59.9〜81.0kg</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">年齢で変わる「目標とするBMI」</h3><p>厚生労働省の「日本人の食事摂取基準」では、年齢ごとに目標とするBMIの範囲が示されています。年齢が上がるほど、やせすぎによる体力低下を防ぐため下限が高くなっています。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">年齢</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">目標とするBMI</th></tr><tr><td style="border:1px solid #bbb;padding:6px">18〜49歳</td><td style="border:1px solid #bbb;padding:6px">18.5〜24.9</td></tr><tr><td style="border:1px solid #bbb;padding:6px">50〜64歳</td><td style="border:1px solid #bbb;padding:6px">20.0〜24.9</td></tr><tr><td style="border:1px solid #bbb;padding:6px">65歳以上</td><td style="border:1px solid #bbb;padding:6px">21.5〜24.9</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">BMIだけで判断しないために</h3><ul><li>筋肉が多い人はBMIが高くなりやすく、体脂肪が少なくても「肥満」と出ることがあります。</li><li>お腹まわりの脂肪（内臓脂肪）も大切な目安です。特定健診では腹囲が男性85cm以上・女性90cm以上を基準のひとつにしています。</li><li>子どもや妊娠中の方は、BMIの基準をそのまま当てはめられません。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>身長をcmのまま計算する</b>：BMIは身長をメートルにして2回割ります。165cmなら1.65です。</li><li><b>「美容体重」を目標にしすぎる</b>：BMI20前後の体重はあくまで目安で、健康上の目標ではありません。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">身長170cm・78kgの人がBMI25に戻すには</h3><p>身長170cm・体重78kgならBMIは78 ÷ 1.7 ÷ 1.7 ＝ 約27.0で、肥満（1度）です。普通体重の上限であるBMI25未満に戻すには、25 × 1.7 × 1.7 ＝ 約72.3kgを下回る必要があり、差は約5.8kgになります。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">身長</th><th style="border:1px solid #ccc;padding:6px">BMIを1変える体重</th><th style="border:1px solid #ccc;padding:6px">BMI25の体重</th><th style="border:1px solid #ccc;padding:6px">BMI27の体重</th></tr><tr><td style="border:1px solid #ccc;padding:6px">150cm</td><td style="border:1px solid #ccc;padding:6px">約2.25kg</td><td style="border:1px solid #ccc;padding:6px">56.3kg</td><td style="border:1px solid #ccc;padding:6px">60.8kg</td></tr><tr><td style="border:1px solid #ccc;padding:6px">160cm</td><td style="border:1px solid #ccc;padding:6px">約2.56kg</td><td style="border:1px solid #ccc;padding:6px">64.0kg</td><td style="border:1px solid #ccc;padding:6px">69.1kg</td></tr><tr><td style="border:1px solid #ccc;padding:6px">170cm</td><td style="border:1px solid #ccc;padding:6px">約2.89kg</td><td style="border:1px solid #ccc;padding:6px">72.3kg</td><td style="border:1px solid #ccc;padding:6px">78.0kg</td></tr><tr><td style="border:1px solid #ccc;padding:6px">180cm</td><td style="border:1px solid #ccc;padding:6px">約3.24kg</td><td style="border:1px solid #ccc;padding:6px">81.0kg</td><td style="border:1px solid #ccc;padding:6px">87.5kg</td></tr></table><p>肥満症の治療では「まず現在の体重の3％を減らす」という考え方も使われます。78kgなら約2.3kgで、BMIは約0.8下がります。ツールで「2kg減らしたらBMIはいくつか」を試算しながら段階的に進めるのが現実的です。</p>
+<h3 style="font-size:22px;margin-top:28px">BMIについて寄せられる質問</h3><p><b>Q. 標準体重とは？</b><br>A. 統計的に病気になりにくいとされるBMI22になる体重です。</p><p><b>Q. BMIはどのくらいの頻度で測ればいい？</b><br>A. 体重は毎日変わるので、週に1回、同じ時間（朝起きてトイレの後など）に測ると変化が分かりやすくなります。</p><p><b>Q. 入力した身長・体重は保存されますか？</b><br>A. いいえ。計算はブラウザの中だけで行われ、送信も保存もされません。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 体重の増減を％で</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 目標日までの日数</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – ○日後の日付を確認</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.jasso.or.jp/" rel="noopener" target="_blank">日本肥満学会 – 肥満・肥満症の判定基準</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/eiyou/syokuji_kijyun.html" rel="noopener" target="_blank">厚生労働省 – 日本人の食事摂取基準（年齢別の目標とするBMI）</a></li><li><a href="https://www.e-healthnet.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 e-ヘルスネット – BMIと肥満の解説</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例と表はプログラムで計算し、ツールの結果と一致することを確かめました。判定基準は日本肥満学会、目標とするBMIは厚生労働省「日本人の食事摂取基準」によります。 最終確認：2026年11月。 BMIは体格の目安にすぎず、医学的な診断や治療の判断は医師にご相談ください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/kiso-taisha.html" style="color:#1a56db">基礎代謝計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/shohi-calorie.html" style="color:#1a56db">消費カロリー計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J12 end ===== -->

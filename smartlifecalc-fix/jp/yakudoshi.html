@@ -1,0 +1,96 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEid2bL51GT7X7-Qk8Pl3LJO5oOqR1Oi-yz5Xyrduq1qx3q4M4JNir-jsXpyI2mIF7MQ6expt6vbwDc0plVTqZLLxaj8IXDozKLFbxOWVpbrgtePQ-jzBjFn_mibBLQuUl6Yw1WswpV91_vmar8_p830p8KwEfPX2FJvVEQnNHL1cND5Oe_wENOVnIsGo4k/s300/J20.yakudoshi.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="厄年計算ツールで本厄・前厄・後厄の年を表示した画面" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEid2bL51GT7X7-Qk8Pl3LJO5oOqR1Oi-yz5Xyrduq1qx3q4M4JNir-jsXpyI2mIF7MQ6expt6vbwDc0plVTqZLLxaj8IXDozKLFbxOWVpbrgtePQ-jzBjFn_mibBLQuUl6Yw1WswpV91_vmar8_p830p8KwEfPX2FJvVEQnNHL1cND5Oe_wENOVnIsGo4k/s320/J20.yakudoshi.png"/></a></div>
+
+<!-- ===== J20 厄年計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc20">
+<style>
+#jc20{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc20 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc20 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc20 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc20 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc20 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc20 input[type=text],#jc20 input[type=date],#jc20 input[type=time],#jc20 select,#jc20 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc20 textarea{width:100%;min-height:180px;font-size:17px}
+#jc20 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc20 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc20 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc20 .jc-opts input{width:20px;height:20px}
+#jc20 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc20 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc20 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc20 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc20 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc20 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc20 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc20 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc20 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc20 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc20 .jc-art th,#jc20 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc20 .jc-art th{background:#f2f4f8}
+#jc20 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">生まれ年と性別から、厄年（前厄・本厄・後厄）がいつかを数え年で計算。大厄の年もすぐ分かる無料の厄年計算ツールです。</p>
+<div class="jc-box"><h2>厄年計算</h2>
+<span class="jc-lbl">生まれ年（西暦）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc20-y" placeholder="例：1985"><span class="jc-unit">年</span></div>
+<span class="jc-lbl">性別</span><div class="jc-opts"><label><input type="radio" name="jc20-s" value="m" checked>男性</label><label><input type="radio" name="jc20-s" value="f">女性</label></div>
+<button type="button" id="jc20-btn">計算する</button>
+<div class="jc-result" id="jc20-res"></div>
+<p class="jc-note">厄年は数え年で数えるのが一般的です。地域や寺社によって年齢が異なる場合があります。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc20-',box=document.getElementById('jc20-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var y=N('y');if(!y||y<1900||y>2100)return err('西暦で生まれ年を入れてください。');var A=R('s')==='m'?[25,42,61]:[19,33,37,61],now=new Date().getFullYear(),rows=[],hit='今年は厄年ではありません';
+A.forEach(function(a){var hy=y+a-1;rows.push(['数え '+a+' 歳'+((R('s')==='m'&&a===42)||(R('s')==='f'&&a===33)?'（大厄）':''),'前厄 '+(hy-1)+' ／ 本厄 '+hy+' ／ 後厄 '+(hy+1)]);
+if(now===hy)hit='今年は本厄です';else if(now===hy-1)hit='今年は前厄です';else if(now===hy+1&&hit.indexOf('本厄')<0)hit='今年は後厄です';});
+show(hit,rows);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>厄年は、災いが起こりやすいとされる年齢です。男性は数え年で25・42・61歳、女性は19・33・37・61歳が本厄とされ、その前後の年を前厄・後厄と呼びます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">1985年生まれの男性は満41歳でも本厄になる</h2>
+<h3 style="font-size:22px;margin-top:28px">厄年の年齢（数え年）</h3><table><tr><th></th><th>本厄</th><th>大厄</th></tr><tr><td>男性</td><td>25・42・61歳</td><td>42歳</td></tr><tr><td>女性</td><td>19・33・37・61歳</td><td>33歳</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">数え年の計算</h3><p>数え年 ＝ その年の西暦 − 生まれ年 ＋ 1。誕生日に関係なく、元日に1歳増えます。</p>
+
+<h3 style="font-size:22px;margin-top:28px">2026年（令和8年）の厄年早見表</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8"></th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">前厄</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">本厄</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">後厄</th></tr><tr><td style="border:1px solid #bbb;padding:6px">男性 25歳</td><td style="border:1px solid #bbb;padding:6px">2003年生まれ</td><td style="border:1px solid #bbb;padding:6px">2002年生まれ</td><td style="border:1px solid #bbb;padding:6px">2001年生まれ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">男性 42歳（大厄）</td><td style="border:1px solid #bbb;padding:6px">1986年生まれ</td><td style="border:1px solid #bbb;padding:6px">1985年生まれ</td><td style="border:1px solid #bbb;padding:6px">1984年生まれ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">男性 61歳</td><td style="border:1px solid #bbb;padding:6px">1967年生まれ</td><td style="border:1px solid #bbb;padding:6px">1966年生まれ</td><td style="border:1px solid #bbb;padding:6px">1965年生まれ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">女性 19歳</td><td style="border:1px solid #bbb;padding:6px">2009年生まれ</td><td style="border:1px solid #bbb;padding:6px">2008年生まれ</td><td style="border:1px solid #bbb;padding:6px">2007年生まれ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">女性 33歳（大厄）</td><td style="border:1px solid #bbb;padding:6px">1995年生まれ</td><td style="border:1px solid #bbb;padding:6px">1994年生まれ</td><td style="border:1px solid #bbb;padding:6px">1993年生まれ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">女性 37歳</td><td style="border:1px solid #bbb;padding:6px">1991年生まれ</td><td style="border:1px solid #bbb;padding:6px">1990年生まれ</td><td style="border:1px solid #bbb;padding:6px">1989年生まれ</td></tr></table><p>数え年で計算するので、「生まれ年 ＋ 厄年の年齢 − 1」が本厄の年です。たとえば1994年生まれの女性は 1994 ＋ 33 − 1 ＝ <b>2026年が本厄（大厄）</b>です。誕生日が来ているかどうかは関係ありません。</p>
+<h3 style="font-size:22px;margin-top:28px">本厄の数え年を満年齢に直す対応表</h3><p>厄年は数え年で数えるため、ふだん使う満年齢とは1〜2歳ずれます。元日から誕生日の前日までは「数え年−2」、誕生日以降は「数え年−1」が満年齢です。2026年（令和8年）を例に、本厄の数え年と満年齢の関係をまとめました。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">本厄（数え年）</th><th style="border:1px solid #ccc;padding:6px">2026年中の満年齢</th><th style="border:1px solid #ccc;padding:6px">2026年に本厄の生まれ年</th><th style="border:1px solid #ccc;padding:6px">対象</th></tr><tr><td style="border:1px solid #ccc;padding:6px">25歳</td><td style="border:1px solid #ccc;padding:6px">23〜24歳</td><td style="border:1px solid #ccc;padding:6px">2002年</td><td style="border:1px solid #ccc;padding:6px">男性</td></tr><tr><td style="border:1px solid #ccc;padding:6px">33歳</td><td style="border:1px solid #ccc;padding:6px">31〜32歳</td><td style="border:1px solid #ccc;padding:6px">1994年</td><td style="border:1px solid #ccc;padding:6px">女性・大厄</td></tr><tr><td style="border:1px solid #ccc;padding:6px">37歳</td><td style="border:1px solid #ccc;padding:6px">35〜36歳</td><td style="border:1px solid #ccc;padding:6px">1990年</td><td style="border:1px solid #ccc;padding:6px">女性</td></tr><tr><td style="border:1px solid #ccc;padding:6px">42歳</td><td style="border:1px solid #ccc;padding:6px">40〜41歳</td><td style="border:1px solid #ccc;padding:6px">1985年</td><td style="border:1px solid #ccc;padding:6px">男性・大厄</td></tr><tr><td style="border:1px solid #ccc;padding:6px">61歳</td><td style="border:1px solid #ccc;padding:6px">59〜60歳</td><td style="border:1px solid #ccc;padding:6px">1966年</td><td style="border:1px solid #ccc;padding:6px">男女・還暦と同じ年</td></tr></table><p>数え年61歳は、生まれ年の干支がひとめぐりして戻る還暦の年と一致します。「還暦祝いと厄払いは同じ年」と覚えておくと、親の予定を立てるときに便利です。</p>
+<h3 style="font-size:22px;margin-top:28px">厄年の由来</h3><p>厄年は平安時代ごろからあるといわれる考え方で、体や生活の変化が起こりやすい年齢を、気をつける節目として伝えてきたものです。科学的な根拠があるわけではありませんが、健康診断を受けたり生活を見直したりするきっかけにする人も多くいます。</p>
+<h3 style="font-size:22px;margin-top:28px">厄払い・厄除けのこと</h3><ul><li>神社では「厄払い（厄祓い）」、お寺では「厄除け」と呼ぶことが多いです。</li><li>元日から節分（2026年は2月3日）までに行く人が多いですが、一年中受け付けている寺社がほとんどです。</li><li>初穂料・祈祷料は5,000円〜10,000円ほどのところが多く、寺社によって違います。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>満年齢で数える</b>：厄年は数え年が一般的です。満年齢で考えると1〜2年ずれます。</li><li><b>地域による違いを見落とす</b>：女性の61歳や、男性の61歳を含めるかなど、寺社によって違うことがあります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>家族や友人の厄年を確かめて、厄払いの予定を立てるときに便利です。数え年で計算するので、誕生日を気にせず生まれ年だけで分かります。</p><p>厄年を気にしすぎる必要はありませんが、健康診断を受ける、生活習慣を見直すなど、体をいたわるきっかけにする人も多くいます。</p><p>地域や寺社によって年齢の考え方が違うことがあるので、お参りする寺社の案内もあわせて確認しましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">厄払いに出かける前に決めておく5つのこと</h3><ol><li><b>数え年か満年齢か</b>：このツールは数え年ですが、満年齢で案内する寺社もあります。受付に掲示された年齢表で確かめます。</li><li><b>年の区切り</b>：元日で区切る寺社と、立春（2026年は2月4日）で区切る寺社があります。1月から2月初めに生まれた人は、どちらの数え方でも厄年に当たるかを見ておきます。</li><li><b>時期</b>：正月から節分までは混みやすく、平日の午前は比較的ゆっくり受けられることが多いです。</li><li><b>初穂料の用意</b>：神社では「初穂料」、お寺では「御祈祷料」などと表書きし、のし袋か白封筒で納めるのが一般的です。金額は寺社の案内に従います。</li><li><b>家族の分もまとめるか</b>：夫婦や親子で厄年が同じ年に重なることがあります。生まれ年を並べて計算しておくと、一度の参拝で済ませられます。</li></ol>
+<h3 style="font-size:22px;margin-top:28px">厄年について寄せられる質問</h3><p><b>Q. 厄払いはいつ行く？</b><br>A. 元日から節分（2月3日ごろ）までに行く人が多いですが、一年中受け付けている寺社がほとんどです。</p><p><b>Q. 前厄・後厄も気をつけるべき？</b><br>A. 本厄の前後1年も気をつける年とされ、3年続けてお参りする人もいます。どこまで気にするかは人それぞれです。</p><p><b>Q. 節分で年が変わる？</b><br>A. 暦の考え方では立春（節分の翌日）を年の始まりとすることがあり、寺社によっては節分を基準にします。</p><p><b>Q. 喪中でも厄払いに行ける？</b><br>A. 神社は忌中（一般に五十日）を過ぎてから、お寺は時期を気にしないことが多いです。寺社に確認すると安心です。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html">干支計算</a> – 生まれ年の干支</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 生まれ年を和暦で</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 節分まであと何日</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.jinja-honcho.or.jp/" rel="noopener" target="_blank">神社本庁 – 厄年・人生儀礼の案内</a></li><li><a href="https://eco.mtk.nao.ac.jp/koyomi/" rel="noopener" target="_blank">国立天文台 暦計算室 – 二十四節気（立春・節分の日付）</a></li><li><a href="https://laws.e-gov.go.jp/law/135AC0000000050" rel="noopener" target="_blank">e-Gov法令検索 – 年齢計算ニ関スル法律（満年齢の数え方）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>早見表はツールと同じ計算（数え年）でプログラム作成しました。厄年の年齢は一般的な例で、寺社によって異なる場合があります。 最終確認：2026年11月。 厄年の年齢は一般的な例で、寺社や地域によって数え方が異なることがあります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html" style="color:#1a56db">干支計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/chouju-iwai.html" style="color:#1a56db">長寿祝い計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html" style="color:#1a56db">年齢計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J20 end ===== -->

@@ -1,0 +1,95 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQAZQmAPB1Ef43GTnIUVt32aP2yonaADHVeSWrJSRP4zC7Nz52X_9i-bJ410PD8kz2NqmiKqIt317-fNR9nlAltXd_lAYElz3VbzNBakCbhnDG4f7L_8HjmH7C_4MzolK8Bat1YBcmCrQNMD7nap9kZsLRjiu4OkHEtV9MS4RWeUxNNK4Qj_-HLTnmUVw/s300/E33.weeks-left-in-year%20%28%EC%98%A4%EB%8A%98%20%EB%82%A0%EC%A7%9C%C2%B7%EC%98%AC%ED%95%B4%20%EB%82%A8%EC%9D%80%20%EC%A3%BC%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Weeks left in the year calculator showing today&#x27;s date, ISO week number and countdown" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQAZQmAPB1Ef43GTnIUVt32aP2yonaADHVeSWrJSRP4zC7Nz52X_9i-bJ410PD8kz2NqmiKqIt317-fNR9nlAltXd_lAYElz3VbzNBakCbhnDG4f7L_8HjmH7C_4MzolK8Bat1YBcmCrQNMD7nap9kZsLRjiu4OkHEtV9MS4RWeUxNNK4Qj_-HLTnmUVw/s320/E33.weeks-left-in-year%20%28%EC%98%A4%EB%8A%98%20%EB%82%A0%EC%A7%9C%C2%B7%EC%98%AC%ED%95%B4%20%EB%82%A8%EC%9D%80%20%EC%A3%BC%29.png"/></a></div>
+
+
+<!-- ===== Weeks Left in the Year (paste in Blogger HTML view) ===== -->
+<div id="wy-calc">
+<style>
+#wy-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#wy-calc .wy-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#wy-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#wy-calc .wy-lbl{display:block;font-weight:bold;margin-top:14px}
+#wy-calc .wy-hint{font-size:15px;color:#555;font-weight:normal}
+#wy-calc .wy-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#wy-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#wy-calc input.wy-s{flex:0 0 5.5em}
+#wy-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#wy-calc .wy-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#wy-calc .wy-opts{display:grid;gap:8px;margin-top:8px}
+#wy-calc .wy-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#wy-calc .wy-opts input{width:22px;height:22px;flex:none}
+#wy-calc .wy-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#wy-calc .wy-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#wy-calc .wy-grid select{font-size:17px;width:100%}
+#wy-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#wy-calc .wy-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#wy-calc .wy-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#wy-calc .wy-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#wy-calc .wy-err{color:#c00;font-weight:bold;text-align:center}
+#wy-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#wy-calc th,#wy-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#wy-calc th{background:#f2f4f8}
+#wy-calc .wy-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="wy-box"><h2>Today’s Date & Weeks Left in the Year</h2>
+<div id="wy-live" style="font-size:19px"></div><span class="wy-lbl">Or check another date</span><div class="wy-line wy-date" data-id="wy-s" data-today="1"></div>
+<button type="button" id="wy-btn">Calculate</button>
+<div class="wy-result" id="wy-res"></div>
+<p class="wy-note">Week numbers follow the ISO 8601 standard (weeks start on Monday).</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="wy-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  var now=new Date(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WK=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DAY=86400000;
+  function opts(a,b,sel,rev,lab){var h='<option value="">'+lab+'</option>',i;if(rev){for(i=b;i>=a;i--)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+i+'</option>';}else{for(i=a;i<=b;i++)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(lab==='Month'?MN[i-1]:i)+'</option>';}return h;}
+  Array.prototype.forEach.call(document.querySelectorAll('#wy-calc .wy-date'),function(d){
+    var id=d.getAttribute('data-id'),t=d.getAttribute('data-today')==='1';
+    d.innerHTML='<select id="'+id+'-m">'+opts(1,12,t?now.getMonth()+1:null,false,'Month')+'</select> '+
+      '<select id="'+id+'-d">'+opts(1,31,t?now.getDate():null,false,'Day')+'</select> '+
+      '<select id="'+id+'-y">'+opts(1920,now.getFullYear()+10,t?now.getFullYear():null,true,'Year')+'</select>';
+  });
+  function getD(id){var y=+$(id+'-y').value,m=+$(id+'-m').value,d=+$(id+'-d').value;if(!y||!m||!d)return null;var x=new Date(Date.UTC(y,m-1,d));if(x.getUTCMonth()!==m-1)return 'bad';return x;}
+  function fmtD(x){return WK[x.getUTCDay()]+', '+MN[x.getUTCMonth()]+' '+x.getUTCDate()+', '+x.getUTCFullYear();}
+
+  function info(d){var y=d.getUTCFullYear(),st=Date.UTC(y,0,1),en=Date.UTC(y+1,0,1),doy=Math.round((d-st)/DAY)+1,tot=Math.round((en-st)/DAY),left=tot-doy;
+    var t=new Date(d.getTime());var dn=(t.getUTCDay()+6)%7;t=new Date(t.getTime()-dn*DAY+3*DAY);var fy=Date.UTC(t.getUTCFullYear(),0,4);var wk=1+Math.round(((t-fy)/DAY-3+((new Date(fy).getUTCDay()+6)%7))/7);
+    return '<div style="text-align:center">'+fmtD(d)+'</div><div class="wy-big">'+Math.floor(left/7)+' weeks '+(left%7)+' days left</div>'+row('Day of the year',doy+' of '+tot)+row('Days left in '+y,left)+row('ISO week number','Week '+wk)+row('Year completed',(doy/tot*100).toFixed(1)+'%');}
+  $('wy-live').innerHTML=info(new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())));
+$('wy-btn').addEventListener('click',function(){var box=$('wy-res');box.style.display='block';function err(t){box.innerHTML='<p class="wy-err">'+t+'</p>';}
+  var s=getD('wy-s');if(!s)return err('Please choose a date.');if(s==='bad')return err('That date does not exist.');box.innerHTML=info(s);
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>How many weeks are left this year? What week number is it? The box at the top updates automatically every day with today’s date, the ISO week number, the day of the year and the countdown to New Year.</p>
+<h2 style="font-size:26px;margin-top:10px">Counting down the rest of the year</h2>
+<p>Knowing exactly how many days and weeks remain helps with year-end goals, savings targets and holiday planning. The live box updates every day; you can also check any other date.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the weeks left in the year</h3><ol><li>Look at the live box for today.</li><li>To check another date, choose it below and press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Days left = days in the year − day of the year &nbsp;|&nbsp; weeks left = days left ÷ 7</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: November 14, 2026</h3><p>November 14 is day <b>318</b> of 2026, which has 365 days. That leaves <b>47 days</b> — 6 weeks and 5 days — until December 31. It falls in ISO week <b>46</b>.</p>
+<h3 style="font-size:22px;margin-top:28px">53 Thursdays: what a long year means for weekly paychecks</h3><p>2026 starts on a Thursday and ends on a Thursday. A 365-day year is 52 weeks plus one day, so whichever weekday falls on January 1 shows up 53 times instead of 52. In 2026 that weekday is Thursday.</p><p>Anyone paid every Thursday therefore receives <b>53 paychecks</b> this year instead of the usual 52. Anyone paid every other Thursday may receive 27 checks instead of 26, depending on where their cycle falls. Employers handle this in different ways: some divide a fixed salary into 27 slightly smaller checks, some pay one extra check, and hourly workers are simply paid for the extra hours. If a benefit premium is deducted from every check, ask payroll whether the extra check is treated differently.</p><p>The same quirk is why the ISO calendar gives 2026 a week 53: December 28 through 31 fall after the year's 52nd Thursday, so they belong to week 53 rather than to week 1 of 2027.</p>
+<h3 style="font-size:22px;margin-top:28px">What is an ISO week number?</h3><p>Under the ISO 8601 standard, weeks start on Monday and week 1 is the week that contains the year’s first Thursday. Because of that rule, some years have 53 weeks. 2026 is one of them: it starts on a Thursday, so December 28–31, 2026 belong to week 53.</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Year</th><th style="border:1px solid #ccc;padding:6px">Days</th><th style="border:1px solid #ccc;padding:6px">ISO weeks</th></tr><tr><td style="border:1px solid #ccc;padding:6px">2025</td><td style="border:1px solid #ccc;padding:6px">365</td><td style="border:1px solid #ccc;padding:6px">52</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2026</td><td style="border:1px solid #ccc;padding:6px">365</td><td style="border:1px solid #ccc;padding:6px">53</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2027</td><td style="border:1px solid #ccc;padding:6px">365</td><td style="border:1px solid #ccc;padding:6px">52</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2028 (leap year)</td><td style="border:1px solid #ccc;padding:6px">366</td><td style="border:1px solid #ccc;padding:6px">52</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Ways to use the countdown</h3><ul><li><b>Savings goals:</b> divide what you still need by the weeks left. $940 to go with 47 days left is about $140 a week.</li><li><b>Year-end work:</b> count business weeks rather than calendar weeks, and remember the holidays.</li><li><b>Habits:</b> a daily habit started today runs 47 times before New Year.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Assuming every year has 52 weeks</b> — ISO years can have 53.</li><li><b>Mixing week systems:</b> US calendars often start weeks on Sunday, which can shift the week number.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Planning with weeks instead of months</h3><p>Weeks are handy for planning because they always have seven days, while months vary from 28 to 31. Teachers count weeks left in a semester, project managers plan in weekly sprints, and many workplaces track goals by week number.</p><p>If you share week numbers with people in other countries, say which system you use. The ISO system starts weeks on Monday, while many US calendars start on Sunday, which can move a date into a different week.</p>
+<h3 style="font-size:22px;margin-top:28px">Case study: 37 days, 25 working days and a $1,200 holiday budget</h3><p>Take Tuesday, November 24, 2026. It is day 328 of the year and falls in ISO week 48. That leaves <b>37 days</b>, or 5 weeks and 2 days, until December 31.</p><p>Those 37 days contain 27 weekdays. Subtract Thanksgiving (Thursday, November 26) and Christmas (Friday, December 25) and you have <b>25 working days</b>. If your office also closes on the Friday after Thanksgiving, make it 24.</p><ul><li>Saving $1,200 for the holidays works out to $240 for each of the 5 Fridays left, or about $32 a day.</li><li>Paid every two weeks, you will see only two or three more checks this year, so the target is $400 to $600 per check.</li><li>A project that needs 60 hours of focused work needs 2.4 hours on each of those 25 working days, before any time off.</li></ul><p>Counting in days, not months, is what makes these targets realistic.</p>
+<h3 style="font-size:22px;margin-top:28px">Reader questions about week numbers and the year-end countdown</h3><p><b>Is today counted as a day left?</b><br>No. Days left counts the days after today through December 31.</p><p><b>When is the next leap year?</b><br>2028. February will have 29 days and the year 366 days.</p><p><b>How many weeks are in a year?</b><br>52 weeks plus 1 day (2 days in a leap year). Some years have 53 ISO weeks.</p><p><b>What is the ISO week number?</b><br>An international standard where weeks start on Monday and week 1 contains the first Thursday of the year.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html">Days Between Dates</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html">Age Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html">Hours Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://aa.usno.navy.mil/" rel="noopener" target="_blank">U.S. Naval Observatory – Astronomical Applications (calendar and date data)</a></li><li><a href="https://www.dol.gov/agencies/whd/overtime" rel="noopener" target="_blank">U.S. Department of Labor – Overtime pay (definition of the workweek)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> day-of-year and ISO week values were generated with Python’s ISO calendar and match the calculator. Last reviewed November 2026. Dates and counts here are for planning only; confirm payroll and deadline rules with your employer or the issuing organization.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/days-from-today.html" style="color:#1a56db">Days From Today Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html" style="color:#1a56db">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html" style="color:#1a56db">Hours Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Weeks Left in the Year end ===== -->

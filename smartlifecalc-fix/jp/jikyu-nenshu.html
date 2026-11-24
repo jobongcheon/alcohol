@@ -1,0 +1,97 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY71_toqRW2F1R2jOLarB7wVM5RARiLmY9ASglnF3mArGc6aY4-TJ12A1-cLFbVSj2sLMIr0IyhGDSY8mU_HvLufORsEykaU0ZlsCds4IxBZH2Y5S26eUwwFFW84X7o7H7WygWwyRNbCdKx3OoD3_oQhsmDjum7bPeEoU5uB8DWySVV2ME4BrleZdG5bc/s300/J16.jikyu-nenshu.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="時給・月給・年収換算ツールの入力欄と換算結果の画面" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY71_toqRW2F1R2jOLarB7wVM5RARiLmY9ASglnF3mArGc6aY4-TJ12A1-cLFbVSj2sLMIr0IyhGDSY8mU_HvLufORsEykaU0ZlsCds4IxBZH2Y5S26eUwwFFW84X7o7H7WygWwyRNbCdKx3OoD3_oQhsmDjum7bPeEoU5uB8DWySVV2ME4BrleZdG5bc/s320/J16.jikyu-nenshu.png"/></a></div>
+
+<!-- ===== J16 時給・月給・年収換算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc16">
+<style>
+#jc16{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc16 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc16 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc16 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc16 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc16 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc16 input[type=text],#jc16 input[type=date],#jc16 input[type=time],#jc16 select,#jc16 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc16 textarea{width:100%;min-height:180px;font-size:17px}
+#jc16 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc16 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc16 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc16 .jc-opts input{width:20px;height:20px}
+#jc16 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc16 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc16 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc16 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc16 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc16 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc16 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc16 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc16 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc16 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc16 .jc-art th,#jc16 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc16 .jc-art th{background:#f2f4f8}
+#jc16 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">時給・日給・月給・年収を相互に換算。1日の勤務時間と月の勤務日数から、アルバイトや正社員の収入をすぐに比べられる無料ツールです。</p>
+<div class="jc-box"><h2>時給・月給・年収換算</h2>
+<span class="jc-lbl">入れる金額</span><div class="jc-line"><select id="jc16-k"><option value="h" selected>時給</option><option value="d">日給</option><option value="m">月給</option><option value="y">年収</option></select></div>
+<span class="jc-lbl">金額</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc16-v" placeholder="例：1,200"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">1日の勤務時間</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc16-hr" placeholder="例：8" value="8"><span class="jc-unit">時間</span></div>
+<span class="jc-lbl">月の勤務日数</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc16-dy" placeholder="例：20" value="20"><span class="jc-unit">日</span></div>
+<button type="button" id="jc16-btn">計算する</button>
+<div class="jc-result" id="jc16-res"></div>
+<p class="jc-note">残業代・賞与・交通費は含めていません。税金や社会保険料を引く前の金額（額面）です。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc16-',box=document.getElementById('jc16-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var v=N('v'),hr=N('hr'),dy=N('dy');if(!v||!hr||!dy)return err('金額・勤務時間・勤務日数を入れてください。');var k=V('k'),h;
+h=k==='h'?v:k==='d'?v/hr:k==='m'?v/hr/dy:v/12/hr/dy;
+show('年収 '+yen(Math.round(h*hr*dy*12)),[['時給',yen(Math.round(h))],['日給',yen(Math.round(h*hr))],['月給',yen(Math.round(h*hr*dy))],['年間の勤務時間',f0(hr*dy*12)+' 時間']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>アルバイトの時給と正社員の月給、転職先の年収――単位が違うと比べにくいものです。このツールで時給・日給・月給・年収をまとめて換算できます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">同じ年収400万円でも年間休日で時給は変わる</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><ul><li>日給 ＝ 時給 × 1日の勤務時間</li><li>月給 ＝ 日給 × 月の勤務日数</li><li>年収 ＝ 月給 × 12</li></ul>
+<p>例：時給1,200円・1日8時間・月20日 → 月給192,000円・年収2,304,000円</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>時給1,200円で1日8時間・月20日働くと、日給9,600円、月給<b>192,000円</b>、年収<b>2,304,000円</b>です（年間1,920時間）。</p><p>反対に、年収400万円・1日8時間・月20日なら、時給に直すと 4,000,000 ÷ 12 ÷ 20 ÷ 8 ＝ <b>約2,083円</b>です。</p>
+<h3 style="font-size:22px;margin-top:28px">年間休日105日と125日、年収400万円の時給の差</h3><p>求人票の「年間休日」は、時給換算に直接ひびきます。1日8時間勤務・年収400万円（賞与なし）として、年間休日ごとに所定労働時間と時給を比べます。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">年間休日</th><th style="border:1px solid #ccc;padding:6px">所定労働日数</th><th style="border:1px solid #ccc;padding:6px">年間所定労働時間</th><th style="border:1px solid #ccc;padding:6px">月平均所定労働時間</th><th style="border:1px solid #ccc;padding:6px">時給換算</th></tr><tr><td style="border:1px solid #ccc;padding:6px">105日</td><td style="border:1px solid #ccc;padding:6px">260日</td><td style="border:1px solid #ccc;padding:6px">2,080時間</td><td style="border:1px solid #ccc;padding:6px">約173.3時間</td><td style="border:1px solid #ccc;padding:6px">約1,923円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">110日</td><td style="border:1px solid #ccc;padding:6px">255日</td><td style="border:1px solid #ccc;padding:6px">2,040時間</td><td style="border:1px solid #ccc;padding:6px">170.0時間</td><td style="border:1px solid #ccc;padding:6px">約1,961円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">120日</td><td style="border:1px solid #ccc;padding:6px">245日</td><td style="border:1px solid #ccc;padding:6px">1,960時間</td><td style="border:1px solid #ccc;padding:6px">約163.3時間</td><td style="border:1px solid #ccc;padding:6px">約2,041円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">125日</td><td style="border:1px solid #ccc;padding:6px">240日</td><td style="border:1px solid #ccc;padding:6px">1,920時間</td><td style="border:1px solid #ccc;padding:6px">160.0時間</td><td style="border:1px solid #ccc;padding:6px">約2,083円</td></tr></table><p>年間休日105日と125日では時給で約160円、1年では160時間分の差です。なお年間休日105日は、1日8時間で週40時間の法定労働時間を守るおおよその下限です（52週×5日＝260日勤務）。</p>
+<h3 style="font-size:22px;margin-top:28px">時給と年収の早見表（1日8時間・月20日）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">時給</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">月給</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">年収</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1,100円</td><td style="border:1px solid #bbb;padding:6px">176,000円</td><td style="border:1px solid #bbb;padding:6px">2,112,000円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1,200円</td><td style="border:1px solid #bbb;padding:6px">192,000円</td><td style="border:1px solid #bbb;padding:6px">2,304,000円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1,500円</td><td style="border:1px solid #bbb;padding:6px">240,000円</td><td style="border:1px solid #bbb;padding:6px">2,880,000円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2,000円</td><td style="border:1px solid #bbb;padding:6px">320,000円</td><td style="border:1px solid #bbb;padding:6px">3,840,000円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2,500円</td><td style="border:1px solid #bbb;padding:6px">400,000円</td><td style="border:1px solid #bbb;padding:6px">4,800,000円</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">比べるときに気をつけたいこと</h3><ul><li><b>賞与（ボーナス）</b>：正社員の年収には賞与が含まれることが多く、月給×12だけでは比べられません。</li><li><b>残業代・深夜手当</b>：このツールには含めていません。残業がある仕事は、その分を別に足して比べましょう。</li><li><b>交通費・福利厚生</b>：通勤手当や社会保険の有無で、実際の手取りや負担が変わります。</li><li><b>月の勤務日数</b>：祝日の多い月は少なくなります。年間の所定労働日数が分かれば、それを12で割った日数を入れると正確です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">最低賃金も確認を</h3><p>最低賃金は都道府県ごとに決まり、毎年秋ごろに改定されます。時給に換算した金額が地域の最低賃金を下回っていないか、厚生労働省のページで確認できます。月給の人も「月給 ÷ 月の所定労働時間」で時給に直して比べます。</p>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>額面と手取りを混同する</b>：ここで出る金額は税金・社会保険料を引く前（額面）です。</li><li><b>1か月を4週で計算する</b>：1か月は約4.3週あるので、週給×4では少なく出ます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>アルバイトから正社員、正社員からパートなど、働き方を変えるときに収入を同じものさしで比べられます。副業を始めるときに、本業との時給の違いを確かめるのにも便利です。</p><p>転職の求人票で「月給」と「年収」の書き方が違う場合も、1日の勤務時間と日数をそろえて換算すると比べやすくなります。</p><p>家計の計画では、額面ではなく手取りで考えることも大切です。手取り計算もあわせて使ってみてください。</p>
+<h3 style="font-size:22px;margin-top:28px">月給制の人が最低賃金を下回っていないか確かめる式</h3><p>最低賃金は時給で決まるため、月給の人は時給に直して比べます。対象は基本給と毎月決まって払われる手当で、通勤手当・家族手当・精皆勤手当、時間外・休日・深夜の割増賃金、賞与は計算から外します。</p><ol><li>年間所定労働日数×1日の所定労働時間÷12＝月平均所定労働時間。年間休日120日・1日8時間なら245×8÷12＝約163.3時間</li><li>対象となる月給÷月平均所定労働時間＝時給換算。月給180,000円なら180,000÷163.3≒1,102円</li><li>勤務地の都道府県の最低賃金と比べる。下回っていれば、その差額は法律上請求できます</li></ol><p>最低賃金は毎年10月ごろに改定され、額は都道府県で異なります。年収250万円・年間休日120日なら2,500,000÷1,960＝約1,276円ですが、この年収に賞与が含まれていれば、賞与を除いた月給で計算し直す必要があります。</p>
+<h3 style="font-size:22px;margin-top:28px">給料の換算でつまずきやすい点</h3><p><b>Q. 年収から手取りは？</b><br>A. 税金と社会保険料が引かれます。手取り計算ツールもあわせてご利用ください。</p><p><b>Q. 年収から時給を出すとき、休日はどう考える？</b><br>A. 「月の勤務日数」に実際に働く日数を入れます。有給休暇を取っても給料は変わらないので、所定の勤務日数で計算します。</p><p><b>Q. パートの年間の上限（いわゆる年収の壁）は？</b><br>A. 税金や社会保険の扶養の基準は制度改正で変わることがあります。最新の基準は国税庁・日本年金機構・勤務先で確認してください。</p><p><b>Q. 時給が上がると年収はどれくらい変わる？</b><br>A. 1日8時間・月20日なら、時給100円アップで年収は約19万円（100円×8時間×20日×12か月＝192,000円）増えます。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 昇給率を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a> – 税込・税抜</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html">割り勘計算</a> – 支払いを人数で割る</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html" rel="noopener" target="_blank">厚生労働省 – 労働基準に関する法制度（最低賃金・労働時間）</a></li><li><a href="https://laws.e-gov.go.jp/law/322AC0000000049" rel="noopener" target="_blank">e-Gov法令検索 – 労働基準法（第32条 労働時間）</a></li><li><a href="https://www.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 – 地域別最低賃金の案内</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例と早見表はツールと同じ式でプログラム計算しました。最低賃金の考え方は厚生労働省の案内をもとにしています。 最終確認：2026年11月。 換算額は額面の目安で、税・社会保険料や個別の雇用契約は反映していません。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/zangyodai.html" style="color:#1a56db">残業代計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/yukyu.html" style="color:#1a56db">有給休暇計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J16 end ===== -->

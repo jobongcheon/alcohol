@@ -1,0 +1,97 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTwmnaM30KP7zvCmXM7-LrWH_YHqGvndJMBMVBKwoZlrOOOZg5p7lH6VyMsVRIKXiQe-j9FrKAxw39ZyhbYi3RjeD4J89MRUYQtLynsYjXjf4vZbh83QsBaequAOZ0CVOzvvw4uKsVmoIdVYQ8CJq0omkPvVfifGlqNca6UyLVUtm-_OeRd6nZcZa3I9w/s300/J09.waribiki.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="割引計算ツールで割引後の価格と実質割引率を表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTwmnaM30KP7zvCmXM7-LrWH_YHqGvndJMBMVBKwoZlrOOOZg5p7lH6VyMsVRIKXiQe-j9FrKAxw39ZyhbYi3RjeD4J89MRUYQtLynsYjXjf4vZbh83QsBaequAOZ0CVOzvvw4uKsVmoIdVYQ8CJq0omkPvVfifGlqNca6UyLVUtm-_OeRd6nZcZa3I9w/s320/J09.waribiki.png"/></a></div>
+
+
+<!-- ===== J09 割引計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc09">
+<style>
+#jc09{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc09 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc09 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc09 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc09 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc09 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc09 input[type=text],#jc09 input[type=date],#jc09 input[type=time],#jc09 select,#jc09 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc09 textarea{width:100%;min-height:180px;font-size:17px}
+#jc09 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc09 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc09 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc09 .jc-opts input{width:20px;height:20px}
+#jc09 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc09 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc09 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc09 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc09 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc09 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc09 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc09 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc09 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc09 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc09 .jc-art th,#jc09 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc09 .jc-art th{background:#f2f4f8}
+#jc09 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">定価と割引率から割引後の値段と割引額を計算。○％オフ、○割引き、さらに○％オフの二重割引にも対応した無料ツールです。</p>
+<div class="jc-box"><h2>割引計算</h2>
+<span class="jc-lbl">定価</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc09-p" placeholder="例：5,000"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">割引率</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc09-a" placeholder="例：30"><span class="jc-unit">％</span></div>
+<span class="jc-lbl">さらに割引（任意）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc09-b" placeholder="例：10"><span class="jc-unit">％</span></div>
+<button type="button" id="jc09-btn">計算する</button>
+<div class="jc-result" id="jc09-res"></div>
+<p class="jc-note">「30％オフのさらに10％オフ」は40％オフではなく、実質37％オフになります。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc09-',box=document.getElementById('jc09-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var p=N('p'),a=N('a'),b=N('b');if(!p)return err('定価を入れてください。');if(a<0||a>100||b<0||b>100)return err('割引率は0〜100％で入れてください。');
+var x=p*(1-a/100)*(1-b/100);show(yen(Math.round(x)),[['割引額',yen(Math.round(p-x))],['実質の割引率',f1((1-x/p)*100)+' ％'],['○割引きでいうと',f1((1-x/p)*10)+' 割引き']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>セールの「30％オフ」「3割引き」、レジでの「さらに10％オフ」――最終的にいくらになるのか、このツールですぐに計算できます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">割引と消費税、どちらを先に計算しても同じ？</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><p>割引後の価格 ＝ 定価 ×（1 − 割引率）<br>例：5,000円の30％オフ → 5,000 × 0.7 ＝ 3,500円</p>
+
+<h3 style="font-size:22px;margin-top:28px">二重割引に注意</h3><p>30％オフの後にさらに10％オフの場合、3,500円 × 0.9 ＝ 3,150円です。合計の割引率は37％で、40％ではありません。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><ul><li><b>7,980円の30％オフ</b> → 7,980 × 0.7 ＝ <b>5,586円</b>（2,394円お得）</li><li><b>12,800円の20％オフ、さらにレジで10％オフ</b> → 12,800 × 0.8 × 0.9 ＝ <b>9,216円</b>（実質28％オフ）</li><li><b>3割引き</b>は30％オフ、<b>半額</b>は50％オフと同じです。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">セールの値段にまつわる思い込みと事実</h3><ul><li><b>思い込み</b>：税込価格から割り引くか、税抜価格を割り引いてから税をかけるかで損得が変わる。<br><b>事実</b>：どちらも掛け算なので同じです。税抜5,000円の30％オフは5,000×0.7×1.1＝3,850円、税込5,500円の30％オフは5,500×0.7＝3,850円。違いは1円未満の端数処理だけです。</li><li><b>思い込み</b>：「半額のさらに半額」はただ同然。<br><b>事実</b>：0.5×0.5＝0.25で、定価の25％を払う75％オフです。</li><li><b>思い込み</b>：「通常価格」からの割引率が大きいほど得。<br><b>事実</b>：元の価格が実際に売られていた価格でなければ割引率に意味はありません。最終的に払う金額で比べるのが確実です。</li><li><b>思い込み</b>：ネット通販の20％オフは店頭の20％オフと同じ。<br><b>事実</b>：送料込みで比べます。8,000円の20％オフ＝6,400円に送料600円が付くと7,000円、実質12.5％オフです。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">二重割引は「足し算」ではなく「掛け算」</h3><p>「20％オフのさらに10％オフ」は、20 ＋ 10 ＝ 30％オフではありません。2回目の割引は、すでに安くなった値段に対してかかるからです。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">1回目</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">2回目</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">実質の割引率</th></tr><tr><td style="border:1px solid #bbb;padding:6px">10％オフ</td><td style="border:1px solid #bbb;padding:6px">10％オフ</td><td style="border:1px solid #bbb;padding:6px">19％オフ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">20％オフ</td><td style="border:1px solid #bbb;padding:6px">10％オフ</td><td style="border:1px solid #bbb;padding:6px">28％オフ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">30％オフ</td><td style="border:1px solid #bbb;padding:6px">10％オフ</td><td style="border:1px solid #bbb;padding:6px">37％オフ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">30％オフ</td><td style="border:1px solid #bbb;padding:6px">20％オフ</td><td style="border:1px solid #bbb;padding:6px">44％オフ</td></tr><tr><td style="border:1px solid #bbb;padding:6px">50％オフ</td><td style="border:1px solid #bbb;padding:6px">20％オフ</td><td style="border:1px solid #bbb;padding:6px">60％オフ</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">ポイント還元と値引き、どちらが得？</h3><p>「10％ポイント還元」は、10％値引きより少し損です。1万円の買い物で1,000ポイントもらうと、実質1万1,000円分の価値を1万円で買ったことになり、値引き率に直すと 1,000 ÷ 11,000 ＝ <b>約9.1％</b>です。さらに、ポイントは使える店や期限が限られることもあります。</p>
+<h3 style="font-size:22px;margin-top:28px">「○割引き」と「○％オフ」の早見表</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">言い方</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">％オフ</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">支払う割合</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1割引き</td><td style="border:1px solid #bbb;padding:6px">10％オフ</td><td style="border:1px solid #bbb;padding:6px">90％</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2割引き</td><td style="border:1px solid #bbb;padding:6px">20％オフ</td><td style="border:1px solid #bbb;padding:6px">80％</td></tr><tr><td style="border:1px solid #bbb;padding:6px">3割引き</td><td style="border:1px solid #bbb;padding:6px">30％オフ</td><td style="border:1px solid #bbb;padding:6px">70％</td></tr><tr><td style="border:1px solid #bbb;padding:6px">半額</td><td style="border:1px solid #bbb;padding:6px">50％オフ</td><td style="border:1px solid #bbb;padding:6px">50％</td></tr><tr><td style="border:1px solid #bbb;padding:6px">7割引き</td><td style="border:1px solid #bbb;padding:6px">70％オフ</td><td style="border:1px solid #bbb;padding:6px">30％</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>割引後に消費税がかかるかを確認しない</b>：税抜価格からの割引なら、割引後の値段に税がかかります（<a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a>）。</li><li><b>「最大50％オフ」を全品50％だと思う</b>：対象商品の一部だけのことがよくあります。</li><li><b>元の値段を確かめない</b>：割引率より、最終的に払う金額で比べるのが確実です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>セール会場で「表示価格からさらに20％オフ」と書かれていても、レジで実際にいくらになるか分かりにくいものです。スマホでこのツールを開けば、その場で最終価格を確かめられます。</p><p>ネット通販のクーポンと会員割引が重なるときにも便利です。割引の順番が変わっても、掛け算なので最終価格は同じになります（20％オフ→10％オフも、10％オフ→20％オフも同じ）。</p><p>お店を開いている人が値引き額を決めるときの計算にも使えます。原価や利益率を考えながら、何％まで値引きできるかを確かめましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">○円引きと○％オフ、どちらのクーポンを使うか決める3ステップ</h3><ol><li><b>分かれ目の金額を出す</b>：定額÷割引率が境目です。500円引きと8％オフなら500÷0.08＝6,250円。買い物が6,250円より安ければ500円引き、高ければ8％オフが得です。</li><li><b>合計金額で確かめる</b>：6,250円ならどちらも5,750円で同じです。4,000円なら500円引きで3,500円、8％オフは320円引きで3,680円と、180円の差が出ます。</li><li><b>条件を読む</b>：「○円以上で使える」「併用不可」「対象外商品」の3点を確かめます。定額引きと％オフを併用できるときは、％オフを先に適用した方が安くなります。10,000円に10％オフと500円引きなら、％オフが先で9,000−500＝8,500円、定額引きが先で9,500×0.9＝8,550円です。</li></ol>
+<h3 style="font-size:22px;margin-top:28px">セールの値段についての質問集</h3><p><b>Q. 2割引きは何％オフ？</b><br>A. 20％オフです。1割＝10％です。</p><p><b>Q. 割引後の値段から元の値段を知りたい</b><br>A. 割引後の値段 ÷（1 − 割引率）で求められます。30％オフで3,500円なら、3,500 ÷ 0.7 ＝ 5,000円です。</p><p><b>Q. 定額割引（○円引き）と％オフ、どちらが得？</b><br>A. 値段によって変わります。1,000円引きは5,000円の商品なら20％オフ、2万円の商品なら5％オフと同じです。</p><p><b>Q. 割引率の小数点以下は？</b><br>A. 実質の割引率は小数第1位まで表示します。</p><p><b>Q. 「○％増量」と「○％オフ」は同じ？</b><br>A. 同じではありません。20％増量は1個あたりの値段でいうと約16.7％オフです。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a> – 税込・税抜を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 増減率を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html">割り勘計算</a> – みんなで割って支払う</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6102.htm" rel="noopener" target="_blank">国税庁 – 消費税の税率（タックスアンサー No.6102）</a></li><li><a href="https://www.kokusen.go.jp/" rel="noopener" target="_blank">国民生活センター – 価格表示・セールに関する消費者相談</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例と早見表はすべてプログラムで計算して確かめました。 最終確認：2026年11月。 計算結果は端数処理を含まない目安で、実際の支払額は店舗の表示に従います。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html" style="color:#1a56db">消費税計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html" style="color:#1a56db">割り勘計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J09 end ===== -->

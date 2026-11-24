@@ -1,0 +1,113 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWQEgs8IxBs9cA5oU5koosScnr_yRx3N2303kahZHCallBjOMRk0UFejx_i5EmQBq_tjvHUn7qHej5i-iouBfToQVzxn1X0z4fjaQgShDW7oqVxMGD1yets6tPrK-ESR3OE13TC4GVjTTcFk-PR5t_5xC3cFVpMT9JQQyOhy69STDCkcFLnPmDt0IY5Lc/s300/E18.due-date-calculator%20%28%EC%B6%9C%EC%82%B0%EC%98%88%EC%A0%95%EC%9D%BC%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Due date calculator showing estimated due date, weeks pregnant and trimester" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWQEgs8IxBs9cA5oU5koosScnr_yRx3N2303kahZHCallBjOMRk0UFejx_i5EmQBq_tjvHUn7qHej5i-iouBfToQVzxn1X0z4fjaQgShDW7oqVxMGD1yets6tPrK-ESR3OE13TC4GVjTTcFk-PR5t_5xC3cFVpMT9JQQyOhy69STDCkcFLnPmDt0IY5Lc/s320/E18.due-date-calculator%20%28%EC%B6%9C%EC%82%B0%EC%98%88%EC%A0%95%EC%9D%BC%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Pregnancy Due Date Calculator (paste in Blogger HTML view) ===== -->
+<div id="eu-calc">
+<style>
+#eu-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#eu-calc .eu-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#eu-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#eu-calc .eu-lbl{display:block;font-weight:bold;margin-top:14px}
+#eu-calc .eu-hint{font-size:15px;color:#555;font-weight:normal}
+#eu-calc .eu-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#eu-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eu-calc input.eu-s{flex:0 0 5.5em}
+#eu-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eu-calc .eu-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#eu-calc .eu-opts{display:grid;gap:8px;margin-top:8px}
+#eu-calc .eu-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#eu-calc .eu-opts input{width:22px;height:22px;flex:none}
+#eu-calc .eu-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#eu-calc .eu-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#eu-calc .eu-grid select{font-size:17px;width:100%}
+#eu-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#eu-calc .eu-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#eu-calc .eu-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#eu-calc .eu-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#eu-calc .eu-err{color:#c00;font-weight:bold;text-align:center}
+#eu-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#eu-calc th,#eu-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#eu-calc th{background:#f2f4f8}
+#eu-calc .eu-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="eu-box"><h2>Pregnancy Due Date Calculator</h2>
+<span class="eu-lbl">First day of your last period (LMP)</span><div class="eu-line eu-date" data-id="eu-l"></div><span class="eu-lbl">Average cycle length</span><div class="eu-line"><input type="text" inputmode="decimal" id="eu-cy" placeholder="28" value="28"><span class="eu-unit">days</span></div>
+<button type="button" id="eu-btn">Calculate Due Date</button>
+<div class="eu-result" id="eu-res"></div>
+<p class="eu-note">Uses Naegele’s rule adjusted for cycle length. Only about 4% of babies are born on their due date — your doctor or midwife will confirm with an ultrasound.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="eu-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  var now=new Date(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WK=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DAY=86400000;
+  function opts(a,b,sel,rev,lab){var h='<option value="">'+lab+'</option>',i;if(rev){for(i=b;i>=a;i--)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+i+'</option>';}else{for(i=a;i<=b;i++)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(lab==='Month'?MN[i-1]:i)+'</option>';}return h;}
+  Array.prototype.forEach.call(document.querySelectorAll('#eu-calc .eu-date'),function(d){
+    var id=d.getAttribute('data-id'),t=d.getAttribute('data-today')==='1';
+    d.innerHTML='<select id="'+id+'-m">'+opts(1,12,t?now.getMonth()+1:null,false,'Month')+'</select> '+
+      '<select id="'+id+'-d">'+opts(1,31,t?now.getDate():null,false,'Day')+'</select> '+
+      '<select id="'+id+'-y">'+opts(1920,now.getFullYear()+10,t?now.getFullYear():null,true,'Year')+'</select>';
+  });
+  function getD(id){var y=+$(id+'-y').value,m=+$(id+'-m').value,d=+$(id+'-d').value;if(!y||!m||!d)return null;var x=new Date(Date.UTC(y,m-1,d));if(x.getUTCMonth()!==m-1)return 'bad';return x;}
+  function fmtD(x){return WK[x.getUTCDay()]+', '+MN[x.getUTCMonth()]+' '+x.getUTCDate()+', '+x.getUTCFullYear();}
+$('eu-btn').addEventListener('click',function(){var box=$('eu-res');box.style.display='block';function err(t){box.innerHTML='<p class="eu-err">'+t+'</p>';}
+  var l=getD('eu-l');if(!l)return err('Please choose the date.');if(l==='bad')return err('That date does not exist.');
+  var cy=num($('eu-cy').value)||28;if(cy<20||cy>45)return err('Cycle length should be between 20 and 45 days.');
+  var due=new Date(l.getTime()+(280+cy-28)*DAY),con=new Date(l.getTime()+(cy-14)*DAY),t=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())),g=Math.round((t-l)/DAY)-(cy-28);
+  var wk=Math.floor(g/7),dd=g%7,tri=g<0?'—':wk<14?'First trimester':wk<28?'Second trimester':'Third trimester';
+  box.innerHTML='<div style="text-align:center">Estimated due date</div><div class="eu-big" style="font-size:26px">'+fmtD(due)+'</div>'+
+   (g>=0&&g<=300?row('How far along today',wk+' weeks '+dd+' days')+row('Trimester',tri):'')+row('Estimated conception',fmtD(con))+row('Second trimester starts',fmtD(new Date(l.getTime()+(91+cy-28)*DAY)))+row('Third trimester starts',fmtD(new Date(l.getTime()+(189+cy-28)*DAY)));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Congratulations! Find your estimated due date, how far along you are today and when each trimester begins. All you need is the first day of your last menstrual period.</p>
+<h2 style="font-size:26px;margin-top:10px">How your due date is estimated</h2>
+<p>Pregnancy is counted from the first day of your last menstrual period (LMP), not from conception, which for a typical 28-day cycle happens about two weeks later. A full-term pregnancy is estimated at 280 days, or 40 weeks, from the LMP. This is known as Naegele's rule, and it's the same starting point most clinics use before an ultrasound.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the due date calculator</h3><ol><li>Choose the first day of your last period.</li><li>Enter your usual cycle length (28 days is typical).</li><li>Press <b>Calculate Due Date</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Due date = first day of last period + 280 days (+ cycle length − 28)</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>If your last period started on January 1, 2026, adding 280 days gives an estimated due date of <b>October 8, 2026</b>. If your cycle is usually 32 days rather than 28, ovulation tends to happen later, so the estimate moves about 4 days later.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Worked calendar: a last period starting March 1, 2026</h3><p>Counting 280 days forward from March 1, 2026 gives a due date of December 6, 2026. Every milestone follows from the same count, 7 days per week.</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Milestone</th><th style="border:1px solid #ccc;padding:6px">Days from LMP</th><th style="border:1px solid #ccc;padding:6px">Date</th></tr><tr><td style="border:1px solid #ccc;padding:6px">12 weeks 0 days</td><td style="border:1px solid #ccc;padding:6px">84</td><td style="border:1px solid #ccc;padding:6px">May 24, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">20 weeks 0 days (anatomy scan window)</td><td style="border:1px solid #ccc;padding:6px">140</td><td style="border:1px solid #ccc;padding:6px">July 19, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">28 weeks 0 days (third trimester)</td><td style="border:1px solid #ccc;padding:6px">196</td><td style="border:1px solid #ccc;padding:6px">September 13, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">37 weeks 0 days (early term)</td><td style="border:1px solid #ccc;padding:6px">259</td><td style="border:1px solid #ccc;padding:6px">November 15, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">39 weeks 0 days (full term)</td><td style="border:1px solid #ccc;padding:6px">273</td><td style="border:1px solid #ccc;padding:6px">November 29, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">40 weeks 0 days (due date)</td><td style="border:1px solid #ccc;padding:6px">280</td><td style="border:1px solid #ccc;padding:6px">December 6, 2026</td></tr></table><p>Post-term begins at 42 weeks, December 20. To find how far along you are on any day, count days from the LMP and divide by 7: June 15, 2026 is day 106, or 15 weeks 1 day. With a 32-day cycle, ovulation comes about 4 days later, so the due date and every milestone shift 4 days later (December 10).</p>
+<h3 style="font-size:22px;margin-top:28px">Why the date is only an estimate</h3>
+<p>Only about 1 in 20 babies arrive on the exact due date. Most are born between 37 and 42 weeks. An early ultrasound, especially in the first trimester, is the most accurate way to date a pregnancy, and your provider may adjust the due date based on it. If you conceived through IVF, the transfer date gives a very precise estimate.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Trimesters at a glance</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Trimester</th><th style="border:1px solid #ccc;padding:6px">Weeks</th><th style="border:1px solid #ccc;padding:6px">Typical milestones</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">First</td><td style="border:1px solid #ccc;padding:6px">1–13</td><td style="border:1px solid #ccc;padding:6px">First prenatal visit, dating ultrasound, early screening options</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Second</td><td style="border:1px solid #ccc;padding:6px">14–27</td><td style="border:1px solid #ccc;padding:6px">Anatomy scan around 18–22 weeks; glucose test around 24–28 weeks</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Third</td><td style="border:1px solid #ccc;padding:6px">28–40+</td><td style="border:1px solid #ccc;padding:6px">More frequent visits; group B strep test around 36–37 weeks</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Term definitions</h3>
+<ul>
+<li><b>Early term:</b> 37 weeks 0 days to 38 weeks 6 days</li>
+<li><b>Full term:</b> 39 weeks 0 days to 40 weeks 6 days</li>
+<li><b>Late term:</b> 41 weeks 0 days to 41 weeks 6 days</li>
+<li><b>Post-term:</b> 42 weeks and beyond</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Before you rely on the number</h3><ul><li>Start a prenatal vitamin with folic acid as early as possible.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">When an ultrasound replaces the period-based date</h3><p>Under American College of Obstetricians and Gynecologists guidance, the LMP date stands unless an ultrasound differs from it by more than a set number of days, and the allowance grows as pregnancy advances.</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Ultrasound performed at</th><th style="border:1px solid #ccc;padding:6px">Redate if the difference is more than</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Up to 8 weeks 6 days</td><td style="border:1px solid #ccc;padding:6px">5 days</td></tr><tr><td style="border:1px solid #ccc;padding:6px">9 weeks 0 days to 15 weeks 6 days</td><td style="border:1px solid #ccc;padding:6px">7 days</td></tr><tr><td style="border:1px solid #ccc;padding:6px">16 weeks 0 days to 21 weeks 6 days</td><td style="border:1px solid #ccc;padding:6px">10 days</td></tr><tr><td style="border:1px solid #ccc;padding:6px">22 weeks 0 days to 27 weeks 6 days</td><td style="border:1px solid #ccc;padding:6px">14 days</td></tr><tr><td style="border:1px solid #ccc;padding:6px">28 weeks 0 days and later</td><td style="border:1px solid #ccc;padding:6px">21 days</td></tr></table><p>Example: your LMP puts you at 8 weeks 2 days, and the scan measures 7 weeks 4 days. The gap is 5 days, so the LMP date stays. Had the scan read 7 weeks 3 days, the 6-day gap would move your due date 6 days later. Once set this way, the date is normally not changed again, even if a later scan suggests a bigger or smaller baby; IVF pregnancies are dated from the transfer instead.</p>
+<h3 style="font-size:22px;margin-top:28px">Questions expectant parents ask most</h3><p><b>I don't remember my last period. What now?</b><br>An ultrasound can date the pregnancy. Contact your healthcare provider.</p><p><b>Can I use this if my cycles are irregular?</b><br>It gives a rough estimate, but an ultrasound will be more reliable.</p><p><b>How accurate is a due date?</b><br>It is an estimate. An early ultrasound is the most accurate way to date a pregnancy.</p><p><b>Why count from my last period instead of conception?</b><br>Conception date is rarely known exactly, so doctors count from the last period, which adds about 2 weeks.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html">Age Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.acog.org/womens-health" rel="noopener" target="_blank">ACOG – Women&#x27;s health FAQs (pregnancy dating, term definitions)</a></li><li><a href="https://aa.usno.navy.mil/" rel="noopener" target="_blank">U.S. Naval Observatory – Astronomical Applications (calendar and date tools)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> the example date was counted on a calendar; term definitions follow the American College of Obstetricians and Gynecologists (acog.org). Last reviewed November 2026. This page is not medical advice; follow your provider's guidance. This gives an estimated date only; your doctor or midwife sets the official due date, and nothing here replaces prenatal care.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/days-from-today.html" style="color:#1a56db">Days From Today Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/days-between-dates-calculator.html" style="color:#1a56db">Date Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html" style="color:#1a56db">Age Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Pregnancy Due Date Calculator end ===== -->

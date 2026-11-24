@@ -1,0 +1,107 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinY4WTxvVl2Kxxkd7gg2UqmA-jQML463UGMJTDJ9OKIVR9v5wcfXR-6toM4fxwuu632lFrq9cja-rEN2BK7rpqO1FyLsNktNEZWrs6J5C12SzSEEAQsFCp4NTdhZ2O3fhGF3-W9M78GHbjKfvAU_Qhxy7-0eYsnYzQyT6N-kSoClzn7fMbvUDL6GGvnew/s300/E21.grade-calculator%20%28%EA%B3%BC%EB%AA%A9%20%EC%84%B1%EC%A0%81%C2%B7%EA%B8%B0%EB%A7%90%20%ED%95%84%EC%9A%94%20%EC%A0%90%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Grade calculator showing a weighted class grade and the final exam score needed" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinY4WTxvVl2Kxxkd7gg2UqmA-jQML463UGMJTDJ9OKIVR9v5wcfXR-6toM4fxwuu632lFrq9cja-rEN2BK7rpqO1FyLsNktNEZWrs6J5C12SzSEEAQsFCp4NTdhZ2O3fhGF3-W9M78GHbjKfvAU_Qhxy7-0eYsnYzQyT6N-kSoClzn7fMbvUDL6GGvnew/s320/E21.grade-calculator%20%28%EA%B3%BC%EB%AA%A9%20%EC%84%B1%EC%A0%81%C2%B7%EA%B8%B0%EB%A7%90%20%ED%95%84%EC%9A%94%20%EC%A0%90%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Grade Calculator (paste in Blogger HTML view) ===== -->
+<div id="gr-calc">
+<style>
+#gr-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#gr-calc .gr-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#gr-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#gr-calc .gr-lbl{display:block;font-weight:bold;margin-top:14px}
+#gr-calc .gr-hint{font-size:15px;color:#555;font-weight:normal}
+#gr-calc .gr-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#gr-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#gr-calc input.gr-s{flex:0 0 5.5em}
+#gr-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#gr-calc .gr-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#gr-calc .gr-opts{display:grid;gap:8px;margin-top:8px}
+#gr-calc .gr-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#gr-calc .gr-opts input{width:22px;height:22px;flex:none}
+#gr-calc .gr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#gr-calc .gr-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#gr-calc .gr-grid select{font-size:17px;width:100%}
+#gr-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#gr-calc .gr-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#gr-calc .gr-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#gr-calc .gr-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#gr-calc .gr-err{color:#c00;font-weight:bold;text-align:center}
+#gr-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#gr-calc th,#gr-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#gr-calc th{background:#f2f4f8}
+#gr-calc .gr-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="gr-box"><h2>Grade Calculator</h2>
+<span class="gr-lbl">What do you want to find?</span><div class="gr-opts"><label><input type="radio" name="gr-mode" value="a" checked> My current class grade (weighted average)</label><label><input type="radio" name="gr-mode" value="b"> What I need on the final exam</label></div><div id="gr-ma"><div class="gr-grid"><b>Assignment</b><b>Score %</b><b>Weight %</b><span></span><input type="text" id="gr-n1" placeholder="Homework"><input type="text" inputmode="decimal" id="gr-s1" placeholder="92"><input type="text" inputmode="decimal" id="gr-w1" placeholder="20"><span></span><input type="text" id="gr-n2" placeholder="Quizzes"><input type="text" inputmode="decimal" id="gr-s2" placeholder="85"><input type="text" inputmode="decimal" id="gr-w2" placeholder="30"><span></span><input type="text" id="gr-n3" placeholder="Midterm"><input type="text" inputmode="decimal" id="gr-s3" placeholder="78"><input type="text" inputmode="decimal" id="gr-w3" placeholder="50"><span></span><input type="text" id="gr-n4" placeholder="Project"><input type="text" inputmode="decimal" id="gr-s4" placeholder=""><input type="text" inputmode="decimal" id="gr-w4" placeholder=""><span></span><input type="text" id="gr-n5" placeholder="Lab"><input type="text" inputmode="decimal" id="gr-s5" placeholder=""><input type="text" inputmode="decimal" id="gr-w5" placeholder=""><span></span><input type="text" id="gr-n6" placeholder="Other"><input type="text" inputmode="decimal" id="gr-s6" placeholder=""><input type="text" inputmode="decimal" id="gr-w6" placeholder=""><span></span></div></div><div id="gr-mb" style="display:none"><span class="gr-lbl">Current grade</span><div class="gr-line"><input type="text" inputmode="decimal" id="gr-cur" placeholder="e.g. 85"><span class="gr-unit">%</span></div><span class="gr-lbl">Grade you want</span><div class="gr-line"><input type="text" inputmode="decimal" id="gr-want" placeholder="e.g. 88"><span class="gr-unit">%</span></div><span class="gr-lbl">Final exam weight</span><div class="gr-line"><input type="text" inputmode="decimal" id="gr-fw" placeholder="e.g. 25"><span class="gr-unit">%</span></div></div>
+<button type="button" id="gr-btn">Calculate</button>
+<div class="gr-result" id="gr-res"></div>
+<p class="gr-note">Letter grades use the common US scale: A 90+, B 80–89, C 70–79, D 60–69, F below 60.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="gr-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+Array.prototype.forEach.call(document.getElementsByName('gr-mode'),function(x){x.addEventListener('change',function(){var v=pick('gr-mode');$('gr-ma').style.display=v==='a'?'block':'none';$('gr-mb').style.display=v==='b'?'block':'none';$('gr-res').style.display='none';});});
+
+  function L(g){return g>=93?'A':g>=90?'A-':g>=87?'B+':g>=83?'B':g>=80?'B-':g>=77?'C+':g>=73?'C':g>=70?'C-':g>=67?'D+':g>=60?'D':'F';}
+$('gr-btn').addEventListener('click',function(){var box=$('gr-res');box.style.display='block';function err(t){box.innerHTML='<p class="gr-err">'+t+'</p>';}
+  if(pick('gr-mode')==='a'){var t=0,w=0;for(var i=1;i<=6;i++){var s=$('gr-s'+i).value,k=num($('gr-w'+i).value);if(s!==''&&k>0){t+=num(s)*k;w+=k;}}
+    if(!w)return err('Enter at least one score and weight.');var g=t/w;
+    box.innerHTML='<div style="text-align:center">Current grade</div><div class="gr-big">'+g.toFixed(1)+'% · '+L(g)+'</div>'+row('Weights counted',w+'%')+(w<100?row('Note','Only '+w+'% of the course is graded so far'):'');}
+  else{var c=num($('gr-cur').value),d=num($('gr-want').value),f=num($('gr-fw').value)/100;if(!f||f>=1)return err('Final weight must be between 1% and 99%.');
+    var n=(d-c*(1-f))/f;
+    box.innerHTML='<div style="text-align:center">You need on the final</div><div class="gr-big">'+n.toFixed(1)+'%</div>'+(n>100?'<p class="gr-err">More than 100% — this target is not reachable without extra credit.</p>':n<=0?row('Good news','You have already secured this grade'):'')+
+     row('Final 70% → course grade',(c*(1-f)+70*f).toFixed(1)+'%')+row('Final 90% → course grade',(c*(1-f)+90*f).toFixed(1)+'%');}
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Want to know where you stand in a class, or what you need on the final to keep your A? Enter your scores and weights, or your current grade and final exam weight.</p>
+<h2 style="font-size:26px;margin-top:10px">Working out the grade you need on the final</h2>
+<p>When a class uses weighted categories, your final grade is the weighted average of each part. That makes it possible to calculate exactly what score you need on the final exam to reach a target grade — and to know early whether a target is realistic.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the grade calculator</h3><ol><li>Pick “current class grade” or “what I need on the final”.</li><li>Enter scores and weights from your syllabus.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Weighted grade = Σ(score × weight) ÷ Σ weights &nbsp;|&nbsp; Final needed = (goal − current × (1 − w)) ÷ w</p>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3>
+<p>Needed final score = (target grade − current grade × (1 − final weight)) ÷ final weight.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Turning a 600-point class into weights</h3><p>Many syllabi never mention weights. They list points: 120 for homework, 150 for the midterm, and so on. The conversion is one division: <b>weight = category points ÷ total points</b>.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Category</th><th style="border:1px solid #ccc;padding:6px">Points possible</th><th style="border:1px solid #ccc;padding:6px">Weight</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Homework</td><td style="border:1px solid #ccc;padding:6px">120</td><td style="border:1px solid #ccc;padding:6px">20%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Quizzes</td><td style="border:1px solid #ccc;padding:6px">90</td><td style="border:1px solid #ccc;padding:6px">15%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Midterm</td><td style="border:1px solid #ccc;padding:6px">150</td><td style="border:1px solid #ccc;padding:6px">25%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Final exam</td><td style="border:1px solid #ccc;padding:6px">240</td><td style="border:1px solid #ccc;padding:6px">40%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Total</td><td style="border:1px solid #ccc;padding:6px">600</td><td style="border:1px solid #ccc;padding:6px">100%</td></tr></table><p>Points-based classes have one trap. If the syllabus drops your lowest quiz, both the points you earned and the points possible change. Four quizzes of 72, 88, 91 and 84 average 83.75%; drop the 72 and the remaining three average <b>87.67%</b>, almost four points higher. Enter the drop before you plan around the number.</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>Your current grade is 85% and the final exam is worth 30% of the course. To finish with 88%: (88 − 85 × 0.70) ÷ 0.30 = (88 − 59.5) ÷ 0.30 = <b>95%</b> on the final. To finish with 90% you would need about 102% — not possible without extra credit, so 88% is the realistic target.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Weighted category example</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Category</th><th style="border:1px solid #ccc;padding:6px">Weight</th><th style="border:1px solid #ccc;padding:6px">Your score</th><th style="border:1px solid #ccc;padding:6px">Contribution</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Homework</td><td style="border:1px solid #ccc;padding:6px">20%</td><td style="border:1px solid #ccc;padding:6px">95%</td><td style="border:1px solid #ccc;padding:6px">19.0</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Quizzes</td><td style="border:1px solid #ccc;padding:6px">20%</td><td style="border:1px solid #ccc;padding:6px">80%</td><td style="border:1px solid #ccc;padding:6px">16.0</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Midterm</td><td style="border:1px solid #ccc;padding:6px">25%</td><td style="border:1px solid #ccc;padding:6px">78%</td><td style="border:1px solid #ccc;padding:6px">19.5</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Final</td><td style="border:1px solid #ccc;padding:6px">35%</td><td style="border:1px solid #ccc;padding:6px">85%</td><td style="border:1px solid #ccc;padding:6px">29.75</td></tr>
+</table>
+<p>Total: 19 + 16 + 19.5 + 29.75 = <b>84.25%</b>.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Study tips the numbers suggest</h3>
+<ul>
+<li>A category with a large weight and a low score is where extra effort pays off most.</li>
+<li>Homework points are often the easiest to secure — missing assignments can cost more than a weak quiz.</li>
+<li>Check the syllabus for dropped lowest scores, curves or extra credit before assuming the worst.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Small details that change the result</h3><ul><li>Categories with big weights (like exams) move your grade the most.</li><li>Some teachers use a different letter scale; ask if unsure.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">A six-point checklist before you set a target for the final</h3><ol><li>Confirm the final's weight or point value from the syllabus, not from memory. Here, 40%.</li><li>Work out your grade on everything finished so far. Say it is 83.5%.</li><li>Run three targets, not one. To finish with 87% (B+) you need 92.25% on the final; to reach 90% (A-) you need 99.75%; to hold 80% (B-) you need only 74.75%.</li><li>Check for a replacement policy. If the final can replace a weak midterm, the midterm's weight effectively moves into the final and the math changes.</li><li>Ask how rounding works. Many instructors do not round 89.5% up to 90%, so plan for the unrounded number.</li><li>Put study hours where they change the outcome. If an A- needs 99.75%, the realistic goal is the B+, and the hours saved may lift a grade in another class where the target is reachable.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">Student questions about weighted grades and finals</h3><p><b>What if weights don't add up to 100%?</b><br>Divide the weighted total by the sum of the weights entered so far to see your grade on completed work.</p><p><b>How do I turn a percentage into a letter grade?</b><br>Many schools use 90 = A, 80 = B, 70 = C, 60 = D, but check your course syllabus.</p><p><b>How is a weighted grade different from an average?</b><br>A plain average treats every score equally. A weighted grade counts each category by its share of the course.</p><p><b>What if my weights do not add up to 100%?</b><br>The calculator uses only the weights you entered, so it shows your grade on the work graded so far.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/gpa-calculator.html">GPA Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic (weighted averages and percents)</a></li><li><a href="https://studentaid.gov/" rel="noopener" target="_blank">Federal Student Aid – grade and progress requirements for aid eligibility</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> examples checked by hand. Last reviewed November 2026. Grade estimates depend on your instructor&#x27;s exact policy; confirm weights, drops and rounding with the syllabus before relying on them.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/gpa-calculator.html" style="color:#1a56db">GPA Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/fraction-calculator.html" style="color:#1a56db">Fraction Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Grade Calculator end ===== -->

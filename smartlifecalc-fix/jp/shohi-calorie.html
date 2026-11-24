@@ -1,0 +1,96 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh44DI2_Uvif0hbBDeKeBmFOyLzM4LgHwknv9IlrCtPU0Qf-5gEmVAa-RGOf_rYojnQhGdMAKdDciBFuuUNl_P68SN28ymQPxhZDFvt4W1ammLuBoFLmbukqeANmLtrsskxRSzK5k2B90Xf8JzPEUm4_2XrlJ2-q14wDJdNeZtfyfU5AILor-d11V2sr0c/s300/J14.shohi-calorie.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="消費カロリー計算ツールで運動別のMETsと消費kcalを表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh44DI2_Uvif0hbBDeKeBmFOyLzM4LgHwknv9IlrCtPU0Qf-5gEmVAa-RGOf_rYojnQhGdMAKdDciBFuuUNl_P68SN28ymQPxhZDFvt4W1ammLuBoFLmbukqeANmLtrsskxRSzK5k2B90Xf8JzPEUm4_2XrlJ2-q14wDJdNeZtfyfU5AILor-d11V2sr0c/s320/J14.shohi-calorie.png"/></a></div>
+
+
+<!-- ===== J14 消費カロリー計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc14">
+<style>
+#jc14{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc14 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc14 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc14 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc14 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc14 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc14 input[type=text],#jc14 input[type=date],#jc14 input[type=time],#jc14 select,#jc14 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc14 textarea{width:100%;min-height:180px;font-size:17px}
+#jc14 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc14 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc14 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc14 .jc-opts input{width:20px;height:20px}
+#jc14 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc14 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc14 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc14 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc14 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc14 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc14 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc14 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc14 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc14 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc14 .jc-art th,#jc14 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc14 .jc-art th{background:#f2f4f8}
+#jc14 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">運動の種類と時間、体重から消費カロリーを計算（METs法）。ウォーキング、ジョギング、水泳、自転車など主な運動に対応。</p>
+<div class="jc-box"><h2>消費カロリー計算</h2>
+<span class="jc-lbl">運動の種類</span><div class="jc-line"><select id="jc14-e"><option value="3.0">ゆっくり歩く</option><option value="3.5" selected>ふつうに歩く</option><option value="4.3">早歩き</option><option value="7.0">ジョギング</option><option value="9.8">ランニング（時速9.7km）</option><option value="4.0">自転車（ふつう）</option><option value="6.0">水泳（ゆっくり）</option><option value="5.0">ラジオ体操・軽い筋トレ</option><option value="3.3">掃除機かけ</option><option value="2.5">ヨガ・ストレッチ</option></select></div>
+<span class="jc-lbl">体重</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc14-w" placeholder="例：60"><span class="jc-unit">kg</span></div>
+<span class="jc-lbl">運動時間</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc14-m" placeholder="例：30"><span class="jc-unit">分</span></div>
+<button type="button" id="jc14-btn">計算する</button>
+<div class="jc-result" id="jc14-res"></div>
+<p class="jc-note">消費カロリー ＝ METs × 体重 × 時間 × 1.05 で計算した目安です。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc14-',box=document.getElementById('jc14-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var me=+V('e'),w=N('w'),m=N('m');if(!w||!m)return err('体重と時間を入れてください。');var k=me*w*m/60*1.05;
+show(f0(Math.round(k))+' kcal',[['METs（運動強度）',me],['ごはん1杯（約240kcal）でいうと',f1(k/240)+' 杯分'],['脂肪にすると約',f0(Math.round(k/7.2))+' g']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>運動でどれくらいカロリーを使ったかは、運動の強さを表す「METs（メッツ）」で計算できます。厚生労働省の健康づくりの資料でも使われている方法です。</p>
+
+<h2 style="font-size:24px;margin-top:10px">ごはん1杯分を歩いて消費するには約65分かかる</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><p>消費カロリー（kcal）＝ METs × 体重（kg）× 時間（h）× 1.05<br>例：体重60kgの人がふつうに30分歩く → 3.5 × 60 × 0.5 × 1.05 ≒ 110kcal</p>
+
+<h3 style="font-size:22px;margin-top:28px">主な運動のMETs</h3><table><tr><th>運動</th><th>METs</th></tr><tr><td>ふつうに歩く</td><td>3.5</td></tr><tr><td>早歩き</td><td>4.3</td></tr><tr><td>ジョギング</td><td>7.0</td></tr><tr><td>水泳（ゆっくり）</td><td>6.0</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">運動（METs）</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">体重60kg・30分</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">体重70kg・1時間</th></tr><tr><td style="border:1px solid #bbb;padding:6px">ふつうに歩く（3.5）</td><td style="border:1px solid #bbb;padding:6px">約110kcal</td><td style="border:1px solid #bbb;padding:6px">約257kcal</td></tr><tr><td style="border:1px solid #bbb;padding:6px">早歩き（4.3）</td><td style="border:1px solid #bbb;padding:6px">約135kcal</td><td style="border:1px solid #bbb;padding:6px">約316kcal</td></tr><tr><td style="border:1px solid #bbb;padding:6px">水泳・ゆっくり（6.0）</td><td style="border:1px solid #bbb;padding:6px">約189kcal</td><td style="border:1px solid #bbb;padding:6px">約441kcal</td></tr><tr><td style="border:1px solid #bbb;padding:6px">ジョギング（7.0）</td><td style="border:1px solid #bbb;padding:6px">約221kcal</td><td style="border:1px solid #bbb;padding:6px">約515kcal</td></tr></table><p>計算式は「METs × 体重（kg）× 時間（h）× 1.05」です。60kgの人が30分ジョギングすると 7.0 × 60 × 0.5 × 1.05 ＝ <b>約221kcal</b>、ごはん1杯（約240kcal）より少し少ないくらいです。</p>
+<h3 style="font-size:22px;margin-top:28px">消費カロリーの思い込みと計算上の事実</h3><ul><li><b>思い込み</b>：速く歩けば短時間でも同じだけ消費する。<br><b>事実</b>：消費量はMETs×時間で決まります。ふつうの速さ（3.5METs）で60分なら3.5メッツ・時、早歩き（4.3METs）で45分なら約3.2メッツ・時で、ゆっくり長く歩いた方が多くなります。</li><li><b>思い込み</b>：運動の消費カロリーは全部「運動で増えた分」。<br><b>事実</b>：じっとしていても1METs分は使っています。体重60kgの早歩き30分の約135kcalのうち、運動で増えた分は（4.3−1）×60×0.5×1.05＝約104kcalです。</li><li><b>思い込み</b>：ごはん1杯はすぐ歩いて消せる。<br><b>事実</b>：約240kcalを体重60kgの人がふつうの速さで歩いて消費するには、240÷（3.5×60×1.05）≒1.09時間、約65分かかります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">METs（メッツ）とは</h3><p>METsは、座って安静にしている状態を1として、運動がその何倍のエネルギーを使うかを表した数字です。厚生労働省の「健康づくりのための身体活動・運動ガイド」でも使われています。METs × 時間を「エクササイズ（メッツ・時）」と呼び、活動量の目安にします。</p>
+<h3 style="font-size:22px;margin-top:28px">身体活動の目安</h3><ul><li>大人は、歩行またはそれと同じくらいの強さの身体活動を<b>1日60分以上</b>（1日約8,000歩以上）が推奨されています（高齢者は1日40分以上）。</li><li>息が弾む程度の運動を週に60分以上行うことも勧められています。</li><li>掃除機かけ（3.3METs）など、家事も立派な身体活動です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>運動の消費カロリーを多く見積もる</b>：この値には、運動しなくても使う分（安静時の分）も含まれています。</li><li><b>脂肪の減り方をそのまま当てはめる</b>：200kcal使っても、脂肪が約28g減るのは目安で、食事や水分で体重は毎日変わります。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>ウォーキングやジョギングを始めたとき、1回の運動でどのくらいカロリーを使ったかの目安が分かります。食事の量と合わせて考えると、無理のない体重管理の計画が立てやすくなります。</p><p>通勤で一駅歩く、エレベーターではなく階段を使うなど、日常の小さな工夫も積み重なると大きな差になります。続けられる運動を選ぶことがいちばん大切です。</p><p>記録をつけるときは、運動の種類・時間・体重をメモしておくと、あとで計算し直すのも簡単です。</p>
+<h3 style="font-size:22px;margin-top:28px">一駅歩く通勤を1か月続けたらどうなるか</h3><p>体重60kgの人が、通勤の片道15分（往復30分）を電車から早歩き（4.3METs）に替えた場合を計算します。</p><ul><li>1日：4.3×60×0.5×1.05≒135kcal（安静時の分を除いた純増は約104kcal）</li><li>1か月（出勤20日）：135×20＝2,700kcal。体脂肪1kgを約7,200kcalとすると約0.38kg分</li><li>1年（出勤240日）：約32,400kcal、約4.5kg分</li></ul><p>この数字は「食事やほかの活動が変わらなければ」という前提の理論値です。実際には食欲や体重の変化で差は小さくなります。それでも週5日なら4.3×0.5×5＝約10.8メッツ・時の身体活動が加わり、厚生労働省のガイドが成人に勧める週23メッツ・時以上の目安の半分近くを、通勤だけで積み上げられます。</p>
+<h3 style="font-size:22px;margin-top:28px">消費カロリーの気になる点に答えます</h3><p><b>Q. 脂肪1kgは何kcal？</b><br>A. 約7,200kcalとされています。</p><p><b>Q. 歩数から計算できますか？</b><br>A. 1,000歩はふつうの速さで約10分が目安です。8,000歩なら約80分歩いたとして計算できます。</p><p><b>Q. 同じ運動でも人によって違うのは？</b><br>A. 体重が重いほど消費カロリーは大きくなります。また、運動の強さ（速さ・坂道など）でMETsが変わります。</p><p><b>Q. 雨の日はどうする？</b><br>A. 室内でのラジオ体操（5.0METs）や掃除機かけ（3.3METs）でも身体活動になります。</p><p><b>Q. 運動前後の体重差は脂肪が減った分？</b><br>A. ほとんどは汗などの水分です。水分をとれば元に戻ります。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – 目標の達成率</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 運動を続けた日数</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html">割り勘計算</a> – ジムの費用を割る</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.e-healthnet.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 e-ヘルスネット – メッツ（METs）と身体活動</a></li><li><a href="https://www.nibiohn.go.jp/eiken/" rel="noopener" target="_blank">国立健康・栄養研究所 – 身体活動のメッツ表</a></li><li><a href="https://www.mhlw.go.jp/" rel="noopener" target="_blank">厚生労働省 – 健康づくりのための身体活動・運動ガイド</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>表の値はツールと同じ式でプログラム計算しました。METsの値と身体活動の目安は厚生労働省「健康づくりのための身体活動・運動ガイド2023」などをもとにしています。 最終確認：2026年11月。 消費カロリーはMETs法による推定値で、体質や運動の強さによって変わります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/kiso-taisha.html" style="color:#1a56db">基礎代謝計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/bmi.html" style="color:#1a56db">BMI計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J14 end ===== -->

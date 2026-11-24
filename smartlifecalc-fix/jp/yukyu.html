@@ -1,0 +1,95 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNlfC5VfZF-jLvxc1d6dRIzktITqDxNAQqzkkGUEz1R-Z7RXsmIuY-azv0Rlb4AMZDKYVjqTQTztjTBx5WVQ4YwAEcD-CeSS5TnIihfJlxQflMkjCuUikSKqDjTfg0yvoY-pNcOAxk0nf_6NyaZpz_19UcY4WtcvrQmdRONXLeAsOxWkM1BL3UNSWTkp4/s300/J18.yukyu.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="有給休暇計算ツールで入社日から付与日数と次の付与日を表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNlfC5VfZF-jLvxc1d6dRIzktITqDxNAQqzkkGUEz1R-Z7RXsmIuY-azv0Rlb4AMZDKYVjqTQTztjTBx5WVQ4YwAEcD-CeSS5TnIihfJlxQflMkjCuUikSKqDjTfg0yvoY-pNcOAxk0nf_6NyaZpz_19UcY4WtcvrQmdRONXLeAsOxWkM1BL3UNSWTkp4/s320/J18.yukyu.png"/></a></div>
+
+<!-- ===== J18 有給休暇日数計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc18">
+<style>
+#jc18{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc18 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc18 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc18 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc18 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc18 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc18 input[type=text],#jc18 input[type=date],#jc18 input[type=time],#jc18 select,#jc18 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc18 textarea{width:100%;min-height:180px;font-size:17px}
+#jc18 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc18 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc18 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc18 .jc-opts input{width:20px;height:20px}
+#jc18 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc18 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc18 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc18 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc18 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc18 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc18 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc18 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc18 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc18 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc18 .jc-art th,#jc18 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc18 .jc-art th{background:#f2f4f8}
+#jc18 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">入社日と週の勤務日数から、年次有給休暇の付与日数と次に付与される日を計算。パート・アルバイトの比例付与にも対応しています。</p>
+<div class="jc-box"><h2>有給休暇日数計算</h2>
+<span class="jc-lbl">入社日</span><div class="jc-line"><input type="date" id="jc18-s"></div>
+<span class="jc-lbl">週の所定勤務日数</span><div class="jc-line"><select id="jc18-d"><option value="5" selected>週5日以上（週30時間以上）</option><option value="4">週4日</option><option value="3">週3日</option><option value="2">週2日</option><option value="1">週1日</option></select></div>
+<button type="button" id="jc18-btn">計算する</button>
+<div class="jc-result" id="jc18-res"></div>
+<p class="jc-note">出勤率8割以上が条件です。有給休暇の時効は2年です。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc18-',box=document.getElementById('jc18-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var s=D('s');if(!s)return err('入社日を選んでください。');var T={5:[10,11,12,14,16,18,20],4:[7,8,9,10,12,13,15],3:[5,6,6,8,9,10,11],2:[3,4,4,5,6,6,7],1:[1,2,2,2,3,3,3]}[V('d')];
+var t=new Date();t.setHours(0,0,0,0);function at(k){var x=new Date(s.getTime());x.setMonth(x.getMonth()+6+12*k);return x;}
+var k=-1;while(at(k+1)<=t)k++;var nx=at(k+1);
+show(k<0?'まだ付与前':'今の付与日数 '+T[Math.min(k,6)]+' 日',[['勤続',k<0?'6か月未満':(k===0?'6か月':(k+'年6か月'))],['次の付与日',fd(nx)],['次の付与日数',T[Math.min(k+1,6)]+' 日']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>年次有給休暇は、入社から6か月続けて働き、出勤率が8割以上なら付与されます。その後は1年ごとに日数が増えます。パートやアルバイトでも、勤務日数に応じて付与されます（比例付与）。</p>
+
+<h2 style="font-size:24px;margin-top:10px">付与日の前に確認したい6つのポイント</h2>
+<h3 style="font-size:22px;margin-top:28px">付与日数（週5日以上の場合）</h3><table><tr><th>勤続</th><th>日数</th></tr><tr><td>6か月</td><td>10日</td></tr><tr><td>1年6か月</td><td>11日</td></tr><tr><td>2年6か月</td><td>12日</td></tr><tr><td>3年6か月</td><td>14日</td></tr><tr><td>4年6か月</td><td>16日</td></tr><tr><td>5年6か月</td><td>18日</td></tr><tr><td>6年6か月以上</td><td>20日</td></tr></table>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>2026年4月1日に入社した週5日勤務の人は、6か月後の<b>2026年10月1日に10日</b>付与されます。その1年後の2027年10月1日に11日、2028年10月1日に12日…と増えていき、6年6か月で上限の20日になります。</p>
+<h3 style="font-size:22px;margin-top:28px">付与日に確かめる6項目のチェックリスト</h3><ol><li><b>入社から6か月たったか</b>：最初の付与日は入社日の6か月後の同じ日です。入社日や4月1日にまとめて付与する会社では、就業規則の基準日が優先します。</li><li><b>直前1年（初回は6か月）の出勤率が8割以上か</b>：出勤日数 ÷ 全労働日 です。産休・育休・労災の休業・有給は出勤日に数え、会社都合の休業日は全労働日から外します。</li><li><b>週の所定労働日数と時間</b>：判定は付与日時点の契約で行います。週3日から週5日に変わると、次の付与日から週5日の日数になります。</li><li><b>前年の残りが繰り越されているか</b>：時効は付与日から2年で、前年分の残りは翌年分と合わせて持てます。</li><li><b>年5日の取得義務の対象か</b>：10日以上付与された人は、付与日から1年以内に5日取ります。</li><li><b>半日・時間単位の扱い</b>：半日単位は本人の希望と会社の同意で使えますが、時間単位は労使協定が必要で、年5日分が上限です。</li></ol>
+<h3 style="font-size:22px;margin-top:28px">パート・アルバイトの比例付与（週の所定勤務日数別）</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">勤続</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">週4日</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">週3日</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">週2日</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">週1日</th></tr><tr><td style="border:1px solid #bbb;padding:6px">6か月</td><td style="border:1px solid #bbb;padding:6px">7日</td><td style="border:1px solid #bbb;padding:6px">5日</td><td style="border:1px solid #bbb;padding:6px">3日</td><td style="border:1px solid #bbb;padding:6px">1日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1年6か月</td><td style="border:1px solid #bbb;padding:6px">8日</td><td style="border:1px solid #bbb;padding:6px">6日</td><td style="border:1px solid #bbb;padding:6px">4日</td><td style="border:1px solid #bbb;padding:6px">2日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">2年6か月</td><td style="border:1px solid #bbb;padding:6px">9日</td><td style="border:1px solid #bbb;padding:6px">6日</td><td style="border:1px solid #bbb;padding:6px">4日</td><td style="border:1px solid #bbb;padding:6px">2日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">3年6か月</td><td style="border:1px solid #bbb;padding:6px">10日</td><td style="border:1px solid #bbb;padding:6px">8日</td><td style="border:1px solid #bbb;padding:6px">5日</td><td style="border:1px solid #bbb;padding:6px">2日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">4年6か月</td><td style="border:1px solid #bbb;padding:6px">12日</td><td style="border:1px solid #bbb;padding:6px">9日</td><td style="border:1px solid #bbb;padding:6px">6日</td><td style="border:1px solid #bbb;padding:6px">3日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">5年6か月</td><td style="border:1px solid #bbb;padding:6px">13日</td><td style="border:1px solid #bbb;padding:6px">10日</td><td style="border:1px solid #bbb;padding:6px">6日</td><td style="border:1px solid #bbb;padding:6px">3日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">6年6か月以上</td><td style="border:1px solid #bbb;padding:6px">15日</td><td style="border:1px solid #bbb;padding:6px">11日</td><td style="border:1px solid #bbb;padding:6px">7日</td><td style="border:1px solid #bbb;padding:6px">3日</td></tr></table><p>週4日以下でも、週の所定労働時間が30時間以上なら、正社員と同じ日数（上の週5日の表）が付与されます。</p>
+<h3 style="font-size:22px;margin-top:28px">知っておきたいルール</h3><ul><li><b>出勤率8割以上</b>が付与の条件です。産休・育休・業務上のけがによる休業、有給休暇を取った日は出勤したものとして扱われます。</li><li><b>時効は2年</b>です。使わなかった分は翌年まで繰り越せるので、最大で40日（20日＋20日）持てることになります。</li><li><b>年5日の取得義務</b>：10日以上付与される人には、会社が年5日を確実に取らせる義務があります（2019年4月から）。</li><li>労使協定があれば、年5日分まで<b>時間単位</b>で取ることもできます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>入社日から1年後に付与されると思う</b>：最初の付与は入社から6か月後です。</li><li><b>パートには有給がないと思う</b>：条件を満たせば、パート・アルバイトにも付与されます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>入社してから「有給はいつから何日もらえるのか」を確かめるときや、転職・パートへの切り替えで日数がどう変わるかを知りたいときに便利です。</p><p>旅行や家族の行事の予定を立てるとき、次の付与日を知っておくと、時効で消える前に計画的に使えます。</p><p>会社の勤怠システムで残り日数を確認し、このツールの付与日数と合っているかを見ておくと安心です。</p>
+<h3 style="font-size:22px;margin-top:28px">出勤率79％と80％の差、繰り越し分が消える順番</h3><p>全労働日が240日の年に、私傷病で50日欠勤した人の出勤率は 190 ÷ 240 ＝ 約79.2％ で、8割に届かず翌年の付与はありません。欠勤が48日なら 192 ÷ 240 ＝ 80％ でぎりぎり付与されます。遅刻や早退は出勤した日に数えるので影響しません。付与されなかった年も勤続年数は途切れず、翌年条件を満たせば本来の日数が付与されます。</p><p>繰り越しの例です。2025年10月1日に11日付与され、1年で6日使って5日残った人は、2026年10月1日に12日付与されて合計17日になります。2025年分の5日は2027年9月30日で時効になります。古い分と新しい分のどちらから消化するかは法律で決まっておらず、就業規則の定めで消える日数が変わるので確認しておくと安心です。</p>
+<h3 style="font-size:22px;margin-top:28px">有給休暇の制度に関する疑問</h3><p><b>Q. 年5日の取得義務とは？</b><br>A. 10日以上付与される人は、年5日を必ず取得させることが会社に義務づけられています。</p><p><b>Q. 会社が独自に入社日にまとめて付与している場合は？</b><br>A. 法律より早く・多く付与する「前倒し付与」は認められています。就業規則を確認してください。</p><p><b>Q. 退職時に残った有給は？</b><br>A. 退職日までに取得できます。買い取りは法律上の義務ではありません。</p><p><b>Q. パートから正社員になったら？</b><br>A. 切り替えの時点で継続勤務とみなされ、次の付与日から正社員の日数で付与されるのが一般的です。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 入社から何日？</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – 付与日の○日後</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 入社年を和暦で</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://laws.e-gov.go.jp/law/322AC0000000049" rel="noopener" target="_blank">e-Gov法令検索 – 労働基準法（第39条 年次有給休暇）</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html" rel="noopener" target="_blank">厚生労働省 – 労働基準に関する法制度（年次有給休暇の付与・取得義務）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>付与日数は労働基準法第39条と厚生労働省の比例付与表に基づき、計算例はツールで確かめました。 最終確認：2026年11月。 付与日数は労働基準法の最低基準による目安で、会社ごとの規定や勤務実態により異なることがあります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/zangyodai.html" style="color:#1a56db">残業代計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html" style="color:#1a56db">日数計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html" style="color:#1a56db">日付計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J18 end ===== -->
+

@@ -1,0 +1,117 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhovlMjtdB83-SkC9LrNGXAa-FUprKrq6A_5qLNv0d_tQvi0bjKhkWNqEgN9s3C4uUNup7tJ9BC49c0BftLCZwR73YobQkTsL5HA8fDilubHFDMdIUNa9FVX9lMQX4oCXp8N9Vh6s31Zw-c8Dawk4ZexUwAHNpU9Q-nUGjeQV9EP_ZBfWXKj3u7TGdcvBw/s300/E15.days-between-dates-calculator%20%28%EB%82%A0%EC%A7%9C%20%EC%82%AC%EC%9D%B4%20%EC%9D%BC%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Date calculator counting days and weekdays between two chosen dates" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhovlMjtdB83-SkC9LrNGXAa-FUprKrq6A_5qLNv0d_tQvi0bjKhkWNqEgN9s3C4uUNup7tJ9BC49c0BftLCZwR73YobQkTsL5HA8fDilubHFDMdIUNa9FVX9lMQX4oCXp8N9Vh6s31Zw-c8Dawk4ZexUwAHNpU9Q-nUGjeQV9EP_ZBfWXKj3u7TGdcvBw/s320/E15.days-between-dates-calculator%20%28%EB%82%A0%EC%A7%9C%20%EC%82%AC%EC%9D%B4%20%EC%9D%BC%EC%88%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+
+<!-- ===== Date Calculator (paste in Blogger HTML view) ===== -->
+<div id="ex-calc">
+<style>
+#ex-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ex-calc .ex-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ex-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ex-calc .ex-lbl{display:block;font-weight:bold;margin-top:14px}
+#ex-calc .ex-hint{font-size:15px;color:#555;font-weight:normal}
+#ex-calc .ex-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ex-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ex-calc input.ex-s{flex:0 0 5.5em}
+#ex-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ex-calc .ex-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ex-calc .ex-opts{display:grid;gap:8px;margin-top:8px}
+#ex-calc .ex-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ex-calc .ex-opts input{width:22px;height:22px;flex:none}
+#ex-calc .ex-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ex-calc .ex-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ex-calc .ex-grid select{font-size:17px;width:100%}
+#ex-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ex-calc .ex-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ex-calc .ex-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ex-calc .ex-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ex-calc .ex-err{color:#c00;font-weight:bold;text-align:center}
+#ex-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ex-calc th,#ex-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ex-calc th{background:#f2f4f8}
+#ex-calc .ex-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ex-box"><h2>Date Calculator</h2>
+<span class="ex-lbl">What do you want to do?</span><div class="ex-opts"><label><input type="radio" name="ex-mode" value="a" checked> Days between two dates</label><label><input type="radio" name="ex-mode" value="b"> Add or subtract days from a date</label></div><span class="ex-lbl">Start date</span><div class="ex-line ex-date" data-id="ex-s" data-today="1"></div><div id="ex-ma"><span class="ex-lbl">End date</span><div class="ex-line ex-date" data-id="ex-e"></div><div class="ex-opts"><label><input type="checkbox" id="ex-inc"> Include the end date (+1 day)</label></div></div><div id="ex-mb" style="display:none"><span class="ex-lbl">Days</span><div class="ex-line"><select id="ex-sg"><option value="1">+ add</option><option value="-1">− subtract</option></select><input type="text" inputmode="numeric" id="ex-n" placeholder="e.g. 90"><span class="ex-unit">days</span></div></div>
+<button type="button" id="ex-btn">Calculate</button>
+<div class="ex-result" id="ex-res"></div>
+<p class="ex-note">Calendar days, including weekends and holidays.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ex-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+
+  var now=new Date(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WK=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DAY=86400000;
+  function opts(a,b,sel,rev,lab){var h='<option value="">'+lab+'</option>',i;if(rev){for(i=b;i>=a;i--)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+i+'</option>';}else{for(i=a;i<=b;i++)h+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(lab==='Month'?MN[i-1]:i)+'</option>';}return h;}
+  Array.prototype.forEach.call(document.querySelectorAll('#ex-calc .ex-date'),function(d){
+    var id=d.getAttribute('data-id'),t=d.getAttribute('data-today')==='1';
+    d.innerHTML='<select id="'+id+'-m">'+opts(1,12,t?now.getMonth()+1:null,false,'Month')+'</select> '+
+      '<select id="'+id+'-d">'+opts(1,31,t?now.getDate():null,false,'Day')+'</select> '+
+      '<select id="'+id+'-y">'+opts(1920,now.getFullYear()+10,t?now.getFullYear():null,true,'Year')+'</select>';
+  });
+  function getD(id){var y=+$(id+'-y').value,m=+$(id+'-m').value,d=+$(id+'-d').value;if(!y||!m||!d)return null;var x=new Date(Date.UTC(y,m-1,d));if(x.getUTCMonth()!==m-1)return 'bad';return x;}
+  function fmtD(x){return WK[x.getUTCDay()]+', '+MN[x.getUTCMonth()]+' '+x.getUTCDate()+', '+x.getUTCFullYear();}
+
+  Array.prototype.forEach.call(document.getElementsByName('ex-mode'),function(x){x.addEventListener('change',function(){var a=pick('ex-mode')==='a';$('ex-ma').style.display=a?'block':'none';$('ex-mb').style.display=a?'none':'block';$('ex-res').style.display='none';});});
+$('ex-btn').addEventListener('click',function(){var box=$('ex-res');box.style.display='block';function err(t){box.innerHTML='<p class="ex-err">'+t+'</p>';}
+  var s=getD('ex-s');if(!s)return err('Please choose the start date.');if(s==='bad')return err('That date does not exist.');
+  if(pick('ex-mode')==='a'){var e=getD('ex-e');if(!e)return err('Please choose the end date.');if(e==='bad')return err('That date does not exist.');
+    var d=Math.round((e-s)/DAY);if($('ex-inc').checked)d+=d>=0?1:-1;var a=Math.abs(d),wd=0;
+    for(var i=0,x=new Date(Math.min(s,e));i<Math.abs(Math.round((e-s)/DAY))+($('ex-inc').checked?1:0);i++){var w=new Date(x.getTime()+i*DAY).getUTCDay();if(w&&w<6)wd++;}
+    box.innerHTML='<div style="text-align:center">'+(d<0?'The end date is before the start date':'Difference')+'</div><div class="ex-big">'+a.toLocaleString('en-US')+' days</div>'+row('Weeks',Math.floor(a/7)+' weeks '+(a%7)+' days')+row('Weekdays (Mon–Fri)',wd)+row('Approx. months',(a/30.4375).toFixed(1));
+  }else{var n=Math.round(num($('ex-n').value));if(!n)return err('Please enter the number of days.');var r=new Date(s.getTime()+(+$('ex-sg').value)*n*DAY);
+    box.innerHTML='<div style="text-align:center">Result date</div><div class="ex-big" style="font-size:26px">'+fmtD(r)+'</div>';}
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>How many days until a trip, a wedding or a deadline? What date is 90 days from today? This date calculator answers both in one click.</p>
+<h2 style="font-size:26px;margin-top:10px">Counting days between dates the right way</h2>
+<p>"How many days until…" sounds simple, but calendars have months of 28 to 31 days and leap years every four years (with exceptions). This calculator counts actual calendar days, and can also add or subtract days from a date — useful for deadlines, notice periods, travel and countdowns.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the date calculator</h3><ol><li>Choose “Days between two dates” or “Add or subtract days”.</li><li>Pick the dates (today is pre-selected).</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Days = end date − start date (add 1 to include both days)</p>
+<h3 style="font-size:22px;margin-top:28px">Worked examples</h3>
+<ul>
+<li>From January 1, 2026 to December 25, 2026 is <b>358 days</b>.</li>
+<li>90 days after November 14, 2026 is <b>February 12, 2027</b>.</li>
+<li>30 days before March 1, 2027 is January 30, 2027 (February 2027 has 28 days).</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Federal holidays that stretch a business-day count</h3><p>The weekday count above skips Saturdays and Sundays but not holidays, because holidays differ by state, employer and bank. For federal deadlines and most banks, subtract these 11 federal holidays when they fall inside your range:</p><ul><li>New Year's Day (Jan 1), Martin Luther King Jr. Day (third Monday in January), Washington's Birthday (third Monday in February)</li><li>Memorial Day (last Monday in May), Juneteenth (June 19), Independence Day (July 4)</li><li>Labor Day (first Monday in September), Columbus Day (second Monday in October), Veterans Day (Nov 11)</li><li>Thanksgiving (fourth Thursday in November), Christmas Day (Dec 25)</li></ul><p>A fixed-date holiday that falls on Saturday is observed on Friday; one that falls on Sunday moves to Monday. Example: 10 business days from Friday, November 20, 2026 is Monday, December 7, because Thanksgiving on November 26 drops out. Fourteen calendar days would end on December 4. For federal tax filings, a due date that lands on a weekend or legal holiday moves to the next business day.</p>
+<h3 style="font-size:22px;margin-top:28px">Inclusive or exclusive?</h3>
+<p>Most calculators, including this one, don't count the start date: from Monday to Tuesday is 1 day. If you need to count both ends — for example, a hotel stay counted in days instead of nights, or "a 7-day course from the 1st to the 7th" — add 1 to the result.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Calendar days vs business days</h3>
+<p>Many legal and banking deadlines use business days, which skip weekends and public holidays. A "10 business day" refund can take two full weeks or more. Count calendar days here, then subtract weekends and holidays if your deadline uses business days.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Leap years</h3>
+<p>A year is a leap year if it is divisible by 4, except century years, which must be divisible by 400. So 2028 is a leap year, 2100 is not, and 2000 was. The calculator includes February 29 automatically.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Handy reference</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Period</th><th style="border:1px solid #ccc;padding:6px">Days</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">4 weeks</td><td style="border:1px solid #ccc;padding:6px">28</td></tr><tr><td style="border:1px solid #ccc;padding:6px">13 weeks (a quarter)</td><td style="border:1px solid #ccc;padding:6px">91</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Common year / leap year</td><td style="border:1px solid #ccc;padding:6px">365 / 366</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Two things to double-check</h3><ul><li>Use “include the end date” when counting both the first and last day, like a hotel stay versus nights.</li><li>Weekdays exclude Saturdays and Sundays but not public holidays.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">90 days and three months are not the same</h3><p>Contracts, leases and medical follow-ups mix the two. Adding three months keeps the same day of the month (clamped to the last day if the month is shorter), while 90 days is a fixed count. The results can differ by a day or more:</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Start date</th><th style="border:1px solid #ccc;padding:6px">Plus 90 days</th><th style="border:1px solid #ccc;padding:6px">Plus 3 months</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Nov 30, 2026</td><td style="border:1px solid #ccc;padding:6px">Feb 28, 2027</td><td style="border:1px solid #ccc;padding:6px">Feb 28, 2027</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Jan 31, 2027</td><td style="border:1px solid #ccc;padding:6px">May 1, 2027</td><td style="border:1px solid #ccc;padding:6px">Apr 30, 2027</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Jun 1, 2026</td><td style="border:1px solid #ccc;padding:6px">Aug 30, 2026</td><td style="border:1px solid #ccc;padding:6px">Sep 1, 2026</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Dec 1, 2027</td><td style="border:1px solid #ccc;padding:6px">Feb 29, 2028</td><td style="border:1px solid #ccc;padding:6px">Mar 1, 2028</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Jul 1, 2026</td><td style="border:1px solid #ccc;padding:6px">Dec 28, 2026 (180 days)</td><td style="border:1px solid #ccc;padding:6px">Jan 1, 2027 (6 months)</td></tr></table><p>If a document says "90 days", use the add-days mode; if it says "three months", count on the calendar. When money or rights depend on it, ask which one the other party means and get it in writing.</p>
+<h3 style="font-size:22px;margin-top:28px">Date questions we hear most</h3><p><b>Is "3 months" the same as 90 days?</b><br>No. Three calendar months can be 89 to 92 days. Check which your contract uses.</p><p><b>How do I count business days?</b><br>The result shows weekdays (Monday to Friday). Subtract any public holidays in that range.</p><p><b>What date is 100 days from today?</b><br>Choose “Add or subtract days”, keep today as the start date and enter 100.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/age-calculator.html">Age Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html">Hours Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/due-date-calculator.html">Due Date Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://aa.usno.navy.mil/" rel="noopener" target="_blank">U.S. Naval Observatory – Astronomical Applications (calendars and date data)</a></li><li><a href="https://www.irs.gov/" rel="noopener" target="_blank">IRS – filing due dates that fall on weekends and legal holidays</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> examples were counted on a calendar. Last reviewed November 2026. Day counts are calendar arithmetic only; confirm legal or contractual deadlines, including holiday rules, with the issuing party.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/days-from-today.html" style="color:#1a56db">Days From Today Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/weeks-left-in-year.html" style="color:#1a56db">How Many Weeks Left in the Year? Today’s Date, Week Number and Day of Year</a> · <a href="https://www.smartlifecalc.com/2026/11/age-calculator.html" style="color:#1a56db">Age Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Date Calculator end ===== -->

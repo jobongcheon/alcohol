@@ -1,0 +1,114 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0O754gexR94UsPYpGlythdfTfeHwEIWBR29iIpPuJovyddQDEC8Kb9M1fKUceubhdC2dM-RC1dNSttQfxkTwVNquimiMK1LbmZj5KAiM5Lei24TXDvqF1bncfwgKGRwZCobh_XmWLMk6mvOpoaRJxUFwb6vqKFVdFGPBuuqSk2YNM3Vuy27SzowzZy7E/s300/E02.loan-calculator%20%28%EB%8C%80%EC%B6%9C%20%EC%83%81%ED%99%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="Loan calculator showing monthly payment, total interest and amortization table" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0O754gexR94UsPYpGlythdfTfeHwEIWBR29iIpPuJovyddQDEC8Kb9M1fKUceubhdC2dM-RC1dNSttQfxkTwVNquimiMK1LbmZj5KAiM5Lei24TXDvqF1bncfwgKGRwZCobh_XmWLMk6mvOpoaRJxUFwb6vqKFVdFGPBuuqSk2YNM3Vuy27SzowzZy7E/s320/E02.loan-calculator%20%28%EB%8C%80%EC%B6%9C%20%EC%83%81%ED%99%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg"/></a></div>
+
+
+<!-- ===== Loan Calculator (paste in Blogger HTML view) ===== -->
+<div id="el-calc">
+<style>
+#el-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#el-calc .el-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#el-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#el-calc .el-lbl{display:block;font-weight:bold;margin-top:14px}
+#el-calc .el-hint{font-size:15px;color:#555;font-weight:normal}
+#el-calc .el-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#el-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#el-calc input.el-s{flex:0 0 5.5em}
+#el-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#el-calc .el-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#el-calc .el-opts{display:grid;gap:8px;margin-top:8px}
+#el-calc .el-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#el-calc .el-opts input{width:22px;height:22px;flex:none}
+#el-calc .el-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#el-calc .el-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#el-calc .el-grid select{font-size:17px;width:100%}
+#el-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#el-calc .el-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#el-calc .el-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#el-calc .el-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#el-calc .el-err{color:#c00;font-weight:bold;text-align:center}
+#el-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#el-calc th,#el-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#el-calc th{background:#f2f4f8}
+#el-calc .el-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="el-box"><h2>Loan Calculator</h2>
+<span class="el-lbl">Loan amount</span><div class="el-line"><span class="el-unit">$</span><input type="text" inputmode="decimal" id="el-amt" placeholder="e.g. 25,000"><span class="el-unit"></span></div><span class="el-lbl">Interest rate</span><div class="el-line"><input type="text" inputmode="decimal" id="el-rate" placeholder="e.g. 8"><span class="el-unit">% per year</span></div><span class="el-lbl">Loan term</span><div class="el-line"><input type="text" class="el-s" inputmode="numeric" id="el-y" placeholder="5"><span class="el-unit">years</span><input type="text" class="el-s" inputmode="numeric" id="el-m" placeholder="0" value="0"><span class="el-unit">months</span></div>
+<button type="button" id="el-btn">Calculate</button>
+<div class="el-result" id="el-res"></div>
+<p class="el-note">Fixed-rate loan with equal monthly payments (amortized). Estimates only.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="el-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('el-amt'));
+$('el-btn').addEventListener('click',function(){var box=$('el-res');box.style.display='block';function err(t){box.innerHTML='<p class="el-err">'+t+'</p>';}
+  var L=num($('el-amt').value),r=num($('el-rate').value)/100/12,n=Math.round(num($('el-y').value)*12+num($('el-m').value));
+  if(!L||!n)return err('Please enter the loan amount and term.');
+  if(r<0||r>0.6/12)return err('Please enter an interest rate between 0% and 60%.');
+  var p=pmt(L,r,n),tot=p*n;
+  var h='<table><tr><th>Year</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>',b=L,yi=0,yp=0;
+  for(var k=1;k<=n;k++){var it=b*r,pr=p-it;b-=pr;yi+=it;yp+=pr;if(k%12===0||k===n){h+='<tr><td>'+Math.ceil(k/12)+'</td><td>'+usd0(yi)+'</td><td>'+usd0(yp)+'</td><td>'+usd0(Math.max(b,0))+'</td></tr>';yi=0;yp=0;}}
+  box.innerHTML='<div style="text-align:center">Monthly payment</div><div class="el-big">'+usd(p)+'</div>'+row('Number of payments',n)+row('Total interest',usd(tot-L))+row('Total of payments',usd(tot))+h+'</table>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Whether it is a personal loan, student loan or small business loan, the first question is always the same: how much will I pay each month, and how much interest in total? This loan calculator answers both and shows a yearly amortization schedule.</p>
+<h2 style="font-size:26px;margin-top:10px">How to read your loan results</h2>
+<p>A personal loan, student loan or small business loan is usually repaid in equal monthly installments. Each payment covers that month's interest first, and whatever is left reduces the balance. Because the balance shrinks, the interest part gets smaller every month and the principal part gets larger. The amortization schedule in this calculator shows that shift month by month, so you can see exactly where your money goes.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the loan calculator</h3><ol><li>Enter the amount you want to borrow.</li><li>Enter the annual interest rate (APR).</li><li>Enter the term in years and months.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Payment = L × r ÷ (1 − (1 + r)<sup>−n</sup>)</p>
+<h3 style="font-size:22px;margin-top:28px">The two numbers that matter most</h3>
+<p><b>The monthly payment</b> tells you whether the loan fits your budget. <b>The total interest</b> tells you what the loan really costs. A longer term lowers the first number but raises the second, and that trade-off is the most important decision you make when borrowing.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Worked case: the fee that hides inside the APR</h3><p>The example above borrows $20,000 at 9% for 60 months, giving a payment of $415.17. Now suppose the lender charges a 5% origination fee. Two things can happen, and you can model both here.</p><ul><li><b>Fee taken from the proceeds.</b> You receive $19,000 but repay $415.17 a month on $20,000. The yearly cost on the money you actually got works out to about 11.2%, which is close to the APR the lender must disclose under the Truth in Lending Act.</li><li><b>Fee added to the loan.</b> To net $20,000 you borrow $21,053. The payment rises to about $437 and total interest to about $5,170, up from $4,910.</li></ul><p>Either way the fee costs you roughly $1,000 plus interest on it. A no-fee loan at 10% ($425 a month, $5,496 in interest) is the cheaper deal in both cases. When offers are close, compare APRs rather than note rates, and ask whether the fee is deducted or financed.</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: $20,000 at 9%</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Term</th><th style="border:1px solid #ccc;padding:6px">Monthly payment</th><th style="border:1px solid #ccc;padding:6px">Total interest</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">3 years (36 months)</td><td style="border:1px solid #ccc;padding:6px">≈ $636</td><td style="border:1px solid #ccc;padding:6px">≈ $2,896</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">5 years (60 months)</td><td style="border:1px solid #ccc;padding:6px">≈ $415</td><td style="border:1px solid #ccc;padding:6px">≈ $4,910</td></tr>
+</table>
+<p>Stretching the same loan from three to five years saves about $221 a month, but costs roughly $2,000 more in interest. If the shorter payment is comfortable, it is usually the cheaper choice. If cash flow is tight, the longer term with occasional extra payments gives you both safety and savings.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Why the rate you are offered can differ</h3>
+<ul>
+<li><b>Credit score</b> – the single biggest factor for unsecured loans.</li>
+<li><b>Debt-to-income ratio</b> – lenders compare your monthly debt payments with your gross income.</li>
+<li><b>Fees</b> – an origination fee of 1–8% is often taken out of the loan amount. Compare offers by APR, which includes these fees.</li>
+<li><b>Secured vs unsecured</b> – a loan backed by a car or savings account is usually cheaper.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Paying extra: what actually happens</h3>
+<p>Most installment loans let you pay extra toward principal without penalty. Every extra dollar reduces the balance that interest is charged on, so the savings compound. On the 5-year example above, adding $50 a month shortens the loan by about 7 months and saves several hundred dollars. Before paying extra, check the loan agreement for a prepayment penalty and ask the lender to apply the money to principal, not to next month's payment.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3>
+<ul>
+<li>Comparing only monthly payments between offers with different terms.</li>
+<li>Ignoring the origination fee: a $20,000 loan with a 5% fee only puts $19,000 in your account.</li>
+<li>Borrowing for longer than the thing you are buying lasts.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Two things to double-check</h3><ul><li>A shorter term means a higher payment but much less interest.</li><li>Even a 1% lower rate can save hundreds or thousands of dollars.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Federal student loan, personal loan or auto loan: what differs</h3><p>The amortization math is the same for all three, but the terms behind the numbers are not alike.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Feature</th><th style="border:1px solid #ccc;padding:6px">Federal Direct student loan</th><th style="border:1px solid #ccc;padding:6px">Personal loan</th><th style="border:1px solid #ccc;padding:6px">Auto loan</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Who sets the rate</td><td style="border:1px solid #ccc;padding:6px">Fixed by federal formula each July 1, same for every borrower in a category</td><td style="border:1px solid #ccc;padding:6px">Lender, from credit score and income</td><td style="border:1px solid #ccc;padding:6px">Lender, from credit and the car's age</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Credit check</td><td style="border:1px solid #ccc;padding:6px">None for undergraduate Direct loans</td><td style="border:1px solid #ccc;padding:6px">Yes</td><td style="border:1px solid #ccc;padding:6px">Yes</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Collateral</td><td style="border:1px solid #ccc;padding:6px">None</td><td style="border:1px solid #ccc;padding:6px">None</td><td style="border:1px solid #ccc;padding:6px">The vehicle; lender holds the title</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Typical term</td><td style="border:1px solid #ccc;padding:6px">10 years standard, longer on income-driven plans</td><td style="border:1px solid #ccc;padding:6px">2 to 7 years</td><td style="border:1px solid #ccc;padding:6px">3 to 7 years</td></tr><tr><td style="border:1px solid #ccc;padding:6px">If income drops</td><td style="border:1px solid #ccc;padding:6px">Deferment, forbearance and income-driven plans by law</td><td style="border:1px solid #ccc;padding:6px">Hardship options at the lender's discretion</td><td style="border:1px solid #ccc;padding:6px">Few; missed payments risk repossession</td></tr></table><p>The practical rule: use federal student aid before private borrowing for school, finance a car for no longer than you expect to keep it, and treat an unsecured personal loan as the most expensive of the three unless your credit is strong.</p>
+<h3 style="font-size:22px;margin-top:28px">Borrowers&#x27; questions, answered</h3><p><b>Is this the same formula banks use?</b><br>Yes. Fixed-rate installment loans use the standard amortization formula: payment = P × r ÷ (1 − (1 + r)<sup>−n</sup>), where r is the monthly rate and n the number of months.</p><p><b>Why is my first payment different?</b><br>Interest is charged by the day, so a first period longer or shorter than a month changes the first payment slightly.</p><p><b>Should I consolidate several debts into one loan?</b><br>Only if the new APR is clearly lower and you stop adding to the old balances. See the debt snowball and credit card payoff calculators to compare.</p><p><b>What is amortization?</b><br>Amortization means each equal payment covers that month’s interest first and the rest pays down the balance, so the interest part shrinks over time.</p><p><b>Does this include fees?</b><br>No. Origination fees or insurance are not included. Add them to the loan amount if they are financed.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3>
+<p><a href="https://www.smartlifecalc.com/2026/10/credit-card-payoff-calculator.html">Credit Card Payoff</a> · <a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html">Debt Snowball vs Avalanche</a> · <a href="https://www.smartlifecalc.com/2026/10/auto-loan-calculator.html">Auto Loan</a></p>
+
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://studentaid.gov/" rel="noopener" target="_blank">Federal Student Aid – Direct Loan rates, fees and repayment plans</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" rel="noopener" target="_blank">CFPB – Auto loans (shopping, terms and what lenders can do)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> example figures were recomputed with the standard amortization formula. Background reading: Consumer Financial Protection Bureau guides on personal loans (consumerfinance.gov). Last reviewed November 2026. General information only, not financial advice. Payments shown are for fixed-rate loans without fees; real offers vary, so read the Truth in Lending disclosure before signing.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/auto-loan-calculator.html" style="color:#1a56db">Auto Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/credit-card-payoff-calculator.html" style="color:#1a56db">Credit Card Payoff Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html" style="color:#1a56db">Debt Snowball vs Avalanche Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Loan Calculator end ===== -->

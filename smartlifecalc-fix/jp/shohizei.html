@@ -1,0 +1,97 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUyjRrqzEUEJwyq53odz44GWmZ2HYDT_ao-H3i2eaEXREgyKnbHiQz9B0dSxe4C3ca0yJtlQ0apolsTMbz1XPoFvVhoKC0dz7fl_76AIuD__XBEzJQjExfmZj9Jzv_dr8G1WHiG-NsF6JhYE-GPltUWylwJL2toODa_QCkgWKV3wDy7-6c8u0hpR-G1b8/s300/J08.shohizei.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="消費税計算ツールで税込・税抜と軽減税率8％を計算した画面" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUyjRrqzEUEJwyq53odz44GWmZ2HYDT_ao-H3i2eaEXREgyKnbHiQz9B0dSxe4C3ca0yJtlQ0apolsTMbz1XPoFvVhoKC0dz7fl_76AIuD__XBEzJQjExfmZj9Jzv_dr8G1WHiG-NsF6JhYE-GPltUWylwJL2toODa_QCkgWKV3wDy7-6c8u0hpR-G1b8/s320/J08.shohizei.png"/></a></div>
+
+<!-- ===== J08 消費税計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc08">
+<style>
+#jc08{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc08 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc08 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc08 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc08 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc08 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc08 input[type=text],#jc08 input[type=date],#jc08 input[type=time],#jc08 select,#jc08 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc08 textarea{width:100%;min-height:180px;font-size:17px}
+#jc08 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc08 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc08 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc08 .jc-opts input{width:20px;height:20px}
+#jc08 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc08 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc08 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc08 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc08 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc08 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc08 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc08 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc08 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc08 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc08 .jc-art th,#jc08 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc08 .jc-art th{background:#f2f4f8}
+#jc08 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">消費税10％・軽減税率8％で税込価格と税抜価格を計算。端数処理（切り捨て・四捨五入・切り上げ）も選べる無料ツールです。</p>
+<div class="jc-box"><h2>消費税計算</h2>
+<span class="jc-lbl">金額</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc08-p" placeholder="例：1,980"><span class="jc-unit">円</span></div>
+<span class="jc-lbl">入れた金額は</span><div class="jc-opts"><label><input type="radio" name="jc08-k" value="n" checked>税抜</label><label><input type="radio" name="jc08-k" value="i">税込</label></div>
+<span class="jc-lbl">税率</span><div class="jc-opts"><label><input type="radio" name="jc08-r" value="10" checked>10％</label><label><input type="radio" name="jc08-r" value="8">8％（軽減）</label></div>
+<span class="jc-lbl">端数処理</span><div class="jc-line"><select id="jc08-h"><option value="f" selected>切り捨て</option><option value="r">四捨五入</option><option value="c">切り上げ</option></select></div>
+<button type="button" id="jc08-btn">計算する</button>
+<div class="jc-result" id="jc08-res"></div>
+<p class="jc-note">税込から税抜への計算は、税込価格に含まれる消費税（税込×税率÷(1＋税率)）を端数処理して求めています。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc08-',box=document.getElementById('jc08-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var p=N('p'),r=+R('r')/100,h=V('h');if(!p)return err('金額を入れてください。');function rd(x){x=Math.round(x*1e6)/1e6;return h==='f'?Math.floor(x):h==='c'?Math.ceil(x):Math.round(x);}
+var ex,inc;if(R('k')==='n'){ex=p;inc=ex+rd(ex*r);}else{inc=p;ex=inc-rd(inc*r/(1+r));}
+show('税込 '+yen(inc),[['税抜',yen(ex)],['消費税（'+(r*100)+'％）',yen(inc-ex)]]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>消費税は標準税率10％と、食品・新聞などの軽減税率8％があります。このツールは税抜から税込、税込から税抜の両方を計算でき、端数処理も選べます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">食費6万円の家庭は毎月いくら消費税を払っている？</h2>
+<h3 style="font-size:22px;margin-top:28px">計算式</h3><p>税込価格 ＝ 税抜価格 × 1.1（軽減税率は ×1.08）<br>税抜価格 ＝ 税込価格 ÷ 1.1（軽減税率は ÷1.08）</p>
+
+<h3 style="font-size:22px;margin-top:28px">軽減税率8％の対象</h3><ul><li>酒類・外食を除く飲食料品（テイクアウト・宅配を含む）</li><li>定期購読契約の新聞（週2回以上発行）</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><ul><li><b>税抜1,980円（10％）</b> → 1,980 × 1.1 ＝ <b>税込2,178円</b>（消費税198円）</li><li><b>税抜3,980円の食品（8％）</b> → 3,980 × 1.08 ＝ 4,298.4 → 切り捨てで<b>税込4,298円</b></li><li><b>税込1,100円（10％）</b> → 1,100 ÷ 1.1 ＝ <b>税抜1,000円</b></li></ul>
+<h3 style="font-size:22px;margin-top:28px">ケーススタディ：月の食費6万円・日用品1万5千円の家庭</h3><p>税込金額しか分からなくても、税率ごとに割り戻せば年間の消費税額が見えてきます。食費（すべて8％の飲食料品とします）が月6万円、洗剤やトイレットペーパーなどの日用品が月1万5千円の家庭を例にします。</p><ul><li>食費：60,000 ÷ 1.08 ＝ 税抜約55,556円、消費税は約4,444円</li><li>日用品：15,000 ÷ 1.1 ＝ 税抜約13,636円、消費税は約1,364円</li><li>合計：消費税は月約5,808円、12か月で約69,700円</li></ul><p>もし食費にも10％がかかっていたら、食費の消費税は 60,000 ÷ 1.1 × 0.1 ＝ 約5,455円 となり、月に約1,010円、年間で約1万2千円の差になります。レシートで「※」や「軽」の印が付いた行だけを8％で割り戻すと正確です。</p>
+<h3 style="font-size:22px;margin-top:28px">端数処理で1円変わる例</h3><p>税込980円の食品（8％）の中に含まれる消費税は 980 × 8 ÷ 108 ＝ 72.59…円です。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">端数処理</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">消費税</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">税抜価格</th></tr><tr><td style="border:1px solid #bbb;padding:6px">切り捨て</td><td style="border:1px solid #bbb;padding:6px">72円</td><td style="border:1px solid #bbb;padding:6px">908円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">四捨五入</td><td style="border:1px solid #bbb;padding:6px">73円</td><td style="border:1px solid #bbb;padding:6px">907円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">切り上げ</td><td style="border:1px solid #bbb;padding:6px">73円</td><td style="border:1px solid #bbb;padding:6px">907円</td></tr></table><p>端数処理の方法は法律で決められておらず、お店や会社が選べます。ただしインボイス（適格請求書）では、<b>1枚の請求書ごとに税率ごとに1回だけ</b>端数処理をするルールがあります。商品1つずつ端数処理して合計すると、ずれが出ることがあります。</p>
+<h3 style="font-size:22px;margin-top:28px">軽減税率8％になるもの・ならないもの</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">8％（軽減税率）</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">10％（標準税率）</th></tr><tr><td style="border:1px solid #bbb;padding:6px">スーパーの食品・飲み物</td><td style="border:1px solid #bbb;padding:6px">お酒（ビール・みりん類など）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">テイクアウト・宅配の料理</td><td style="border:1px solid #bbb;padding:6px">店内での飲食（イートイン）</td></tr><tr><td style="border:1px solid #bbb;padding:6px">週2回以上発行の定期購読の新聞</td><td style="border:1px solid #bbb;padding:6px">コンビニで買う新聞</td></tr><tr><td style="border:1px solid #bbb;padding:6px"></td><td style="border:1px solid #bbb;padding:6px">医薬品・医薬部外品</td></tr></table><p>おもちゃ付きのお菓子のような「一体資産」は、税抜1万円以下で、食品の価値が全体の3分の2以上なら8％になります。</p>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>税込価格に0.9を掛けて税抜にする</b>：1,100円 × 0.9 ＝ 990円は間違いで、正しくは1,100 ÷ 1.1 ＝ 1,000円です。</li><li><b>8％の商品に1.1を掛ける</b>：食品のレシートを確認するときは税率を8％にしてください。</li><li><b>表示価格が税抜だと思い込む</b>：2021年4月から、消費者向けの価格表示は税込の総額表示が義務になっています。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>ネットショップで「税抜価格」が書かれているとき、実際に払う金額をすぐに確認できます。送料にも消費税がかかるので、送料が税抜表示なら一緒に計算しましょう。</p><p>フリーランスや個人事業で見積書・請求書を作るとき、税抜金額から消費税と税込金額を出すのにも使えます。インボイスでは税率ごとの合計と消費税額を書く必要があるので、税率を選んで計算してください。</p><p>家計簿をつけるとき、レシートの税込金額から税抜の金額や消費税の額を知りたい場合にも便利です。</p>
+<h3 style="font-size:22px;margin-top:28px">8％か10％か迷ったときの判定手順</h3><ol><li><b>飲食料品かどうか</b>：人が食べたり飲んだりするもの以外は10％です。医薬品・医薬部外品（栄養ドリンクの一部）は10％です。</li><li><b>酒類かどうか</b>：酒税法上の酒類（アルコール分1度以上）は10％です。本みりんは10％、アルコール分1％未満のみりん風調味料やノンアルコールビールは8％です。</li><li><b>その場で食べるかどうか</b>：店内の席で食べるなら「外食」で10％、持ち帰りなら8％です。コンビニのイートインも会計時の意思確認で決まります。</li><li><b>出前かケータリングか</b>：届けてもらうだけの宅配・出前は8％、料理人が来て配膳まで行うケータリングは10％です。</li><li><b>おもちゃ付き菓子などの一体資産</b>：税抜1万円以下で食品部分の価額が3分の2以上なら全体が8％、どちらかを外れると10％です。</li><li><b>新聞</b>：週2回以上発行の定期購読なら8％、駅やコンビニで1部ずつ買う新聞や電子版は10％です。</li></ol>
+<h3 style="font-size:22px;margin-top:28px">消費税の計算でつまずきやすい点</h3><p><b>Q. 店内飲食とテイクアウトで税率は違う？</b><br>A. 店内飲食は10％、テイクアウトは8％です。</p><p><b>Q. 10％と8％の商品をまとめて買ったら？</b><br>A. 税率ごとに分けて計算します。このツールでは税率ごとに1回ずつ計算してください。</p><p><b>Q. 消費税と地方消費税の違いは？</b><br>A. 10％のうち7.8％が国の消費税、2.2％が地方消費税です（軽減税率8％は6.24％と1.76％）。ふだんの計算では合計の税率で計算します。</p><p><b>Q. 「税込」「内税」「外税」の意味は？</b><br>A. 内税は価格に税が含まれている（税込）、外税は価格に税を足して払う（税抜表示）という意味です。</p><p><b>Q. 端数処理はどれを選べばいい？</b><br>A. お店や請求書に合わせます。分からないときは「切り捨て」が多く使われています。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html">割引計算</a> – セール価格を計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html">割り勘計算</a> – 支払いを人数で割る</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/percent.html">パーセント計算</a> – ○の○％を計算</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6102.htm" rel="noopener" target="_blank">国税庁 タックスアンサー No.6102 – 消費税の税率</a></li><li><a href="https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/index.htm" rel="noopener" target="_blank">国税庁 – 消費税の軽減税率制度（対象品目の考え方）</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>計算例はすべて手計算とプログラムで確かめました。税率・軽減税率の対象・総額表示は国税庁の案内に基づきます。 最終確認：2026年11月。 表示される金額は一般的な税率にもとづく目安で、実際の請求額は販売店や請求書の端数処理により異なります。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html" style="color:#1a56db">割引計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/percent.html" style="color:#1a56db">パーセント計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/warikan.html" style="color:#1a56db">割り勘計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J08 end ===== -->

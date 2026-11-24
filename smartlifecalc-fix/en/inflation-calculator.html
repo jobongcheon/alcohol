@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwmkt6Owz1NX0MTDDnfI74R7MIg9k5nxuSTSRuBJkushMxiTUgzdKj8LKvTXEXyEGPOp0NvNe9OESMQzzwqMMjeW7IkUqS0_uGD2Pv0nuXSfQykw-nVS0IP52DJO9jqyAyvWIAvRjSrw15dxdaIeivBhRimjox_votvbuoZHwDajVs_y_B5rwzG9mORQs/s300/E20.inflation-calculator%20%28%EB%AC%BC%EA%B0%80%EC%83%81%EC%8A%B9%C2%B7%ED%99%94%ED%8F%90%EA%B0%80%EC%B9%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Inflation calculator showing future cost and purchasing power at 3% a year" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwmkt6Owz1NX0MTDDnfI74R7MIg9k5nxuSTSRuBJkushMxiTUgzdKj8LKvTXEXyEGPOp0NvNe9OESMQzzwqMMjeW7IkUqS0_uGD2Pv0nuXSfQykw-nVS0IP52DJO9jqyAyvWIAvRjSrw15dxdaIeivBhRimjox_votvbuoZHwDajVs_y_B5rwzG9mORQs/s320/E20.inflation-calculator%20%28%EB%AC%BC%EA%B0%80%EC%83%81%EC%8A%B9%C2%B7%ED%99%94%ED%8F%90%EA%B0%80%EC%B9%98%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Inflation Calculator (paste in Blogger HTML view) ===== -->
+<div id="ez-calc">
+<style>
+#ez-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ez-calc .ez-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ez-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ez-calc .ez-lbl{display:block;font-weight:bold;margin-top:14px}
+#ez-calc .ez-hint{font-size:15px;color:#555;font-weight:normal}
+#ez-calc .ez-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ez-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ez-calc input.ez-s{flex:0 0 5.5em}
+#ez-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ez-calc .ez-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ez-calc .ez-opts{display:grid;gap:8px;margin-top:8px}
+#ez-calc .ez-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ez-calc .ez-opts input{width:22px;height:22px;flex:none}
+#ez-calc .ez-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ez-calc .ez-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ez-calc .ez-grid select{font-size:17px;width:100%}
+#ez-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ez-calc .ez-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ez-calc .ez-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ez-calc .ez-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ez-calc .ez-err{color:#c00;font-weight:bold;text-align:center}
+#ez-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ez-calc th,#ez-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ez-calc th{background:#f2f4f8}
+#ez-calc .ez-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ez-box"><h2>Inflation Calculator</h2>
+<span class="ez-lbl">What do you want to know?</span><div class="ez-opts"><label><input type="radio" name="ez-mode" value="f" checked> What will something cost in the future?</label><label><input type="radio" name="ez-mode" value="p"> What will my money be worth in the future?</label></div><span class="ez-lbl">Amount today</span><div class="ez-line"><span class="ez-unit">$</span><input type="text" inputmode="decimal" id="ez-a" placeholder="e.g. 1,000"><span class="ez-unit"></span></div><span class="ez-lbl">Average inflation rate</span><div class="ez-line"><input type="text" inputmode="decimal" id="ez-r" placeholder="e.g. 3" value="3"><span class="ez-unit">% per year</span></div><span class="ez-lbl">Years</span><div class="ez-line"><input type="text" inputmode="decimal" id="ez-y" placeholder="e.g. 10"><span class="ez-unit">years</span></div>
+<button type="button" id="ez-btn">Calculate</button>
+<div class="ez-result" id="ez-res"></div>
+<p class="ez-note">Uses a constant average inflation rate. Actual inflation changes from year to year.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ez-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('ez-a'));
+$('ez-btn').addEventListener('click',function(){var box=$('ez-res');box.style.display='block';function err(t){box.innerHTML='<p class="ez-err">'+t+'</p>';}
+  var A=num($('ez-a').value),r=num($('ez-r').value)/100,Y=num($('ez-y').value);
+  if(!A||!Y)return err('Please enter an amount and the number of years.');if(r<0||r>0.5)return err('Please enter a rate between 0% and 50%.');
+  var f=Math.pow(1+r,Y),h='<table><tr><th>Year</th><th>Cost</th><th>Value of '+usd0(A)+'</th></tr>';
+  [1,5,10,20,30].forEach(function(y){if(y<=Y||y===1)h+='<tr><td>'+y+'</td><td>'+usd0(A*Math.pow(1+r,y))+'</td><td>'+usd0(A/Math.pow(1+r,y))+'</td></tr>';});
+  if(pick('ez-mode')==='f')box.innerHTML='<div style="text-align:center">'+usd0(A)+' of goods will cost</div><div class="ez-big">'+usd(A*f)+'</div>'+row('Price increase',(Math.round((f-1)*1000)/10)+'%')+h+'</table>';
+  else box.innerHTML='<div style="text-align:center">'+usd0(A)+' will buy what costs today</div><div class="ez-big">'+usd(A/f)+'</div>'+row('Purchasing power lost',(Math.round((1-1/f)*1000)/10)+'%')+h+'</table>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Inflation slowly raises prices and shrinks what your money can buy. Use this calculator to see what things will cost in the future, or how much your savings will really be worth.</p>
+<h2 style="font-size:26px;margin-top:10px">What inflation does to your money over time</h2>
+<p>Inflation is the general rise in prices. When it runs at 3% a year, something that costs $100 today costs about $103 next year. Over long periods the effect compounds just like interest, which is why it matters so much for retirement planning, salaries and long-term savings.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the inflation calculator</h3><ol><li>Choose future cost or future value of money.</li><li>Enter the amount, an average inflation rate and the number of years.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Future cost = today’s price × (1 + inflation)<sup>years</sup> &nbsp;|&nbsp; future value = amount ÷ (1 + inflation)<sup>years</sup></p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<p>At 3% a year for 20 years, prices rise by a factor of about 1.81. Something that costs $100 today would cost roughly <b>$181</b>. Seen the other way, $100,000 saved in cash today would buy only what about <b>$55,400</b> buys now. By the Rule of 72, prices double in about 72 ÷ 3 = 24 years.</p>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Inflation rate</th><th style="border:1px solid #ccc;padding:6px">$100 after 10 years</th><th style="border:1px solid #ccc;padding:6px">$100 after 20 years</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">2%</td><td style="border:1px solid #ccc;padding:6px">≈ $122</td><td style="border:1px solid #ccc;padding:6px">≈ $149</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">3%</td><td style="border:1px solid #ccc;padding:6px">≈ $134</td><td style="border:1px solid #ccc;padding:6px">≈ $181</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">4%</td><td style="border:1px solid #ccc;padding:6px">≈ $148</td><td style="border:1px solid #ccc;padding:6px">≈ $219</td></tr>
+</table>
+
+<h3 style="font-size:22px;margin-top:28px">Which price index adjusts your benefits, taxes and bonds</h3><p>"Inflation" in the news usually means the CPI-U, but several official indexes exist and each one drives a different part of your finances.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Index</th><th style="border:1px solid #ccc;padding:6px">Published by</th><th style="border:1px solid #ccc;padding:6px">What it adjusts</th></tr><tr><td style="border:1px solid #ccc;padding:6px">CPI-U (all urban consumers)</td><td style="border:1px solid #ccc;padding:6px">Bureau of Labor Statistics</td><td style="border:1px solid #ccc;padding:6px">Headline inflation; Series I savings bond rates; many rent and contract escalators</td></tr><tr><td style="border:1px solid #ccc;padding:6px">CPI-W (wage earners)</td><td style="border:1px solid #ccc;padding:6px">Bureau of Labor Statistics</td><td style="border:1px solid #ccc;padding:6px">Social Security cost-of-living adjustment, from the third-quarter average</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Chained CPI (C-CPI-U)</td><td style="border:1px solid #ccc;padding:6px">Bureau of Labor Statistics</td><td style="border:1px solid #ccc;padding:6px">Federal income tax brackets and the standard deduction</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Core CPI</td><td style="border:1px solid #ccc;padding:6px">Bureau of Labor Statistics</td><td style="border:1px solid #ccc;padding:6px">CPI without food and energy; used to read the trend, not to index payments</td></tr><tr><td style="border:1px solid #ccc;padding:6px">PCE price index</td><td style="border:1px solid #ccc;padding:6px">Bureau of Economic Analysis</td><td style="border:1px solid #ccc;padding:6px">The Federal Reserve's 2% target</td></tr></table><p>The gaps between them look small, often a few tenths of a point a year, but they compound: an index that runs 0.3 points lower for 30 years ends about 9% lower, one reason the chained CPI was chosen for tax brackets. When you set a rate here, match it to the money you are planning: CPI-W for Social Security, CPI-U for almost everything else.</p>
+<h3 style="font-size:22px;margin-top:28px">Real vs nominal returns</h3>
+<p>If your savings earn 4% but inflation is 3%, your purchasing power grows by only about 1%. This "real" return is what matters for long-term goals. Money in a checking account earning nothing loses value every year.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Where inflation shows up in planning</h3>
+<ul>
+<li><b>Salary:</b> a 3% raise in a year of 3% inflation keeps you even, not ahead.</li>
+<li><b>Retirement:</b> estimate future expenses in today's dollars, then grow them with inflation.</li>
+<li><b>Big goals:</b> college costs and healthcare have often risen faster than overall inflation.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">A fixed $2,000 pension after 10, 20 and 30 years</h3><p>Social Security rises with inflation, but most private pensions and fixed annuities pay the same dollar amount for life. Here is what a $2,000 monthly check buys in today's dollars, using the future-value mode above.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Years from now</th><th style="border:1px solid #ccc;padding:6px">At 2.5% inflation</th><th style="border:1px solid #ccc;padding:6px">At 3% inflation</th></tr><tr><td style="border:1px solid #ccc;padding:6px">10</td><td style="border:1px solid #ccc;padding:6px">$1,562</td><td style="border:1px solid #ccc;padding:6px">$1,488</td></tr><tr><td style="border:1px solid #ccc;padding:6px">20</td><td style="border:1px solid #ccc;padding:6px">$1,221</td><td style="border:1px solid #ccc;padding:6px">$1,107</td></tr><tr><td style="border:1px solid #ccc;padding:6px">30</td><td style="border:1px solid #ccc;padding:6px">$953</td><td style="border:1px solid #ccc;padding:6px">$824</td></tr></table><p>After 20 years at 3%, you would need $3,612 a month to match today's $2,000. The planning rule that follows: treat a fixed pension as covering a shrinking share of expenses, and let inflation-adjusted income or growing investments cover the rest. If a pension offers a cost-of-living rider in exchange for a lower starting payment, run both versions here before choosing.</p>
+<h3 style="font-size:22px;margin-top:28px">Inflation questions from savers and retirees</h3><p><b>What rate should I use?</b><br>The U.S. Federal Reserve targets 2% over the long run; many planners use 2.5–3% to be cautious.</p><p><b>Where do official figures come from?</b><br>The Consumer Price Index (CPI) published by the U.S. Bureau of Labor Statistics (bls.gov).</p><p><b>What has US inflation averaged?</b><br>Over the past century US consumer prices have risen about 3% a year on average, with big swings in some decades.</p><p><b>Where can I find official inflation data?</b><br>The US Bureau of Labor Statistics publishes the Consumer Price Index (CPI) every month at bls.gov.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html">Compound Interest</a> · <a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html">Retirement Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.bls.gov/cpi/" rel="noopener" target="_blank">Bureau of Labor Statistics – Consumer Price Index (CPI-U, CPI-W, chained CPI)</a></li><li><a href="https://www.ssa.gov/benefits/retirement/" rel="noopener" target="_blank">Social Security Administration – Retirement benefits and cost-of-living adjustments</a></li><li><a href="https://www.federalreserve.gov/" rel="noopener" target="_blank">Federal Reserve – monetary policy and the 2% inflation goal</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> table values recomputed with (1 + rate)^years. Background reading: U.S. Bureau of Labor Statistics CPI data. Last reviewed November 2026. Projections use a constant inflation rate you choose; real price changes vary, and this page is not investment or tax advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html" style="color:#1a56db">Compound Interest Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html" style="color:#1a56db">Retirement Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/hourly-to-salary-calculator.html" style="color:#1a56db">Hourly to Salary Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Inflation Calculator end ===== -->

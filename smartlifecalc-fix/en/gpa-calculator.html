@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEifLYBLJAM6YjSNawwcvRv6JEqMw9wpODw1XnfiVdN0ZMuj1zC3U8LQC9Z7nhF7SQIUONMKXdqHMyhUtoC6TxRRlu4n6r_1743yNEtDM3ngHIokndpf9uYGTcaedWfL-D93QiUevQF4HgQp4gd7-WLIPrUzjuaUvKJfftZuV5qCuLPRkZNSpV8qUZypa6w/s300/E13.gpa-calculator%20%28%ED%95%99%EC%A0%90%28GPA%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="GPA calculator showing semester and cumulative grade point average on 4.0 scale" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEifLYBLJAM6YjSNawwcvRv6JEqMw9wpODw1XnfiVdN0ZMuj1zC3U8LQC9Z7nhF7SQIUONMKXdqHMyhUtoC6TxRRlu4n6r_1743yNEtDM3ngHIokndpf9uYGTcaedWfL-D93QiUevQF4HgQp4gd7-WLIPrUzjuaUvKJfftZuV5qCuLPRkZNSpV8qUZypa6w/s320/E13.gpa-calculator%20%28%ED%95%99%EC%A0%90%28GPA%29.png"/></a></div>
+
+
+<!-- ===== GPA Calculator (paste in Blogger HTML view) ===== -->
+<div id="eg-calc">
+<style>
+#eg-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#eg-calc .eg-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#eg-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#eg-calc .eg-lbl{display:block;font-weight:bold;margin-top:14px}
+#eg-calc .eg-hint{font-size:15px;color:#555;font-weight:normal}
+#eg-calc .eg-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#eg-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eg-calc input.eg-s{flex:0 0 5.5em}
+#eg-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#eg-calc .eg-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#eg-calc .eg-opts{display:grid;gap:8px;margin-top:8px}
+#eg-calc .eg-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#eg-calc .eg-opts input{width:22px;height:22px;flex:none}
+#eg-calc .eg-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#eg-calc .eg-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#eg-calc .eg-grid select{font-size:17px;width:100%}
+#eg-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#eg-calc .eg-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#eg-calc .eg-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#eg-calc .eg-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#eg-calc .eg-err{color:#c00;font-weight:bold;text-align:center}
+#eg-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#eg-calc th,#eg-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#eg-calc th{background:#f2f4f8}
+#eg-calc .eg-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="eg-box"><h2>GPA Calculator</h2>
+<span class="eg-lbl">Courses this term</span><div class="eg-grid"><b>Course</b><b>Grade</b><b>Credits</b><span></span><input type="text" id="eg-c1" placeholder="Course 1"><select id="eg-g1"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k1" placeholder="3"><span></span><input type="text" id="eg-c2" placeholder="Course 2"><select id="eg-g2"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k2" placeholder="3"><span></span><input type="text" id="eg-c3" placeholder="Course 3"><select id="eg-g3"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k3" placeholder="3"><span></span><input type="text" id="eg-c4" placeholder="Course 4"><select id="eg-g4"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k4" placeholder="3"><span></span><input type="text" id="eg-c5" placeholder="Course 5"><select id="eg-g5"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k5" placeholder="3"><span></span><input type="text" id="eg-c6" placeholder="Course 6"><select id="eg-g6"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k6" placeholder="3"><span></span><input type="text" id="eg-c7" placeholder="Course 7"><select id="eg-g7"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k7" placeholder="3"><span></span><input type="text" id="eg-c8" placeholder="Course 8"><select id="eg-g8"><option value="">—</option><option value="4.0">A / A+</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0">F</option></select><input type="text" inputmode="decimal" id="eg-k8" placeholder="3"><span></span></div><span class="eg-lbl">Previous cumulative GPA <span class="eg-hint">(leave blank if first term)</span></span><div class="eg-line"><input type="text" inputmode="decimal" id="eg-pg" placeholder="optional"><span class="eg-unit"></span></div><span class="eg-lbl">Previous total credits</span><div class="eg-line"><input type="text" inputmode="decimal" id="eg-pc" placeholder="optional"><span class="eg-unit"></span></div>
+<button type="button" id="eg-btn">Calculate GPA</button>
+<div class="eg-result" id="eg-res"></div>
+<p class="eg-note">Uses the common 4.0 scale (A = 4.0, A- = 3.7 … F = 0). Some schools use different values.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="eg-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+$('eg-btn').addEventListener('click',function(){var box=$('eg-res');box.style.display='block';function err(t){box.innerHTML='<p class="eg-err">'+t+'</p>';}
+  var q=0,c=0;for(var i=1;i<=8;i++){var g=$('eg-g'+i).value,k=num($('eg-k'+i).value);if(g!==''&&k>0){q+=(+g)*k;c+=k;}}
+  if(!c)return err('Please choose a grade and enter credits for at least one course.');
+  var gpa=q/c,pg=num($('eg-pg').value),pc=num($('eg-pc').value),h='';
+  if(pg&&pc)h=row('New cumulative GPA',((q+pg*pc)/(c+pc)).toFixed(2))+row('Total credits',c+pc);
+  box.innerHTML='<div style="text-align:center">Term GPA</div><div class="eg-big">'+gpa.toFixed(2)+'</div>'+row('Credits this term',c)+row('Quality points',q.toFixed(1))+h;
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Find out your grade point average in seconds. Enter each class’s letter grade and credit hours to get your term GPA, and add your previous GPA to see your updated cumulative GPA.</p>
+<h2 style="font-size:26px;margin-top:10px">How GPA is calculated</h2>
+<p>Your GPA is a credit-weighted average. Each letter grade is turned into grade points (A = 4.0, B = 3.0 and so on), multiplied by the course's credit hours, and the total is divided by the total credits. A 4-credit class therefore moves your GPA more than a 1-credit class.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the gpa calculator</h3><ol><li>For each course, pick the letter grade and enter the credit hours.</li><li>Optionally enter your previous cumulative GPA and credits.</li><li>Press <b>Calculate GPA</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">GPA = Σ (grade points × credits) ÷ Σ credits</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Course</th><th style="border:1px solid #ccc;padding:6px">Credits</th><th style="border:1px solid #ccc;padding:6px">Grade</th><th style="border:1px solid #ccc;padding:6px">Points</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Biology</td><td style="border:1px solid #ccc;padding:6px">4</td><td style="border:1px solid #ccc;padding:6px">B (3.0)</td><td style="border:1px solid #ccc;padding:6px">12.0</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">English</td><td style="border:1px solid #ccc;padding:6px">3</td><td style="border:1px solid #ccc;padding:6px">A (4.0)</td><td style="border:1px solid #ccc;padding:6px">12.0</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">History</td><td style="border:1px solid #ccc;padding:6px">3</td><td style="border:1px solid #ccc;padding:6px">B+ (3.3)</td><td style="border:1px solid #ccc;padding:6px">9.9</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Statistics</td><td style="border:1px solid #ccc;padding:6px">2</td><td style="border:1px solid #ccc;padding:6px">C (2.0)</td><td style="border:1px solid #ccc;padding:6px">4.0</td></tr>
+</table>
+<p>Total points 37.9 ÷ 12 credits = <b>3.16 GPA</b>.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Worked case: from 3.2 at 60 credits to a 3.5 at graduation</h3><p>Grade points, not GPAs, are what add up. A 3.2 over 60 credits is 192 grade points. A 3.5 over 120 credits requires 420. The remaining 60 credits must therefore supply 228 points, an average of 3.80.</p><table style="border-collapse:collapse;border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">Target cumulative GPA at 120 credits</th><th style="border:1px solid #ccc;padding:6px">Points still needed</th><th style="border:1px solid #ccc;padding:6px">Average required over the last 60 credits</th></tr><tr><td style="border:1px solid #ccc;padding:6px">3.3</td><td style="border:1px solid #ccc;padding:6px">204</td><td style="border:1px solid #ccc;padding:6px">3.40</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3.4</td><td style="border:1px solid #ccc;padding:6px">216</td><td style="border:1px solid #ccc;padding:6px">3.60</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3.5</td><td style="border:1px solid #ccc;padding:6px">228</td><td style="border:1px solid #ccc;padding:6px">3.80</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3.6</td><td style="border:1px solid #ccc;padding:6px">240</td><td style="border:1px solid #ccc;padding:6px">4.00</td></tr></table><p>A 3.80 average is roughly two A's for every A- or B+, every term, so a 3.5 is possible but leaves no slack; a 3.4 is a more realistic plan. One shortcut exists at some schools: grade replacement. Retaking a 4-credit course graded D (1.0) and earning a B (3.0) adds 8 points to the 60 credits already on the record, lifting 192 ÷ 60 = 3.20 to 200 ÷ 60 = 3.33 in a single term. Check your catalog, since other schools average both attempts or cap how many courses can be replaced.</p>
+<h3 style="font-size:22px;margin-top:28px">Cumulative GPA</h3>
+<p>To combine semesters, don't average the GPAs — weight them by credits. If you had a 3.4 over 30 credits and earn a 3.0 over 15 credits, your cumulative GPA is (3.4 × 30 + 3.0 × 15) ÷ 45 = <b>3.27</b>.</p>
+
+<h3 style="font-size:22px;margin-top:28px">How much can one semester raise your GPA?</h3>
+<p>The more credits you've completed, the harder it is to move. After 90 credits at 2.8, a perfect 4.0 over 15 credits only raises you to about 2.97. Planning early matters; so does knowing your school's retake policy, since some schools replace the old grade.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Weighted vs unweighted (high school)</h3>
+<p>Many high schools add a point for honors, AP or IB courses (an A counts as 5.0). Colleges often recalculate GPA their own way, so report what your school's transcript shows.</p>
+
+<h3 style="font-size:22px;margin-top:28px">Small details that change the result</h3><ul><li>Classes with more credits affect your GPA more.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Where a GPA threshold actually bites: federal aid, scholarships, applications</h3><ul><li><b>Federal student aid.</b> Schools must check satisfactory academic progress. Under federal rules, by the end of the second academic year a student must have at least a C average (2.0 on this scale) or standing consistent with graduating, and must be completing courses fast enough to finish within 150% of the program length. Falling short can suspend Pell Grants and federal loans until an appeal succeeds or grades recover.</li><li><b>Merit scholarships.</b> Renewal minimums are commonly set at 3.0 on the cumulative GPA, so one weak 15-credit term after a 3.1 start can cost the award.</li><li><b>Transcripts and applications.</b> Point values differ by school: some give an A+ 4.3, others 4.0; an A- may be 3.67 or 3.7. Graduate and professional programs often recalculate on their own scale, sometimes on the last 60 credits only, so report what your transcript shows and let them convert.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">GPA questions from students and parents</h3><p><b>Do pass/fail courses count?</b><br>Usually not in the GPA, though they count toward credits.</p><p><b>What is a good GPA?</b><br>It depends on the goal: many scholarships and graduate programs look for 3.0–3.5 or higher.</p><p><b>What is the difference between weighted and unweighted GPA?</b><br>Unweighted GPA uses the 4.0 scale above. Weighted GPA adds extra points for honors or AP classes, up to about 5.0.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/grade-calculator.html">Grade Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a></p>
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://studentaid.gov/" rel="noopener" target="_blank">Federal Student Aid – satisfactory academic progress and keeping your aid</a></li><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic: weighted averages and decimals</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> examples checked by hand using the common 4.0 scale; schools may use slightly different point values for plus/minus grades. Last reviewed November 2026. GPA results are estimates on a common scale; your registrar&#x27;s official transcript and your school&#x27;s policies take precedence.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/grade-calculator.html" style="color:#1a56db">Grade Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percent-change-calculator.html" style="color:#1a56db">Percent Change Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== GPA Calculator end ===== -->

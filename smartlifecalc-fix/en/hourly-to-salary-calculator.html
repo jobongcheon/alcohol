@@ -1,0 +1,82 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh5Swi8Fk9_Znbi2-PZDQq7EUc7XQ2KnXaIMlx8qgWINb3ktgHj3UW19daUbRGJPMXQuH603EvLv9ykwSH8AuBBzEqJ-FMX6vgTKRYucw81d-E2jjEUQdVThhNBGYnAMOxZCY9DeR0hQ8VSkKxVKpa3L1PxtQFw77QvP5O1rBKHCSd5hf47Ywf4igmG4cU/s300/E35.hourly-to-salary-calculator%20%28%EC%8B%9C%EA%B8%89%E2%86%92%EC%97%B0%EB%B4%89%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Hourly to salary calculator converting an hourly wage into yearly and monthly pay" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh5Swi8Fk9_Znbi2-PZDQq7EUc7XQ2KnXaIMlx8qgWINb3ktgHj3UW19daUbRGJPMXQuH603EvLv9ykwSH8AuBBzEqJ-FMX6vgTKRYucw81d-E2jjEUQdVThhNBGYnAMOxZCY9DeR0hQ8VSkKxVKpa3L1PxtQFw77QvP5O1rBKHCSd5hf47Ywf4igmG4cU/s320/E35.hourly-to-salary-calculator%20%28%EC%8B%9C%EA%B8%89%E2%86%92%EC%97%B0%EB%B4%89%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Hourly to Salary Calculator (paste in Blogger HTML view) ===== -->
+<div id="hs-calc">
+<style>
+#hs-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#hs-calc .hs-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#hs-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#hs-calc .hs-lbl{display:block;font-weight:bold;margin-top:14px}
+#hs-calc .hs-hint{font-size:15px;color:#555;font-weight:normal}
+#hs-calc .hs-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#hs-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#hs-calc input.hs-s{flex:0 0 5.5em}
+#hs-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#hs-calc .hs-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#hs-calc .hs-opts{display:grid;gap:8px;margin-top:8px}
+#hs-calc .hs-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#hs-calc .hs-opts input{width:22px;height:22px;flex:none}
+#hs-calc .hs-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#hs-calc .hs-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#hs-calc .hs-grid select{font-size:17px;width:100%}
+#hs-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#hs-calc .hs-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#hs-calc .hs-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#hs-calc .hs-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#hs-calc .hs-err{color:#c00;font-weight:bold;text-align:center}
+#hs-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#hs-calc th,#hs-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#hs-calc th{background:#f2f4f8}
+#hs-calc .hs-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="hs-box"><h2>Hourly to Salary Calculator</h2>
+<span class="hs-lbl">Convert</span><div class="hs-opts"><label><input type="radio" name="hs-mode" value="a" checked> Hourly wage → yearly salary</label><label><input type="radio" name="hs-mode" value="b"> Yearly salary → hourly wage</label></div><span class="hs-lbl">Amount</span><div class="hs-line"><span class="hs-unit">$</span><input type="text" inputmode="decimal" id="hs-v" placeholder="e.g. 25"><span class="hs-unit"></span></div><span class="hs-lbl">Hours per week</span><div class="hs-line"><input type="text" inputmode="decimal" id="hs-h" placeholder="40" value="40"><span class="hs-unit">hours</span></div><span class="hs-lbl">Weeks worked per year <span class="hs-hint">(52 = paid vacation)</span></span><div class="hs-line"><input type="text" inputmode="decimal" id="hs-w" placeholder="52" value="52"><span class="hs-unit">weeks</span></div>
+<button type="button" id="hs-btn">Convert</button>
+<div class="hs-result" id="hs-res"></div>
+<p class="hs-note">Before taxes and deductions. Overtime is not included.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="hs-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('hs-v'));
+$('hs-btn').addEventListener('click',function(){var box=$('hs-res');box.style.display='block';function err(t){box.innerHTML='<p class="hs-err">'+t+'</p>';}
+  var v=num($('hs-v').value),h=num($('hs-h').value),w=num($('hs-w').value);if(!v||!h||!w)return err('Please fill in all fields.');
+  var yr=pick('hs-mode')==='a'?v*h*w:v,hr=yr/(h*w);
+  box.innerHTML='<div style="text-align:center">'+(pick('hs-mode')==='a'?'Yearly salary':'Hourly wage')+'</div><div class="hs-big">'+(pick('hs-mode')==='a'?usd0(yr):usd(hr))+'</div>'+
+   row('Hourly',usd(hr))+row('Daily (8 h)',usd(hr*8))+row('Weekly',usd(hr*h))+row('Biweekly',usd(hr*h*2))+row('Semi-monthly',usd(yr/24))+row('Monthly',usd(yr/12))+row('Yearly',usd0(yr));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Comparing job offers? Turn an hourly wage into a yearly salary — or a salary into an hourly rate — and see what each paycheck looks like.</p>
+<h2 style="font-size:26px;margin-top:10px">Comparing hourly pay and salaries fairly</h2>
+<p>An hourly wage and a yearly salary only compare fairly when you use the same hours. This calculator turns either one into hourly, weekly, biweekly, semi-monthly, monthly and yearly figures.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the hourly to salary calculator</h3><ol><li>Choose hourly → salary or salary → hourly.</li><li>Enter the amount, hours per week and weeks per year.</li><li>Press <b>Convert</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Yearly salary = hourly wage × hours per week × weeks per year</p>
+<h3 style="font-size:22px;margin-top:28px">Worked examples</h3><ul><li><b>$25 an hour</b>, 40 hours, 52 weeks = <b>$52,000 a year</b> — $4,333 a month, $2,000 every two weeks, or $2,167 twice a month.</li><li><b>A $85,000 salary</b> at 40 hours × 52 weeks (2,080 hours) = <b>$40.87 an hour</b>.</li><li>If the same $25-an-hour job gives two unpaid weeks off, use 50 weeks: <b>$50,000</b>.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Case study: two offers, same job, very different hourly rates</h3><p><b>Offer A</b> is a $62,000 salary. The manager says a typical week is 45 hours. <b>Offer B</b> is $31 an hour, non-exempt, scheduled for 40 hours.</p><ul><li>Offer A at 45 hours × 52 weeks = 2,340 hours, so $62,000 ÷ 2,340 = <b>$26.50 an hour</b>. Only at a true 40-hour week does it reach $29.81.</li><li>Offer B at 40 hours is $31 × 2,080 = <b>$64,480</b> a year. If the job really runs 45 hours, the extra 5 are paid at time and a half ($46.50), making $1,472.50 a week or <b>$76,570</b> a year.</li></ul><p>Now add benefits. If Offer A includes employer health coverage worth $500 a month and Offer B has none, A is worth about $68,000 against B's $64,480 at 40 hours. The moment B's overtime becomes routine, B pulls ahead again. The decision rule: convert every offer to dollars per hour actually worked, then add benefits as a yearly dollar figure, never as a vague percentage.</p>
+<h3 style="font-size:22px;margin-top:28px">Biweekly vs. semi-monthly</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Pay schedule</th><th style="border:1px solid #ccc;padding:6px">Paychecks a year</th><th style="border:1px solid #ccc;padding:6px">On a $52,000 salary</th></tr><tr><td style="border:1px solid #ccc;padding:6px">Weekly</td><td style="border:1px solid #ccc;padding:6px">52</td><td style="border:1px solid #ccc;padding:6px">$1,000</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Biweekly (every 2 weeks)</td><td style="border:1px solid #ccc;padding:6px">26</td><td style="border:1px solid #ccc;padding:6px">$2,000</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Semi-monthly (twice a month)</td><td style="border:1px solid #ccc;padding:6px">24</td><td style="border:1px solid #ccc;padding:6px">$2,166.67</td></tr><tr><td style="border:1px solid #ccc;padding:6px">Monthly</td><td style="border:1px solid #ccc;padding:6px">12</td><td style="border:1px solid #ccc;padding:6px">$4,333.33</td></tr></table><p>Biweekly pay means two months a year have three paychecks — handy for budgeting if you plan your bills on two checks a month.</p>
+<h3 style="font-size:22px;margin-top:28px">What the numbers leave out</h3><ul><li><b>Overtime:</b> under federal law, non-exempt workers earn 1.5 times their regular rate for hours over 40 in a week.</li><li><b>Benefits:</b> health insurance, retirement matches and paid leave can be worth 20–30% on top of a salary.</li><li><b>Taxes:</b> all figures are gross pay, before income tax, Social Security and Medicare.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Using 4 weeks for a month:</b> a month averages 4.33 weeks, so weekly pay × 4 understates monthly income.</li><li><b>Comparing a 37.5-hour job to a 40-hour job</b> without changing the hours field.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Using it to compare job offers</h3><p>When one offer is hourly and another is salaried, convert both to the same unit and include the expected hours. A salaried job that regularly needs 50 hours a week pays less per hour than the same salary at 40 hours.</p><p>Then add the value of benefits and commuting costs. A slightly lower salary with employer health insurance and a retirement match can be worth more than a higher hourly wage without them.</p>
+<h3 style="font-size:22px;margin-top:28px">Salaried does not mean exempt from overtime</h3><p>Federal law requires overtime at 1.5 times the regular rate for hours over 40 in a workweek for non-exempt employees. Being paid a salary is only one part of the exemption test; the job's actual duties must also qualify, and the salary must be above a federal threshold that has changed and been challenged in court in recent years. Check the Department of Labor's overtime page for the current figure rather than assuming a salary alone settles it.</p><p>States can go further. California, for example, requires daily overtime after 8 hours in a single day. Federal law has no daily rule and does not require extra pay for weekend or night work by itself.</p><p>For this calculator, a salaried worker with three weeks of paid vacation still enters 52 weeks, because the pay continues. An hourly worker who takes two unpaid weeks enters 50. At the $7.25 federal minimum, 40 hours for 52 weeks is $15,080 a year.</p>
+<h3 style="font-size:22px;margin-top:28px">Wage and salary questions from job seekers</h3><p><b>What is the federal minimum wage?</b><br>$7.25 an hour, but many states and cities set higher minimums. Check your state labor department.</p><p><b>How much is $20 an hour a year?</b><br>About $41,600 at 40 hours a week for 52 weeks.</p><p><b>What is the difference between biweekly and semi-monthly?</b><br>Biweekly is every two weeks (26 checks); semi-monthly is twice a month (24 checks).</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html">Hours Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html">Retirement Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.dol.gov/agencies/whd/overtime" rel="noopener" target="_blank">U.S. Department of Labor – Overtime pay (FLSA rules and exemptions)</a></li><li><a href="https://www.dol.gov/agencies/whd/minimum-wage" rel="noopener" target="_blank">U.S. Department of Labor – Minimum wage</a></li><li><a href="https://www.bls.gov/ooh/" rel="noopener" target="_blank">Bureau of Labor Statistics – Occupational Outlook Handbook (median pay by occupation)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> examples and the pay-schedule table were recalculated in Python; overtime rule from the U.S. Department of Labor (FLSA). Last reviewed November 2026. Pay comparisons here are simplified examples and are not employment, tax or legal advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/hours-calculator.html" style="color:#1a56db">Hours Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/retirement-calculator.html" style="color:#1a56db">Retirement Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/tip-calculator.html" style="color:#1a56db">Tip Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Hourly to Salary Calculator end ===== -->

@@ -1,0 +1,99 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjA4rfcE9ZXlQuU_okDcVm4AXMa3vq5EbkbkJJRYK4mh44L281dkuFyFo7Plil1tTwuwhv2Qz4q7Thv02OdqIDacE-9bARZkJlF4mnR5TF8EjJWTRYRLCSnl76C6KlcWG7jG00_IO29K6NC9YR8LCtOAPfPPbYUm4kp_5J7mi2CdRZGSOPllI-2CXQlM8/s300/J11.percent.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="パーセント計算ツールで割合と増減率を求める入力画面" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjA4rfcE9ZXlQuU_okDcVm4AXMa3vq5EbkbkJJRYK4mh44L281dkuFyFo7Plil1tTwuwhv2Qz4q7Thv02OdqIDacE-9bARZkJlF4mnR5TF8EjJWTRYRLCSnl76C6KlcWG7jG00_IO29K6NC9YR8LCtOAPfPPbYUm4kp_5J7mi2CdRZGSOPllI-2CXQlM8/s320/J11.percent.png"/></a></div>
+
+<!-- ===== J11 パーセント計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc11">
+<style>
+#jc11{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc11 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc11 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc11 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc11 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc11 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc11 input[type=text],#jc11 input[type=date],#jc11 input[type=time],#jc11 select,#jc11 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc11 textarea{width:100%;min-height:180px;font-size:17px}
+#jc11 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc11 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc11 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc11 .jc-opts input{width:20px;height:20px}
+#jc11 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc11 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc11 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc11 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc11 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc11 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc11 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc11 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc11 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc11 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc11 .jc-art th,#jc11 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc11 .jc-art th{background:#f2f4f8}
+#jc11 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">「AのB％はいくら」「AはBの何％」「増加率・減少率」を計算できる無料のパーセント計算ツールです。</p>
+<div class="jc-box"><h2>パーセント計算</h2>
+<span class="jc-lbl">計算の種類</span><div class="jc-line"><select id="jc11-k"><option value="1" selected>A の B％ はいくつ？</option><option value="2">A は B の何％？</option><option value="3">A から B への増減率は？</option></select></div>
+<span class="jc-lbl">A</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc11-a" placeholder="例：2,500"></div>
+<span class="jc-lbl">B</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc11-b" placeholder="例：20"></div>
+<button type="button" id="jc11-btn">計算する</button>
+<div class="jc-result" id="jc11-res"></div>
+<p class="jc-note">増減率＝（変化後−変化前）÷変化前×100 で計算しています。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc11-',box=document.getElementById('jc11-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var a=N('a'),b=N('b'),k=V('k');if(!a&&a!==0)return err('Aを入れてください。');
+if(k==='1')return show(f2(a*b/100),[['式',f2(a)+' × '+b+' ÷ 100']]);
+if(!b)return err('Bを0以外で入れてください。');
+if(k==='2')return show(f2(a/b*100)+' ％',[['式',f2(a)+' ÷ '+f2(b)+' × 100']]);
+if(!a)return err('Aを0以外で入れてください。');var r=(b-a)/a*100;show((r>=0?'+':'')+f2(r)+' ％',[['差',f2(b-a)],['B は A の',f2(b/a*100)+' ％']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>割合の計算は仕事でも買い物でもよく出てきますが、式を忘れがちです。このツールは3種類のパーセント計算をまとめてできます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">ポイント10％還元は10％オフより少し損です</h2>
+<h3 style="font-size:22px;margin-top:28px">3つの計算式</h3><ul><li>AのB％ ＝ A × B ÷ 100</li><li>AはBの何％ ＝ A ÷ B × 100</li><li>増減率 ＝（B − A）÷ A × 100</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">例</h3><p>2,500円の20％は500円。売上が80万円から100万円になったら増加率は25％です。</p>
+
+<h3 style="font-size:22px;margin-top:28px">3つの計算の例</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">知りたいこと</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">例</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">答え</th></tr><tr><td style="border:1px solid #bbb;padding:6px">AのB％はいくつ？</td><td style="border:1px solid #bbb;padding:6px">3,000円の15％</td><td style="border:1px solid #bbb;padding:6px">450円</td></tr><tr><td style="border:1px solid #bbb;padding:6px">AはBの何％？</td><td style="border:1px solid #bbb;padding:6px">45人は60人の何％</td><td style="border:1px solid #bbb;padding:6px">75％</td></tr><tr><td style="border:1px solid #bbb;padding:6px">AからBへの増減率</td><td style="border:1px solid #bbb;padding:6px">980円 → 1,250円</td><td style="border:1px solid #bbb;padding:6px">約27.6％増</td></tr><tr><td style="border:1px solid #bbb;padding:6px">AからBへの増減率</td><td style="border:1px solid #bbb;padding:6px">1,250円 → 980円</td><td style="border:1px solid #bbb;padding:6px">21.6％減</td></tr></table><p>同じ2つの金額でも、上がるときは約27.6％増、下がるときは21.6％減になります。<b>増減率はいつも「変化前」を基準に</b>計算するからです。</p>
+<h3 style="font-size:22px;margin-top:28px">割・分・掛けと％の対応表</h3><p>日本では「2割引」「7掛け」「打率3割2分」のように、％以外の言い方も日常的に使われます。計算ツールに入れる前に％へ直しておくと間違いが減ります。</p><table style="border:1px solid #ccc;padding:6px"><tr><th style="border:1px solid #ccc;padding:6px">言い方</th><th style="border:1px solid #ccc;padding:6px">％</th><th style="border:1px solid #ccc;padding:6px">小数</th><th style="border:1px solid #ccc;padding:6px">1,000円の場合</th></tr><tr><td style="border:1px solid #ccc;padding:6px">1割</td><td style="border:1px solid #ccc;padding:6px">10％</td><td style="border:1px solid #ccc;padding:6px">0.1</td><td style="border:1px solid #ccc;padding:6px">100円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">5分</td><td style="border:1px solid #ccc;padding:6px">5％</td><td style="border:1px solid #ccc;padding:6px">0.05</td><td style="border:1px solid #ccc;padding:6px">50円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2割5分</td><td style="border:1px solid #ccc;padding:6px">25％</td><td style="border:1px solid #ccc;padding:6px">0.25</td><td style="border:1px solid #ccc;padding:6px">250円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">7掛け（定価の7割）</td><td style="border:1px solid #ccc;padding:6px">70％</td><td style="border:1px solid #ccc;padding:6px">0.7</td><td style="border:1px solid #ccc;padding:6px">700円</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3分の1</td><td style="border:1px solid #ccc;padding:6px">約33.3％</td><td style="border:1px solid #ccc;padding:6px">0.333…</td><td style="border:1px solid #ccc;padding:6px">約333円</td></tr></table><p>「分」は割の10分の1です。「3割引」は30％を引いて700円を払いますが、「7掛け」も残る70％、つまり同じ700円を指します。引く割合を言っているのか、残る割合を言っているのかを確かめてください。</p>
+<h3 style="font-size:22px;margin-top:28px">「％」と「ポイント」の違い</h3><p>金利が2％から3％に上がったとき、「1ポイント上昇」ですが、増加率でいうと「50％増」です。ニュースや広告では、どちらの意味で書かれているかを確かめましょう。</p>
+<h3 style="font-size:22px;margin-top:28px">上がって下がると元に戻らない</h3><p>10％上がった後に10％下がると、1.1 × 0.9 ＝ 0.99 で、元より1％少なくなります。株価や売上の話でよく出てくる落とし穴です。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">下がった率</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">元に戻すのに必要な上昇率</th></tr><tr><td style="border:1px solid #bbb;padding:6px">10％減</td><td style="border:1px solid #bbb;padding:6px">約11.1％増</td></tr><tr><td style="border:1px solid #bbb;padding:6px">20％減</td><td style="border:1px solid #bbb;padding:6px">25％増</td></tr><tr><td style="border:1px solid #bbb;padding:6px">50％減</td><td style="border:1px solid #bbb;padding:6px">100％増（2倍）</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">暗算のコツ</h3><ul><li>10％は小数点を1つ左へ：3,000円の10％は300円。</li><li>5％は10％の半分：300円の半分で150円。</li><li>15％は10％＋5％：300 ＋ 150 ＝ 450円。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>基準を取り違える</b>：「AはBの何％」と「BはAの何％」は答えが違います。</li><li><b>割引と増減率を混同する</b>：値段の計算は<a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html">割引計算</a>の方が簡単です。</li><li><b>小さい数の変化を大げさに見る</b>：1人から2人に増えても「100％増」です。実数も一緒に見ましょう。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>仕事では、売上の前年比、目標の達成率、アンケートの回答割合などをすぐに出せます。「前年比」は変化前（前年）を基準にした増減率です。</p><p>買い物や家計では、ポイント還元率、手数料、値上がり率を確かめるのに便利です。電気代が9,800円から1万1,200円に上がったら、増加率は約14.3％です。</p><p>テストの正答率や、体重の変化を割合で知りたいときにも使えます。</p>
+<h3 style="font-size:22px;margin-top:28px">「10％還元」と「10％オフ」を同じ1万円で比べる</h3><p>1万円の商品を買うとき、10％オフなら支払いは9,000円です。10％ポイント還元なら支払いは1万円のままで、あとで使える1,000ポイントがもらえます。1万1,000円分の買い物を1万円で手に入れたと考えると、値引き率は 1,000 ÷ 11,000 ＝ 約9.1％ で、10％オフより少し小さくなります。還元率20％なら 2,000 ÷ 12,000 ＝ 約16.7％ です。ポイントには有効期限や使える店の制限もあるので、同じ数字なら値引きの方が確実です。</p><p>もう一つ混同しやすいのが、増減率の積み重ねです。売上が毎年20％ずつ増えると、3年後は 1.2 × 1.2 × 1.2 ＝ 1.728倍、つまり72.8％増で、60％増ではありません。逆に毎年20％減が3年続くと 0.8 × 0.8 × 0.8 ＝ 0.512倍 で、ほぼ半分になります。年ごとの率は足さずに掛けるのが決まりです。</p>
+<h3 style="font-size:22px;margin-top:28px">パーセントについて寄せられる質問</h3><p><b>Q. 「％」と「ポイント」の違いは？</b><br>A. 10％から12％への変化は「2ポイント増」、増加率では「20％増」です。</p><p><b>Q. 割合を分数で知りたい</b><br>A. 75％は3/4、25％は1/4、20％は1/5です。％を100で割ると小数、そこから分数に直せます。</p><p><b>Q. 「前年比120％」と「20％増」は同じ？</b><br>A. 同じです。前年を100％としたとき120％なら、20％増えたという意味です。</p><p><b>Q. マイナスの数も計算できますか？</b><br>A. できます。ただし変化前が0のときは増減率を計算できません。</p><p><b>Q. 小数点以下は何桁まで？</b><br>A. 小数第2位まで表示します。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html">割引計算</a> – ○％オフの値段</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html">消費税計算</a> – 10％・8％の税込計算</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/tsubo-heibei.html">坪数計算</a> – 面積の単位を変換</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.stat.go.jp/naruhodo/" rel="noopener" target="_blank">総務省統計局 なるほど統計学園 – 割合・パーセントの基礎</a></li><li><a href="https://www.stat.go.jp/" rel="noopener" target="_blank">総務省統計局 – 統計データの見方</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>表の数字はすべてプログラムで計算して確かめました。 最終確認：2026年11月。 計算結果は入力した数値どおりの単純な割合で、実際の価格や還元条件は各店舗の規約でご確認ください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/waribiki.html" style="color:#1a56db">割引計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/shohizei.html" style="color:#1a56db">消費税計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/hensachi.html" style="color:#1a56db">偏差値計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J11 end ===== -->

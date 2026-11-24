@@ -1,0 +1,102 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFcxNhJm3HsTGWnKqJQiFINsTFVHWViQcu2xzO2QJ7vTiZG6TtPnr_FIZU9MFHWLSr89xasCDOYnL1mZNLovZGZBSHVnyMlR1KMr5p0M9v8EA2RQ0cKmz4ZeKbUxHhVWlLqPDQubt6TNGvuPKj2Gxh_fNUy6Jx1EU278p02WKn5DVAyC3j3npqSGw38bw/s300/J02.wareki-seireki.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="和暦西暦変換ツールの画面：令和・平成・昭和を西暦に変換" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFcxNhJm3HsTGWnKqJQiFINsTFVHWViQcu2xzO2QJ7vTiZG6TtPnr_FIZU9MFHWLSr89xasCDOYnL1mZNLovZGZBSHVnyMlR1KMr5p0M9v8EA2RQ0cKmz4ZeKbUxHhVWlLqPDQubt6TNGvuPKj2Gxh_fNUy6Jx1EU278p02WKn5DVAyC3j3npqSGw38bw/s320/J02.wareki-seireki.png"/></a></div>
+
+
+<!-- ===== J02 和暦・西暦変換（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc02">
+<style>
+#jc02{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc02 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc02 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc02 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc02 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc02 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc02 input[type=text],#jc02 input[type=date],#jc02 input[type=time],#jc02 select,#jc02 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc02 textarea{width:100%;min-height:180px;font-size:17px}
+#jc02 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc02 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc02 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc02 .jc-opts input{width:20px;height:20px}
+#jc02 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc02 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc02 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc02 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc02 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc02 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc02 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc02 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc02 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc02 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc02 .jc-art th,#jc02 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc02 .jc-art th{background:#f2f4f8}
+#jc02 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">西暦と和暦（令和・平成・昭和・大正・明治）を相互に変換。年齢や干支も同時に表示する無料の和暦西暦変換ツールです。</p>
+<div class="jc-box"><h2>和暦・西暦変換</h2>
+<span class="jc-lbl">変換の向き</span><div class="jc-opts"><label><input type="radio" name="jc02-m" value="s" checked>西暦 → 和暦</label><label><input type="radio" name="jc02-m" value="w">和暦 → 西暦</label></div>
+<span class="jc-lbl">西暦（年）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc02-y" placeholder="例：1990"><span class="jc-unit">年</span></div>
+<span class="jc-lbl">和暦の元号</span><div class="jc-line"><select id="jc02-g"><option value="R">令和</option><option value="H" selected>平成</option><option value="S">昭和</option><option value="T">大正</option><option value="M">明治</option></select></div>
+<span class="jc-lbl">和暦（年）</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc02-wy" placeholder="例：2"><span class="jc-unit">年</span></div>
+<button type="button" id="jc02-btn">計算する</button>
+<div class="jc-result" id="jc02-res"></div>
+<p class="jc-note">改元の年は2つの元号にまたがります（例：2019年は平成31年／令和元年、1989年は昭和64年／平成元年）。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc02-',box=document.getElementById('jc02-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var st={R:2019,H:1989,S:1926,T:1912,M:1868},nm={R:'令和',H:'平成',S:'昭和',T:'大正',M:'明治'},y;
+if(R('m')==='s'){y=N('y');if(!y||y<1868||y>2100)return err('1868〜2100の西暦を入れてください。');}
+else{var g=V('g'),w=N('wy');if(!w)return err('和暦の年を入れてください。');y=st[g]+w-1;}
+var now=new Date().getFullYear();
+show(y+'年 ＝ '+wareki(y),[['今年で満',(now-y)+' 歳（誕生日後）'],['干支',eto(y)],['同じ年の別の呼び方',wareki2(y)]]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>役所の書類、免許証、保険証などでは今も和暦が使われています。「平成5年は西暦何年？」「1985年は昭和何年？」と迷ったときに、このツールですぐに変換できます。</p>
+
+<h2 style="font-size:24px;margin-top:10px">2026年は「昭和101年」でもある</h2>
+<h3 style="font-size:22px;margin-top:28px">使い方</h3><ul><li>変換の向きを選びます。</li><li>西暦、または元号と和暦の年を入れます。</li><li>「計算する」で結果と、その年生まれの年齢・干支が表示されます。</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">元号の始まり</h3><table><tr><th>元号</th><th>元年（西暦）</th></tr><tr><td>令和</td><td>2019年</td></tr><tr><td>平成</td><td>1989年</td></tr><tr><td>昭和</td><td>1926年</td></tr><tr><td>大正</td><td>1912年</td></tr><tr><td>明治</td><td>1868年</td></tr></table>
+<p>簡単な覚え方：令和は「西暦−2018」、平成は「西暦−1988」、昭和は「西暦−1925」です。</p>
+
+<h3 style="font-size:22px;margin-top:28px">変換の例</h3><ul><li><b>平成5年は？</b> 1989 ＋ 5 − 1 ＝ <b>1993年</b></li><li><b>1985年は？</b> 1985 − 1925 ＝ <b>昭和60年</b></li><li><b>令和8年は？</b> 2019 ＋ 8 − 1 ＝ <b>2026年</b></li><li><b>昭和50年は？</b> 1926 ＋ 50 − 1 ＝ <b>1975年</b></li></ul><p>元号の年を西暦にするときは「元年の西暦 ＋ 年 − 1」、西暦を元号にするときは「西暦 − (元年の西暦 − 1)」です。「−1」を忘れて1年ずれるのが一番多い間違いです。</p>
+<h3 style="font-size:22px;margin-top:28px">もし元号が続いていたら：2026年の換算一覧</h3><p>古いシステムや帳簿では、改元前の元号のまま年を数え続けているものがあります。2026年を過去の元号で表すと次のようになります。計算はどれも「西暦 − （元年の西暦 − 1）」です。</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">元号</th><th style="border:1px solid #ccc;padding:6px">計算</th><th style="border:1px solid #ccc;padding:6px">2026年の表し方</th></tr><tr><td style="border:1px solid #ccc;padding:6px">令和</td><td style="border:1px solid #ccc;padding:6px">2026 − 2018</td><td style="border:1px solid #ccc;padding:6px">令和8年</td></tr><tr><td style="border:1px solid #ccc;padding:6px">平成</td><td style="border:1px solid #ccc;padding:6px">2026 − 1988</td><td style="border:1px solid #ccc;padding:6px">平成38年</td></tr><tr><td style="border:1px solid #ccc;padding:6px">昭和</td><td style="border:1px solid #ccc;padding:6px">2026 − 1925</td><td style="border:1px solid #ccc;padding:6px">昭和101年</td></tr><tr><td style="border:1px solid #ccc;padding:6px">大正</td><td style="border:1px solid #ccc;padding:6px">2026 − 1911</td><td style="border:1px solid #ccc;padding:6px">大正115年</td></tr><tr><td style="border:1px solid #ccc;padding:6px">明治</td><td style="border:1px solid #ccc;padding:6px">2026 − 1867</td><td style="border:1px solid #ccc;padding:6px">明治159年</td></tr></table><p>2025年は昭和でいえば「昭和100年」でした。昭和の年を2桁で記録してきた古い仕組みでは、100年目から年の桁があふれるため、書類の「S」表記の年が2桁で書かれているときは、それが昭和何年なのか、西暦に直して確かめると安心です。</p>
+<h3 style="font-size:22px;margin-top:28px">改元日と「足し引きする数」</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">元号</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">始まった日</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">西暦 → 和暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">和暦 → 西暦</th></tr><tr><td style="border:1px solid #bbb;padding:6px">令和</td><td style="border:1px solid #bbb;padding:6px">2019年5月1日</td><td style="border:1px solid #bbb;padding:6px">西暦 − 2018</td><td style="border:1px solid #bbb;padding:6px">和暦 ＋ 2018</td></tr><tr><td style="border:1px solid #bbb;padding:6px">平成</td><td style="border:1px solid #bbb;padding:6px">1989年1月8日</td><td style="border:1px solid #bbb;padding:6px">西暦 − 1988</td><td style="border:1px solid #bbb;padding:6px">和暦 ＋ 1988</td></tr><tr><td style="border:1px solid #bbb;padding:6px">昭和</td><td style="border:1px solid #bbb;padding:6px">1926年12月25日</td><td style="border:1px solid #bbb;padding:6px">西暦 − 1925</td><td style="border:1px solid #bbb;padding:6px">和暦 ＋ 1925</td></tr><tr><td style="border:1px solid #bbb;padding:6px">大正</td><td style="border:1px solid #bbb;padding:6px">1912年7月30日</td><td style="border:1px solid #bbb;padding:6px">西暦 − 1911</td><td style="border:1px solid #bbb;padding:6px">和暦 ＋ 1911</td></tr><tr><td style="border:1px solid #bbb;padding:6px">明治</td><td style="border:1px solid #bbb;padding:6px">1868年（1月1日にさかのぼって適用）</td><td style="border:1px solid #bbb;padding:6px">西暦 − 1867</td><td style="border:1px solid #bbb;padding:6px">和暦 ＋ 1867</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">改元の年は日付に注意</h3><p>改元の年は1年の途中で元号が変わります。このツールは年単位で変換し、その年に2つの呼び方があることを表示します。書類に書くときは月日も確認してください。</p><ul><li><b>2019年</b>：4月30日までは平成31年、5月1日からは令和元年</li><li><b>1989年</b>：1月7日までは昭和64年、1月8日からは平成元年（昭和64年はわずか7日間）</li><li><b>1926年</b>：12月24日までは大正15年、12月25日からは昭和元年（昭和元年は7日間）</li></ul>
+<h3 style="font-size:22px;margin-top:28px">10年ごとの早見表</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">西暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">和暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">西暦</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">和暦</th></tr><tr><td style="border:1px solid #bbb;padding:6px">1950年</td><td style="border:1px solid #bbb;padding:6px">昭和25年</td><td style="border:1px solid #bbb;padding:6px">2000年</td><td style="border:1px solid #bbb;padding:6px">平成12年</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1960年</td><td style="border:1px solid #bbb;padding:6px">昭和35年</td><td style="border:1px solid #bbb;padding:6px">2010年</td><td style="border:1px solid #bbb;padding:6px">平成22年</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1970年</td><td style="border:1px solid #bbb;padding:6px">昭和45年</td><td style="border:1px solid #bbb;padding:6px">2020年</td><td style="border:1px solid #bbb;padding:6px">令和2年</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1980年</td><td style="border:1px solid #bbb;padding:6px">昭和55年</td><td style="border:1px solid #bbb;padding:6px">2025年</td><td style="border:1px solid #bbb;padding:6px">令和7年</td></tr><tr><td style="border:1px solid #bbb;padding:6px">1990年</td><td style="border:1px solid #bbb;padding:6px">平成2年</td><td style="border:1px solid #bbb;padding:6px">2026年</td><td style="border:1px solid #bbb;padding:6px">令和8年</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">よくある間違い</h3><ul><li><b>「元年」を0年と考える</b>：元年は1年目です。令和元年＝2019年、令和2年＝2020年です。</li><li><b>平成31年と令和元年を別の年だと思う</b>：どちらも2019年です。</li><li><b>アルファベット表記の取り違え</b>：書類ではR（令和）・H（平成）・S（昭和）・T（大正）・M（明治）と略されます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>役所や銀行の書類、病院の問診票では、生年月日を和暦で書く欄がまだ多く残っています。一方でパスポートや海外の書類は西暦です。両方を行き来するときに、計算違いを防げます。</p><p>古い契約書や保証書、家の登記簿などの日付は和暦で書かれていることがよくあります。「昭和58年の契約は何年前？」と知りたいときは、まず西暦（1983年）に直してから、今年との差を計算すると分かりやすくなります。</p><p>免許証の有効期限も和暦で書かれています。更新時期を手帳やスマホのカレンダーに入れるときに、西暦に直しておくと見落としを防げます。</p>
+<h3 style="font-size:22px;margin-top:28px">明治初期は旧暦：明治5年までの日付の注意点</h3><p>このツールは年単位で変換しますが、明治のはじめは注意が必要です。日本が今の太陽暦（グレゴリオ暦）に切り替えたのは明治6年（1873年）1月1日で、その前日は旧暦の明治5年12月2日でした。つまり明治5年以前の月日は旧暦で、西暦の月日とは1か月前後ずれています。</p><ol><li><b>年だけ知りたい</b>：明治元年＝1868年として変換すれば、ほぼ問題ありません。</li><li><b>月日まで必要</b>（戸籍・古文書・命日など）：明治5年までは旧暦の日付なので、暦の対照表で西暦の月日に直します。年末の日付は西暦では翌年になることもあります。</li><li><b>明治6年以降</b>：月日はそのまま西暦に対応します。改元の年（1912年・1926年・1989年・2019年）だけ、何月何日かを確かめてください。</li></ol><p>家系をたどるときや古い墓石の日付を読むときは、「明治5年」より前かどうかを最初に見ると、変換の手間を間違えません。</p>
+<h3 style="font-size:22px;margin-top:28px">元号の変換で聞かれること</h3><p><b>Q. 2019年は平成？令和？</b><br>A. 4月30日までは平成31年、5月1日からは令和元年です。</p><p><b>Q. 令和の後の元号が決まったら？</b><br>A. 新しい元号が施行されたら、このツールも更新します。</p><p><b>Q. 明治より前（江戸時代）は変換できますか？</b><br>A. このツールは明治以降（1868年〜）に対応しています。それ以前は元号の数が多く、旧暦の扱いも必要になるためです。</p><p><b>Q. 令和元年生まれの子は、今年いくつ？</b><br>A. 2019年生まれなので、2026年の誕生日を迎えると満7歳です。</p><p><b>Q. 「H」「S」はどの元号？</b><br>A. Hは平成、Sは昭和の頭文字です。書類の生年月日欄でよく使われます。</p><p><b>Q. 和暦の年だけで年齢を出せますか？</b><br>A. 元号をまたぐとずれやすいので、いったん西暦にしてから計算するのがおすすめです。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html">年齢計算</a> – 生年月日から満年齢と数え年</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html">干支計算</a> – その年の干支を確認</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – ○日後・○日前の日付と曜日</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://www.cao.go.jp/" rel="noopener" target="_blank">内閣府 – 元号・改元に関する公表資料</a></li><li><a href="https://www.ndl.go.jp/koyomi/" rel="noopener" target="_blank">国立国会図書館 – 日本の暦（改暦と旧暦の解説）</a></li><li><a href="https://eco.mtk.nao.ac.jp/koyomi/" rel="noopener" target="_blank">国立天文台 暦計算室 – 暦の変換に関する情報</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>改元日は内閣府・政府の公表資料に基づき、変換表はプログラムで計算して一つずつ確かめました。 最終確認：2026年11月。 変換結果は年単位の目安です。公的な書類の日付は原本と窓口で確認してください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/age-calculator_0449143738.html" style="color:#1a56db">年齢計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/eto-calculator.html" style="color:#1a56db">干支計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html" style="color:#1a56db">日付計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J02 end ===== -->

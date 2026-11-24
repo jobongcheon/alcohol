@@ -1,0 +1,97 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUcrRLadHVvvXelDMHfr5W6UVEz1lg9S67Ya7r5bp16EDygiBuD-rI5bKdoZePU52H6Tymk8dFqO9X6UVt4Tq7qkNi_apCcZJ7h-D_ikGUUL3tdi_WOKQy9D5b0VXgHXPKq05KaCacR9iAyNXo0rqzcXvnL6UL0DjKweukRDOOuzigX-2ois93RA63qp0/s300/J15.shussan-yoteibi.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="出産予定日計算ツールで予定日と現在の妊娠週数を表示" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUcrRLadHVvvXelDMHfr5W6UVEz1lg9S67Ya7r5bp16EDygiBuD-rI5bKdoZePU52H6Tymk8dFqO9X6UVt4Tq7qkNi_apCcZJ7h-D_ikGUUL3tdi_WOKQy9D5b0VXgHXPKq05KaCacR9iAyNXo0rqzcXvnL6UL0DjKweukRDOOuzigX-2ois93RA63qp0/s320/J15.shussan-yoteibi.png"/></a></div>
+
+<!-- ===== J15 出産予定日計算（Blogger HTML ビューに貼り付け） ===== -->
+<div id="jc15">
+<style>
+#jc15{max-width:640px;margin:0 auto;font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;color:#111;background:#fff;font-size:18px;line-height:1.7}
+#jc15 .jc-box{border:2px solid #333;border-radius:12px;padding:20px;background:#fff}
+#jc15 h2{font-size:26px;margin:0 0 12px;text-align:center}
+#jc15 .jc-lbl{display:block;font-weight:bold;margin-top:14px}
+#jc15 .jc-hint{font-size:14px;color:#555;font-weight:normal}
+#jc15 .jc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#jc15 input[type=text],#jc15 input[type=date],#jc15 input[type=time],#jc15 select,#jc15 textarea{flex:1;min-width:0;box-sizing:border-box;font-size:20px;padding:8px 10px;border:2px solid #888;border-radius:8px;background:#fff;color:#111;font-family:inherit}
+#jc15 textarea{width:100%;min-height:180px;font-size:17px}
+#jc15 .jc-unit{font-size:18px;font-weight:bold;white-space:nowrap}
+#jc15 .jc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#jc15 .jc-opts label{display:flex;align-items:center;gap:8px;border:2px solid #ccd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:17px}
+#jc15 .jc-opts input{width:20px;height:20px}
+#jc15 button{width:100%;margin-top:20px;font-size:22px;font-weight:bold;padding:13px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer;font-family:inherit}
+#jc15 .jc-result{margin-top:20px;padding:16px;border:2px solid #1a56db;border-radius:10px;display:none}
+#jc15 .jc-big{font-size:28px;font-weight:bold;color:#1a56db;text-align:center;margin:4px 0 8px;word-break:keep-all}
+#jc15 .jc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:16px}
+#jc15 .jc-row span:last-child{font-weight:bold;text-align:right}
+#jc15 .jc-err{color:#c00;font-weight:bold;text-align:center}
+#jc15 .jc-note{font-size:14px;color:#555;margin-top:12px}
+#jc15 .jc-art{margin-top:34px;font-size:18px;line-height:1.85}
+#jc15 .jc-art h3{font-size:22px;margin:26px 0 8px;border-left:5px solid #1a56db;padding-left:10px}
+#jc15 .jc-art table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0}
+#jc15 .jc-art th,#jc15 .jc-art td{border:1px solid #bbb;padding:6px 8px;text-align:center}
+#jc15 .jc-art th{background:#f2f4f8}
+#jc15 .jc-more{margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center}
+</style>
+<p style="font-size:18px;line-height:1.8;margin:0 0 16px">最終月経開始日から出産予定日（ネーゲレ概算法）と今日の妊娠週数・妊娠月数を計算。安定期や産休開始の目安も表示します。</p>
+<div class="jc-box"><h2>出産予定日計算</h2>
+<span class="jc-lbl">最終月経の開始日</span><div class="jc-line"><input type="date" id="jc15-l"></div>
+<span class="jc-lbl">月経周期</span><div class="jc-line"><input type="text" inputmode="decimal" id="jc15-c" placeholder="例：28" value="28"><span class="jc-unit">日</span></div>
+<button type="button" id="jc15-btn">計算する</button>
+<div class="jc-result" id="jc15-res"></div>
+<p class="jc-note">予定日は目安です。正確な予定日は医療機関の超音波検査で決まります。</p></div>
+<!-- 広告（AdSense インアーティクル） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  var P='jc15-',box=document.getElementById('jc15-res');
+  function $(k){return document.getElementById(P+k);}
+  function V(k){var e=$(k);return e?String(e.value||'').trim():'';}
+  function N(k){var s=V(k).replace(/[０-９．]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248);}).replace(/[,，円%％\s]/g,'');var x=parseFloat(s);return isNaN(x)?0:x;}
+  function R(k){var r=document.getElementsByName(P+k);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function D(k){var v=V(k);if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function f0(n){return Math.round(n).toLocaleString('ja-JP');}
+  function f1(n){return (Math.round(n*10)/10).toLocaleString('ja-JP',{maximumFractionDigits:1});}
+  function f2(n){return (Math.round(n*100)/100).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+  function fd(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+'日月火水木金土'.charAt(d.getDay())+'）';}
+  function wy(n){return n===1?'元':n;}
+  function wareki(y){if(y>=2019)return '令和'+wy(y-2018)+'年'+(y===2019?'（平成31年）':'');if(y>=1989)return '平成'+wy(y-1988)+'年'+(y===1989?'（昭和64年）':'');if(y>=1926)return '昭和'+wy(y-1925)+'年'+(y===1926?'（大正15年）':'');if(y>=1912)return '大正'+wy(y-1911)+'年'+(y===1912?'（明治45年）':'');if(y>=1868)return '明治'+wy(y-1867)+'年';return '—';}
+  function wareki2(y){return {2019:'平成31年／令和元年',1989:'昭和64年／平成元年',1926:'大正15年／昭和元年',1912:'明治45年／大正元年'}[y]||'なし（元号は1つ）';}
+  function eto(y){var i=((y-4)%12+12)%12;return '子丑寅卯辰巳午未申酉戌亥'.charAt(i)+'（'+['ね','うし','とら','う','たつ','み','うま','ひつじ','さる','とり','いぬ','い'][i]+'）年';}
+  function jikkan(y){return '甲乙丙丁戊己庚辛壬癸'.charAt(((y-4)%10+10)%10)+'子丑寅卯辰巳午未申酉戌亥'.charAt(((y-4)%12+12)%12);}
+  function row(a,b){return '<div class="jc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function show(big,rows){var h='<div class="jc-big">'+big+'</div>';(rows||[]).forEach(function(r){h+=row(r[0],r[1]);});box.innerHTML=h;box.style.display='block';}
+  function err(t){box.innerHTML='<p class="jc-err">'+t+'</p>';box.style.display='block';}
+  $('btn').addEventListener('click',function(){
+var l=D('l'),c=N('c')||28;if(!l)return err('最終月経の開始日を選んでください。');var d=new Date(l.getTime());d.setDate(d.getDate()+280+(c-28));
+var t=new Date();t.setHours(0,0,0,0);var g=Math.floor((t-l)/864e5)-(c-28),wk=Math.floor(g/7),dy=g%7;
+var mk=function(n){var x=new Date(l.getTime());x.setDate(x.getDate()+n+(c-28));return fd(x);};
+show(fd(d),[['今日の妊娠週数',g>=0&&g<300?'妊娠 '+wk+' 週 '+dy+' 日（'+(Math.floor(wk/4)+1)+' か月）':'—'],['安定期（16週）に入る日',mk(112)],['産休開始の目安（予定日の6週前）',mk(238)],['予定日まで',d>=t?Math.ceil((d-t)/864e5)+' 日':'予定日を過ぎています']]);
+  });
+})();
+</script>
+<!-- ===== 記事 ===== -->
+<div class="jc-article" style="margin-top:32px;font-size:17px;line-height:1.85">
+<p>出産予定日は、最終月経の開始日から280日目（40週0日）として計算するのが一般的です。このツールは予定日に加えて、今日が妊娠何週何日か、安定期や産休の時期も表示します。</p>
+
+<h2 style="font-size:24px;margin-top:10px">周期28日・35日・25日で予定日を並べて比べる</h2>
+<h3 style="font-size:22px;margin-top:28px">計算方法</h3><p>出産予定日 ＝ 最終月経開始日 ＋ 280日（月経周期が28日の場合）。周期が28日より長い・短い場合は、その差を足し引きして調整しています。</p>
+
+<h3 style="font-size:22px;margin-top:28px">妊娠週数の数え方</h3><p>最終月経の開始日を「妊娠0週0日」と数えます。4週ごとに1か月と考えるのが日本の数え方です。</p>
+
+<h3 style="font-size:22px;margin-top:28px">計算例</h3><p>最終月経の開始日が2026年4月1日（月経周期28日）の場合、出産予定日は280日後の<b>2027年1月6日</b>です。</p><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">時期</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">妊娠週数</th><th style="border:1px solid #bbb;padding:6px;background:#f2f4f8">日付の目安</th></tr><tr><td style="border:1px solid #bbb;padding:6px">つわりが落ち着くことが多い頃</td><td style="border:1px solid #bbb;padding:6px">12週</td><td style="border:1px solid #bbb;padding:6px">2026年6月24日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">安定期に入る</td><td style="border:1px solid #bbb;padding:6px">16週</td><td style="border:1px solid #bbb;padding:6px">2026年7月22日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">産前休業を取れる</td><td style="border:1px solid #bbb;padding:6px">34週（予定日の6週前）</td><td style="border:1px solid #bbb;padding:6px">2026年11月25日</td></tr><tr><td style="border:1px solid #bbb;padding:6px">出産予定日</td><td style="border:1px solid #bbb;padding:6px">40週0日</td><td style="border:1px solid #bbb;padding:6px">2027年1月6日</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">最終月経が2026年3月10日なら、周期の違いで予定日はこう動く</h3><p>このツールは、月経周期が28日と違う日数分だけ280日に足し引きします。最終月経の開始日が2026年3月10日の場合で比べます。</p><ul><li>周期28日：280日後の2026年12月15日</li><li>周期35日：280＋7＝287日後の2026年12月22日</li><li>周期25日：280−3＝277日後の2026年12月12日</li></ul><p>周期が長い人は排卵が遅いので、予定日も後ろにずれます。ただしこの調整は暦の上の計算にすぎません。妊娠8〜11週ごろの超音波検査で赤ちゃんの大きさから予定日が決まったら、以後はその日付を使ってください。周期35日の例で、超音波の結果で予定日が12月15日に修正されれば、妊娠週数は1週分進み、産休に入れる日も1週間早まります。</p>
+<h3 style="font-size:22px;margin-top:28px">妊娠週数と月数の数え方</h3><p>最終月経の開始日を「妊娠0週0日」とし、7日ごとに1週進みます。日本では4週を1か月として数えるので、妊娠8週0日は「妊娠3か月」です。実際に受精するのは妊娠2週ごろなので、妊娠が分かった時点で「4〜5週」と言われることがよくあります。</p>
+<h3 style="font-size:22px;margin-top:28px">予定日が変わることがある理由</h3><ul><li>月経周期が28日より長い・短い人は、排卵の時期がずれます。このツールでは周期の差を足し引きして調整しています。</li><li>妊娠初期（8〜11週ごろ）の超音波検査で赤ちゃんの大きさ（頭殿長）を測り、予定日を修正することがあります。正式な予定日は医療機関で決まります。</li><li>予定日ちょうどに生まれる赤ちゃんは多くありません。37週0日〜41週6日の出産を「正期産」と呼びます。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">手続きの目安</h3><ul><li>妊娠が分かったら、市区町村に妊娠届を出して母子健康手帳を受け取ります。</li><li>産前休業は予定日の6週間前（多胎妊娠は14週間前）から、産後休業は出産の翌日から8週間です。</li><li>勤務先への報告や出産育児一時金の手続きは、早めに確認しておくと安心です。</li></ul>
+<h3 style="font-size:22px;margin-top:28px">こんなときに使えます</h3><p>妊娠が分かったばかりのとき、おおよその予定日と今の週数を知って、受診や手続きの予定を立てるのに役立ちます。仕事をしている人は、産休に入る時期の目安を職場に伝える準備にもなります。</p><p>家族やパートナーと予定を共有するときにも便利です。里帰り出産を考えている場合は、移動の時期も早めに相談しておくと安心です。</p><p>医療機関で予定日が修正されたら、その日付を基準に予定を見直してください。</p>
+<h3 style="font-size:22px;margin-top:28px">産前6週間・産後8週間を実際の日付で数える</h3><p>労働基準法第65条では、産前休業は出産予定日の6週間前（多胎妊娠は14週間前）から本人が請求すれば取れ、産後8週間は原則として働けません（産後6週間を過ぎて本人が請求し、医師が支障ないと認めた業務は可）。予定日が2027年3月20日の例で日付にします。</p><ul><li>産前休業の開始：42日前の2027年2月6日から（双子なら98日前の2026年12月12日から）</li><li>実際の出産が2027年3月25日なら、産後休業は翌日の3月26日から8週間（56日）、2027年5月20日まで</li><li>続けて育児休業を取る場合は、産後休業の翌日2027年5月21日から始めるのが一般的です</li></ul><p>予定日より遅れて生まれた日数分は産前休業として扱われ、産後8週間は実際の出産日を起点に数え直します。勤務先に出す書類は予定日ベースで仮に作り、出産後に産後休業の終了日を確定させる流れが一般的です。</p>
+<h3 style="font-size:22px;margin-top:28px">妊娠週数についてよく聞かれること</h3><p><b>Q. 産休はいつから取れる？</b><br>A. 産前休業は予定日の6週間前（双子以上は14週間前）から取れます。</p><p><b>Q. 最終月経の日が分からないときは？</b><br>A. 超音波検査で決めた予定日を使ってください。この計算ツールは目安として使えます。</p><p><b>Q. 周期が不規則な場合は？</b><br>A. 計算はずれやすくなります。医療機関の判断を優先してください。</p><p><b>Q. 妊婦健診はどのくらいの間隔？</b><br>A. 一般的には、妊娠初期〜23週は4週に1回、24〜35週は2週に1回、36週以降は週1回が目安です。</p><p><b>Q. つわりがつらいときは？</b><br>A. 我慢しすぎず、かかりつけの医療機関に相談してください。</p>
+<h3 style="font-size:22px;margin-top:28px">あわせて使いたい計算ツール</h3><ul><li><a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html">日付計算</a> – ○日後の日付</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html">日数計算</a> – 予定日まであと何日</li><li><a href="https://daily-glow-up.blogspot.com/2026/11/wareki-seireki.html">和暦西暦変換</a> – 届出書類の年を和暦で</li></ul>
+
+<h3 style="font-size:22px;margin-top:28px">参考にした資料</h3><ul><li><a href="https://laws.e-gov.go.jp/law/322AC0000000049" rel="noopener" target="_blank">e-Gov法令検索 – 労働基準法（第65条 産前産後休業）</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html" rel="noopener" target="_blank">厚生労働省 – 労働基準に関する法制度（母性保護）</a></li><li><a href="https://www.jsog.or.jp/" rel="noopener" target="_blank">日本産科婦人科学会 – 妊娠・分娩に関する用語と解説</a></li></ul>
+<p style="font-size:14px;color:#555;margin-top:24px"><b>このページの確認方法：</b>日付はツールと同じ方法でプログラム計算しました。産前産後休業の期間は労働基準法、正期産の定義は日本産科婦人科学会の用語によります。医療上の判断は医師にご相談ください。 最終確認：2026年11月。 予定日と週数は暦の上の計算で、医師が決めた予定日を優先してください。</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:20px">こちらもどうぞ</b><br><span style="font-size:16px"><a href="https://daily-glow-up.blogspot.com/2026/11/days-between.html" style="color:#1a56db">日数計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/date-after.html" style="color:#1a56db">日付計算</a> ・ <a href="https://daily-glow-up.blogspot.com/2026/11/yukyu.html" style="color:#1a56db">有給休暇計算</a></span><br><a href="https://daily-glow-up.blogspot.com/" style="display:inline-block;margin-top:10px;font-size:16px;font-weight:bold;color:#1a56db">▶ 計算ツール一覧を見る</a></div>
+</div>
+<!-- ===== J15 end ===== -->
+

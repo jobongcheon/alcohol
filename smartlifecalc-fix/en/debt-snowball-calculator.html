@@ -1,0 +1,116 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEii-lIk9XZx9gnpyBS2LwDqYCzLi8t1fb8lFt1-vRLRsrEHOy7jdon2YOJnMCTvmOAhSGCw-i5K5Unt6gkVu325qqexdMNoaHVJW8pkOvcXMOhJwh66zWd_RWfFp5-iUUWFKrxZJO7oWUxZqPScfPeO72t9qmnknjgDY3hVA_u32ztGBOhNQ2PTRqzh0UI/s300/E05.debt-snowball-calculator%20%28%EB%B9%9A%20%EA%B0%9A%EA%B8%B0%20%EC%88%9C%EC%84%9C%20%EB%B9%84%EA%B5%90%20%EA%B3%84%EC%82%B0%EA%B8%B0%20%28%EC%8A%A4%EB%85%B8%EB%B3%BC%C2%B7%EC%95%A0%EB%B2%8C%EB%9E%9C%EC%B9%98%29.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="Debt snowball versus avalanche comparison showing payoff months and interest" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEii-lIk9XZx9gnpyBS2LwDqYCzLi8t1fb8lFt1-vRLRsrEHOy7jdon2YOJnMCTvmOAhSGCw-i5K5Unt6gkVu325qqexdMNoaHVJW8pkOvcXMOhJwh66zWd_RWfFp5-iUUWFKrxZJO7oWUxZqPScfPeO72t9qmnknjgDY3hVA_u32ztGBOhNQ2PTRqzh0UI/s320/E05.debt-snowball-calculator%20%28%EB%B9%9A%20%EA%B0%9A%EA%B8%B0%20%EC%88%9C%EC%84%9C%20%EB%B9%84%EA%B5%90%20%EA%B3%84%EC%82%B0%EA%B8%B0%20%28%EC%8A%A4%EB%85%B8%EB%B3%BC%C2%B7%EC%95%A0%EB%B2%8C%EB%9E%9C%EC%B9%98%29.jpg"/></a></div>
+
+
+<!-- ===== Debt Payoff Calculator (paste in Blogger HTML view) ===== -->
+<div id="ed-calc">
+<style>
+#ed-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ed-calc .ed-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ed-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ed-calc .ed-lbl{display:block;font-weight:bold;margin-top:14px}
+#ed-calc .ed-hint{font-size:15px;color:#555;font-weight:normal}
+#ed-calc .ed-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ed-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ed-calc input.ed-s{flex:0 0 5.5em}
+#ed-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ed-calc .ed-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ed-calc .ed-opts{display:grid;gap:8px;margin-top:8px}
+#ed-calc .ed-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ed-calc .ed-opts input{width:22px;height:22px;flex:none}
+#ed-calc .ed-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ed-calc .ed-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ed-calc .ed-grid select{font-size:17px;width:100%}
+#ed-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ed-calc .ed-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ed-calc .ed-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ed-calc .ed-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ed-calc .ed-err{color:#c00;font-weight:bold;text-align:center}
+#ed-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ed-calc th,#ed-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ed-calc th{background:#f2f4f8}
+#ed-calc .ed-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ed-box"><h2>Debt Snowball vs Avalanche</h2>
+<span class="ed-lbl">Your debts <span class="ed-hint">(leave unused rows empty)</span></span><div class="ed-grid"><b>Name</b><b>Balance $</b><b>APR %</b><b>Min. pay $</b><input type="text" id="ed-n1" placeholder="Visa"><input type="text" inputmode="decimal" id="ed-b1" placeholder="3,000"><input type="text" inputmode="decimal" id="ed-a1" placeholder="24"><input type="text" inputmode="decimal" id="ed-m1" placeholder="90"><input type="text" id="ed-n2" placeholder="Car loan"><input type="text" inputmode="decimal" id="ed-b2" placeholder="9,000"><input type="text" inputmode="decimal" id="ed-a2" placeholder="7"><input type="text" inputmode="decimal" id="ed-m2" placeholder="250"><input type="text" id="ed-n3" placeholder="Store card"><input type="text" inputmode="decimal" id="ed-b3" placeholder="800"><input type="text" inputmode="decimal" id="ed-a3" placeholder="27"><input type="text" inputmode="decimal" id="ed-m3" placeholder="35"><input type="text" id="ed-n4" placeholder="Student loan"><input type="text" inputmode="decimal" id="ed-b4" placeholder="12,000"><input type="text" inputmode="decimal" id="ed-a4" placeholder="5"><input type="text" inputmode="decimal" id="ed-m4" placeholder="130"></div><span class="ed-lbl">Extra money per month <span class="ed-hint">(on top of all minimum payments)</span></span><div class="ed-line"><span class="ed-unit">$</span><input type="text" inputmode="decimal" id="ed-x" placeholder="e.g. 200"><span class="ed-unit"></span></div>
+<button type="button" id="ed-btn">Compare Methods</button>
+<div class="ed-result" id="ed-res"></div>
+<p class="ed-note">Snowball pays the smallest balance first; avalanche pays the highest APR first. Freed-up payments roll into the next debt.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ed-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+$('ed-btn').addEventListener('click',function(){var box=$('ed-res');box.style.display='block';function err(t){box.innerHTML='<p class="ed-err">'+t+'</p>';}
+  var D=[];for(var i=1;i<=4;i++){var b=num($('ed-b'+i).value);if(b>0)D.push({n:$('ed-n'+i).value||('Debt '+i),b:b,r:num($('ed-a'+i).value)/100/12,m:num($('ed-m'+i).value)});}
+  if(!D.length)return err('Please enter at least one debt.');
+  for(i=0;i<D.length;i++)if(D[i].m<=D[i].b*D[i].r)return err(D[i].n+': the minimum payment must be more than the monthly interest ('+usd(D[i].b*D[i].r)+').');
+  var X=num($('ed-x').value),budget=X;D.forEach(function(d){budget+=d.m;});
+  function run(cmp){var d=D.map(function(o){return {n:o.n,b:o.b,r:o.r,m:o.m};}).sort(cmp),mo=0,I=0,order=[];
+    while(d.some(function(o){return o.b>0.005;})&&mo<1200){mo++;var left=budget;
+      d.forEach(function(o){if(o.b>0){var it=o.b*o.r;I+=it;o.b+=it;}});
+      d.forEach(function(o){if(o.b>0){var p=Math.min(o.m,o.b);o.b-=p;left-=p;}});
+      d.forEach(function(o){if(o.b>0&&left>0){var p=Math.min(left,o.b);o.b-=p;left-=p;}if(o.b<=0.005&&order.indexOf(o.n)<0){o.b=0;order.push(o.n);}});}
+    return {mo:mo,I:I,order:order};}
+  var s=run(function(a,b){return a.b-b.b;}),a=run(function(x,y){return y.r-x.r;});
+  var best=a.I<=s.I?'Avalanche':'Snowball';
+  box.innerHTML='<div style="text-align:center">Debt-free in</div><div class="ed-big">'+ym(Math.min(s.mo,a.mo))+'</div>'+
+   '<table><tr><th></th><th>Snowball</th><th>Avalanche</th></tr><tr><td>Time</td><td>'+ym(s.mo)+'</td><td>'+ym(a.mo)+'</td></tr><tr><td>Total interest</td><td>'+usd0(s.I)+'</td><td>'+usd0(a.I)+'</td></tr><tr><td>Payoff order</td><td>'+s.order.join(' → ')+'</td><td>'+a.order.join(' → ')+'</td></tr></table>'+
+   '<p style="text-align:center;font-weight:bold;margin-top:10px">'+(Math.abs(s.I-a.I)<1?'Both methods cost about the same here.':best+' saves '+usd0(Math.abs(s.I-a.I))+' in interest.')+' Monthly budget: '+usd0(budget)+'</p>';
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>If you have several debts — credit cards, a car loan, student loans — the order you pay them off matters. This calculator compares the two most popular strategies, the <b>debt snowball</b> and the <b>debt avalanche</b>, using your real numbers.</p>
+<h2 style="font-size:26px;margin-top:10px">Snowball or avalanche: which one should you use?</h2>
+<p>Both methods have the same basic rule: pay the minimum on every debt, then put every extra dollar toward one target debt. When that debt is gone, roll its payment into the next one. The only difference is the order. The <b>snowball</b> targets the smallest balance first; the <b>avalanche</b> targets the highest interest rate first.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the debt payoff calculator</h3><ol><li>Enter each debt’s balance, APR and minimum payment.</li><li>Enter any extra money you can add each month.</li><li>Press <b>Compare Methods</b> to see payoff time, interest and order for both strategies.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Pay all minimums → put every extra dollar on one target debt → when it is gone, roll its payment into the next one</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example with $300 extra each month</h3>
+<p>Three debts: a store card of $1,500 at 12% (minimum $40), a credit card of $6,000 at 24% (minimum $150) and a car loan of $9,000 at 6% (minimum $280).</p>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Method</th><th style="border:1px solid #ccc;padding:6px">Debt-free in</th><th style="border:1px solid #ccc;padding:6px">Total interest</th><th style="border:1px solid #ccc;padding:6px">First debt gone</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Minimums only</td><td style="border:1px solid #ccc;padding:6px">≈ 48 months</td><td style="border:1px solid #ccc;padding:6px">≈ $5,610</td><td style="border:1px solid #ccc;padding:6px">month 36</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Snowball</td><td style="border:1px solid #ccc;padding:6px">≈ 25 months</td><td style="border:1px solid #ccc;padding:6px">≈ $2,200</td><td style="border:1px solid #ccc;padding:6px">month 5</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">Avalanche</td><td style="border:1px solid #ccc;padding:6px">≈ 24 months</td><td style="border:1px solid #ccc;padding:6px">≈ $1,980</td><td style="border:1px solid #ccc;padding:6px">month 16</td></tr>
+</table>
+<p>The avalanche saves about $220 here, but the snowball delivers its first win in month 5 instead of month 16. Both are dramatically better than paying minimums — the extra $300 is what does most of the work.</p>
+
+<h3 style="font-size:22px;margin-top:28px">What the minimum payment warning box is telling you</h3><p>Since the Credit CARD Act of 2009, every monthly credit card statement must show two things: how long it would take to clear the balance paying only the minimum, and the monthly amount that would clear it in 36 months. That box is a one-debt version of this tool, so it is worth reading.</p><p>Take the $6,000 card at 24% from the example above. Many issuers set the minimum at 1% of the balance plus that month's interest, with a floor of around $25. Paying only that:</p><ul><li>The first payment is about $180 ($60 toward the balance, $120 of interest).</li><li>Each payment shrinks as the balance falls, so the balance barely moves in later years.</li><li>The card takes roughly 21 years to clear and costs about $10,900 in interest.</li></ul><p>The 36-month figure on the same statement would be about $235 a month, for roughly $2,470 in interest. Enter $235 as that card's payment here to see how much the whole stack speeds up.</p>
+<h3 style="font-size:22px;margin-top:28px">How to choose</h3>
+<ul>
+<li><b>Choose avalanche</b> if your high-rate debt is large and you are motivated by numbers. It always costs the least.</li>
+<li><b>Choose snowball</b> if you have several small balances or have tried and stopped before. Quick wins keep many people going.</li>
+<li><b>A hybrid</b> works too: clear one or two tiny balances first, then switch to the highest rate.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Tips that make either method work</h3>
+<ul>
+<li>Keep the total monthly amount the same even as debts disappear — that is the "snowball".</li>
+<li>Put windfalls (tax refunds, bonuses) toward the target debt.</li>
+<li>Don't take on new debt while paying off old debt; consider freezing cards you are paying down.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Small details that change the result</h3><ul><li>The best method is the one you will stick with.</li><li>Stop using the cards you are paying off.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Four checks before moving a balance to a 0% card</h3><ol><li><b>Price the transfer fee against the interest.</b> A 3% fee on $6,000 is $180; at 24% APR that balance costs about $120 in interest in the first month alone, so the fee is repaid in under two months.</li><li><b>Divide the new balance by the promo months.</b> $6,180 over an 18-month 0% period needs $343 a month. If you cannot commit to that, whatever is left rolls onto the regular rate.</li><li><b>Confirm it is a true 0% APR, not deferred interest.</b> Store financing that says "no interest if paid in full" charges all the back interest if even $1 remains when the promotion ends. Credit card balance-transfer offers normally do not.</li><li><b>Keep new purchases off the transfer card.</b> New charges may lose their grace period while a transferred balance is open. In the tool, enter the transferred debt at 0% with the $343 payment and let the avalanche target your remaining high-rate cards.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">What readers ask about paying off debt</h3><p><b>Should mortgages be included?</b><br>Most people leave the mortgage out and focus on consumer debt first, because mortgage rates are usually lower and the term is long.</p><p><b>What if two debts have the same rate?</b><br>Pay the smaller one first; you free up its minimum sooner.</p><p><b>Is debt consolidation better?</b><br>It can be, if the consolidation loan has a lower APR and you don't run up the cards again. Run the loan calculator to compare.</p><p><b>Which is better, snowball or avalanche?</b><br>Avalanche always costs the same or less interest. Snowball can feel more motivating because small debts disappear quickly.</p><p><b>Should I include my mortgage?</b><br>Usually no. Most people focus on consumer debt first and keep the mortgage on its normal schedule.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3>
+<p><a href="https://www.smartlifecalc.com/2026/10/credit-card-payoff-calculator.html">Credit Card Payoff</a> · <a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html">Loan Calculator</a></p>
+
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/credit-cards/" rel="noopener" target="_blank">CFPB – Credit cards (statement disclosures, balance transfers, deferred interest)</a></li><li><a href="https://www.mymoney.gov/" rel="noopener" target="_blank">MyMoney.gov – federal financial literacy resources on managing debt</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> the example was re-simulated month by month with interest charged before payments. Last reviewed November 2026. General information only, not financial advice. Payoff timelines assume fixed rates and on-time payments; your card agreement and a qualified counselor decide what applies to you.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/credit-card-payoff-calculator.html" style="color:#1a56db">Credit Card Payoff Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html" style="color:#1a56db">Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/auto-loan-calculator.html" style="color:#1a56db">Auto Loan Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Debt Payoff Calculator end ===== -->

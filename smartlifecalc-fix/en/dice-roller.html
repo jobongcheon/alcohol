@@ -1,0 +1,81 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMsx7P0KbD-bSZnBMe2dvuvWxeU8NAyaQjMFJAfVZgd2445v_qHZQL9jd4rDXkMsYidkVmeCTk5G7beZLI8_93COQ8QMP-Xwc0fogLWiTH4NTp6ROnlg1krvc_LtAuZmNbBxKTb_idBnPhv8lCzxsPoQZBz54yuiaFMXshflfa6TK3g2_iq6MKjQe8MR0/s300/E34.dice-roller%20%28%EC%A3%BC%EC%82%AC%EC%9C%84%20%EA%B5%B4%EB%A6%AC%EA%B8%B0%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Online dice roller showing ten virtual dice and their total" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMsx7P0KbD-bSZnBMe2dvuvWxeU8NAyaQjMFJAfVZgd2445v_qHZQL9jd4rDXkMsYidkVmeCTk5G7beZLI8_93COQ8QMP-Xwc0fogLWiTH4NTp6ROnlg1krvc_LtAuZmNbBxKTb_idBnPhv8lCzxsPoQZBz54yuiaFMXshflfa6TK3g2_iq6MKjQe8MR0/s320/E34.dice-roller%20%28%EC%A3%BC%EC%82%AC%EC%9C%84%20%EA%B5%B4%EB%A6%AC%EA%B8%B0%29.png"/></a></div>
+
+<!-- ===== Dice Roller (paste in Blogger HTML view) ===== -->
+<div id="dr-calc">
+<style>
+#dr-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#dr-calc .dr-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#dr-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#dr-calc .dr-lbl{display:block;font-weight:bold;margin-top:14px}
+#dr-calc .dr-hint{font-size:15px;color:#555;font-weight:normal}
+#dr-calc .dr-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#dr-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#dr-calc input.dr-s{flex:0 0 5.5em}
+#dr-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#dr-calc .dr-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#dr-calc .dr-opts{display:grid;gap:8px;margin-top:8px}
+#dr-calc .dr-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#dr-calc .dr-opts input{width:22px;height:22px;flex:none}
+#dr-calc .dr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#dr-calc .dr-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#dr-calc .dr-grid select{font-size:17px;width:100%}
+#dr-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#dr-calc .dr-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#dr-calc .dr-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#dr-calc .dr-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#dr-calc .dr-err{color:#c00;font-weight:bold;text-align:center}
+#dr-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#dr-calc th,#dr-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#dr-calc th{background:#f2f4f8}
+#dr-calc .dr-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="dr-box"><h2>Dice Roller</h2>
+<span class="dr-lbl">Number of dice</span><div class="dr-line"><select id="dr-n"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><span class="dr-unit"></span></div><span class="dr-lbl">Sides per die</span><div class="dr-line"><select id="dr-s"><option value="4">d4</option><option value="6" selected>d6</option><option value="8">d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option><option value="100">d100</option></select><span class="dr-unit"></span></div><span class="dr-lbl">Modifier <span class="dr-hint">(add or subtract, e.g. 3 or -2)</span></span><div class="dr-line"><input type="text" inputmode="decimal" id="dr-m" placeholder="0" value="0"><span class="dr-unit"></span></div>
+<button type="button" id="dr-btn">Roll the Dice</button>
+<div class="dr-result" id="dr-res"></div>
+<p class="dr-note">Uses your browser’s secure random number generator — every roll is fair.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="dr-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+var HIST=[];
+$('dr-btn').addEventListener('click',function(){var box=$('dr-res');box.style.display='block';function err(t){box.innerHTML='<p class="dr-err">'+t+'</p>';}
+  var n=+$('dr-n').value,s=+$('dr-s').value,m=Math.round(num($('dr-m').value)),r=[],t=0,a=new Uint32Array(n);(window.crypto||window.msCrypto).getRandomValues(a);
+  for(var i=0;i<n;i++){var v=a[i]%s+1;r.push(v);t+=v;}HIST.unshift(n+'d'+s+(m?(m>0?'+':'')+m:'')+' = '+(t+m));HIST=HIST.slice(0,5);
+  box.innerHTML='<div style="text-align:center;font-size:30px;letter-spacing:4px">'+r.map(function(v){return s===6?String.fromCharCode(9855+v):'['+v+']';}).join(' ')+'</div><div class="dr-big">Total: '+(t+m)+'</div>'+row('Dice',r.join(', ')+(m?' ('+(m>0?'+':'')+m+')':''))+row('Average possible',(n*(s+1)/2+m).toFixed(1))+row('Last rolls',HIST.join('<br>'));
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Lost the dice for game night? Roll up to ten virtual dice — classic six-sided or the d4, d8, d10, d12, d20 and d100 used in tabletop role-playing games.</p>
+<h2 style="font-size:26px;margin-top:10px">Dice odds made simple</h2>
+<p>Every die roll here is independent and uses your browser’s cryptographic random number generator, so no number is favored. Knowing the odds helps with board games and tabletop RPGs.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the dice roller</h3><ol><li>Choose how many dice and how many sides.</li><li>Add a modifier if your game uses one.</li><li>Press <b>Roll the Dice</b> as many times as you like.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Each die is an independent random whole number from 1 to the number of sides</p>
+<h3 style="font-size:22px;margin-top:28px">Two six-sided dice (2d6)</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Total</th><th style="border:1px solid #ccc;padding:6px">Ways</th><th style="border:1px solid #ccc;padding:6px">Chance</th></tr><tr><td style="border:1px solid #ccc;padding:6px">2 or 12</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">2.8%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3 or 11</td><td style="border:1px solid #ccc;padding:6px">2</td><td style="border:1px solid #ccc;padding:6px">5.6%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">4 or 10</td><td style="border:1px solid #ccc;padding:6px">3</td><td style="border:1px solid #ccc;padding:6px">8.3%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">5 or 9</td><td style="border:1px solid #ccc;padding:6px">4</td><td style="border:1px solid #ccc;padding:6px">11.1%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6 or 8</td><td style="border:1px solid #ccc;padding:6px">5</td><td style="border:1px solid #ccc;padding:6px">13.9%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">7</td><td style="border:1px solid #ccc;padding:6px">6</td><td style="border:1px solid #ccc;padding:6px">16.7%</td></tr></table><p>There are 36 equally likely outcomes. Seven is the most common total because six combinations make it (1+6, 2+5, 3+4 and the reverses).</p>
+<h3 style="font-size:22px;margin-top:28px">Odds of rolling at least one six</h3><p>Many games only need a six (or a natural 20) on at least one die. The quickest way to find that chance is backwards: work out the odds that every die misses, then subtract from 100%. One die misses a six 5 times in 6, so with several dice you multiply 5/6 by itself once per die.</p><table style="border-collapse:collapse"><tr><th style="border:1px solid #ccc;padding:6px">Dice rolled</th><th style="border:1px solid #ccc;padding:6px">Chance of at least one 6</th></tr><tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">16.7%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2</td><td style="border:1px solid #ccc;padding:6px">30.6%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3</td><td style="border:1px solid #ccc;padding:6px">42.1%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">4</td><td style="border:1px solid #ccc;padding:6px">51.8%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">6</td><td style="border:1px solid #ccc;padding:6px">66.5%</td></tr></table><p>Four dice is the first point where a six is more likely than not, and you need 13 dice to pass 90%. The same method works for a d20: swap 5/6 for 19/20, and two d20s show at least one natural 20 only 9.75% of the time.</p>
+<h3 style="font-size:22px;margin-top:28px">d20 rolls</h3><ul><li>Each face of a d20 has a <b>5%</b> chance, so a natural 20 comes up 1 time in 20.</li><li>Rolling two d20s and keeping the higher one (“advantage”) gives a 20 about <b>9.75%</b> of the time.</li><li>A modifier just shifts the total: 1d20+5 ranges from 6 to 25.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Reading dice notation</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Notation</th><th style="border:1px solid #ccc;padding:6px">Meaning</th><th style="border:1px solid #ccc;padding:6px">Range</th></tr><tr><td style="border:1px solid #ccc;padding:6px">1d6</td><td style="border:1px solid #ccc;padding:6px">One six-sided die</td><td style="border:1px solid #ccc;padding:6px">1–6</td></tr><tr><td style="border:1px solid #ccc;padding:6px">3d6</td><td style="border:1px solid #ccc;padding:6px">Three six-sided dice added</td><td style="border:1px solid #ccc;padding:6px">3–18</td></tr><tr><td style="border:1px solid #ccc;padding:6px">2d8+3</td><td style="border:1px solid #ccc;padding:6px">Two eight-sided dice plus 3</td><td style="border:1px solid #ccc;padding:6px">5–19</td></tr><tr><td style="border:1px solid #ccc;padding:6px">1d100</td><td style="border:1px solid #ccc;padding:6px">Percentile roll</td><td style="border:1px solid #ccc;padding:6px">1–100</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>The gambler’s fallacy:</b> after three 1s in a row, a 1 is still exactly as likely next roll.</li><li><b>Thinking all totals are equal:</b> with two or more dice, middle totals are much more common.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Fair rolls for games and classrooms</h3><p>Board games, role-playing games and classroom probability lessons all need fair dice. An online roller is useful when dice are missing, when you need many dice at once, or when a game uses unusual dice such as a d12 or d100.</p><p>Teachers can use it to run quick experiments: roll 2d6 fifty times as a class, tally the totals, and compare the results with the probability table above. With more rolls, the results get closer to the expected pattern.</p>
+<h3 style="font-size:22px;margin-top:28px">Dice myths versus the math</h3><ul><li><b>Myth:</b> 3d6 and 1d18+2 are the same because both run from 3 to 18. <b>Fact:</b> With three dice, 10 and 11 each come up 12.5% of the time while 3 or 18 appear once in 216 rolls. A single d18 would give every total the same 5.6%.</li><li><b>Myth:</b> Rolling with disadvantage (two d20, keep the lower) halves your chance of a 20. <b>Fact:</b> Both dice must show 20, so the chance falls from 5% to 0.25%, one roll in 400.</li><li><b>Myth:</b> A +5 modifier makes high results more likely. <b>Fact:</b> It shifts every outcome up by 5; each of the 20 totals from 6 to 25 still has a 5% chance.</li><li><b>Myth:</b> Three sixes in a row prove a die is loaded. <b>Fact:</b> On a fair d6 that streak is 1 in 216, so it will turn up a few times over a long campaign.</li><li><b>Myth:</b> On percentile dice, 00 on the tens die and 0 on the ones die means zero. <b>Fact:</b> The usual convention reads that pair as 100.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Dice questions from game night</h3><p><b>Can I use this for real-money gambling?</b><br>No. It is meant for games and teaching probability.</p><p><b>Why keep the last five rolls?</b><br>So everyone at the table can check what was rolled.</p><p><b>Is the online dice roller really random?</b><br>Yes. It uses the browser’s cryptographic random generator, so no number is favored.</p><p><b>What is a d20?</b><br>A 20-sided die, used for most checks in games like Dungeons &amp; Dragons.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/gpa-calculator.html">GPA Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/grade-calculator.html">Grade Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic (fractions, decimals and percents used in the odds)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> probabilities were computed exactly in Python (36 outcomes for 2d6; 1 − (19/20)² for advantage). Last reviewed November 2026. Rolls are random for games and teaching only; this tool is not a certified randomness source for wagers or official draws.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/fraction-calculator.html" style="color:#1a56db">Fraction Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/decimal-to-fraction.html" style="color:#1a56db">Decimal to Fraction Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Dice Roller end ===== -->

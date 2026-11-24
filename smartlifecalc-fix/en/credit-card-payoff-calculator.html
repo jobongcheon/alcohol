@@ -1,0 +1,115 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7JmwA6TFTMeBJyF2sKKMkzV-kJX07CBbdGKKNJXWVTtFlg7AakinhFcxg9t6DvU0MNcys3CxP9d5oxg6m3txBOwXQefJzBO9EuvMvexhTmpwA8HhSeJy8Hh3tknCw9P5cps_RbVZXDVr5Q2ElIqMHvuNxCxs-8WtBZya1KPE8bYCdBpOH-MD9Cgxyhg8/s300/E04.credit-card-payoff-calculator%20%28%EC%B9%B4%EB%93%9C%EB%B9%9A%20%EA%B0%9A%EB%8A%94%20%EA%B8%B0%EA%B0%84%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="Credit card payoff calculator showing months to debt-free and total interest paid" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7JmwA6TFTMeBJyF2sKKMkzV-kJX07CBbdGKKNJXWVTtFlg7AakinhFcxg9t6DvU0MNcys3CxP9d5oxg6m3txBOwXQefJzBO9EuvMvexhTmpwA8HhSeJy8Hh3tknCw9P5cps_RbVZXDVr5Q2ElIqMHvuNxCxs-8WtBZya1KPE8bYCdBpOH-MD9Cgxyhg8/s320/E04.credit-card-payoff-calculator%20%28%EC%B9%B4%EB%93%9C%EB%B9%9A%20%EA%B0%9A%EB%8A%94%20%EA%B8%B0%EA%B0%84%20%EA%B3%84%EC%82%B0%EA%B8%B0%29.jpg"/></a></div>
+
+<!-- ===== Credit Card Payoff Calculator (paste in Blogger HTML view) ===== -->
+<div id="ec-calc">
+<style>
+#ec-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#ec-calc .ec-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#ec-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#ec-calc .ec-lbl{display:block;font-weight:bold;margin-top:14px}
+#ec-calc .ec-hint{font-size:15px;color:#555;font-weight:normal}
+#ec-calc .ec-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#ec-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ec-calc input.ec-s{flex:0 0 5.5em}
+#ec-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#ec-calc .ec-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#ec-calc .ec-opts{display:grid;gap:8px;margin-top:8px}
+#ec-calc .ec-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#ec-calc .ec-opts input{width:22px;height:22px;flex:none}
+#ec-calc .ec-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#ec-calc .ec-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#ec-calc .ec-grid select{font-size:17px;width:100%}
+#ec-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#ec-calc .ec-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#ec-calc .ec-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#ec-calc .ec-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#ec-calc .ec-err{color:#c00;font-weight:bold;text-align:center}
+#ec-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#ec-calc th,#ec-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#ec-calc th{background:#f2f4f8}
+#ec-calc .ec-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="ec-box"><h2>Credit Card Payoff Calculator</h2>
+<span class="ec-lbl">Card balance</span><div class="ec-line"><span class="ec-unit">$</span><input type="text" inputmode="decimal" id="ec-bal" placeholder="e.g. 6,000"><span class="ec-unit"></span></div><span class="ec-lbl">APR</span><div class="ec-line"><input type="text" inputmode="decimal" id="ec-apr" placeholder="e.g. 22"><span class="ec-unit">%</span></div><span class="ec-lbl">How do you want to pay it off?</span><div class="ec-opts"><label><input type="radio" name="ec-mode" value="pay" checked> I will pay a fixed amount each month</label><label><input type="radio" name="ec-mode" value="time"> I want to be debt-free in a set number of months</label></div><div id="ec-pa"><span class="ec-lbl">Monthly payment</span><div class="ec-line"><span class="ec-unit">$</span><input type="text" inputmode="decimal" id="ec-pay" placeholder="e.g. 250"><span class="ec-unit"></span></div></div><div id="ec-ta" style="display:none"><span class="ec-lbl">Months to pay off</span><div class="ec-line"><input type="text" inputmode="decimal" id="ec-mon" placeholder="e.g. 24"><span class="ec-unit">months</span></div></div>
+<button type="button" id="ec-btn">Calculate</button>
+<div class="ec-result" id="ec-res"></div>
+<p class="ec-note">Assumes no new purchases and a fixed APR. Interest is charged monthly at APR ÷ 12.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="ec-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+comma($('ec-bal'));comma($('ec-pay'));
+
+  Array.prototype.forEach.call(document.getElementsByName('ec-mode'),function(x){x.addEventListener('change',function(){var a=pick('ec-mode')==='pay';$('ec-pa').style.display=a?'block':'none';$('ec-ta').style.display=a?'none':'block';});});
+$('ec-btn').addEventListener('click',function(){var box=$('ec-res');box.style.display='block';function err(t){box.innerHTML='<p class="ec-err">'+t+'</p>';}
+  var B=num($('ec-bal').value),r=num($('ec-apr').value)/100/12;
+  if(!B)return err('Please enter your card balance.');
+  if(pick('ec-mode')==='pay'){
+    var p=num($('ec-pay').value);if(!p)return err('Please enter a monthly payment.');
+    if(p<=B*r)return err('This payment does not even cover the monthly interest ('+usd(B*r)+'). Increase the payment.');
+    var b=B,m=0,I=0;while(b>0&&m<1200){var it=b*r;I+=it;b=b+it-p;m++;}
+    box.innerHTML='<div style="text-align:center">Debt-free in</div><div class="ec-big">'+ym(m)+'</div>'+row('Total interest paid',usd(I))+row('Total paid',usd(B+I))+
+     row('Pay off in 12 months','pay '+usd(pmt(B,r,12))+'/mo')+row('Pay off in 24 months','pay '+usd(pmt(B,r,24))+'/mo')+row('Pay off in 36 months','pay '+usd(pmt(B,r,36))+'/mo');
+  }else{
+    var n=Math.round(num($('ec-mon').value));if(!n)return err('Please enter the number of months.');
+    var q=pmt(B,r,n);box.innerHTML='<div style="text-align:center">Pay each month</div><div class="ec-big">'+usd(q)+'</div>'+row('Total interest paid',usd(q*n-B))+row('Total paid',usd(q*n));
+  }
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>Credit card interest is one of the most expensive debts there is. Paying only the minimum can stretch a balance out for many years. Use this calculator to see exactly when you will be debt-free and how much interest you will pay.</p>
+<h2 style="font-size:26px;margin-top:10px">Why paying a little more changes everything</h2>
+<p>Credit card interest is charged on the balance you carry each month. At typical rates above 20%, a payment that only slightly exceeds the interest barely moves the balance. That is why the minimum payment can keep you in debt for years. This calculator shows how long payoff takes and how much interest you pay at the amount you choose.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the credit card payoff calculator</h3><ol><li>Enter your current balance and APR.</li><li>Choose a fixed monthly payment, or a target number of months.</li><li>Press <b>Calculate</b> to see your payoff date and total interest.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Each month: new balance = balance + balance × (APR ÷ 12) − payment</p>
+<h3 style="font-size:22px;margin-top:28px">Worked example: $6,000 at 22.99% APR</h3>
+<table style="width:100%;border-collapse:collapse;font-size:16px">
+<tr><th style="border:1px solid #ccc;padding:6px">Monthly payment</th><th style="border:1px solid #ccc;padding:6px">Time to pay off</th><th style="border:1px solid #ccc;padding:6px">Total interest</th></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">$150</td><td style="border:1px solid #ccc;padding:6px">≈ 77 months (6.4 years)</td><td style="border:1px solid #ccc;padding:6px">≈ $5,490</td></tr>
+<tr><td style="border:1px solid #ccc;padding:6px">$300</td><td style="border:1px solid #ccc;padding:6px">≈ 26 months</td><td style="border:1px solid #ccc;padding:6px">≈ $1,640</td></tr>
+</table>
+<p>Doubling the payment cuts the time by about two-thirds and saves around $3,850. If $300 is not possible, even $200 makes a large difference — try it in the calculator.</p>
+
+<h3 style="font-size:22px;margin-top:28px">The 36-month figure on your statement, decoded</h3><p>Since the Credit CARD Act of 2009, every statement must show how long payoff takes at the minimum and the monthly amount that clears the balance in 36 months. That box is a ready-made target you can test here.</p><p>Take a <b>$4,000 balance at 24% APR</b>. A typical minimum is interest plus 1% of the balance, about $120 at first. Paying a flat $120 every month takes roughly <b>55 months</b> and costs about <b>$2,660 in interest</b>. The statement's 36-month figure works out to about <b>$157 a month</b>, with total interest near <b>$1,650</b>. That extra $37 a month cuts 19 months off the payoff and saves about $1,000.</p><p>To check your own statement, enter 36 in the months field and compare the payment returned. Both the statement box and this tool assume no new charges and a fixed APR.</p>
+<h3 style="font-size:22px;margin-top:28px">A plan that works</h3>
+<ol>
+<li><b>Stop adding new charges</b> to the card you are paying off. Use a debit card for daily spending.</li>
+<li><b>Pick a fixed payment</b> you can keep every month, and set up automatic payment.</li>
+<li><b>Call the issuer</b> and ask for a lower APR. Customers with on-time history are sometimes offered one.</li>
+<li><b>Consider a 0% balance transfer</b> if you can pay it off before the promotion ends. Watch the transfer fee (often 3–5%).</li>
+<li><b>Several cards?</b> Use the snowball or avalanche method to choose which card gets the extra money.</li>
+</ol>
+
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3>
+<ul>
+<li>Paying the minimum, which usually shrinks as the balance shrinks — stretching payoff even further.</li>
+<li>Moving debt to a 0% card and then running the old card back up.</li>
+<li>Closing old cards right away; it can raise your credit utilization ratio and lower your score.</li>
+</ul>
+
+<h3 style="font-size:22px;margin-top:28px">Two things to double-check</h3><ul><li>A 0% balance-transfer card can save a lot of interest if you can pay it off within the promo period.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Myth versus fact on credit card interest</h3><ul><li><b>Myth:</b> carrying a small balance helps your credit score. <b>Fact:</b> scores reward a low balance relative to your limit on the statement date; paying in full costs you nothing in score terms.</li><li><b>Myth:</b> only the old balance accrues interest. <b>Fact:</b> once you carry a balance, most issuers suspend the grace period, so new purchases accrue interest from the day you make them.</li><li><b>Myth:</b> the minimum payment is a fixed percentage. <b>Fact:</b> it is usually interest and fees plus about 1% of principal, or a floor such as $25 to $35, whichever is greater, which is why it shrinks as the balance falls.</li><li><b>Myth:</b> a 0% balance transfer is free. <b>Fact:</b> the transfer fee of 3% to 5% is added to the balance up front, $180 to $300 on a $6,000 transfer. It often still beats a 22% APR.</li><li><b>Myth:</b> every 0% promotion works the same way. <b>Fact:</b> deferred interest offers, common on store cards, charge all the interest back from day one if any balance remains when the promotion ends. A true 0% intro APR does not.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Reader questions about paying down a card balance</h3><p><b>How is credit card interest calculated?</b><br>Most issuers use the average daily balance and a daily rate (APR ÷ 365). This calculator uses a monthly rate (APR ÷ 12), which gives very close results.</p><p><b>Does paying twice a month help?</b><br>Slightly, because the average daily balance is lower. The bigger win is the total amount you pay each month.</p><p><b>Should I pay off cards before saving?</b><br>Most planners suggest a small emergency fund first (so new emergencies don't go on the card), then aggressive payoff of high-interest debt.</p><p><b>Why does the minimum payment take so long?</b><br>Minimum payments are often about 1–3% of the balance, so most of the payment goes to interest and the balance falls slowly.</p><p><b>Should I pay off the highest APR card first?</b><br>Paying the highest APR first (the avalanche method) saves the most money. Try our Debt Payoff Calculator to compare methods.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3>
+<p><a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html">Debt Snowball vs Avalanche</a> · <a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html">Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html">Compound Interest</a></p>
+
+
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.consumerfinance.gov/consumer-tools/credit-cards/" rel="noopener" target="_blank">Consumer Financial Protection Bureau – Credit cards: your rights and how interest and minimum payments work</a></li><li><a href="https://www.federalreserve.gov/" rel="noopener" target="_blank">Federal Reserve – consumer credit card rules and disclosure requirements</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> payoff months and interest were re-simulated month by month. Background reading: Consumer Financial Protection Bureau credit card resources (consumerfinance.gov). Last reviewed November 2026. General information only. Payoff figures here are estimates based on your inputs and are not a substitute for advice from a qualified financial professional.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/10/debt-snowball-calculator.html" style="color:#1a56db">Debt Snowball vs Avalanche Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/loan-calculator.html" style="color:#1a56db">Loan Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html" style="color:#1a56db">Compound Interest Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Credit Card Payoff Calculator end ===== -->

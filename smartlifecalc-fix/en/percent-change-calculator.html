@@ -1,0 +1,83 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1AHXkB1AUPiExCkHcLk8ptnnmVq_wHMGYrOutyYLPyWTofmXK0_oDN03WFzI5kM77p1gscqHJL02CxRfKZeNzgx9TNX_lxr5lhljGu1xd_Gj28u9C5hU-CA62nAq6SYIM0xAGtv3AHUEDahvH7cDHJfGxwHiymUeWGoOaBY5kVdmuv13iKP_-r2udU-8/s300/E24.percent-change-calculator%20%28%EC%A6%9D%EA%B0%90%EB%A5%A0%28%ED%8D%BC%EC%84%BC%ED%8A%B8%20%EB%B3%80%ED%99%94%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="Percent change calculator comparing an old value with a new value" border="0" width="320" data-original-height="300" data-original-width="300" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1AHXkB1AUPiExCkHcLk8ptnnmVq_wHMGYrOutyYLPyWTofmXK0_oDN03WFzI5kM77p1gscqHJL02CxRfKZeNzgx9TNX_lxr5lhljGu1xd_Gj28u9C5hU-CA62nAq6SYIM0xAGtv3AHUEDahvH7cDHJfGxwHiymUeWGoOaBY5kVdmuv13iKP_-r2udU-8/s320/E24.percent-change-calculator%20%28%EC%A6%9D%EA%B0%90%EB%A5%A0%28%ED%8D%BC%EC%84%BC%ED%8A%B8%20%EB%B3%80%ED%99%94%29.png"/></a></div>
+
+
+<!-- ===== Percent Change Calculator (paste in Blogger HTML view) ===== -->
+<div id="pc-calc">
+<style>
+#pc-calc{max-width:640px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#111;background:#fff;font-size:19px;line-height:1.6}
+#pc-calc .pc-box{border:2px solid #333;border-radius:12px;padding:22px;background:#fff}
+#pc-calc h2{font-size:27px;margin:0 0 14px;text-align:center}
+#pc-calc .pc-lbl{display:block;font-weight:bold;margin-top:14px}
+#pc-calc .pc-hint{font-size:15px;color:#555;font-weight:normal}
+#pc-calc .pc-line{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+#pc-calc input[type=text]{flex:1;min-width:0;box-sizing:border-box;font-size:21px;padding:9px 12px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#pc-calc input.pc-s{flex:0 0 5.5em}
+#pc-calc select{font-size:19px;padding:7px 6px;border:2px solid #888;border-radius:8px;background:#fff;color:#111}
+#pc-calc .pc-unit{font-size:19px;font-weight:bold;white-space:nowrap}
+#pc-calc .pc-opts{display:grid;gap:8px;margin-top:8px}
+#pc-calc .pc-opts label{display:flex;align-items:center;gap:10px;border:2px solid #ccd;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:18px}
+#pc-calc .pc-opts input{width:22px;height:22px;flex:none}
+#pc-calc .pc-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-top:6px;font-size:15px}
+#pc-calc .pc-grid input[type=text]{font-size:17px;padding:6px 8px;width:100%}
+#pc-calc .pc-grid select{font-size:17px;width:100%}
+#pc-calc button{width:100%;margin-top:22px;font-size:23px;font-weight:bold;padding:14px;border:0;border-radius:10px;background:#1a56db;color:#fff;cursor:pointer}
+#pc-calc .pc-result{margin-top:22px;padding:18px;border:2px solid #1a56db;border-radius:10px;display:none}
+#pc-calc .pc-big{font-size:31px;font-weight:bold;color:#1a56db;text-align:center;margin:6px 0}
+#pc-calc .pc-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:6px 0;font-size:17px}
+#pc-calc .pc-err{color:#c00;font-weight:bold;text-align:center}
+#pc-calc table{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+#pc-calc th,#pc-calc td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+#pc-calc th{background:#f2f4f8}
+#pc-calc .pc-note{font-size:14px;color:#555;margin-top:12px}
+</style>
+<div class="pc-box"><h2>Percent Change Calculator</h2>
+<span class="pc-lbl">Old value (from)</span><div class="pc-line"><input type="text" inputmode="decimal" id="pc-a" placeholder="e.g. 80"><span class="pc-unit"></span></div><span class="pc-lbl">New value (to)</span><div class="pc-line"><input type="text" inputmode="decimal" id="pc-b" placeholder="e.g. 100"><span class="pc-unit"></span></div>
+<button type="button" id="pc-btn">Calculate</button>
+<div class="pc-result" id="pc-res"></div>
+<p class="pc-note">Percent difference compares two values without a direction, using their average.</p></div>
+<!-- Ad (AdSense in-article) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9998285208101924" crossorigin="anonymous"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9998285208101924" data-ad-slot="5356922318"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(v){var x=parseFloat(String(v||'').replace(/[,$%\s]/g,''));return isNaN(x)?0:x;}
+  function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function usd0(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function comma(el){el.addEventListener('blur',function(){var n=num(this.value);this.value=n?n.toLocaleString('en-US',{maximumFractionDigits:2}):'';});}
+  function pick(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return '';}
+  function row(a,b){return '<div class="pc-row"><span>'+a+'</span><span>'+b+'</span></div>';}
+  function pmt(L,r,n){return r?L*r/(1-Math.pow(1+r,-n)):L/n;}
+  function ym(m){var y=Math.floor(m/12),k=m%12;return (y?y+(y>1?' years':' year'):'')+(y&&k?' ':'')+(k||!y?k+(k===1?' month':' months'):'');}
+$('pc-btn').addEventListener('click',function(){var box=$('pc-res');box.style.display='block';function err(t){box.innerHTML='<p class="pc-err">'+t+'</p>';}
+  var a=num($('pc-a').value),b=num($('pc-b').value);if(!a)return err('The old value cannot be zero.');
+  var c=(b-a)/Math.abs(a)*100,pd=(a+b)?Math.abs(a-b)/((Math.abs(a)+Math.abs(b))/2)*100:0;
+  box.innerHTML='<div style="text-align:center">Percent change</div><div class="pc-big">'+(c>=0?'+':'')+(Math.round(c*100)/100).toLocaleString('en-US')+'% '+(c>=0?'increase':'decrease')+'</div>'+row('Difference',(Math.round((b-a)*10000)/10000).toLocaleString('en-US'))+row('Percent difference',(Math.round(pd*100)/100)+'%')+row('New value as % of old',(Math.round(b/a*10000)/100)+'%');
+});
+})();
+</script>
+
+<div class="slc-article" style="margin-top:36px;font-size:18px;line-height:1.75">
+<p>How much did a price, salary, stock or score go up or down? Enter the old and new values to get the percent change in one click.</p>
+<h2 style="font-size:26px;margin-top:10px">Reading percent change correctly</h2>
+<p>Percent change answers one question: how big was the move compared with where it started? The starting value is always the base, which is why a rise and a fall between the same two numbers give different percentages.</p>
+<h3 style="font-size:22px;margin-top:28px">How to use the percent change calculator</h3><ol><li>Enter the starting (old) value.</li><li>Enter the ending (new) value.</li><li>Press <b>Calculate</b>.</li></ol>
+<h3 style="font-size:22px;margin-top:28px">The formula</h3><p style="border:2px solid #333;padding:12px;border-radius:8px;text-align:center;font-weight:bold">Percent change = (new − old) ÷ |old| × 100</p>
+<h3 style="font-size:22px;margin-top:28px">Worked examples</h3><ul><li><b>Rent</b> goes from $1,500 to $1,650: (1,650 − 1,500) ÷ 1,500 = <b>+10%</b>.</li><li><b>A raise</b> from $52,000 to $55,640: 3,640 ÷ 52,000 = <b>+7%</b>.</li><li><b>A stock</b> falls from $80 to $60: −20 ÷ 80 = <b>−25%</b>. To get back to $80 it now needs +33.3%, because the base is smaller.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Myth vs. fact: five percentage traps</h3><ul><li><b>Myth:</b> A 20% pay cut followed by a 20% raise puts you back where you started. <b>Fact:</b> $100 becomes $80, then $96. You are still 4% short; the raise needed to recover is 25%.</li><li><b>Myth:</b> Two 10% discounts equal 20% off. <b>Fact:</b> 0.9 × 0.9 = 0.81, so the real discount is 19%. A $200 jacket ends up at $162, not $160.</li><li><b>Myth:</b> A price that rises 50% and then falls 50% is unchanged. <b>Fact:</b> $100 goes to $150, then to $75. The second move is measured from the higher base.</li><li><b>Myth:</b> If one store's sales fall 30% and another's rise 10%, the chain is down 20%. <b>Fact:</b> Percentages of different-sized parts cannot be added. A $10,000 store falling 30% ($7,000) and a $30,000 store rising 10% ($33,000) total $40,000, exactly where they began.</li><li><b>Myth:</b> A 1% monthly fee is 12% a year. <b>Fact:</b> 1.01 to the twelfth power is 1.1268, so the yearly cost is 12.68%.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Losses need bigger gains to recover</h3><table style="width:100%;border-collapse:collapse;font-size:16px;margin:10px 0"><tr><th style="border:1px solid #ccc;padding:6px">Drop</th><th style="border:1px solid #ccc;padding:6px">Gain needed to get back to even</th></tr><tr><td style="border:1px solid #ccc;padding:6px">−10%</td><td style="border:1px solid #ccc;padding:6px">+11.1%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">−20%</td><td style="border:1px solid #ccc;padding:6px">+25%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">−25%</td><td style="border:1px solid #ccc;padding:6px">+33.3%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">−50%</td><td style="border:1px solid #ccc;padding:6px">+100%</td></tr><tr><td style="border:1px solid #ccc;padding:6px">−75%</td><td style="border:1px solid #ccc;padding:6px">+300%</td></tr></table>
+<h3 style="font-size:22px;margin-top:28px">Percent change vs. percentage points</h3><p>When a mortgage rate goes from 3.5% to 4.25%, it rose by <b>0.75 percentage points</b>, but the percent change is 0.75 ÷ 3.5 = <b>+21.4%</b>. News reports usually mean percentage points when they talk about interest rates or unemployment, so check which one is meant.</p>
+<h3 style="font-size:22px;margin-top:28px">Percent change vs. percent difference</h3><p>Percent difference compares two numbers without a "before" and "after", using their average as the base. For $1,500 and $1,650 the difference is 150 ÷ 1,575 = <b>9.52%</b>. Use percent change for anything over time and percent difference for side-by-side comparisons, such as prices at two stores.</p>
+<h3 style="font-size:22px;margin-top:28px">Changes over several years</h3><p>If something grows from 100 to 150 over five years, the total change is +50%, but that is not 10% a year. The yearly (compound) rate is 1.5<sup>1/5</sup> − 1 ≈ <b>8.45%</b>. For year-by-year growth use the <a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html">compound interest calculator</a>.</p>
+<h3 style="font-size:22px;margin-top:28px">Common mistakes</h3><ul><li><b>Dividing by the new value</b> instead of the old one.</li><li><b>Averaging percentages:</b> +10% one year and −10% the next leaves you 1% lower, not even.</li><li><b>Starting from zero:</b> a change from 0 cannot be expressed as a percent.</li></ul>
+<h3 style="font-size:22px;margin-top:28px">Everyday places you will use it</h3><p>Comparing a raise with inflation, checking how much a grocery bill went up since last year, tracking a weight-loss or savings goal, and reading investment statements all use percent change. In business it shows up as month-over-month or year-over-year growth.</p><p>When you compare several changes, always use the same base period. A sales jump from a very weak month looks impressive in percent but may be small in dollars, so look at the amounts as well as the percentage.</p>
+<h3 style="font-size:22px;margin-top:28px">Case study: is a 4% raise really a raise?</h3><p>Suppose your salary goes from $60,000 to $62,400, a 4% increase. If prices rose 3% over the same year, the quick answer is that you came out 1% ahead. The exact answer divides instead of subtracting: 1.04 ÷ 1.03 = 1.0097, a real gain of <b>0.97%</b>. In last year's dollars your new salary is worth about $60,582, so the raise bought roughly $582 of extra purchasing power, not $600.</p><p>Two habits keep this honest. First, measure both numbers over the same period; a January raise compared with a December-to-December price index covers different months. Second, look at dollars as well as percentages. A 4% raise is $2,400 on $60,000 but $1,800 on $45,000, so an across-the-board percentage raise widens the dollar gap between higher and lower earners every year it is repeated.</p><p>For the actual change in prices between two dates, use the Bureau of Labor Statistics inflation calculator rather than a remembered headline figure.</p>
+<h3 style="font-size:22px;margin-top:28px">Percent change: questions that come up again and again</h3><p><b>Can percent change be more than 100%?</b><br>Yes. Going from 50 to 150 is a 200% increase. A decrease, though, can never be more than 100%.</p><p><b>Is a negative result wrong?</b><br>No. A negative percent change simply means a decrease.</p><p><b>What is the difference between percent change and percent difference?</b><br>Percent change has a direction (old → new). Percent difference just compares two numbers using their average.</p>
+<h3 style="font-size:22px;margin-top:28px">Related calculators</h3><p><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/inflation-calculator.html">Inflation Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html">Compound Interest Calculator</a></p>
+<h3 style="font-size:22px;margin-top:28px">Sources and further reading</h3><ul><li><a href="https://www.bls.gov/data/inflation_calculator.htm" rel="noopener" target="_blank">Bureau of Labor Statistics – CPI Inflation Calculator</a></li><li><a href="https://www.bls.gov/cpi/" rel="noopener" target="_blank">Bureau of Labor Statistics – Consumer Price Index</a></li><li><a href="https://www.khanacademy.org/math/arithmetic" rel="noopener" target="_blank">Khan Academy – Arithmetic (percents and decimals)</a></li></ul>
+<p style="font-size:15px;color:#555;margin-top:24px"><b>How we checked this page:</b> all examples and the recovery table were recalculated in Python. Last reviewed November 2026. The figures above are illustrations, not forecasts, and should not be read as financial or tax advice.</p>
+</div>
+<div style="margin-top:30px;border:2px solid #1a56db;border-radius:10px;padding:16px;text-align:center"><b style="font-size:21px">You may also need</b><br><span style="font-size:17px"><a href="https://www.smartlifecalc.com/2026/11/percentage-calculator.html" style="color:#1a56db">Percentage Calculator</a> · <a href="https://www.smartlifecalc.com/2026/11/inflation-calculator.html" style="color:#1a56db">Inflation Calculator</a> · <a href="https://www.smartlifecalc.com/2026/10/compound-interest-calculator.html" style="color:#1a56db">Compound Interest Calculator</a></span><br><a href="https://www.smartlifecalc.com/" style="display:inline-block;margin-top:10px;font-size:17px;font-weight:bold;color:#1a56db">▶ All free calculators</a></div>
+</div>
+<!-- ===== Percent Change Calculator end ===== -->
