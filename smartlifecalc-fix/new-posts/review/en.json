@@ -1,0 +1,100 @@
+{
+ "N01": [
+  {
+   "where": "html",
+   "severity": "warn",
+   "problem": "Over-certain: the 365-day method only adds up to exactly 12 months of rent in a 365-day year; in a leap year it bills 366 days and comes out one day's rent ($59.18) higher.",
+   "old": "adds up to exactly 12 months of rent over a year.",
+   "new": "adds up to exactly 12 months of rent over a 365-day year (one day more in a leap year)."
+  }
+ ],
+ "N02": [
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Arithmetic as displayed is wrong: 12 x $1,896.20 = $22,754.40, not $22,754.45 (the .45 comes from the unrounded $1,896.2041 payment).",
+   "old": "12 x $1,896.20 = <b>$22,754.45</b>",
+   "new": "12 x $1,896.20 = <b>$22,754.40</b>"
+  },
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Arithmetic as displayed is wrong: 26 x $948.10 = $24,650.60, not $24,650.65. With the corrected figures the difference is still exactly $1,896.20.",
+   "old": "26 x $948.10 = <b>$24,650.65</b>",
+   "new": "26 x $948.10 = <b>$24,650.60</b>"
+  }
+ ],
+ "N03": [
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Inconsistent with the post's own table: interest in the table ranges from $207 to $510, not '$300 to $500'.",
+   "old": "so the $300 to $500 of interest in the table",
+   "new": "so the roughly $200 to $510 of interest in the table"
+  },
+  {
+   "where": "html",
+   "severity": "warn",
+   "problem": "Over-certain: not every credit union is NCUA-insured (a few are privately insured). Say 'federally insured credit unions'.",
+   "old": "<b>Credit unions</b> are insured separately by the National Credit Union Administration, with the same $250,000 standard amount.",
+   "new": "<b>Credit unions</b> that are federally insured are covered separately by the National Credit Union Administration, with the same $250,000 standard amount. Check that yours is federally insured."
+  }
+ ],
+ "N04": [],
+ "N05": [],
+ "N06": [
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Python check of the stated method (interest = balance x APR/12 rounded to the cent each month) gives $661.70 total interest at 20% APR / $25 a month, not $661.69.",
+   "old": "67 months, $661.69",
+   "new": "67 months, $661.70"
+  },
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Same one-cent error in the text: total interest at 20% APR / $25 a month is $661.70.",
+   "old": "cuts the interest from $661.69 to",
+   "new": "cuts the interest from $661.70 to"
+  },
+  {
+   "where": "html",
+   "severity": "error",
+   "problem": "Python check of the stated method gives $403.58 total interest at 30% APR / $50 a month, not $403.57 (the 'about $177' saving is unaffected: $176.95).",
+   "old": "29 months, $403.57",
+   "new": "29 months, $403.58"
+  },
+  {
+   "where": "html",
+   "severity": "warn",
+   "problem": "Rounded daily figure does not reproduce the totals: $0.68 x 30 = $20.40, but the post says $20.55 (which uses the unrounded $0.6849). Show three decimals.",
+   "old": "that is about $0.68 a day",
+   "new": "that is about $0.685 a day"
+  }
+ ],
+ "N07": [
+  {
+   "where": "meta",
+   "severity": "error",
+   "problem": "Inaccurate: the fifth day does not pay $1,320; the whole 50-hour week does ($960 + 10 x $36). The fifth day adds $360.",
+   "old": "At $24/hour a 10-hour fifth day pays $1,320. See the 40-hour rule and California daily OT.",
+   "new": "At $24/hour, a 10-hour fifth day makes the week pay $1,320. Plus California's daily OT rule."
+  }
+ ],
+ "N08": [
+  {
+   "where": "html",
+   "severity": "warn",
+   "problem": "Ambiguous timeline: 'This year ... renews at $2,400' reads as a future bill, but the shortage math assumes the higher bills were already paid out of the account last cycle. Make that explicit.",
+   "old": "This year the tax bill is $4,500 and the premium renews at $2,400.",
+   "new": "This year the servicer paid a $4,500 tax bill and a $2,400 renewal premium out of the account, and it expects the same bills next year."
+  },
+  {
+   "where": "meta",
+   "severity": "warn",
+   "problem": "Over-certain: RESPA caps the cushion at one-sixth (about two months); it is a maximum, not a fixed two-month cushion.",
+   "old": "two-month cushion",
+   "new": "two-month cushion cap"
+  }
+ ]
+}
