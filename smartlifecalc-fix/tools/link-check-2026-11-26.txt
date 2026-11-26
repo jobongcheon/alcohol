@@ -1,5 +1,6 @@
 200 https://eco.mtk.nao.ac.jp/koyomi/
 200 https://fdc.nal.usda.gov/
+200 https://kennet.mhlw.go.jp/home
 200 https://laws.e-gov.go.jp/
 200 https://laws.e-gov.go.jp/law/129AC0000000089
 200 https://laws.e-gov.go.jp/law/135AC0000000050
@@ -19,7 +20,6 @@
 200 https://www.dietaryguidelines.gov/
 403 https://www.dol.gov/agencies/whd/minimum-wage
 403 https://www.dol.gov/agencies/whd/overtime
-000 https://www.e-healthnet.mhlw.go.jp/
 200 https://www.emilypost.com/advice/general-tipping-guide
 200 https://www.fdic.gov/
 200 https://www.federalreserve.gov/
@@ -29,7 +29,7 @@
 200 https://www.irs.gov/
 200 https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-401k-and-profit-sharing-plan-contribution-limits
 200 https://www.jasso.or.jp/
-000 https://www.jinja-honcho.or.jp/
+503 https://www.jinjahoncho.or.jp/
 200 https://www.jsog.or.jp/
 200 https://www.khanacademy.org/math/arithmetic
 200 https://www.kokusen.go.jp/
