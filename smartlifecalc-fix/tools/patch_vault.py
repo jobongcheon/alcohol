@@ -14,6 +14,8 @@ def dlabel(d):
     x = datetime.date.fromisoformat(d); return f'{x.month}/{x.day} ({DOW[x.weekday()]})'
 E = lambda t: html.escape(t, quote=True)
 KO = json.load(open(f'{NEWDIR}/ko_titles.json', encoding='utf-8'))
+import base64
+IMG = {k: 'data:image/jpeg;base64,' + base64.b64encode(open(f'{NEWDIR}/covers/{k}.jpg', 'rb').read()).decode() for k in KO}
 uid = [0]
 def cp(label, text, key):
     i = f'nw_{key}'; return f'<button type="button" class="cp" data-t="{i}" data-l="{label}">{label}</button><textarea id="{i}" readonly hidden>{E(text)}</textarea>'
@@ -26,12 +28,14 @@ def card(pid, d):
     steps = [
         f'<li class="step"><span class="sn">1</span><div class="sb"><b>새로 쓰는 글이에요 → 글 목록에서 찾지 말고 왼쪽 위 주황색 「+ 새 글」 누르기</b><a class="go" href="{blog[0]}" target="_blank" rel="noopener">{blog[1]} 열기 ↗</a><span class="sd">열린 화면 왼쪽 위 블로그 이름이 <b>{blog[1]}</b>인지 확인 → 그 아래 <b>「+ 새 글」</b>. 빈 새 글 화면이 열리면 2번으로</span></div></li>',
         f'<li class="step"><span class="sn">2</span><div class="sb"><b>제목 복사 → "제목" 칸에 붙여넣기</b><span class="pv">{E(p["title"])}</span></div>{cp("복사", p["title"], aid+"_t")}</li>',
-        f'<li class="step"><span class="sn">3</span><div class="sb"><b>왼쪽 위 연필 ✏️ → "HTML 보기" → 화면이 비었는지 확인 → 본문 복사 → Ctrl+V</b><span class="sd">사진은 없어도 됩니다. 계산기 없이 읽는 설명 글이에요</span></div>{cp("본문 복사", p["html"], aid+"_h")}</li>',
-        f'<li class="step"><span class="sn">4</span><div class="sb"><b>라벨 복사 → 오른쪽 "라벨" 칸에 붙여넣기</b><span class="pv">{E(", ".join(p["labels"]))}</span></div>{cp("복사", ", ".join(p["labels"]), aid+"_l")}</li>',
-        f'<li class="step"><span class="sn">5</span><div class="sb"><b>검색 설명 복사 → 오른쪽 "검색 설명" 칸에 붙여넣기</b><span class="pv">{E(p["meta"])}</span></div>{cp("복사", p["meta"], aid+"_m")}</li>',
-        f'<li class="step"><span class="sn">6</span><div class="sb"><b>오른쪽 "퍼머링크" → "맞춤 퍼머링크" → 주소 복사해서 붙여넣기</b><span class="pv">{E(p["slug"])}</span></div>{cp("복사", p["slug"], aid+"_s")}</li>',
-        f'<li class="step"><span class="sn">7</span><div class="sb"><b>오른쪽 위 주황색 "게시" 누르기</b><span class="sd">게시 날짜·위치·옵션은 그대로 두세요</span></div></li>',
-        f'<li class="step"><span class="sn">8</span><div class="sb"><b>서치 콘솔에서 색인 요청</b><span class="sd">왼쪽 위 속성이 <b>{E(sc_prop)}</b>인지 확인 → 맨 위 검색창에 주소 붙여넣기 → Enter → "색인 생성 요청". {dlabel(d)}이 아닌 다른 달에 올렸다면 주소의 {d[:4]}/{d[5:7]} 부분이 바뀌니, 올린 글을 열어 주소창 주소를 쓰세요</span><span class="pv">{E(url)}</span><a class="go" href="https://search.google.com/search-console" target="_blank" rel="noopener">서치 콘솔 열기 ↗</a></div>{cp("주소 복사", url, aid+"_u")}</li>',
+        f'<li class="step"><span class="sn">3</span><div class="sb"><b>본문 칸 클릭 → 사진 복사 → Ctrl+V → 사진 클릭 → "중간" 크기 선택</b><span class="sd">사진을 먼저 넣고 글은 다음 단계에서 넣어요. 붙여넣기가 안 되면 그림 오른쪽 클릭 → "이미지를 다른 이름으로 저장" 후, 위쪽 사진 아이콘 → "컴퓨터에서 업로드"</span>'
+        f'<div class="imgbox"><img src="{IMG[pid]}" alt="{E(p["title"])} 대표이미지"><div class="imside"><div class="imbtn"><button type="button" class="cp imgcp" data-l="사진 복사">사진 복사</button>{cp("이름 복사", pid+"."+p["slug"], aid+"_n")}</div><span class="imnm">📄 {E(pid+"."+p["slug"])}</span></div></div></div></li>',
+        f'<li class="step"><span class="sn">4</span><div class="sb"><b>왼쪽 위 연필 ✏️ → "HTML 보기" → 맨 아래 빈 줄 클릭 → 본문 복사 → Ctrl+V</b><span class="sd">맨 위 사진 코드 몇 줄은 지우지 마세요. 그 아래에 붙여 넣으면 됩니다</span></div>{cp("본문 복사", p["html"], aid+"_h")}</li>',
+        f'<li class="step"><span class="sn">5</span><div class="sb"><b>라벨 복사 → 오른쪽 "라벨" 칸에 붙여넣기</b><span class="pv">{E(", ".join(p["labels"]))}</span></div>{cp("복사", ", ".join(p["labels"]), aid+"_l")}</li>',
+        f'<li class="step"><span class="sn">6</span><div class="sb"><b>검색 설명 복사 → 오른쪽 "검색 설명" 칸에 붙여넣기</b><span class="pv">{E(p["meta"])}</span></div>{cp("복사", p["meta"], aid+"_m")}</li>',
+        f'<li class="step"><span class="sn">7</span><div class="sb"><b>오른쪽 "퍼머링크" → "맞춤 퍼머링크" → 주소 복사해서 붙여넣기</b><span class="pv">{E(p["slug"])}</span></div>{cp("복사", p["slug"], aid+"_s")}</li>',
+        f'<li class="step"><span class="sn">8</span><div class="sb"><b>오른쪽 위 주황색 "게시" 누르기</b><span class="sd">게시 날짜·위치·옵션은 그대로 두세요</span></div></li>',
+        f'<li class="step"><span class="sn">9</span><div class="sb"><b>서치 콘솔에서 색인 요청</b><span class="sd">왼쪽 위 속성이 <b>{E(sc_prop)}</b>인지 확인 → 맨 위 검색창에 주소 붙여넣기 → Enter → "색인 생성 요청". {dlabel(d)}이 아닌 다른 달에 올렸다면 주소의 {d[:4]}/{d[5:7]} 부분이 바뀌니, 올린 글을 열어 주소창 주소를 쓰세요</span><span class="pv">{E(url)}</span><a class="go" href="https://search.google.com/search-console" target="_blank" rel="noopener">서치 콘솔 열기 ↗</a></div>{cp("주소 복사", url, aid+"_u")}</li>',
     ]
     return (f'<article class="calc" id="{aid}" data-{"en" if en else "jp"}="{d}"><header><span class="no">{pid}</span><h3>{E(p["title"])}</h3>'
             f'<span class="made">{E(KO[pid])} · {dlabel(d)} 올리기</span></header>'
