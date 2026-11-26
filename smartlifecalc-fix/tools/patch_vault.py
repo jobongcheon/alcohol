@@ -24,7 +24,7 @@ def card(pid, d):
     url = f"{blog[3]}/{d[:4]}/{d[5:7]}/{p['slug']}.html"
     sc_prop = blog[3] + '/'
     steps = [
-        f'<li class="step"><span class="sn">1</span><div class="sb"><b>{"영어" if en else "일본어"} 블로그 열고 "+ 새 글" 누르기</b><a class="go" href="{blog[0]}" target="_blank" rel="noopener">{blog[1]} 열기 ↗</a><span class="sd">왼쪽 위 블로그 이름이 <b>{blog[1]}</b>인지 꼭 확인하세요</span></div></li>',
+        f'<li class="step"><span class="sn">1</span><div class="sb"><b>새로 쓰는 글이에요 → 글 목록에서 찾지 말고 왼쪽 위 주황색 「+ 새 글」 누르기</b><a class="go" href="{blog[0]}" target="_blank" rel="noopener">{blog[1]} 열기 ↗</a><span class="sd">열린 화면 왼쪽 위 블로그 이름이 <b>{blog[1]}</b>인지 확인 → 그 아래 <b>「+ 새 글」</b>. 빈 새 글 화면이 열리면 2번으로</span></div></li>',
         f'<li class="step"><span class="sn">2</span><div class="sb"><b>제목 복사 → "제목" 칸에 붙여넣기</b><span class="pv">{E(p["title"])}</span></div>{cp("복사", p["title"], aid+"_t")}</li>',
         f'<li class="step"><span class="sn">3</span><div class="sb"><b>왼쪽 위 연필 ✏️ → "HTML 보기" → 화면이 비었는지 확인 → 본문 복사 → Ctrl+V</b><span class="sd">사진은 없어도 됩니다. 계산기 없이 읽는 설명 글이에요</span></div>{cp("본문 복사", p["html"], aid+"_h")}</li>',
         f'<li class="step"><span class="sn">4</span><div class="sb"><b>라벨 복사 → 오른쪽 "라벨" 칸에 붙여넣기</b><span class="pv">{E(", ".join(p["labels"]))}</span></div>{cp("복사", ", ".join(p["labels"]), aid+"_l")}</li>',
@@ -37,7 +37,7 @@ def card(pid, d):
             f'<span class="made">{E(KO[pid])} · {dlabel(d)} 올리기</span></header>'
             f'<div class="tabs" role="tablist" style="grid-template-columns:1fr"><button type="button" role="tab" class="tab wait" aria-selected="true" aria-controls="p{aid}">'
             f'<span class="tn">{"영어" if en else "일본어"} 구글 블로그 · 새 글</span><span class="tu">{blog[1]} · {blog[2]}</span><span class="ts">아직</span></button></div>'
-            f'<div class="panel" id="p{aid}" role="tabpanel"><p class="nonote">{"🇺🇸" if en else "🇯🇵"} {pid} · {E(KO[pid])}<br>계산기 없는 설명 글입니다. 기존 계산기 글 2개로 링크가 걸려 있고, 출처와 직접 계산한 표가 들어 있어요.</p>'
+            f'<div class="panel" id="p{aid}" role="tabpanel"><p class="nonote">{"🇺🇸" if en else "🇯🇵"} {pid} · {E(KO[pid])}<br><span style="color:#b42318">기존 글을 고치는 게 아니라 「+ 새 글」로 새로 올리는 글입니다.</span> 계산기 없는 설명 글이고, 기존 계산기 글 2개로 링크가 걸려 있어요.</p>'
             f'<ol class="steps">{"".join(steps)}</ol></div></article>')
 en_ids = [x for x in SCHED if x[0].startswith('N')]; jp_ids = [x for x in SCHED if x[0].startswith('M')]
 def planlist(ids):
