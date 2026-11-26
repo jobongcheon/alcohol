@@ -88,5 +88,18 @@ old_jp = '<li>⏳ <b>일본어 블로그 애드센스 신청 준비</b> <span cl
 new_jp = ('<li>✓ <b>일본어 블로그 애드센스 신청 준비</b> <span class="sd">— Privacy Policy·About·Contact 있음 (11/24 확인)</span></li>'
           '<li>✓ <b>영어 32개·일본어 22개 글 전면 교체</b> <span class="sd">— 중복 제거·출처·글마다 다른 섹션, 개인정보 페이지 Amazon 문단 삭제, 서치 콘솔 등록·사이트맵 제출·색인 요청 10개 (11/24)</span></li>')
 if old_jp in s: s = s.replace(old_jp, new_jp)
+
+# 정보 글 카드 맨 아래 안내문: 글 주제에 맞는 기관으로 (2026-11-26)
+AGENCY = {'i01':'국세청(홈택스)','i02':'국세청(홈택스)','i03':'국세청·금융감독원','i04':'고용노동부(고용24)','i05':'고용노동부','i06':'국민건강보험공단·국민연금공단·고용노동부',
+ 'i07':'위택스·행정안전부','i08':'위택스','i09':'금융감독원·가입한 보험사','i10':'국민건강보험공단','i11':'국민연금공단','i12':'국세청·금융감독원','i13':'보건복지부·국민연금공단',
+ 'i14':'국민건강보험공단','i15':'한국전력','i16':'고용노동부','i17':'고용노동부','i18':'국세청(홈택스)','i19':'국세청','i20':'금융감독원','i21':'국토교통부','i22':'금융감독원·이용 중인 금융회사','i23':'금융감독원'}
+starts = [(m.start(), m.group(1)) for m in re.finditer(r'<article class="calc"[^>]*id="(i\d\d)"', s)]
+fixed = 0
+for k in range(len(starts) - 1, -1, -1):
+    st, aid = starts[k]; en = s.find('</article>', st)
+    seg = s[st:en]
+    new, n = re.subn(r'제도는 바뀔 수 있으니 [^<\n]{1,40}? 등 공식 안내를 함께 확인하세요', '제도는 바뀔 수 있으니 ' + AGENCY[aid] + ' 등 공식 안내를 함께 확인하세요', seg)
+    if new != seg: s = s[:st] + new + s[en:]; fixed += n
+print('info footers fixed', fixed)
 open(OUT, 'w', encoding='utf-8').write(s)
 print('ok', len(s))
