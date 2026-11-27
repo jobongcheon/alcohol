@@ -42,7 +42,11 @@ for k, base in BLOGS.items():
         if t not in titles: p.append('제목이 카드와 다름')
         if re.fullmatch(r'blog-post(_\d+)?', slug) or slug not in slugs: p.append('주소(퍼머링크)가 카드와 다름: ' + slug)
         if c.count('class="separator"') != 1: p.append('사진 %d장' % c.count('class="separator"'))
-        if norm(c) not in bodies: p.append('본문이 카드와 다름')
+        if norm(c) not in bodies:
+            import difflib
+            nc = norm(c); best = max((difflib.SequenceMatcher(None, nc, b, autojunk=False).ratio() for b in bodies if abs(len(b) - len(nc)) < 4000), default=0)
+            if 'coupang' in c and best > 0.85: print(k, '   (쿠팡 상자가 들어간 글: 본문 %.0f%% 일치)' % (best * 100))
+            else: p.append('본문이 카드와 다름(%.0f%%)' % (best * 100))
         if len(allt[t]) > 1: p.append('같은 제목 글이 %d개(중복)' % len(allt[t]))
         if not e.get('category'): p.append('라벨 없음')
         if t not in titles and norm(c) not in bodies and slug not in slugs:
